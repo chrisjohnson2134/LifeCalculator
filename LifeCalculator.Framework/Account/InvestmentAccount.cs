@@ -1,0 +1,90 @@
+﻿using LifeCalculator.Framework.ColumnDefinitions;
+using LifeCalculator.Framework.LifeEvents;
+using System;
+using System.Collections.Generic;
+
+namespace LifeCalculator.Framework.Account
+{
+    public class InvestmentAccount : IAccount
+    {
+        public string Name { get; set; }
+        public double InitialAmount { get; set; }
+        public double FinalAmount { get; set; }
+        public List<ILifeEvent> AccountLifeEvents { get; set; }
+
+        public event EventHandler<ILifeEvent> LifeEventAdded;
+
+        public InvestmentAccount()
+        {
+            AccountLifeEvents = new List<ILifeEvent>();
+        }
+
+        public InvestmentAccount(string AccountName)
+        {
+            Name = AccountName;
+            AccountLifeEvents = new List<ILifeEvent>();
+        }
+
+        public void SetupBasicCalculation(DateTime startDate, DateTime endDate, double interestRate,
+            double initialAmount, double additionalAmount)
+        {
+
+            InitialAmount = initialAmount;
+
+            InvestmentLifeEvent lifeEventStart = new InvestmentLifeEvent()
+            {
+                Date = startDate,
+                InterestRate = interestRate,
+                Amount = additionalAmount,
+                Name = this.Name,
+                CurrentValue = initialAmount
+            };
+
+            InvestmentLifeEvent lifeEventEnd = new InvestmentLifeEvent()
+            {
+                Date = endDate,
+                Name = this.Name,
+                CurrentValue = FinalAmount
+            };
+
+            AddLifeEvent(lifeEventStart);
+            AddLifeEvent(lifeEventEnd);
+
+            Calculation();
+        }
+
+        public List<MonthlyColumn> Calculation()
+        {
+            double currValue = InitialAmount;
+            List<MonthlyColumn> monthlies = new List<MonthlyColumn>();
+            int monthDiff = 0;
+
+            AccountLifeEvents.Sort((x, y) => x.Date.CompareTo(y.Date));
+
+            for (int i = 0; i < AccountLifeEvents.Count-1; i++)
+            {
+                monthDiff = Math.Abs((AccountLifeEvents[i].Date.Year * 12 + (AccountLifeEvents[i].Date.Month - 1))
+                    - (AccountLifeEvents[(i + 1)].Date.Year * 12 + (AccountLifeEvents[(i + 1)].Date.Month - 1)));
+
+                for (int j = 0; j < monthDiff; j++)
+                {
+                    currValue = (currValue + AccountLifeEvents[i].Amount) * (1 + AccountLifeEvents[i].InterestRate);
+                    monthlies.Add(new MonthlyColumn() { Name = AccountLifeEvents[i].Name, Amount = currValue, Date = AccountLifeEvents[i].Date.AddMonths(j) });
+                }
+
+                AccountLifeEvents[(i + 1)].CurrentValue = currValue;
+            }
+
+            if(monthDiff != 0)
+                FinalAmount = monthlies[monthlies.Count-1].Amount;
+
+            return monthlies;
+        }
+
+        public void AddLifeEvent(ILifeEvent lifeEvent)
+        {
+            AccountLifeEvents.Add(lifeEvent);
+            LifeEventAdded?.Invoke(this, lifeEvent);
+        }
+    }
+}

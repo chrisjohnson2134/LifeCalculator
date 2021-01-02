@@ -1,0 +1,31 @@
+﻿<UserControl x:Class="LifeCalculator.Control.Views.AddCompound"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:prism="http://prismlibrary.com/"             
+             prism:ViewModelLocator.AutoWireViewModel="True">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!--row 1-->
+        <Label x:Name="AccountNameLabel" Margin="2" Content="Account Name:" Grid.Row="1" Grid.Column="0"/>
+        <TextBox x:Name="AccountNameTextbox" Text="{Binding AccountName}" Margin="2" Grid.Row="1" Grid.Column="1"/>
+
+        <!--row 2-->
+        <Label x:Name="InitialValueLabel" Margin="2" Content="Initial Amount:" Grid.Row="2" Grid.Column="0"/>
+        <TextBox x:Name="InitialValueTextbox" Text="{Binding InitialValue}" Margin="2" Grid.Row="2" Grid.Column="1"/>
+
+        <!--row 3-->
+        <Button x:Name="AddAccountBTN" Command="{Binding AddAccountCommand}" Content="Add Account" Margin="2" Grid.Row="3" Grid.Column="1"/>
+
+    </Grid>
+</UserControl>
