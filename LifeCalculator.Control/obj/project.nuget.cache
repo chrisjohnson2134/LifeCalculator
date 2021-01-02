@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "cBKWTtbKWxWi+Tdn1H830zV07NabvghdJtiK6I2NwYpgmuL25yOz4xGnD8EtTKliwqCMR1QVXxGjoJCKrYeWng==",
+  "dgSpecHash": "ykYWnL0QX5xQ0dTzsJ1aORqv12KLnY+WOl/HvZGUCL8AofsiiS0NSKeAiJuCBnxzmXkHFnuuuWgw1MP3QhSGJA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\bear\\source\\repos\\LifeCalculator\\LifeCalculator.Control\\LifeCalculator.Control.csproj",
+  "projectFilePath": "C:\\Users\\bear\\Documents\\GitHub\\LifeCalculator\\LifeCalculator.Control\\LifeCalculator.Control.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\bear\\.nuget\\packages\\microsoft.xaml.behaviors.wpf\\1.1.19\\microsoft.xaml.behaviors.wpf.1.1.19.nupkg.sha512",
     "C:\\Users\\bear\\.nuget\\packages\\prism.core\\8.0.0.1909\\prism.core.8.0.0.1909.nupkg.sha512",

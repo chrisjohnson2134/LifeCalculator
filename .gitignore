@@ -17,3 +17,9 @@ LifeCalculator.Control/obj/Debug/LifeCalculator.Control_MarkupCompile.cache
 LifeCalculator.Control/obj/Debug/LifeCalculator.Control.csprojAssemblyReference.cache
 LifeCalcuator.FrameworkTest/obj/Debug/LifeCalcuator.FrameworkTest.csprojAssemblyReference.cache
 *.cache
+*.dll
+*.dll
+*.pdb
+*.cache
+*.txt
+*.json
