@@ -10,6 +10,7 @@ using LiveCharts;
 using Prism.Regions;
 using LiveCharts.Configurations;
 using LiveCharts.Wpf;
+using LifeCalculator.Control.ViewModels;
 
 //keep track of project https://kanbanflow.com/board/eFu1Zwn
 
@@ -97,7 +98,6 @@ namespace LifeCalculator.ViewModels
 
         #endregion
 
-
         #region Constructors
 
         public MainWindowViewModel(IAccountManager accountManager, IRegionManager regionManager)
@@ -129,7 +129,7 @@ namespace LifeCalculator.ViewModels
             //var bab = new InvestmentViewModel(e);
             var bab = e;
             bab.ValueChanged += ReChart;
-            _lifeEvents.Add(new InvestmentViewModel(e));
+            _lifeEvents.Add(new ModifyEventCompoundViewModel(e));
             //_lifeEvents.Add(e);
 
             LifeEvents.Clear();

@@ -159,9 +159,11 @@ C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator.Control\obj\Debug\L
 C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator.Control\obj\Debug\Views\Events\AddEventCompound.baml
 C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator.Control\obj\Debug\Views\Accounts\AddCompound.baml
 C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator.Control\obj\Debug\Views\Accounts\AddLoan.baml
+C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator.Control\obj\Debug\Views\Events\ModifyEventCompound.baml
 C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator.Control\obj\Debug\Views\Events\AddEventCompound.g.cs
 C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator.Control\obj\Debug\Views\Accounts\AddCompound.g.cs
 C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator.Control\obj\Debug\Views\Accounts\AddLoan.g.cs
+C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator.Control\obj\Debug\Views\Events\ModifyEventCompound.g.cs
 C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator.Control\obj\Debug\LifeCalculator.Control_MarkupCompile.cache
 C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator.Control\obj\Debug\LifeCalculator.Control.g.resources
 C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator.Control\obj\Debug\LifeCalculator.Control.Properties.Resources.resources

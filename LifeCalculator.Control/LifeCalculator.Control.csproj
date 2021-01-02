@@ -66,6 +66,7 @@
     <Compile Include="ViewModels\Events\AddEventCompoundViewModel.cs" />
     <Compile Include="ViewModels\Accounts\AddCompoundViewModel.cs" />
     <Compile Include="ViewModels\Accounts\AddLoanViewModel.cs" />
+    <Compile Include="ViewModels\Events\ModifyEventCompoundViewModel.cs" />
     <Compile Include="Views\Events\AddEventCompound.xaml.cs">
       <DependentUpon>AddEventCompound.xaml</DependentUpon>
     </Compile>
@@ -74,6 +75,9 @@
     </Compile>
     <Compile Include="Views\Accounts\AddLoan.xaml.cs">
       <DependentUpon>AddLoan.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Events\ModifyEventCompound.xaml.cs">
+      <DependentUpon>ModifyEventCompound.xaml</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -101,6 +105,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Accounts\AddLoan.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Events\ModifyEventCompound.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

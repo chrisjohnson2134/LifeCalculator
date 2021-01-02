@@ -1,9 +1,8 @@
-﻿<UserControl x:Class="LifeCalculator.Views.Investment"
+﻿<UserControl x:Class="LifeCalculator.Control.Views.Events.ModifyEventCompound"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:LifeCalculator.ViewModels"
-             xmlns:prism="http://prismlibrary.com/"
-             prism:ViewModelLocator.AutoWireViewModel="False">
+             xmlns:prism="http://prismlibrary.com/"             
+             prism:ViewModelLocator.AutoWireViewModel="True">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>

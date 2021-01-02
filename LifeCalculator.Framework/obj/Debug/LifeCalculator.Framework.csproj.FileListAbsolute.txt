@@ -123,7 +123,6 @@ C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator.Framework\bin\Debug
 C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator.Framework\bin\Debug\System.Threading.Tasks.Extensions.xml
 C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator.Framework\bin\Debug\Unity.Abstractions.pdb
 C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator.Framework\bin\Debug\Unity.Container.pdb
-C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator.Framework\obj\Debug\LifeCalculator.Framework.csprojAssemblyReference.cache
 C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator.Framework\obj\Debug\LifeCalculator.Framework.csproj.CoreCompileInputs.cache
 C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator.Framework\obj\Debug\LifeCalculator.Framework.csproj.CopyComplete
 C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator.Framework\obj\Debug\LifeCalculator.Framework.dll

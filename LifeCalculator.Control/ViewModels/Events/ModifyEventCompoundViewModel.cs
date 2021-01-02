@@ -2,19 +2,20 @@
 using Prism.Mvvm;
 using System;
 
-namespace LifeCalculator.ViewModels
+namespace LifeCalculator.Control.ViewModels
 {
-    public class InvestmentViewModel : BindableBase, ILifeEvent
+    public class ModifyEventCompoundViewModel : BindableBase , ILifeEvent
     {
+
         ILifeEvent _lifeEvent;
 
         public event EventHandler ValueChanged;
 
-        public InvestmentViewModel()
+        public ModifyEventCompoundViewModel()
         {
         }
-        
-        public InvestmentViewModel(ILifeEvent e)
+
+        public ModifyEventCompoundViewModel(ILifeEvent e)
         {
             _lifeEvent = e;
         }
@@ -63,7 +64,7 @@ namespace LifeCalculator.ViewModels
                 RaisePropertyChanged("CurrentValue");
             }
         }
-         
+
         public double InterestRate
         {
             get => _lifeEvent.InterestRate;
@@ -85,6 +86,6 @@ namespace LifeCalculator.ViewModels
                 RaisePropertyChanged("FinalEvent");
             }
         }
-
     }
+    
 }

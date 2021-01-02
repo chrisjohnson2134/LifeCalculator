@@ -122,6 +122,9 @@ C:\Users\cj106\Documents\GitHub\LifeCalculator\LifeCalculator\LifeCalculator\obj
 C:\Users\cj106\Documents\GitHub\LifeCalculator\LifeCalculator\LifeCalculator\obj\Debug\LifeCalculator.csproj.CopyComplete
 C:\Users\cj106\Documents\GitHub\LifeCalculator\LifeCalculator\LifeCalculator\obj\Debug\LifeCalculator.exe
 C:\Users\cj106\Documents\GitHub\LifeCalculator\LifeCalculator\LifeCalculator\obj\Debug\LifeCalculator.pdb
+C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator\obj\Debug\LifeCalculator.csprojAssemblyReference.cache
+C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator\obj\Debug\App.g.cs
+C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator\obj\Debug\LifeCalculator_MarkupCompile.cache
 C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator\bin\Debug\LifeCalculator.exe
 C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator\bin\Debug\LifeCalculator.pdb
 C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator\bin\Debug\LiveCharts.dll
@@ -148,14 +151,8 @@ C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator\bin\Debug\LifeCalcu
 C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator\bin\Debug\LifeCalculator.Control.pdb
 C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator\bin\Debug\LifeCalculator.Framework.pdb
 C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator\bin\Debug\LifeCalculator.Tools.pdb
-C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator\obj\Debug\LifeCalculator.csprojAssemblyReference.cache
-C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator\obj\Debug\Views\Investment.g.cs
 C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator\obj\Debug\Views\MainWindow.g.cs
-C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator\obj\Debug\App.g.cs
-C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator\obj\Debug\GeneratedInternalTypeHelper.g.cs
-C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator\obj\Debug\LifeCalculator_MarkupCompile.cache
 C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator\obj\Debug\LifeCalculator_MarkupCompile.lref
-C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator\obj\Debug\Views\Investment.baml
 C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator\obj\Debug\Views\MainWindow.baml
 C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator\obj\Debug\LifeCalculator.g.resources
 C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator\obj\Debug\LifeCalculator.Properties.Resources.resources

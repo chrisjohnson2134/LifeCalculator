@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 
-31786442502
+41921737383
 
-11-1739349442
+13313837969
 25-1844475365
-Views\Events\AddEventCompound.xaml;Views\Accounts\AddCompound.xaml;Views\Accounts\AddLoan.xaml;
+Views\Events\AddEventCompound.xaml;Views\Accounts\AddCompound.xaml;Views\Accounts\AddLoan.xaml;Views\Events\ModifyEventCompound.xaml;
 
 False
 

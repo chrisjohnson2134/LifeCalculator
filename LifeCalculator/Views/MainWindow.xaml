@@ -3,6 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:prism="http://prismlibrary.com/"
         xmlns:views="clr-namespace:LifeCalculator.Views"
+        xmlns:controlViews="clr-namespace:LifeCalculator.Control.Views.Events;assembly=LifeCalculator.Control"
+        xmlns:controlViewModels="clr-namespace:LifeCalculator.Control.ViewModels;assembly=LifeCalculator.Control"
         xmlns:viewModels="clr-namespace:LifeCalculator.ViewModels"
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="LifeCalculator.Views.MainWindow"
@@ -63,9 +65,9 @@
         <ScrollViewer  Height="200" Width="600" Margin="5" Grid.Row="1" Grid.Column="0">
             <ItemsControl ItemsSource="{Binding LifeEvents}">
                 <ItemsControl.Resources>
-                    <DataTemplate DataType="{x:Type viewModels:InvestmentViewModel}">
+                    <DataTemplate DataType="{x:Type controlViewModels:ModifyEventCompoundViewModel}">
                         <Expander Header="{Binding Name}">
-                            <views:Investment/>
+                            <controlViews:ModifyEventCompound/>
                         </Expander>
                     </DataTemplate>
                 </ItemsControl.Resources>
