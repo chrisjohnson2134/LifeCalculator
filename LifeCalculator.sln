@@ -5,8 +5,6 @@ VisualStudioVersion = 16.0.29905.134
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Program", "Program", "{CDC40E35-51F9-459F-A32C-355842BE8D44}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LifeCalculator", "..\..\..\Desktop\LifeCalculator\LifeCalculator\LifeCalculator.csproj", "{618D93DE-68F7-4FD5-8086-DCB271C1C108}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{F697AAFF-8444-4E23-A5F8-3AC86AF77E1D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LifeCalculator.Control", "LifeCalculator.Control\LifeCalculator.Control.csproj", "{3939B433-A22F-4A3F-A692-E5BE98A6C1BB}"
@@ -19,16 +17,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LifeCalcuator.FrameworkTest
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LifeCalculator.ControlTest", "LifeCalculator.ControlTest\LifeCalculator.ControlTest.csproj", "{708F38CB-3229-495F-9798-E57BD7915610}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LifeCalculator", "LifeCalculator\LifeCalculator.csproj", "{618D93DE-68F7-4FD5-8086-DCB271C1C108}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{618D93DE-68F7-4FD5-8086-DCB271C1C108}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{618D93DE-68F7-4FD5-8086-DCB271C1C108}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{618D93DE-68F7-4FD5-8086-DCB271C1C108}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{618D93DE-68F7-4FD5-8086-DCB271C1C108}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3939B433-A22F-4A3F-A692-E5BE98A6C1BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3939B433-A22F-4A3F-A692-E5BE98A6C1BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3939B433-A22F-4A3F-A692-E5BE98A6C1BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -49,17 +45,21 @@ Global
 		{708F38CB-3229-495F-9798-E57BD7915610}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{708F38CB-3229-495F-9798-E57BD7915610}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{708F38CB-3229-495F-9798-E57BD7915610}.Release|Any CPU.Build.0 = Release|Any CPU
+		{618D93DE-68F7-4FD5-8086-DCB271C1C108}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{618D93DE-68F7-4FD5-8086-DCB271C1C108}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{618D93DE-68F7-4FD5-8086-DCB271C1C108}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{618D93DE-68F7-4FD5-8086-DCB271C1C108}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{618D93DE-68F7-4FD5-8086-DCB271C1C108} = {CDC40E35-51F9-459F-A32C-355842BE8D44}
 		{3939B433-A22F-4A3F-A692-E5BE98A6C1BB} = {CDC40E35-51F9-459F-A32C-355842BE8D44}
 		{F7416421-40C3-47A3-93A6-D68CC3F22959} = {CDC40E35-51F9-459F-A32C-355842BE8D44}
 		{A2373A1F-C7BD-4D25-A8F3-337F86616061} = {CDC40E35-51F9-459F-A32C-355842BE8D44}
 		{4ADEC183-C315-4F70-AF19-0038C472EC07} = {F697AAFF-8444-4E23-A5F8-3AC86AF77E1D}
 		{708F38CB-3229-495F-9798-E57BD7915610} = {F697AAFF-8444-4E23-A5F8-3AC86AF77E1D}
+		{618D93DE-68F7-4FD5-8086-DCB271C1C108} = {CDC40E35-51F9-459F-A32C-355842BE8D44}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3E8E016B-DA29-4402-A58F-8F88783E2BD7}

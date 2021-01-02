@@ -1,77 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\cj106\\Desktop\\LifeCalculator\\LifeCalculator\\LifeCalculator.csproj": {}
+    "C:\\Users\\cj106\\Documents\\GitHub\\LifeCalculator\\LifeCalculator\\LifeCalculator\\LifeCalculator.csproj": {}
   },
   "projects": {
-    "C:\\Users\\cj106\\Desktop\\LifeCalculator\\LifeCalculator\\LifeCalculator.csproj": {
+    "C:\\Users\\cj106\\Documents\\GitHub\\LifeCalculator\\LifeCalculator\\LifeCalculator.Control\\LifeCalculator.Control.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\cj106\\Desktop\\LifeCalculator\\LifeCalculator\\LifeCalculator.csproj",
-        "projectName": "LifeCalculator",
-        "projectPath": "C:\\Users\\cj106\\Desktop\\LifeCalculator\\LifeCalculator\\LifeCalculator.csproj",
-        "packagesPath": "C:\\Users\\cj106\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\cj106\\Desktop\\LifeCalculator\\LifeCalculator\\obj\\",
-        "projectStyle": "PackageReference",
-        "skipContentFileWrite": true,
-        "configFilePaths": [
-          "C:\\Users\\cj106\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
-        ],
-        "originalTargetFrameworks": [
-          "net472"
-        ],
-        "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "https://api.nuget.org/v3/index.json": {}
-        },
-        "frameworks": {
-          "net472": {
-            "projectReferences": {
-              "C:\\Users\\cj106\\Documents\\GitHub\\LifeCalculator\\LifeCalculator.Control\\LifeCalculator.Control.csproj": {
-                "projectPath": "C:\\Users\\cj106\\Documents\\GitHub\\LifeCalculator\\LifeCalculator.Control\\LifeCalculator.Control.csproj"
-              },
-              "C:\\Users\\cj106\\Documents\\GitHub\\LifeCalculator\\LifeCalculator.Framework\\LifeCalculator.Framework.csproj": {
-                "projectPath": "C:\\Users\\cj106\\Documents\\GitHub\\LifeCalculator\\LifeCalculator.Framework\\LifeCalculator.Framework.csproj"
-              }
-            }
-          }
-        }
-      },
-      "frameworks": {
-        "net472": {
-          "dependencies": {
-            "LiveCharts.Wpf": {
-              "target": "Package",
-              "version": "[0.9.7, )"
-            },
-            "Prism.Unity": {
-              "target": "Package",
-              "version": "[8.0.0.1909, )"
-            }
-          }
-        }
-      },
-      "runtimes": {
-        "win": {
-          "#import": []
-        },
-        "win-x64": {
-          "#import": []
-        },
-        "win-x86": {
-          "#import": []
-        }
-      }
-    },
-    "C:\\Users\\cj106\\Documents\\GitHub\\LifeCalculator\\LifeCalculator.Control\\LifeCalculator.Control.csproj": {
-      "version": "1.0.0",
-      "restore": {
-        "projectUniqueName": "C:\\Users\\cj106\\Documents\\GitHub\\LifeCalculator\\LifeCalculator.Control\\LifeCalculator.Control.csproj",
+        "projectUniqueName": "C:\\Users\\cj106\\Documents\\GitHub\\LifeCalculator\\LifeCalculator\\LifeCalculator.Control\\LifeCalculator.Control.csproj",
         "projectName": "LifeCalculator.Control",
-        "projectPath": "C:\\Users\\cj106\\Documents\\GitHub\\LifeCalculator\\LifeCalculator.Control\\LifeCalculator.Control.csproj",
+        "projectPath": "C:\\Users\\cj106\\Documents\\GitHub\\LifeCalculator\\LifeCalculator\\LifeCalculator.Control\\LifeCalculator.Control.csproj",
         "packagesPath": "C:\\Users\\cj106\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\cj106\\Documents\\GitHub\\LifeCalculator\\LifeCalculator.Control\\obj\\",
+        "outputPath": "C:\\Users\\cj106\\Documents\\GitHub\\LifeCalculator\\LifeCalculator\\LifeCalculator.Control\\obj\\",
         "projectStyle": "PackageReference",
         "skipContentFileWrite": true,
         "configFilePaths": [
@@ -88,11 +28,11 @@
         "frameworks": {
           "net472": {
             "projectReferences": {
-              "C:\\Users\\cj106\\Documents\\GitHub\\LifeCalculator\\LifeCalculator.Framework\\LifeCalculator.Framework.csproj": {
-                "projectPath": "C:\\Users\\cj106\\Documents\\GitHub\\LifeCalculator\\LifeCalculator.Framework\\LifeCalculator.Framework.csproj"
+              "C:\\Users\\cj106\\Documents\\GitHub\\LifeCalculator\\LifeCalculator\\LifeCalculator.Framework\\LifeCalculator.Framework.csproj": {
+                "projectPath": "C:\\Users\\cj106\\Documents\\GitHub\\LifeCalculator\\LifeCalculator\\LifeCalculator.Framework\\LifeCalculator.Framework.csproj"
               },
-              "C:\\Users\\cj106\\Documents\\GitHub\\LifeCalculator\\LifeCalculator.Tools\\LifeCalculator.Tools.csproj": {
-                "projectPath": "C:\\Users\\cj106\\Documents\\GitHub\\LifeCalculator\\LifeCalculator.Tools\\LifeCalculator.Tools.csproj"
+              "C:\\Users\\cj106\\Documents\\GitHub\\LifeCalculator\\LifeCalculator\\LifeCalculator.Tools\\LifeCalculator.Tools.csproj": {
+                "projectPath": "C:\\Users\\cj106\\Documents\\GitHub\\LifeCalculator\\LifeCalculator\\LifeCalculator.Tools\\LifeCalculator.Tools.csproj"
               }
             }
           }
@@ -124,26 +64,86 @@
         }
       }
     },
-    "C:\\Users\\cj106\\Documents\\GitHub\\LifeCalculator\\LifeCalculator.Framework\\LifeCalculator.Framework.csproj": {
+    "C:\\Users\\cj106\\Documents\\GitHub\\LifeCalculator\\LifeCalculator\\LifeCalculator.Framework\\LifeCalculator.Framework.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\cj106\\Documents\\GitHub\\LifeCalculator\\LifeCalculator.Framework\\LifeCalculator.Framework.csproj",
+        "projectUniqueName": "C:\\Users\\cj106\\Documents\\GitHub\\LifeCalculator\\LifeCalculator\\LifeCalculator.Framework\\LifeCalculator.Framework.csproj",
         "projectName": "LifeCalculator.Framework",
-        "projectPath": "C:\\Users\\cj106\\Documents\\GitHub\\LifeCalculator\\LifeCalculator.Framework\\LifeCalculator.Framework.csproj"
+        "projectPath": "C:\\Users\\cj106\\Documents\\GitHub\\LifeCalculator\\LifeCalculator\\LifeCalculator.Framework\\LifeCalculator.Framework.csproj"
       },
       "frameworks": {
         "net472": {}
       }
     },
-    "C:\\Users\\cj106\\Documents\\GitHub\\LifeCalculator\\LifeCalculator.Tools\\LifeCalculator.Tools.csproj": {
+    "C:\\Users\\cj106\\Documents\\GitHub\\LifeCalculator\\LifeCalculator\\LifeCalculator.Tools\\LifeCalculator.Tools.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\cj106\\Documents\\GitHub\\LifeCalculator\\LifeCalculator.Tools\\LifeCalculator.Tools.csproj",
+        "projectUniqueName": "C:\\Users\\cj106\\Documents\\GitHub\\LifeCalculator\\LifeCalculator\\LifeCalculator.Tools\\LifeCalculator.Tools.csproj",
         "projectName": "LifeCalculator.Tools",
-        "projectPath": "C:\\Users\\cj106\\Documents\\GitHub\\LifeCalculator\\LifeCalculator.Tools\\LifeCalculator.Tools.csproj"
+        "projectPath": "C:\\Users\\cj106\\Documents\\GitHub\\LifeCalculator\\LifeCalculator\\LifeCalculator.Tools\\LifeCalculator.Tools.csproj"
       },
       "frameworks": {
         "net472": {}
+      }
+    },
+    "C:\\Users\\cj106\\Documents\\GitHub\\LifeCalculator\\LifeCalculator\\LifeCalculator\\LifeCalculator.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\cj106\\Documents\\GitHub\\LifeCalculator\\LifeCalculator\\LifeCalculator\\LifeCalculator.csproj",
+        "projectName": "LifeCalculator",
+        "projectPath": "C:\\Users\\cj106\\Documents\\GitHub\\LifeCalculator\\LifeCalculator\\LifeCalculator\\LifeCalculator.csproj",
+        "packagesPath": "C:\\Users\\cj106\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\cj106\\Documents\\GitHub\\LifeCalculator\\LifeCalculator\\LifeCalculator\\obj\\",
+        "projectStyle": "PackageReference",
+        "skipContentFileWrite": true,
+        "configFilePaths": [
+          "C:\\Users\\cj106\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net472"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net472": {
+            "projectReferences": {
+              "C:\\Users\\cj106\\Documents\\GitHub\\LifeCalculator\\LifeCalculator\\LifeCalculator.Control\\LifeCalculator.Control.csproj": {
+                "projectPath": "C:\\Users\\cj106\\Documents\\GitHub\\LifeCalculator\\LifeCalculator\\LifeCalculator.Control\\LifeCalculator.Control.csproj"
+              },
+              "C:\\Users\\cj106\\Documents\\GitHub\\LifeCalculator\\LifeCalculator\\LifeCalculator.Framework\\LifeCalculator.Framework.csproj": {
+                "projectPath": "C:\\Users\\cj106\\Documents\\GitHub\\LifeCalculator\\LifeCalculator\\LifeCalculator.Framework\\LifeCalculator.Framework.csproj"
+              }
+            }
+          }
+        }
+      },
+      "frameworks": {
+        "net472": {
+          "dependencies": {
+            "LiveCharts.Wpf": {
+              "target": "Package",
+              "version": "[0.9.7, )"
+            },
+            "Prism.Unity": {
+              "target": "Package",
+              "version": "[8.0.0.1909, )"
+            }
+          }
+        }
+      },
+      "runtimes": {
+        "win": {
+          "#import": []
+        },
+        "win-x64": {
+          "#import": []
+        },
+        "win-x86": {
+          "#import": []
+        }
       }
     }
   }

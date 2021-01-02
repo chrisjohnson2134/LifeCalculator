@@ -108,11 +108,11 @@
     <PackageReference Include="Prism.Unity" Version="8.0.0.1909" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Documents\GitHub\LifeCalculator\LifeCalculator.Control\LifeCalculator.Control.csproj">
+    <ProjectReference Include="..\LifeCalculator.Control\LifeCalculator.Control.csproj">
       <Project>{3939b433-a22f-4a3f-a692-e5be98a6c1bb}</Project>
       <Name>LifeCalculator.Control</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Documents\GitHub\LifeCalculator\LifeCalculator.Framework\LifeCalculator.Framework.csproj">
+    <ProjectReference Include="..\LifeCalculator.Framework\LifeCalculator.Framework.csproj">
       <Project>{f7416421-40c3-47a3-93a6-d68cc3f22959}</Project>
       <Name>LifeCalculator.Framework</Name>
     </ProjectReference>
