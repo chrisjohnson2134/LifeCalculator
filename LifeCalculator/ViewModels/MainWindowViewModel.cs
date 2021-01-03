@@ -129,7 +129,9 @@ namespace LifeCalculator.ViewModels
             //var bab = new InvestmentViewModel(e);
             var bab = e;
             bab.ValueChanged += ReChart;
-            _lifeEvents.Add(new ModifyEventCompoundViewModel(e));
+            //if(e.GetType)
+            if(typeof(InvestmentLifeEvent).Equals(e.GetType()))
+                _lifeEvents.Add(new ModifyEventCompoundViewModel(e));
             //_lifeEvents.Add(e);
 
             LifeEvents.Clear();

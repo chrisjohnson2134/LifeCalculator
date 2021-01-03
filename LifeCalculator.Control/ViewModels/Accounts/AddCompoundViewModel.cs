@@ -28,7 +28,7 @@ namespace LifeCalculator.Control.ViewModels
         private void AddAccountCommandHandler()
         {
 
-            var investmentAccount = new InvestmentAccount(AccountName)
+            var investmentAccount = new CompoundAccount(AccountName)
             {
                 InitialAmount = ConvertString.ToDouble(InitialValue)
             };

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace LifeCalculator.Framework.Account
 {
-    public class InvestmentAccount : IAccount
+    public class CompoundAccount : IAccount
     {
         public string Name { get; set; }
         public double InitialAmount { get; set; }
@@ -14,12 +14,12 @@ namespace LifeCalculator.Framework.Account
 
         public event EventHandler<ILifeEvent> LifeEventAdded;
 
-        public InvestmentAccount()
+        public CompoundAccount()
         {
             AccountLifeEvents = new List<ILifeEvent>();
         }
 
-        public InvestmentAccount(string AccountName)
+        public CompoundAccount(string AccountName)
         {
             Name = AccountName;
             AccountLifeEvents = new List<ILifeEvent>();

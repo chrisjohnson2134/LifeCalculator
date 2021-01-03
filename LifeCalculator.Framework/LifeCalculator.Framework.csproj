@@ -73,16 +73,16 @@
     <Compile Include="AccountManager\AccountManager.cs" />
     <Compile Include="AccountManager\IAccountManager.cs" />
     <Compile Include="Account\AccountTypes.cs" />
-    <Compile Include="Account\InvestmentAccount.cs" />
+    <Compile Include="Account\CompoundAccount.cs" />
     <Compile Include="Account\IAccount.cs" />
     <Compile Include="Account\LoanAccount.cs" />
     <Compile Include="ColumnDefinitions\MonthlyColumn.cs" />
-    <Compile Include="LifeEvents\InvestmentLifeEvent.cs" />
-    <Compile Include="LifeEvents\MortgageLifeEvent.cs" />
+    <Compile Include="LifeEvents\Events\InvestmentLifeEvent.cs" />
+    <Compile Include="LifeEvents\Events\MortgageLifeEvent.cs" />
     <Compile Include="NotNeeded\LifeEventManager\ILifeEventManager.cs" />
     <Compile Include="NotNeeded\LifeEventManager\LifeEventManager.cs" />
     <Compile Include="LifeEvents\LifeEnum.cs" />
-    <Compile Include="LifeEvents\ILifeEvent.cs" />
+    <Compile Include="LifeEvents\Events\ILifeEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -15,7 +15,7 @@ namespace LifeCalcuator.FrameworkTest.Account
         [Test]
         public void BasicCompoundInterestCalculation()
         {
-            InvestmentAccount investmentAccount = new InvestmentAccount();
+            CompoundAccount investmentAccount = new CompoundAccount();
 
             investmentAccount.SetupBasicCalculation(DateTime.Now, DateTime.Now.AddYears(1),
             .1, 100, 10);
@@ -27,7 +27,7 @@ namespace LifeCalcuator.FrameworkTest.Account
         [Test]
         public void BasicMonthByMonthReturnTest()
         {
-            InvestmentAccount investmentAccount = new InvestmentAccount();
+            CompoundAccount investmentAccount = new CompoundAccount();
 
             investmentAccount.SetupBasicCalculation(DateTime.Now, DateTime.Now.AddYears(1),
             .1, 100, 10);
@@ -41,7 +41,7 @@ namespace LifeCalcuator.FrameworkTest.Account
         [Test]
         public void AddedLifeEventComputation()
         {
-            InvestmentAccount investmentAccount = new InvestmentAccount();
+            CompoundAccount investmentAccount = new CompoundAccount();
 
             investmentAccount.AddLifeEvent(new InvestmentLifeEvent
             {
