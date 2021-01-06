@@ -109,3 +109,4 @@ C:\Users\cj106\Documents\GitHub\LifeCalculator\LifeCalculator\LifeCalculator.Fra
 C:\Users\cj106\Documents\GitHub\LifeCalculator\LifeCalculator\LifeCalculator.Framework\obj\Debug\LifeCalculator.Framework.csproj.CopyComplete
 C:\Users\cj106\Documents\GitHub\LifeCalculator\LifeCalculator\LifeCalculator.Framework\obj\Debug\LifeCalculator.Framework.dll
 C:\Users\cj106\Documents\GitHub\LifeCalculator\LifeCalculator\LifeCalculator.Framework\obj\Debug\LifeCalculator.Framework.pdb
+C:\Users\cj106\Documents\GitHub\LifeCalculator\LifeCalculator\LifeCalculator.Framework\obj\Debug\LifeCalculator.Framework.csprojAssemblyReference.cache

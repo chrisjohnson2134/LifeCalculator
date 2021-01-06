@@ -29,7 +29,6 @@ namespace LifeCalculator.Control.ViewModels
 
         #endregion
 
-
         #region Properties
 
         public DelegateCommand AddAccountCommand { get; set; }
@@ -51,7 +50,7 @@ namespace LifeCalculator.Control.ViewModels
 
         #endregion
 
-        #region Event Handler
+        #region Command Handler
 
         private void AddAccountCommandHandler()
         {
@@ -67,7 +66,6 @@ namespace LifeCalculator.Control.ViewModels
         }
 
         #endregion
-
 
         #region Navigation Events
 
