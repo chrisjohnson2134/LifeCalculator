@@ -4,7 +4,7 @@
 library
 C#
 .cs
-C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator.Control\obj\Debug\
+C:\Users\cj106\Documents\GitHub\LifeCalculator\LifeCalculator\LifeCalculator.Control\obj\Debug\
 LifeCalculator.Control
 none
 false
@@ -12,8 +12,8 @@ DEBUG;TRACE
 
 41921737383
 
-13313837969
-25-1844475365
+13-1810781187
+252119503480
 Views\Events\AddEventCompound.xaml;Views\Accounts\AddCompound.xaml;Views\Accounts\AddLoan.xaml;Views\Events\ModifyEventCompound.xaml;
 
 False

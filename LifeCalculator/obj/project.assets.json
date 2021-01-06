@@ -919,20 +919,20 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\bear\\.nuget\\packages\\": {}
+    "C:\\Users\\cj106\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\bear\\Documents\\GitHub\\LifeCalculator\\LifeCalculator\\LifeCalculator.csproj",
+      "projectUniqueName": "C:\\Users\\cj106\\Documents\\GitHub\\LifeCalculator\\LifeCalculator\\LifeCalculator\\LifeCalculator.csproj",
       "projectName": "LifeCalculator",
-      "projectPath": "C:\\Users\\bear\\Documents\\GitHub\\LifeCalculator\\LifeCalculator\\LifeCalculator.csproj",
-      "packagesPath": "C:\\Users\\bear\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\bear\\Documents\\GitHub\\LifeCalculator\\LifeCalculator\\obj\\",
+      "projectPath": "C:\\Users\\cj106\\Documents\\GitHub\\LifeCalculator\\LifeCalculator\\LifeCalculator\\LifeCalculator.csproj",
+      "packagesPath": "C:\\Users\\cj106\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\cj106\\Documents\\GitHub\\LifeCalculator\\LifeCalculator\\LifeCalculator\\obj\\",
       "projectStyle": "PackageReference",
       "skipContentFileWrite": true,
       "configFilePaths": [
-        "C:\\Users\\bear\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\cj106\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -945,11 +945,11 @@
       "frameworks": {
         "net472": {
           "projectReferences": {
-            "C:\\Users\\bear\\Documents\\GitHub\\LifeCalculator\\LifeCalculator.Control\\LifeCalculator.Control.csproj": {
-              "projectPath": "C:\\Users\\bear\\Documents\\GitHub\\LifeCalculator\\LifeCalculator.Control\\LifeCalculator.Control.csproj"
+            "C:\\Users\\cj106\\Documents\\GitHub\\LifeCalculator\\LifeCalculator\\LifeCalculator.Control\\LifeCalculator.Control.csproj": {
+              "projectPath": "C:\\Users\\cj106\\Documents\\GitHub\\LifeCalculator\\LifeCalculator\\LifeCalculator.Control\\LifeCalculator.Control.csproj"
             },
-            "C:\\Users\\bear\\Documents\\GitHub\\LifeCalculator\\LifeCalculator.Framework\\LifeCalculator.Framework.csproj": {
-              "projectPath": "C:\\Users\\bear\\Documents\\GitHub\\LifeCalculator\\LifeCalculator.Framework\\LifeCalculator.Framework.csproj"
+            "C:\\Users\\cj106\\Documents\\GitHub\\LifeCalculator\\LifeCalculator\\LifeCalculator.Framework\\LifeCalculator.Framework.csproj": {
+              "projectPath": "C:\\Users\\cj106\\Documents\\GitHub\\LifeCalculator\\LifeCalculator\\LifeCalculator.Framework\\LifeCalculator.Framework.csproj"
             }
           }
         }
