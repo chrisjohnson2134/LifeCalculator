@@ -44,7 +44,7 @@ namespace LifeCalculator.Control.ViewModels
         {
             get
             {
-                return new List<string>() { "30 years", "15 years" };
+                return new List<string>() { "30 years"};
             }
         }
 

@@ -76,6 +76,7 @@
     <Compile Include="Account\CompoundAccount.cs" />
     <Compile Include="Account\IAccount.cs" />
     <Compile Include="Account\LoanAccount.cs" />
+    <Compile Include="Chart\BarChartColumn.cs" />
     <Compile Include="ColumnDefinitions\MonthlyColumn.cs" />
     <Compile Include="LifeEvents\Events\InvestmentLifeEvent.cs" />
     <Compile Include="LifeEvents\Events\MortgageLifeEvent.cs" />
@@ -87,6 +88,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="LifeEvents\EventManager\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

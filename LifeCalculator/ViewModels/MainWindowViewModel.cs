@@ -11,6 +11,7 @@ using Prism.Regions;
 using LiveCharts.Configurations;
 using LiveCharts.Wpf;
 using LifeCalculator.Control.ViewModels;
+using LifeCalculator.Framework.Chart;
 
 //keep track of project https://kanbanflow.com/board/eFu1Zwn
 
@@ -107,7 +108,6 @@ namespace LifeCalculator.ViewModels
 
             _regionManager = regionManager;
 
-
             LifeEvents = new ObservableCollection<ILifeEvent>();
             AccountsList = new ObservableCollection<IAccount>();
             _lifeEvents = new List<ILifeEvent>();
@@ -122,17 +122,68 @@ namespace LifeCalculator.ViewModels
         /// <summary>
         /// Life Event Added to an Account 
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void LifeEventAddedHandler(object sender, ILifeEvent e)
         {
-            //var bab = new InvestmentViewModel(e);
-            var bab = e;
-            bab.ValueChanged += ReChart;
-            //if(e.GetType)
-            if(typeof(InvestmentLifeEvent).Equals(e.GetType()))
-                _lifeEvents.Add(new ModifyEventCompoundViewModel(e));
-            //_lifeEvents.Add(e);
+            addEventToList(e);
+            //e.ValueChanged += ReChart;
+            //if(typeof(InvestmentLifeEvent).Equals(e.GetType()))
+            //    _lifeEvents.Add(new ModifyEventCompoundViewModel(e));
+
+            //LifeEvents.Clear();
+
+            //foreach (var item in _lifeEvents.OrderBy(i => i.Date))
+            //{
+            //    item.ValueChanged += ReChart;
+            //    LifeEvents.Add(item);
+            //}
+
+            //ReChart(new object(), new EventArgs());
+        }
+
+        /// <summary>
+        /// User Added account
+        /// </summary>
+        private void AccountAddedHandler(object sender, IAccount e)
+        {
+            AccountsList.Add(e);
+            e.LifeEventAdded += LifeEventAddedHandler;
+            //e.AccountLifeEvents.ForEach(i => _lifeEvents.Add(i));
+            e.AccountLifeEvents.ForEach(i => addEventToList(i));
+
+            //foreach (var item in _lifeEvents.OrderBy(i => i.Date))
+            //{
+            //    item.ValueChanged += ReChart;
+            //    LifeEvents.Add(item);
+            //}
+
+            try
+            {
+                var dayConfig = Mappers.Xy<BarChartColumn>()
+                .X(dayModel => dayModel.Date.Ticks / (TimeSpan.FromDays(1).Ticks * 30.44))
+                .Y(dayModel => dayModel.CurrentValue);
+
+                var series = new ColumnSeries(dayConfig);
+                series.Title = e.Name;
+                series.Values = new ChartValues<BarChartColumn>();
+                ValueCollection.Add(series);
+                Formatter = value => new DateTime((long)(value * TimeSpan.FromDays(1).Ticks * 30.44)).ToString("MM/yyyy");//MM/yyyy
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private void addEventToList(ILifeEvent lifeEvent)
+        {
+            lifeEvent.ValueChanged += ReChart;
+            if (typeof(InvestmentLifeEvent).Equals(lifeEvent.GetType()))
+                _lifeEvents.Add(new ModifyEventCompoundViewModel(lifeEvent));
+            else if (typeof(MortgageLifeEvent).Equals(lifeEvent.GetType()))
+                _lifeEvents.Add(new ModifyEventCompoundViewModel(lifeEvent));
 
             LifeEvents.Clear();
 
@@ -143,29 +194,6 @@ namespace LifeCalculator.ViewModels
             }
 
             ReChart(new object(), new EventArgs());
-        }
-
-        private void AccountAddedHandler(object sender, IAccount e)
-        {
-            AccountsList.Add(e);
-            e.LifeEventAdded += LifeEventAddedHandler;
-            e.AccountLifeEvents.ForEach(i => _lifeEvents.Add(i));
-            try
-            {
-                var dayConfig = Mappers.Xy<ILifeEvent>()
-                .X(dayModel => dayModel.Date.Ticks / (TimeSpan.FromDays(1).Ticks * 30.44))
-                .Y(dayModel => dayModel.CurrentValue);
-
-                var series = new ColumnSeries(dayConfig);
-                series.Title = e.Name;
-                series.Values = new ChartValues<ILifeEvent>();
-                ValueCollection.Add(series);
-                Formatter = value => new DateTime((long)(value * TimeSpan.FromDays(1).Ticks * 30.44)).ToString("MM/yyyy");//MM/yyyy
-
-            }
-            catch (Exception)
-            {
-            }
         }
 
         #endregion
@@ -180,7 +208,7 @@ namespace LifeCalculator.ViewModels
                     if (a.Title.Equals(acc.Name))
                     {
                         a.Values.Clear();
-                        acc.Calculation().ForEach(i => a.Values.Add(new InvestmentLifeEvent() { Name = i.Name, CurrentValue = i.Amount, Date = i.Date }));
+                        acc.Calculation().ForEach(i => a.Values.Add(new BarChartColumn() { Name = i.Name, CurrentValue = i.Amount, Date = i.Date }));
                     }
                 }
         }

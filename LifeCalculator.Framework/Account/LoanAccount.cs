@@ -35,8 +35,8 @@ namespace LifeCalculator.Framework.Account
 
             AccountLifeEvents = new List<ILifeEvent>();
 
-            AddLifeEvent(new MortgageLifeEvent() { Date = DateTime.Now});
-            AddLifeEvent(new MortgageLifeEvent() { Date = DateTime.Now.AddYears(30) });
+            AddLifeEvent(new MortgageLifeEvent() {Name="Start", Date = DateTime.Now});
+            AddLifeEvent(new MortgageLifeEvent() {Name="End", Date = DateTime.Now.AddYears(30) });
         }
 
         public void AddLifeEvent(ILifeEvent lifeEvent)
@@ -70,8 +70,6 @@ namespace LifeCalculator.Framework.Account
                     (AccountLifeEvents[i] as MortgageLifeEvent).InterestPaid += interestPay;
                     (AccountLifeEvents[i] as MortgageLifeEvent).PrincipalPaid += principalPay;
                     monthlies.Add(new MonthlyColumn() { Name = AccountLifeEvents[i].Name, Amount = PrincipalPaid, Date = AccountLifeEvents[i].Date.AddMonths(j) });
-                    //double payment = (loanAmount - downPayment) * (Math.Pow((1 + interestRate / 12), termOfLoan) * interestRate) /
-                    //    (12 * (Math.Pow((1 + interestRate / 12), termOfLoan) - 1));
                 }
             }
 

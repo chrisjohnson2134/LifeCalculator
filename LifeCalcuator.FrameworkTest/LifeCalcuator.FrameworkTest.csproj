@@ -86,7 +86,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Account\InvestmentAccountTest.cs" />
-    <Compile Include="Account\MortgageAccountTest.cs" />
+    <Compile Include="Account\LoanAccountTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
