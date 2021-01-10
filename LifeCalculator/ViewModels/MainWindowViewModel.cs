@@ -35,7 +35,6 @@ namespace LifeCalculator.ViewModels
         public SeriesCollection ValueCollection { get; set; }
 
 
-
         //Add Account
         private string accountType;
         public string AccountType
@@ -66,7 +65,6 @@ namespace LifeCalculator.ViewModels
 
             _regionManager.RequestNavigate("AddAccountRegion", viewName, navigationParams);
         }
-
 
 
         //Add Event
@@ -159,18 +157,28 @@ namespace LifeCalculator.ViewModels
             try
             {
                 var dayConfig = Mappers.Xy<BarChartColumn>()
-                .X(dayModel => dayModel.Date.Ticks / (TimeSpan.FromDays(1).Ticks * 30.44))
+                .X(dayModel => dayModel.Date.Ticks / (TimeSpan.FromDays(1).Ticks * 365.2425))
                 .Y(dayModel => dayModel.CurrentValue);
+
+                //Years
+                //365.2425 is the days in a solar year
+                //var dayConfig = Mappers.Xy<DateModel>()
+                //  .X(dateModel => dateModel.DateTime.Ticks / (TimeSpan.FromDays(1).Ticks * 365.2425))
+                //  .Y(dateModel => dateModel.Value);
+                ////and the formatter
+                //Formatter = value => new DateTime((long)(value * TimeSpan.FromDays(1).Ticks * 365.2425)).ToString("yyyy");
 
                 var series = new ColumnSeries(dayConfig);
                 series.Title = e.Name;
                 series.Values = new ChartValues<BarChartColumn>();
                 ValueCollection.Add(series);
-                Formatter = value => new DateTime((long)(value * TimeSpan.FromDays(1).Ticks * 30.44)).ToString("MM/yyyy");//MM/yyyy
+                Formatter = value => new DateTime((long)(value * TimeSpan.FromDays(1).Ticks * 365.2425)).ToString("yyyy");//MM/yyyy
             }
             catch (Exception)
             {
             }
+
+            ReChart(new object(), new EventArgs());
         }
 
         #endregion
@@ -208,7 +216,16 @@ namespace LifeCalculator.ViewModels
                     if (a.Title.Equals(acc.Name))
                     {
                         a.Values.Clear();
-                        acc.Calculation().ForEach(i => a.Values.Add(new BarChartColumn() { Name = i.Name, CurrentValue = i.Amount, Date = i.Date }));
+
+                        var monthlyCalculation = acc.Calculation();
+
+                        for (int i = 0; i < monthlyCalculation.Count;i++)
+                        {
+                            if(i % 11 == 0)
+                                a.Values.Add(new BarChartColumn() { Name = acc.Name, CurrentValue = monthlyCalculation[i].Amount, 
+                                Date = monthlyCalculation[i].Date });
+                        }
+                        //acc.Calculation().ForEach(i => a.Values.Add(new BarChartColumn() { Name = i.Name, CurrentValue = i.Amount, Date = i.Date }));
                     }
                 }
         }

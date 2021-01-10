@@ -109,4 +109,12 @@ C:\Users\cj106\Documents\GitHub\LifeCalculator\LifeCalculator\LifeCalculator.Fra
 C:\Users\cj106\Documents\GitHub\LifeCalculator\LifeCalculator\LifeCalculator.Framework\obj\Debug\LifeCalculator.Framework.csproj.CopyComplete
 C:\Users\cj106\Documents\GitHub\LifeCalculator\LifeCalculator\LifeCalculator.Framework\obj\Debug\LifeCalculator.Framework.dll
 C:\Users\cj106\Documents\GitHub\LifeCalculator\LifeCalculator\LifeCalculator.Framework\obj\Debug\LifeCalculator.Framework.pdb
-C:\Users\cj106\Documents\GitHub\LifeCalculator\LifeCalculator\LifeCalculator.Framework\obj\Debug\LifeCalculator.Framework.csprojAssemblyReference.cache
+C:\Users\cj106\Documents\GitHub\LifeCalculator\LifeCalculator\LifeCalculator.Framework\bin\Debug\LifeCalculator.Framework.dll.config
+C:\Users\cj106\Documents\GitHub\LifeCalculator\LifeCalculator\LifeCalculator.Framework\bin\Debug\Microsoft.Xaml.Behaviors.dll
+C:\Users\cj106\Documents\GitHub\LifeCalculator\LifeCalculator\LifeCalculator.Framework\bin\Debug\System.Threading.Tasks.Extensions.dll
+C:\Users\cj106\Documents\GitHub\LifeCalculator\LifeCalculator\LifeCalculator.Framework\bin\Debug\Unity.Container.dll
+C:\Users\cj106\Documents\GitHub\LifeCalculator\LifeCalculator\LifeCalculator.Framework\bin\Debug\Microsoft.Xaml.Behaviors.pdb
+C:\Users\cj106\Documents\GitHub\LifeCalculator\LifeCalculator\LifeCalculator.Framework\bin\Debug\Microsoft.Xaml.Behaviors.xml
+C:\Users\cj106\Documents\GitHub\LifeCalculator\LifeCalculator\LifeCalculator.Framework\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+C:\Users\cj106\Documents\GitHub\LifeCalculator\LifeCalculator\LifeCalculator.Framework\bin\Debug\System.Threading.Tasks.Extensions.xml
+C:\Users\cj106\Documents\GitHub\LifeCalculator\LifeCalculator\LifeCalculator.Framework\bin\Debug\Unity.Container.pdb

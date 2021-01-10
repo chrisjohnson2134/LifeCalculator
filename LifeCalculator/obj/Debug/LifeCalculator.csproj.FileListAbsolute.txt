@@ -158,3 +158,5 @@ C:\Users\cj106\Documents\GitHub\LifeCalculator\LifeCalculator\LifeCalculator\obj
 C:\Users\cj106\Documents\GitHub\LifeCalculator\LifeCalculator\LifeCalculator\obj\Debug\LifeCalculator.csproj.CopyComplete
 C:\Users\cj106\Documents\GitHub\LifeCalculator\LifeCalculator\LifeCalculator\obj\Debug\LifeCalculator.exe
 C:\Users\cj106\Documents\GitHub\LifeCalculator\LifeCalculator\LifeCalculator\obj\Debug\LifeCalculator.pdb
+C:\Users\cj106\Documents\GitHub\LifeCalculator\LifeCalculator\LifeCalculator\bin\Debug\LifeCalculator.Framework.dll.config
+C:\Users\cj106\Documents\GitHub\LifeCalculator\LifeCalculator\LifeCalculator\bin\Debug\LifeCalculator.Tools.dll.config
