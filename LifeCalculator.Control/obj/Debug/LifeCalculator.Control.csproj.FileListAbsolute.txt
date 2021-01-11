@@ -176,3 +176,5 @@ C:\Users\cj106\Documents\GitHub\LifeCalculator\LifeCalculator\LifeCalculator.Con
 C:\Users\cj106\Documents\GitHub\LifeCalculator\LifeCalculator\LifeCalculator.Control\obj\Debug\LifeCalculator.Control.pdb
 C:\Users\cj106\Documents\GitHub\LifeCalculator\LifeCalculator\LifeCalculator.Control\bin\Debug\LifeCalculator.Framework.dll.config
 C:\Users\cj106\Documents\GitHub\LifeCalculator\LifeCalculator\LifeCalculator.Control\bin\Debug\LifeCalculator.Tools.dll.config
+C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator.Control\bin\Debug\LifeCalculator.Framework.dll.config
+C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator.Control\bin\Debug\LifeCalculator.Tools.dll.config

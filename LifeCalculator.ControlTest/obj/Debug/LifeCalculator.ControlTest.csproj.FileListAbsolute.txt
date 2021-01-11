@@ -145,3 +145,8 @@ C:\Users\cj106\Documents\GitHub\LifeCalculator\LifeCalculator\LifeCalculator.Con
 C:\Users\cj106\Documents\GitHub\LifeCalculator\LifeCalculator\LifeCalculator.ControlTest\bin\Debug\LifeCalculator.ControlTest.dll.config
 C:\Users\cj106\Documents\GitHub\LifeCalculator\LifeCalculator\LifeCalculator.ControlTest\bin\Debug\LifeCalculator.Framework.dll.config
 C:\Users\cj106\Documents\GitHub\LifeCalculator\LifeCalculator\LifeCalculator.ControlTest\bin\Debug\LifeCalculator.Tools.dll.config
+C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator.ControlTest\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll
+C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator.ControlTest\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll
+C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator.ControlTest\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll
+C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator.ControlTest\bin\Debug\LifeCalculator.Framework.dll.config
+C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator.ControlTest\bin\Debug\LifeCalculator.Tools.dll.config
