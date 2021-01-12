@@ -97,3 +97,4 @@ C:\Users\cj106\Documents\GitHub\LifeCalculator\LifeCalculator\LifeCalculator.Fra
 C:\Users\cj106\Documents\GitHub\LifeCalculator\LifeCalculator\LifeCalculator.Framework\bin\Debug\System.Threading.Tasks.Extensions.xml
 C:\Users\cj106\Documents\GitHub\LifeCalculator\LifeCalculator\LifeCalculator.Framework\bin\Debug\Unity.Container.pdb
 C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator.Framework\bin\Debug\LifeCalculator.Framework.dll.config
+C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator.Framework\obj\Debug\LifeCalculator.Framework.csprojAssemblyReference.cache

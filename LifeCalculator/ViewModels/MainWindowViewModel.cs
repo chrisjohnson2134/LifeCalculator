@@ -123,19 +123,6 @@ namespace LifeCalculator.ViewModels
         private void LifeEventAddedHandler(object sender, ILifeEvent e)
         {
             addEventToList(e);
-            //e.ValueChanged += ReChart;
-            //if(typeof(InvestmentLifeEvent).Equals(e.GetType()))
-            //    _lifeEvents.Add(new ModifyEventCompoundViewModel(e));
-
-            //LifeEvents.Clear();
-
-            //foreach (var item in _lifeEvents.OrderBy(i => i.Date))
-            //{
-            //    item.ValueChanged += ReChart;
-            //    LifeEvents.Add(item);
-            //}
-
-            //ReChart(new object(), new EventArgs());
         }
 
         /// <summary>
@@ -145,28 +132,13 @@ namespace LifeCalculator.ViewModels
         {
             AccountsList.Add(e);
             e.LifeEventAdded += LifeEventAddedHandler;
-            //e.AccountLifeEvents.ForEach(i => _lifeEvents.Add(i));
             e.AccountLifeEvents.ForEach(i => addEventToList(i));
-
-            //foreach (var item in _lifeEvents.OrderBy(i => i.Date))
-            //{
-            //    item.ValueChanged += ReChart;
-            //    LifeEvents.Add(item);
-            //}
 
             try
             {
                 var dayConfig = Mappers.Xy<BarChartColumn>()
                 .X(dayModel => dayModel.Date.Ticks / (TimeSpan.FromDays(1).Ticks * 365.2425))
                 .Y(dayModel => dayModel.CurrentValue);
-
-                //Years
-                //365.2425 is the days in a solar year
-                //var dayConfig = Mappers.Xy<DateModel>()
-                //  .X(dateModel => dateModel.DateTime.Ticks / (TimeSpan.FromDays(1).Ticks * 365.2425))
-                //  .Y(dateModel => dateModel.Value);
-                ////and the formatter
-                //Formatter = value => new DateTime((long)(value * TimeSpan.FromDays(1).Ticks * 365.2425)).ToString("yyyy");
 
                 var series = new ColumnSeries(dayConfig);
                 series.Title = e.Name;
@@ -221,8 +193,8 @@ namespace LifeCalculator.ViewModels
 
                         for (int i = 0; i < monthlyCalculation.Count;i++)
                         {
-                            if(i % 11 == 0)
-                                a.Values.Add(new BarChartColumn() { Name = acc.Name, CurrentValue = monthlyCalculation[i].Amount, 
+                            if(i % 10 == 0)
+                                a.Values.Add(new BarChartColumn() { Name = acc.Name, CurrentValue = monthlyCalculation[i].Gain, 
                                 Date = monthlyCalculation[i].Date });
                         }
                         //acc.Calculation().ForEach(i => a.Values.Add(new BarChartColumn() { Name = i.Name, CurrentValue = i.Amount, Date = i.Date }));

@@ -15,13 +15,18 @@ namespace LifeCalcuator.FrameworkTest.Account
 
         public LoanAccountTest()
         {
-            mortgageAccount = new LoanAccount(DateTime.Now, 2.75,327000,65400);
+            mortgageAccount = new LoanAccount("mortgage",DateTime.Now, 2.75,327000,65400);
         }
 
         [Test]
         public void BasicCalculation()
         {
             mortgageAccount.MonthlyPayment.ShouldEqual(1067);
+
+            mortgageAccount.AccountLifeEvents[0].Name.ShouldEqual("Start - "+ mortgageAccount.Name);
+            mortgageAccount.AccountLifeEvents[1].Name.ShouldEqual("Stop - " + mortgageAccount.Name);
+
+            //mortgageAccount.
         }
 
         [Test]
@@ -29,11 +34,13 @@ namespace LifeCalcuator.FrameworkTest.Account
         {
             var calcs = mortgageAccount.Calculation();
 
-            calcs[10].Amount.ShouldBeInRange(5201.83, 5201.84);
-            calcs[22].Amount.ShouldBeInRange(11027.95, 11027.96);
-            calcs[34].Amount.ShouldBeInRange(17016.32, 17016.33);
-            calcs[34].Amount.ShouldBeInRange(17016.32, 17016.33);
-            calcs[178].Amount.ShouldBeInRange(103310.61, 103310.62);
+            calcs[10].Gain.ShouldBeInRange(5201.83, 5201.84);
+            calcs[22].Gain.ShouldBeInRange(11027.95, 11027.96);
+            calcs[34].Gain.ShouldBeInRange(17016.32, 17016.33);
+            calcs[34].Gain.ShouldBeInRange(17016.32, 17016.33);
+            calcs[178].Gain.ShouldBeInRange(103310.61, 103310.62);
+            (calcs[359].Gain + mortgageAccount.LoanAmount).ShouldBeInRange(261599.99,
+                261600.01);
         }
     }
 }

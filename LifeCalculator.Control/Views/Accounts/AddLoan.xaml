@@ -42,7 +42,7 @@
 
         <!--row 6-->
         <Label  Margin="2" Content="Down Payment" Grid.Row="6" Grid.Column="0"/>
-        <TextBox  Text="{Binding LoanLength}" Margin="2" Grid.Row="6" Grid.Column="1"/>
+        <TextBox  Text="{Binding DownPayment}" Margin="2" Grid.Row="6" Grid.Column="1"/>
 
         <!--row 7-->
         <Button  Command="{Binding AddAccountCommand}" Content="Add Loan" Margin="2" Grid.Row="7" Grid.Column="1"/>

@@ -34,8 +34,8 @@ namespace LifeCalcuator.FrameworkTest.Account
 
             var monthlyList = investmentAccount.Calculation();
 
-            monthlyList[5].Amount.ShouldBeInRange(262.02, 262.03);
-            monthlyList[11].Amount.ShouldBeInRange(549.06, 549.07);
+            monthlyList[5].Gain.ShouldBeInRange(262.02, 262.03);
+            monthlyList[11].Gain.ShouldBeInRange(549.06, 549.07);
         }
 
         [Test]
@@ -60,7 +60,7 @@ namespace LifeCalcuator.FrameworkTest.Account
             });
 
             var midCalculationCheck = investmentAccount.Calculation();
-            midCalculationCheck[11].Amount.ShouldBeInRange(235.22, 235.23);
+            midCalculationCheck[11].Gain.ShouldBeInRange(235.22, 235.23);
             investmentAccount.FinalAmount.ShouldBeInRange(235.22, 235.23);
 
             investmentAccount.AddLifeEvent(new InvestmentLifeEvent
@@ -72,8 +72,8 @@ namespace LifeCalcuator.FrameworkTest.Account
             });
 
             var a = investmentAccount.Calculation();
-            a[11].Amount.ShouldBeInRange(235.22, 235.23);
-            a[23].Amount.ShouldBeInRange(24260.95, 24260.96);
+            a[11].Gain.ShouldBeInRange(235.22, 235.23);
+            a[23].Gain.ShouldBeInRange(24260.95, 24260.96);
             investmentAccount.FinalAmount.ShouldBeInRange(24260.95, 24260.96);
         }
     }

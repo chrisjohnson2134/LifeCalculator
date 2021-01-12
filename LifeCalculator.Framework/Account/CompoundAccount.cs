@@ -69,14 +69,14 @@ namespace LifeCalculator.Framework.Account
                 for (int j = 0; j < monthDiff; j++)
                 {
                     currValue = (currValue + AccountLifeEvents[i].Amount) * (1 + AccountLifeEvents[i].InterestRate);
-                    monthlies.Add(new MonthlyColumn() { Name = AccountLifeEvents[i].Name, Amount = currValue, Date = AccountLifeEvents[i].Date.AddMonths(j) });
+                    monthlies.Add(new MonthlyColumn() { Name = AccountLifeEvents[i].Name, Gain = currValue, Date = AccountLifeEvents[i].Date.AddMonths(j) });
                 }
 
                 AccountLifeEvents[(i + 1)].CurrentValue = currValue;
             }
 
             if(monthDiff != 0)
-                FinalAmount = monthlies[monthlies.Count-1].Amount;
+                FinalAmount = monthlies[monthlies.Count-1].Gain;
 
             return monthlies;
         }

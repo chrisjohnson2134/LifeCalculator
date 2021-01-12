@@ -10,6 +10,7 @@ namespace LifeCalculator.Framework.Account
         public string Name { get; set; }
         public double FinalAmount { get; set; }
         public double MonthlyPayment { get; set; }
+        public double InitialLoanAmount { get; private set; }
         public double LoanAmount { get; set; }
         public double DownPayment { get; set; }
         public double InterestRate { get; set; }
@@ -24,10 +25,12 @@ namespace LifeCalculator.Framework.Account
             
         }
 
-        public LoanAccount(DateTime date,double interestRate,double loanAmount,double downPayment)
+        public LoanAccount(string name,DateTime date,double interestRate,double loanAmount,double downPayment)
         {
+            Name = name;
             InterestRate = interestRate/100;
             LoanAmount = loanAmount - downPayment;
+            InitialLoanAmount = loanAmount;
             DownPayment = downPayment;
 
             MonthlyPayment = Math.Floor((loanAmount - downPayment) * (Math.Pow((1 + InterestRate / 12), 360) * InterestRate) 
@@ -35,8 +38,8 @@ namespace LifeCalculator.Framework.Account
 
             AccountLifeEvents = new List<ILifeEvent>();
 
-            AddLifeEvent(new MortgageLifeEvent() {Name="Start", Date = DateTime.Now});
-            AddLifeEvent(new MortgageLifeEvent() {Name="End", Date = DateTime.Now.AddYears(30) });
+            AddLifeEvent(new MortgageLifeEvent() {Name="Start - " + Name, Date = DateTime.Now});
+            AddLifeEvent(new MortgageLifeEvent() {Name="Stop - " + Name, Date = DateTime.Now.AddYears(30) });
         }
 
         public void AddLifeEvent(ILifeEvent lifeEvent)
@@ -69,12 +72,13 @@ namespace LifeCalculator.Framework.Account
                     LoanAmount = LoanAmount - principalPay;
                     (AccountLifeEvents[i] as MortgageLifeEvent).InterestPaid += interestPay;
                     (AccountLifeEvents[i] as MortgageLifeEvent).PrincipalPaid += principalPay;
-                    monthlies.Add(new MonthlyColumn() { Name = AccountLifeEvents[i].Name, Amount = PrincipalPaid, Date = AccountLifeEvents[i].Date.AddMonths(j) });
+                    monthlies.Add(new MonthlyColumn() { Name = AccountLifeEvents[i].Name, Gain = PrincipalPaid,
+                        Date = AccountLifeEvents[i].Date.AddMonths(j) });
                 }
             }
 
             if (monthDiff != 0)
-                FinalAmount = monthlies[monthlies.Count - 1].Amount;
+                FinalAmount = monthlies[monthlies.Count - 1].Gain;
 
             return monthlies;
         }

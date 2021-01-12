@@ -6,6 +6,6 @@ namespace LifeCalculator.Framework.ColumnDefinitions
     {
         public string Name { get; set; }
         public DateTime Date { get; set; }
-        public double Amount { get; set; }
+        public double Gain { get; set; }
     }
 }

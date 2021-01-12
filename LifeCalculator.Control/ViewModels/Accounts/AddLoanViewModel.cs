@@ -55,12 +55,8 @@ namespace LifeCalculator.Control.ViewModels
         private void AddAccountCommandHandler()
         {
 
-            var acc = new LoanAccount(StartDate, ConvertString.ToDouble(InterestRate), Convert.ToDouble(InitialLoanAmount),
-            ConvertString.ToDouble(DownPayment))
-            {
-                LoanAmount = ConvertString.ToDouble(InitialLoanAmount),
-                Name = AccountName
-            };
+            var acc = new LoanAccount(AccountName, StartDate, ConvertString.ToDouble(InterestRate), Convert.ToDouble(InitialLoanAmount),
+            ConvertString.ToDouble(DownPayment));
 
             _accountManager.AddAccount(acc);
         }
