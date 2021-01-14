@@ -53,6 +53,7 @@ namespace LifeCalculator.Framework.Account
             InterestPaid = 0;
             PrincipalPaid = 0;
             List<MonthlyColumn> monthlies = new List<MonthlyColumn>();
+
             monthlies.Add(new MonthlyColumn());
             int monthDiff = 0;
 

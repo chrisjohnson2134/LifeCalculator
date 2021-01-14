@@ -15,7 +15,7 @@ namespace LifeCalculator.Control.ViewModels
     {
         public string AccountName { get; set; }
         public string DescriptionText { get; set; }
-        public string InitialValue { get; set; }
+        public double InitialValue { get; set; }
         public DelegateCommand AddAccountCommand { get; set; }
 
         private IAccountManager _accountManager;
@@ -30,7 +30,7 @@ namespace LifeCalculator.Control.ViewModels
 
             var investmentAccount = new CompoundAccount(AccountName)
             {
-                InitialAmount = ConvertString.ToDouble(InitialValue)
+                InitialAmount = InitialValue
             };
 
             //investmentAccount.LifeEventAdded += LifeEventAddedHandler;

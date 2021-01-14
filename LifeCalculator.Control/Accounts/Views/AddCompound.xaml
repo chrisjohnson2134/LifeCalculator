@@ -22,8 +22,8 @@
 
         <!--row 2-->
         <Label x:Name="InitialValueLabel" Margin="2" Content="Initial Amount:" Grid.Row="2" Grid.Column="0"/>
-        <TextBox x:Name="InitialValueTextbox" Text="{Binding InitialValue}" Margin="2" Grid.Row="2" Grid.Column="1"/>
-
+        <TextBox x:Name="InitialValueTextbox" Text="{Binding InitialValue,StringFormat=C}" Margin="2" Grid.Row="2" Grid.Column="1"/>
+        
         <!--row 3-->
         <Button x:Name="AddAccountBTN" Command="{Binding AddAccountCommand}" Content="Add Account" Margin="2" Grid.Row="3" Grid.Column="1"/>
 

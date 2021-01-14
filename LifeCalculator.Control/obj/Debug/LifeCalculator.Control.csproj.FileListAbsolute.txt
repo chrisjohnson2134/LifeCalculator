@@ -122,14 +122,6 @@ C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator.Control\bin\Debug\L
 C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator.Control\bin\Debug\LifeCalculator.Framework.pdb
 C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator.Control\bin\Debug\LifeCalculator.Tools.pdb
 C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator.Control\obj\Debug\LifeCalculator.Control.csprojAssemblyReference.cache
-C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator.Control\obj\Debug\Views\Events\AddEventCompound.baml
-C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator.Control\obj\Debug\Views\Accounts\AddCompound.baml
-C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator.Control\obj\Debug\Views\Accounts\AddLoan.baml
-C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator.Control\obj\Debug\Views\Events\ModifyEventCompound.baml
-C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator.Control\obj\Debug\Views\Events\AddEventCompound.g.cs
-C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator.Control\obj\Debug\Views\Accounts\AddCompound.g.cs
-C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator.Control\obj\Debug\Views\Accounts\AddLoan.g.cs
-C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator.Control\obj\Debug\Views\Events\ModifyEventCompound.g.cs
 C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator.Control\obj\Debug\LifeCalculator.Control_MarkupCompile.cache
 C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator.Control\obj\Debug\LifeCalculator.Control.g.resources
 C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator.Control\obj\Debug\LifeCalculator.Control.Properties.Resources.resources
@@ -178,3 +170,11 @@ C:\Users\cj106\Documents\GitHub\LifeCalculator\LifeCalculator\LifeCalculator.Con
 C:\Users\cj106\Documents\GitHub\LifeCalculator\LifeCalculator\LifeCalculator.Control\bin\Debug\LifeCalculator.Tools.dll.config
 C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator.Control\bin\Debug\LifeCalculator.Framework.dll.config
 C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator.Control\bin\Debug\LifeCalculator.Tools.dll.config
+C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator.Control\obj\Debug\Events\Views\AddEventCompound.baml
+C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator.Control\obj\Debug\Accounts\Views\AddCompound.baml
+C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator.Control\obj\Debug\Accounts\Views\AddLoan.baml
+C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator.Control\obj\Debug\Events\Views\ModifyEventCompound.baml
+C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator.Control\obj\Debug\Events\Views\AddEventCompound.g.cs
+C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator.Control\obj\Debug\Accounts\Views\AddCompound.g.cs
+C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator.Control\obj\Debug\Accounts\Views\AddLoan.g.cs
+C:\Users\bear\Documents\GitHub\LifeCalculator\LifeCalculator.Control\obj\Debug\Events\Views\ModifyEventCompound.g.cs

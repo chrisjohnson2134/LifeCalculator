@@ -37,10 +37,10 @@ namespace LifeCalculator.Control.ViewModels
 
         public string AccountName { get; set; }
         public DateTime StartDate { get; set; }
-        public string InitialLoanAmount { get; set; }
-        public string InterestRate { get; set; }
+        public double InitialLoanAmount { get; set; }
+        public double InterestRate { get; set; }
         public string LoanLength { get; set; }
-        public string DownPayment { get; set; }
+        public double DownPayment { get; set; }
 
         public List<string> LoanLengths
         {
@@ -57,8 +57,8 @@ namespace LifeCalculator.Control.ViewModels
         private void AddAccountCommandHandler()
         {
 
-            var acc = new LoanAccount(AccountName, StartDate, ConvertString.ToDouble(InterestRate), Convert.ToDouble(InitialLoanAmount),
-            ConvertString.ToDouble(DownPayment));
+            var acc = new LoanAccount(AccountName, StartDate, InterestRate,InitialLoanAmount,
+            DownPayment);
 
             _accountManager.AddAccount(acc);
         }
