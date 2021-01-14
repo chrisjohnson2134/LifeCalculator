@@ -10,8 +10,7 @@ namespace LifeCalculator.Control.ViewModels
 {
     public class AddEventCompoundViewModel : BindableBase, INavigationAware
     {
-            private IAccount _account;
-
+        private IAccount _account;
 
         public string EventName { get; set; }
         public DateTime EventDate { get; set; }
@@ -25,6 +24,7 @@ namespace LifeCalculator.Control.ViewModels
         public AddEventCompoundViewModel()
         {
             AddEventCommand = new DelegateCommand(AddLifeEventCommandHandler);
+            EventDate = DateTime.Now;
         }
 
         public void OnNavigatedTo(NavigationContext navigationContext)
@@ -39,7 +39,6 @@ namespace LifeCalculator.Control.ViewModels
 
         public void OnNavigatedFrom(NavigationContext navigationContext)
         {
-            //throw new System.NotImplementedException();
         }
 
 
@@ -47,15 +46,13 @@ namespace LifeCalculator.Control.ViewModels
         private void AddLifeEventCommandHandler()
         {
 
-            var b = new InvestmentLifeEvent()
+            _account.AddLifeEvent(new InvestmentLifeEvent()
             {
                 Name = EventName,
                 Amount = ConvertString.ToDouble(AmountToContribute),
                 Date = EventDate,
                 InterestRate = ConvertString.ToDouble(InterestValue) * .01
-            };
-
-            _account.AddLifeEvent(b);
+            });
 
             _account.Calculation();
 

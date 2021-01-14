@@ -128,6 +128,8 @@ namespace LifeCalculator.ViewModels
         /// <summary>
         /// User Added account
         /// </summary>
+        /// 
+        private bool chartSetup = true;
         private void AccountAddedHandler(object sender, IAccount e)
         {
             AccountsList.Add(e);
@@ -183,19 +185,25 @@ namespace LifeCalculator.ViewModels
         private void ReChart(object sender, EventArgs e)
         {
             foreach (var acc in _accountManager.Accounts)
-                foreach (var a in ValueCollection)
+                foreach (var collection in ValueCollection)
                 {
-                    if (a.Title.Equals(acc.Name))
+                    if (collection.Title.Equals(acc.Name))
                     {
-                        a.Values.Clear();
+                        collection.Values.Clear();
 
                         var monthlyCalculation = acc.Calculation();
 
-                        for (int i = 0; i < monthlyCalculation.Count;i++)
+                        for (int i = 0; i < monthlyCalculation.Count; i++)
                         {
-                            if(i % 10 == 0)
-                                a.Values.Add(new BarChartColumn() { Name = acc.Name, CurrentValue = monthlyCalculation[i].Gain, 
-                                Date = monthlyCalculation[i].Date });
+                            if (i % 12 == 0 && i != 0)
+                            {
+                                collection.Values.Add(new BarChartColumn()
+                                {
+                                    Name = acc.Name,
+                                    CurrentValue = monthlyCalculation[i].Gain,
+                                    Date = monthlyCalculation[i].Date
+                                });
+                            }
                         }
                         //acc.Calculation().ForEach(i => a.Values.Add(new BarChartColumn() { Name = i.Name, CurrentValue = i.Amount, Date = i.Date }));
                     }

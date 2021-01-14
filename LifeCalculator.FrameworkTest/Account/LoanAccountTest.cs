@@ -34,12 +34,22 @@ namespace LifeCalcuator.FrameworkTest.Account
         {
             var calcs = mortgageAccount.Calculation();
 
-            calcs[10].Gain.ShouldBeInRange(5201.83, 5201.84);
-            calcs[22].Gain.ShouldBeInRange(11027.95, 11027.96);
-            calcs[34].Gain.ShouldBeInRange(17016.32, 17016.33);
-            calcs[34].Gain.ShouldBeInRange(17016.32, 17016.33);
-            calcs[178].Gain.ShouldBeInRange(103310.61, 103310.62);
-            (calcs[359].Gain + mortgageAccount.LoanAmount).ShouldBeInRange(261599.99,
+            calcs[11].Gain.ShouldBeInRange(5201.83, 5201.84);
+            calcs[23].Gain.ShouldBeInRange(11027.95, 11027.96);
+            calcs[35].Gain.ShouldBeInRange(17016.32, 17016.33);
+            calcs[35].Gain.ShouldBeInRange(17016.32, 17016.33);
+            calcs[179].Gain.ShouldBeInRange(103310.61, 103310.62);
+            (calcs[360].Gain).ShouldBeInRange(261599.99,
+                261600.01);
+
+             calcs = mortgageAccount.Calculation();
+
+            calcs[11].Gain.ShouldBeInRange(5201.83, 5201.84);
+            calcs[23].Gain.ShouldBeInRange(11027.95, 11027.96);
+            calcs[35].Gain.ShouldBeInRange(17016.32, 17016.33);
+            calcs[35].Gain.ShouldBeInRange(17016.32, 17016.33);
+            calcs[179].Gain.ShouldBeInRange(103310.61, 103310.62);
+            (calcs[360].Gain).ShouldBeInRange(261599.99,
                 261600.01);
         }
     }

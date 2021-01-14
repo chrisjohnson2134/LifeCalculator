@@ -19,12 +19,14 @@ namespace LifeCalculator.Control.ViewModels
         public AddLoanViewModel()
         {
             AddAccountCommand = new DelegateCommand(AddAccountCommandHandler);
+            StartDate = DateTime.Now;
         }
 
         public AddLoanViewModel(IAccountManager accountManager)
         {
             AddAccountCommand = new DelegateCommand(AddAccountCommandHandler);
             _accountManager = accountManager;
+            StartDate = DateTime.Now;
         }
 
         #endregion
