@@ -36,7 +36,7 @@
 
         <!--row 4-->
         <Label x:Name="EventAmountLabel" Content="Contribute:" Margin="2" Grid.Row="4" Grid.Column="0"/>
-        <TextBox x:Name="EventAmountTextBox" Text="{Binding AmountToContribute}" Margin="2" Grid.Row="4" Grid.Column="1"/>
+        <TextBox x:Name="EventAmountTextBox" Text="{Binding AmountToContribute,StringFormat=C}" Margin="2" Grid.Row="4" Grid.Column="1"/>
 
 
         <!--row 5-->
