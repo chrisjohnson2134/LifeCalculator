@@ -41,8 +41,6 @@ namespace LifeCalculator.Control.ViewModels
         {
         }
 
-
-
         private void AddLifeEventCommandHandler()
         {
 

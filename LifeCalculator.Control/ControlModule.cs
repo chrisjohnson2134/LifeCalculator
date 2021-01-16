@@ -1,4 +1,5 @@
-﻿using LifeCalculator.Control.Views;
+﻿using LifeCalculator.Control.Events.Loan.Views;
+using LifeCalculator.Control.Views;
 using LifeCalculator.Framework.AccountManager;
 using Prism.Ioc;
 using Prism.Modularity;
@@ -21,6 +22,7 @@ namespace LifeCalculator.Control
 
             //Events Views
             containerRegistry.RegisterForNavigation<AddEventCompound>("AddEventCompound");
+            containerRegistry.RegisterForNavigation<AddEventLoan>("AddEventLoan");
         }
     }
 }

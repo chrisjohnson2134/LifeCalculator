@@ -12,6 +12,7 @@ using LiveCharts.Configurations;
 using LiveCharts.Wpf;
 using LifeCalculator.Control.ViewModels;
 using LifeCalculator.Framework.Chart;
+using LifeCalculator.Control.Events.Loan.ViewModels;
 
 //keep track of project https://kanbanflow.com/board/eFu1Zwn
 
@@ -19,14 +20,16 @@ namespace LifeCalculator.ViewModels
 {
     public class MainWindowViewModel : BindableBase
     {
-        private string _title = "Prism Application";
-        public string Title
-        {
-            get { return _title; }
-            set { SetProperty(ref _title, value); }
-        }
+        #region Fields
 
         private IRegionManager _regionManager;
+        private IAccountManager _accountManager;
+
+        private string _accountType;
+        private string _accountSelected;
+        private List<ILifeEvent> _lifeEvents;
+        
+        #endregion
 
         #region Properties
 
@@ -36,17 +39,13 @@ namespace LifeCalculator.ViewModels
 
 
         //Add Account
-        private string accountType;
         public string AccountType
         {
-            get
-            {
-                return accountType;
-            }
+            get => _accountType;
             set
             {
-                accountType = value;
-                NavigateAddAccount(accountType);
+                _accountType = value;
+                NavigateAddAccount(_accountType);
             }
         }
 
@@ -54,21 +53,11 @@ namespace LifeCalculator.ViewModels
         {
             get
             {
-                return new List<string>() { "AddCompound", "AddLoan" };
+                return new List<string>() { "Add Compound", "Add Loan" };
             }
         }
 
-        private void NavigateAddAccount(string viewName)
-        {
-            var navigationParams = new NavigationParameters();
-            navigationParams.Add("accountManager", _accountManager);
-
-            _regionManager.RequestNavigate("AddAccountRegion", viewName, navigationParams);
-        }
-
-
         //Add Event
-        private string _accountSelected;
         public string AccountSelected
         {
             get => _accountSelected;
@@ -79,21 +68,9 @@ namespace LifeCalculator.ViewModels
             }
         }
 
-        private void NavigateAddEvent(string viewName)
-        {
-            var navigationParams = new NavigationParameters();
-            navigationParams.Add("account", _accountManager.Accounts.Find(i => i.Name.Contains(AccountSelected)));
-
-            _regionManager.RequestNavigate("AddEventRegion", viewName, navigationParams);
-        }
-
-
         //Everything Else
         public ObservableCollection<IAccount> AccountsList { get; set; }
         public ObservableCollection<ILifeEvent> LifeEvents { get; set; }
-
-        public List<ILifeEvent> _lifeEvents { get; set; }
-        public IAccountManager _accountManager { get; set; }
 
         #endregion
 
@@ -128,8 +105,6 @@ namespace LifeCalculator.ViewModels
         /// <summary>
         /// User Added account
         /// </summary>
-        /// 
-        private bool chartSetup = true;
         private void AccountAddedHandler(object sender, IAccount e)
         {
             AccountsList.Add(e);
@@ -165,7 +140,7 @@ namespace LifeCalculator.ViewModels
             if (typeof(InvestmentLifeEvent).Equals(lifeEvent.GetType()))
                 _lifeEvents.Add(new ModifyEventCompoundViewModel(lifeEvent));
             else if (typeof(MortgageLifeEvent).Equals(lifeEvent.GetType()))
-                _lifeEvents.Add(new ModifyEventCompoundViewModel(lifeEvent));
+                _lifeEvents.Add(new ModifyEventLoanViewModel(lifeEvent));
 
             LifeEvents.Clear();
 
@@ -178,9 +153,28 @@ namespace LifeCalculator.ViewModels
             ReChart(new object(), new EventArgs());
         }
 
-        #endregion
+        private void NavigateAddAccount(string viewName)
+        {
+            var navigationParams = new NavigationParameters();
+            navigationParams.Add("accountManager", _accountManager);
 
-        #region Helper Methods
+            _regionManager.RequestNavigate("AddAccountRegion", viewName.Replace(" ", ""), navigationParams);
+        }
+
+        private void NavigateAddEvent(string viewName)
+        {
+            var navigationParams = new NavigationParameters();
+
+            var accountSelected = _accountManager.Accounts.Find(i => i.Name.Contains(AccountSelected));
+
+            navigationParams.Add("account", accountSelected);
+
+            if (typeof(LoanAccount).Equals(accountSelected.GetType()))
+                _regionManager.RequestNavigate("AddEventRegion", "AddEventLoan", navigationParams);
+            else if (typeof(CompoundAccount).Equals(accountSelected.GetType()))
+                _regionManager.RequestNavigate("AddEventRegion", "AddEventCompound", navigationParams);
+
+        }
 
         private void ReChart(object sender, EventArgs e)
         {
@@ -205,12 +199,10 @@ namespace LifeCalculator.ViewModels
                                 });
                             }
                         }
-                        //acc.Calculation().ForEach(i => a.Values.Add(new BarChartColumn() { Name = i.Name, CurrentValue = i.Amount, Date = i.Date }));
                     }
                 }
         }
 
         #endregion
-
     }
 }
