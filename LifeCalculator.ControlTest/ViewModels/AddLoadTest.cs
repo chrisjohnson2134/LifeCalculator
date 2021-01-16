@@ -1,6 +1,5 @@
 ﻿using LifeCalculator.Control.ViewModels;
 using LifeCalculator.Framework.AccountManager;
-using LifeCalculator.Tools.Common.Converters;
 using NUnit.Framework;
 using System;
 
@@ -20,10 +19,10 @@ namespace LifeCalculator.ControlTest.ViewModels
 
             addLoanviewModel.AccountName = "Mortgage";
             addLoanviewModel.StartDate = DateTime.Now;
-            addLoanviewModel.InitialLoanAmount = "327000";
-            addLoanviewModel.InterestRate = "2.75";
+            addLoanviewModel.InitialLoanAmount = 327000;
+            addLoanviewModel.InterestRate = 2.75;
             addLoanviewModel.LoanLength = "30 Year";
-            addLoanviewModel.DownPayment = "60000";
+            addLoanviewModel.DownPayment = 65400;
 
             addLoanviewModel.AddAccountCommand.Execute();
 

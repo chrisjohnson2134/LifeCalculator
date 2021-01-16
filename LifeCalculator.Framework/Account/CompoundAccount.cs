@@ -61,7 +61,8 @@ namespace LifeCalculator.Framework.Account
             FinalAmount = 0;
 
             AccountLifeEvents.Sort((x, y) => x.Date.CompareTo(y.Date));
-            
+
+            monthlies.Add(new MonthlyColumn());
 
             for (int i = 0; i < AccountLifeEvents.Count-1; i++)
             {
@@ -71,7 +72,7 @@ namespace LifeCalculator.Framework.Account
 
                 for (int j = 0; j < monthDiff; j++)
                 {
-                    currValue = (currValue + AccountLifeEvents[i].Amount) * (1 + AccountLifeEvents[i].InterestRate/12);
+                    currValue = (currValue + AccountLifeEvents[i].Amount) * (1 + (AccountLifeEvents[i].InterestRate/100)/12);
                     monthlies.Add(new MonthlyColumn() { Name = AccountLifeEvents[i].Name, Gain = currValue, Date = AccountLifeEvents[i].Date.AddMonths(j) });
                 }
 

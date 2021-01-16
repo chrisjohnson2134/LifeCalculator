@@ -18,10 +18,10 @@ namespace LifeCalcuator.FrameworkTest.Account
             CompoundAccount investmentAccount = new CompoundAccount();
 
             investmentAccount.SetupBasicCalculation(DateTime.Now, DateTime.Now.AddYears(1),
-            .1, 100, 10);
+            10, 100, 10);
 
             investmentAccount.Calculation();
-            investmentAccount.FinalAmount.ShouldBeInRange(549.06, 549.07);
+            investmentAccount.FinalAmount.ShouldBeInRange(237.17, 237.18);
         }
 
         [Test]
@@ -30,12 +30,12 @@ namespace LifeCalcuator.FrameworkTest.Account
             CompoundAccount investmentAccount = new CompoundAccount();
 
             investmentAccount.SetupBasicCalculation(DateTime.Now, DateTime.Now.AddYears(1),
-            .1, 100, 10);
+            1, 100, 10);
 
             var monthlyList = investmentAccount.Calculation();
 
-            monthlyList[5].Gain.ShouldBeInRange(262.02, 262.03);
-            monthlyList[11].Gain.ShouldBeInRange(549.06, 549.07);
+            monthlyList[6].Gain.ShouldBeInRange(160.67, 160.68);
+            monthlyList[12].Gain.ShouldBeInRange(221.65, 221.66);
         }
 
         [Test]
@@ -48,7 +48,7 @@ namespace LifeCalcuator.FrameworkTest.Account
                 Name = "addition",
                 Amount = 10,
                 Date = DateTime.Now,
-                InterestRate = .1
+                InterestRate = 10
             });
 
             investmentAccount.AddLifeEvent(new InvestmentLifeEvent
@@ -56,25 +56,25 @@ namespace LifeCalcuator.FrameworkTest.Account
                 Name = "addition",
                 Amount = 1000,
                 Date = DateTime.Now.AddYears(1),
-                InterestRate = .1
+                InterestRate = 10
             });
 
             var midCalculationCheck = investmentAccount.Calculation();
-            midCalculationCheck[11].Gain.ShouldBeInRange(235.22, 235.23);
-            investmentAccount.FinalAmount.ShouldBeInRange(235.22, 235.23);
+            midCalculationCheck[12].Gain.ShouldBeInRange(126.70, 126.71);
+            investmentAccount.FinalAmount.ShouldBeInRange(126.70, 126.71);
 
             investmentAccount.AddLifeEvent(new InvestmentLifeEvent
             {
                 Name = "addition",
                 Amount = 0,
                 Date = DateTime.Now.AddYears(2),
-                InterestRate = .1
+                InterestRate = 10
             });
 
             var a = investmentAccount.Calculation();
-            a[11].Gain.ShouldBeInRange(235.22, 235.23);
-            a[23].Gain.ShouldBeInRange(24260.95, 24260.96);
-            investmentAccount.FinalAmount.ShouldBeInRange(24260.95, 24260.96);
+            a[12].Gain.ShouldBeInRange(126.70, 126.71);
+            a[24].Gain.ShouldBeInRange(12810.25, 12810.26);
+            investmentAccount.FinalAmount.ShouldBeInRange(12810.25, 12810.26);
         }
     }
 }

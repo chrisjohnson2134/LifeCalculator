@@ -26,7 +26,7 @@ namespace LifeCalcuator.FrameworkTest.Account
             mortgageAccount.AccountLifeEvents[0].Name.ShouldEqual("Start - "+ mortgageAccount.Name);
             mortgageAccount.AccountLifeEvents[1].Name.ShouldEqual("Stop - " + mortgageAccount.Name);
 
-            //mortgageAccount.
+
         }
 
         [Test]
