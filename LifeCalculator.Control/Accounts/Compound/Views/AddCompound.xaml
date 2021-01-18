@@ -14,6 +14,9 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <!--row 1-->
@@ -23,9 +26,25 @@
         <!--row 2-->
         <Label x:Name="InitialValueLabel" Margin="2" Content="Initial Amount:" Grid.Row="2" Grid.Column="0"/>
         <TextBox x:Name="InitialValueTextbox" Text="{Binding InitialValue,StringFormat=C}" Margin="2" Grid.Row="2" Grid.Column="1"/>
-        
+
         <!--row 3-->
-        <Button x:Name="AddAccountBTN" Command="{Binding AddAccountCommand}" Content="Add Account" Margin="2" Grid.Row="3" Grid.Column="1"/>
+        <Label x:Name="InterestLabel" Margin="2" Content="Interest :" Grid.Row="3" Grid.Column="0"/>
+        <TextBox x:Name="InterestTextbox" Text="{Binding Interest,StringFormat={}{0}%}" Margin="2" Grid.Row="3" Grid.Column="1"/>
+
+        <!--row 4-->
+        <Label x:Name="ContributeLabel" Margin="2" Content="Contribute :" Grid.Row="4" Grid.Column="0"/>
+        <TextBox x:Name="ContributeTextbox" Text="{Binding Contribute,StringFormat=C}" Margin="2" Grid.Row="4" Grid.Column="1"/>
+
+        <!--row 5-->
+        <Label x:Name="StartDataLabel" Margin="2" Content="Start Date:" Grid.Row="5" Grid.Column="0"/>
+        <DatePicker x:Name="StartDateTextbox" SelectedDate="{Binding StartDate}" Margin="2" Grid.Row="5" Grid.Column="1"/>
+
+        <!--row 6-->
+        <Label x:Name="StopDataLabel" Margin="2" Content="Stop Date:" Grid.Row="6" Grid.Column="0"/>
+        <DatePicker x:Name="StopDateTextbox" SelectedDate="{Binding StopDate}" Margin="2" Grid.Row="6" Grid.Column="1"/>
+
+        <!--row 7-->
+        <Button x:Name="AddAccountBTN" Command="{Binding AddAccountCommand}" Content="Add Account" Margin="2" Grid.Row="7" Grid.Column="1"/>
 
     </Grid>
 </UserControl>

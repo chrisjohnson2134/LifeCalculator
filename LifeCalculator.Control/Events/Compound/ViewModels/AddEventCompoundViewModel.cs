@@ -16,8 +16,8 @@ namespace LifeCalculator.Control.ViewModels
         public DateTime EventDate { get; set; }
         public bool StartEvent { get; set; }
         public bool StopEvent { get; set; }
-        public string AmountToContribute { get; set; }
-        public string InterestValue { get; set; }
+        public double AmountToContribute { get; set; }
+        public double InterestValue { get; set; }
         public DelegateCommand AddEventCommand { get; set; }
 
 
@@ -47,9 +47,9 @@ namespace LifeCalculator.Control.ViewModels
             _account.AddLifeEvent(new InvestmentLifeEvent()
             {
                 Name = EventName,
-                Amount = ConvertString.ToDouble(AmountToContribute),
+                Amount = AmountToContribute,
                 Date = EventDate,
-                InterestRate = ConvertString.ToDouble(InterestValue) * .01
+                InterestRate = InterestValue * .01
             });
 
             _account.Calculation();

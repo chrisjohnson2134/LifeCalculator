@@ -1,12 +1,10 @@
 ﻿using LifeCalculator.Framework.Account;
 using LifeCalculator.Framework.AccountManager;
-using LifeCalculator.Tools.Common.Converters;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Regions;
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using LifeCalculator.Framework.LifeEvents;
 
 namespace LifeCalculator.Control.ViewModels
 {
@@ -16,13 +14,21 @@ namespace LifeCalculator.Control.ViewModels
         public string AccountName { get; set; }
         public string DescriptionText { get; set; }
         public double InitialValue { get; set; }
+        public double Interest { get; set; }
+        public double Contribute { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime StopDate { get; set; }
         public DelegateCommand AddAccountCommand { get; set; }
 
         private IAccountManager _accountManager;
 
+
         public AddCompoundViewModel()
         {
             AddAccountCommand = new DelegateCommand(AddAccountCommandHandler);
+
+            StartDate = DateTime.Now;
+            StopDate = DateTime.Now.AddYears(1);
         }
 
         private void AddAccountCommandHandler()
@@ -33,24 +39,26 @@ namespace LifeCalculator.Control.ViewModels
                 InitialAmount = InitialValue
             };
 
-            //investmentAccount.LifeEventAdded += LifeEventAddedHandler;
+            InvestmentLifeEvent startEvent = new InvestmentLifeEvent()
+            {
+                Name = "Start - " + AccountName,
+                Date = StartDate,
+                InterestRate = Interest,
+                Amount = Contribute
+            };
+
+            InvestmentLifeEvent stopEvent = new InvestmentLifeEvent()
+            {
+                Name = "Stop - " + AccountName,
+                Date = StopDate,
+                InterestRate = 0,
+                Amount = 0
+            };
+
+            investmentAccount.AddLifeEvent(startEvent);
+            investmentAccount.AddLifeEvent(stopEvent);
+
             _accountManager.AddAccount(investmentAccount);
-
-            //try
-            //{
-            //    var dayConfig = Mappers.Xy<ILifeEvent>()
-            //    .X(dayModel => dayModel.Date.Ticks / (TimeSpan.FromDays(1).Ticks * 30.44))
-            //    .Y(dayModel => dayModel.CurrentValue);
-            //    var series = new ColumnSeries(dayConfig);
-            //    series.Title = investmentAccount.Name;
-            //    series.Values = new ChartValues<ILifeEvent>();
-            //    ValueCollection.Add(series);
-            //    Formatter = value => new DateTime((long)(value * TimeSpan.FromDays(1).Ticks * 30.44)).ToString("MM/yyyy");
-            //}
-            //catch (Exception e)
-            //{
-
-            //}
         }
 
 
