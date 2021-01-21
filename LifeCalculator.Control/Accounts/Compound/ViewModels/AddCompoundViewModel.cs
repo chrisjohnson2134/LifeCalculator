@@ -11,6 +11,21 @@ namespace LifeCalculator.Control.ViewModels
     //Compound Interest View Model
     public class AddCompoundViewModel : BindableBase, INavigationAware
     {
+
+        #region Constructors
+
+        public AddCompoundViewModel()
+        {
+            AddAccountCommand = new DelegateCommand(AddAccountCommandHandler);
+
+            StartDate = DateTime.Now;
+            StopDate = DateTime.Now.AddYears(1);
+        }
+
+        #endregion
+
+        #region Properties
+
         public string AccountName { get; set; }
         public string DescriptionText { get; set; }
         public double InitialValue { get; set; }
@@ -22,15 +37,13 @@ namespace LifeCalculator.Control.ViewModels
 
         private IAccountManager _accountManager;
 
+        #endregion
 
-        public AddCompoundViewModel()
-        {
-            AddAccountCommand = new DelegateCommand(AddAccountCommandHandler);
+        #region Command Handlers
 
-            StartDate = DateTime.Now;
-            StopDate = DateTime.Now.AddYears(1);
-        }
-
+        /// <summary>
+        /// Creates an Account with a Start/Stop Event
+        /// </summary>
         private void AddAccountCommandHandler()
         {
 
@@ -61,6 +74,9 @@ namespace LifeCalculator.Control.ViewModels
             _accountManager.AddAccount(investmentAccount);
         }
 
+        #endregion
+
+        #region Navigation Methods
 
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
@@ -70,13 +86,14 @@ namespace LifeCalculator.Control.ViewModels
         public bool IsNavigationTarget(NavigationContext navigationContext)
         {
             return false;
-            //throw new System.NotImplementedException();
         }
 
         public void OnNavigatedFrom(NavigationContext navigationContext)
         {
             //throw new System.NotImplementedException();
         }
+        #endregion
+
     }
 }
 

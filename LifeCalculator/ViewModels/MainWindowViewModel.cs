@@ -105,6 +105,9 @@ namespace LifeCalculator.ViewModels
         /// <summary>
         /// User Added account
         /// </summary>
+        /// <remarks>
+        /// Also sets up a chart for the chart.
+        /// </remarks>
         private void AccountAddedHandler(object sender, IAccount e)
         {
             AccountsList.Add(e);
@@ -134,6 +137,14 @@ namespace LifeCalculator.ViewModels
 
         #region Private Methods
 
+        /// <summary>
+        /// Add LifeEvent to the LifeEvents List
+        /// </summary>
+        /// <remarks>
+        /// Uses the _lifeEvents List<> to sort the events and then add it 
+        /// to the Observable collection.
+        /// </remarks>
+        /// <param name="lifeEvent"></param>
         private void addEventToList(ILifeEvent lifeEvent)
         {
             lifeEvent.ValueChanged += ReChart;
@@ -153,6 +164,10 @@ namespace LifeCalculator.ViewModels
             ReChart(new object(), new EventArgs());
         }
 
+        /// <summary>
+        /// Navigate the Account Region to specified region
+        /// </summary>
+        /// <param name="viewName"></param>
         private void NavigateAddAccount(string viewName)
         {
             var navigationParams = new NavigationParameters();
@@ -161,6 +176,10 @@ namespace LifeCalculator.ViewModels
             _regionManager.RequestNavigate("AddAccountRegion", viewName.Replace(" ", ""), navigationParams);
         }
 
+        /// <summary>
+        /// Navigate the Event Region to specified region
+        /// </summary>
+        /// <param name="viewName"></param>
         private void NavigateAddEvent(string viewName)
         {
             var navigationParams = new NavigationParameters();
@@ -175,7 +194,14 @@ namespace LifeCalculator.ViewModels
                 _regionManager.RequestNavigate("AddEventRegion", "AddEventCompound", navigationParams);
 
         }
-
+        
+        /// <summary>
+        /// Method Recomputes the Chart
+        /// </summary>
+        /// <remarks>
+        /// Use Method to Re-Display the chart whenever modifications are made or Events
+        /// are added
+        /// </remarks>
         private void ReChart(object sender, EventArgs e)
         {
             foreach (var acc in _accountManager.Accounts)

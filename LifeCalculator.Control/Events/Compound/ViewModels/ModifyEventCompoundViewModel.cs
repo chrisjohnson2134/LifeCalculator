@@ -6,10 +6,13 @@ namespace LifeCalculator.Control.ViewModels
 {
     public class ModifyEventCompoundViewModel : BindableBase , ILifeEvent
     {
+        #region Fields
 
-        ILifeEvent _lifeEvent;
+        private ILifeEvent _lifeEvent;
 
-        public event EventHandler ValueChanged;
+        #endregion
+
+        #region Constructors
 
         public ModifyEventCompoundViewModel()
         {
@@ -19,6 +22,10 @@ namespace LifeCalculator.Control.ViewModels
         {
             _lifeEvent = e;
         }
+
+        #endregion
+
+        #region Properties
 
         public string Name
         {
@@ -32,6 +39,7 @@ namespace LifeCalculator.Control.ViewModels
         }
 
         public LifeEnum LifeEventType { get; set; }
+
         public DateTime Date
         {
             get => _lifeEvent.Date;
@@ -86,6 +94,11 @@ namespace LifeCalculator.Control.ViewModels
                 RaisePropertyChanged("FinalEvent");
             }
         }
+
+        public event EventHandler ValueChanged;
+
+        #endregion
+
     }
     
 }

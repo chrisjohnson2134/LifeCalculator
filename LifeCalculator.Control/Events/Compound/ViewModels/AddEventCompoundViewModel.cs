@@ -1,6 +1,5 @@
 ﻿using LifeCalculator.Framework.Account;
 using LifeCalculator.Framework.LifeEvents;
-using LifeCalculator.Tools.Common.Converters;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Regions;
@@ -10,7 +9,23 @@ namespace LifeCalculator.Control.ViewModels
 {
     public class AddEventCompoundViewModel : BindableBase, INavigationAware
     {
+        #region Fields
+
         private IAccount _account;
+
+        #endregion
+
+        #region Constructors
+
+        public AddEventCompoundViewModel()
+        {
+            AddEventCommand = new DelegateCommand(AddLifeEventCommandHandler);
+            EventDate = DateTime.Now;
+        }
+
+        #endregion
+
+        #region Properties
 
         public string EventName { get; set; }
         public DateTime EventDate { get; set; }
@@ -20,12 +35,27 @@ namespace LifeCalculator.Control.ViewModels
         public double InterestValue { get; set; }
         public DelegateCommand AddEventCommand { get; set; }
 
+        #endregion
 
-        public AddEventCompoundViewModel()
+        #region Command Handlers
+
+        private void AddLifeEventCommandHandler()
         {
-            AddEventCommand = new DelegateCommand(AddLifeEventCommandHandler);
-            EventDate = DateTime.Now;
+
+            _account.AddLifeEvent(new InvestmentLifeEvent()
+            {
+                Name = EventName,
+                Amount = AmountToContribute,
+                Date = EventDate,
+                InterestRate = InterestValue * .01
+            });
+
+            _account.Calculation();
         }
+
+        #endregion
+
+        #region Navigation Methods
 
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
@@ -41,21 +71,8 @@ namespace LifeCalculator.Control.ViewModels
         {
         }
 
-        private void AddLifeEventCommandHandler()
-        {
+        #endregion
 
-            _account.AddLifeEvent(new InvestmentLifeEvent()
-            {
-                Name = EventName,
-                Amount = AmountToContribute,
-                Date = EventDate,
-                InterestRate = InterestValue * .01
-            });
-
-            _account.Calculation();
-
-            //ReChart(new object(), new EventArgs());
-        }
     }
-    }
+}
 

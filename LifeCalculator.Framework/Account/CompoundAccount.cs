@@ -14,6 +14,8 @@ namespace LifeCalculator.Framework.Account
 
         public event EventHandler<ILifeEvent> LifeEventAdded;
 
+        #region Constructors
+
         public CompoundAccount()
         {
             AccountLifeEvents = new List<ILifeEvent>();
@@ -24,6 +26,10 @@ namespace LifeCalculator.Framework.Account
             Name = AccountName;
             AccountLifeEvents = new List<ILifeEvent>();
         }
+
+        #endregion
+
+        #region Methods
 
         public void SetupBasicCalculation(DateTime startDate, DateTime endDate, double interestRate,
             double initialAmount, double additionalAmount)
@@ -64,7 +70,7 @@ namespace LifeCalculator.Framework.Account
 
             monthlies.Add(new MonthlyColumn());
 
-            for (int i = 0; i < AccountLifeEvents.Count-1; i++)
+            for (int i = 0; i < AccountLifeEvents.Count - 1; i++)
             {
                 monthDiff = Math.Abs((AccountLifeEvents[i].Date.Year * 12 + (AccountLifeEvents[i].Date.Month - 1))
                     - (AccountLifeEvents[(i + 1)].Date.Year * 12 + (AccountLifeEvents[(i + 1)].Date.Month - 1)));
@@ -72,15 +78,15 @@ namespace LifeCalculator.Framework.Account
 
                 for (int j = 0; j < monthDiff; j++)
                 {
-                    currValue = (currValue + AccountLifeEvents[i].Amount) * (1 + (AccountLifeEvents[i].InterestRate/100)/12);
+                    currValue = (currValue + AccountLifeEvents[i].Amount) * (1 + (AccountLifeEvents[i].InterestRate / 100) / 12);
                     monthlies.Add(new MonthlyColumn() { Name = AccountLifeEvents[i].Name, Gain = currValue, Date = AccountLifeEvents[i].Date.AddMonths(j) });
                 }
 
                 AccountLifeEvents[(i + 1)].CurrentValue = currValue;
             }
 
-            if(monthDiff != 0)
-                FinalAmount = monthlies[monthlies.Count-1].Gain;
+            if (monthDiff != 0)
+                FinalAmount = monthlies[monthlies.Count - 1].Gain;
 
             return monthlies;
         }
@@ -90,5 +96,9 @@ namespace LifeCalculator.Framework.Account
             AccountLifeEvents.Add(lifeEvent);
             LifeEventAdded?.Invoke(this, lifeEvent);
         }
+
+        #endregion
+
+
     }
 }
