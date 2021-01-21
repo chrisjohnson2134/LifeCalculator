@@ -1,5 +1,5 @@
 ﻿using LifeCalculator.Framework.Account;
-using LifeCalculator.Framework.AccountManager;
+using LifeCalculator.Framework.Managers.Interfaces;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Regions;

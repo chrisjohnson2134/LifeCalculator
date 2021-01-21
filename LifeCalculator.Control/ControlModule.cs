@@ -1,6 +1,6 @@
 ﻿using LifeCalculator.Control.Events.Loan.Views;
 using LifeCalculator.Control.Views;
-using LifeCalculator.Framework.AccountManager;
+using LifeCalculator.Framework.Managers.Interfaces;
 using Prism.Ioc;
 using Prism.Modularity;
 using Unity;

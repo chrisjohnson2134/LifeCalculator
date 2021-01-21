@@ -1,5 +1,5 @@
 ﻿using LifeCalculator.Control.ViewModels;
-using LifeCalculator.Framework.AccountManager;
+using LifeCalculator.Framework.Managers;
 using NUnit.Framework;
 using System;
 

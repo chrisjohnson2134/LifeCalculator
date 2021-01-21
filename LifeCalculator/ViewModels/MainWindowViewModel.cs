@@ -1,5 +1,5 @@
 ﻿using LifeCalculator.Framework.Account;
-using LifeCalculator.Framework.AccountManager;
+using LifeCalculator.Framework.Managers.Interfaces;
 using LifeCalculator.Framework.LifeEvents;
 using Prism.Mvvm;
 using System;
