@@ -37,8 +37,8 @@
         <TextBox  Text="{Binding InterestRate,StringFormat={}{0}%}" Margin="2" Grid.Row="4" Grid.Column="1"/>
 
         <!--row 5-->
-        <Label  Margin="2" Content="Loan Length:" Grid.Row="5" Grid.Column="0"/>
-        <ComboBox  Text="{Binding LoanLength}" ItemsSource="{Binding LoanLengths}" Margin="2" Grid.Row="5" Grid.Column="1"/>
+        <Label  Margin="2" Content="Loan Length (yrs):" Grid.Row="5" Grid.Column="0"/>
+        <TextBox Text="{Binding LoanLength}"  Margin="2" Grid.Row="5" Grid.Column="1"/>
 
         <!--row 6-->
         <Label  Margin="2" Content="Down Payment" Grid.Row="6" Grid.Column="0"/>

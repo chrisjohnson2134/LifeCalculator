@@ -14,6 +14,7 @@ namespace LifeCalculator.Framework.Account
         public double InterestRate { get; set; }
         public double InterestPaid { get; set; }
         public double PrincipalPaid { get; set; }
+        public int LoanLengthMonths { get; set; }
         public List<ILifeEvent> AccountLifeEvents { get; set; }
 
         public event EventHandler<ILifeEvent> LifeEventAdded;
@@ -23,20 +24,21 @@ namespace LifeCalculator.Framework.Account
             
         }
 
-        public LoanAccount(string name,DateTime date,double interestRate,double loanAmount,double downPayment)
+        public LoanAccount(string name,DateTime date, int loanLengthMonths, double interestRate,double loanAmount,double downPayment)
         {
             Name = name;
             InterestRate = interestRate/100;
             LoanAmount = loanAmount - downPayment;
             DownPayment = downPayment;
+            LoanLengthMonths = loanLengthMonths;
 
             MonthlyPayment = Math.Floor((loanAmount - downPayment) * (Math.Pow((1 + InterestRate / 12), 360) * InterestRate) 
-                / (12 * (Math.Pow((1 + InterestRate / 12), 360) - 1)));
+                / (12 * (Math.Pow((1 + InterestRate / 12), loanLengthMonths) - 1)));
 
             AccountLifeEvents = new List<ILifeEvent>();
 
             AddLifeEvent(new MortgageLifeEvent() {Name="Start - " + Name, Date = date });
-            AddLifeEvent(new MortgageLifeEvent() {Name="Stop - " + Name, Date = date.AddYears(30) });
+            AddLifeEvent(new MortgageLifeEvent() {Name="Stop - " + Name, Date = date.AddMonths(loanLengthMonths) });
         }
 
         public void AddLifeEvent(ILifeEvent lifeEvent)

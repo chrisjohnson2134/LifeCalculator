@@ -15,7 +15,7 @@ namespace LifeCalcuator.FrameworkTest.Account
 
         public LoanAccountTest()
         {
-            mortgageAccount = new LoanAccount("mortgage",DateTime.Now, 2.75,327000,65400);
+            mortgageAccount = new LoanAccount("mortgage",DateTime.Now,360, 2.75,327000,65400);
         }
 
         [Test]

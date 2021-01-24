@@ -21,7 +21,7 @@ namespace LifeCalculator.ControlTest.ViewModels
             addLoanviewModel.StartDate = DateTime.Now;
             addLoanviewModel.InitialLoanAmount = 327000;
             addLoanviewModel.InterestRate = 2.75;
-            addLoanviewModel.LoanLength = "30 Year";
+            addLoanviewModel.LoanLength = 360;
             addLoanviewModel.DownPayment = 65400;
 
             addLoanviewModel.AddAccountCommand.Execute();
