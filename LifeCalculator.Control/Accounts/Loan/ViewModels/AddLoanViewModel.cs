@@ -1,15 +1,13 @@
 ﻿using LifeCalculator.Framework.Account;
 using LifeCalculator.Framework.AccountManager;
-using LifeCalculator.Tools.Common.Converters;
-using Prism.Commands;
-using Prism.Mvvm;
-using Prism.Regions;
+using LifeCalculator.Framework.BaseVM;
+using Microsoft.VisualStudio.PlatformUI;
 using System;
 using System.Collections.Generic;
 
 namespace LifeCalculator.Control.ViewModels
 {
-    public class AddLoanViewModel : BindableBase, INavigationAware
+    public class AddLoanViewModel : ViewModelBase
     {
 
         private IAccountManager _accountManager;
@@ -61,24 +59,6 @@ namespace LifeCalculator.Control.ViewModels
             DownPayment);
 
             _accountManager.AddAccount(acc);
-        }
-
-        #endregion
-
-        #region Navigation Events
-
-        public bool IsNavigationTarget(NavigationContext navigationContext)
-        {
-            return false;
-        }
-
-        public void OnNavigatedFrom(NavigationContext navigationContext)
-        {
-        }
-
-        public void OnNavigatedTo(NavigationContext navigationContext)
-        {
-            _accountManager = navigationContext.Parameters["accountManager"] as IAccountManager;
         }
 
         #endregion

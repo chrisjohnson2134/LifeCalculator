@@ -49,7 +49,6 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ControlModule.cs" />
     <Compile Include="Events\Loan\ViewModels\ModifyEventLoanViewModel.cs" />
     <Compile Include="Events\Loan\Views\AddEventLoan.xaml.cs">
       <DependentUpon>AddEventLoan.xaml</DependentUpon>
@@ -97,12 +96,6 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Prism.Unity">
-      <Version>8.0.0.1909</Version>
-    </PackageReference>
-    <PackageReference Include="Prism.Wpf" Version="8.0.0.1909" />
-  </ItemGroup>
-  <ItemGroup>
     <Page Include="Events\Compound\Views\AddEventCompound.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -138,6 +131,10 @@
       <Name>LifeCalculator.Tools</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Utilities">
+      <Version>16.7.30329.38</Version>
+    </PackageReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

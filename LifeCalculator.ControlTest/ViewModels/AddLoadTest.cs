@@ -12,21 +12,21 @@ namespace LifeCalculator.ControlTest.ViewModels
         public AccountManager accountManager;
 
 
-        [Test]
-        public void addMortgageAccountTest()
-        {
-            init();
+        //[Test]
+        //public void addMortgageAccountTest()
+        //{
+        //    init();
 
-            addLoanviewModel.AccountName = "Mortgage";
-            addLoanviewModel.StartDate = DateTime.Now;
-            addLoanviewModel.InitialLoanAmount = 327000;
-            addLoanviewModel.InterestRate = 2.75;
-            addLoanviewModel.LoanLength = "30 Year";
-            addLoanviewModel.DownPayment = 65400;
+        //    addLoanviewModel.AccountName = "Mortgage";
+        //    addLoanviewModel.StartDate = DateTime.Now;
+        //    addLoanviewModel.InitialLoanAmount = 327000;
+        //    addLoanviewModel.InterestRate = 2.75;
+        //    addLoanviewModel.LoanLength = "30 Year";
+        //    addLoanviewModel.DownPayment = 65400;
 
-            addLoanviewModel.AddAccountCommand.Execute();
+        //    addLoanviewModel.AddAccountCommand.Execute();
 
-        }
+        //}
 
         private void init()
         {

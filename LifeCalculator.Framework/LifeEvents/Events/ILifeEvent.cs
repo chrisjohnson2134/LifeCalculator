@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using LifeCalculator.Framework.Enums;
+using System;
 
 namespace LifeCalculator.Framework.LifeEvents
 {
@@ -13,8 +10,6 @@ namespace LifeCalculator.Framework.LifeEvents
         LifeEnum LifeEventType { get; set; }
         DateTime Date { get; set; }
         bool FinalEvent { get; set; }
-
-
         double CurrentValue { get; set; }
         double Amount { get; set; }
         double InterestRate { get; set; }
