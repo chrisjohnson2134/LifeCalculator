@@ -1,8 +1,9 @@
 ﻿using LifeCalculator.Framework.Account;
 using System;
 using System.Collections.Generic;
+using LifeCalculator.Framework.Managers.Interfaces;
 
-namespace LifeCalculator.Framework.AccountManager
+namespace LifeCalculator.Framework.Managers
 {
     public class AccountManager : IAccountManager
     {

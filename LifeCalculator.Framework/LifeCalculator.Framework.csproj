@@ -64,8 +64,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AccountManager\AccountManager.cs" />
-    <Compile Include="AccountManager\IAccountManager.cs" />
+    <Compile Include="Managers\AccountManager.cs" />
+    <Compile Include="Managers\Interfaces\IAccountManager.cs" />
     <Compile Include="Account\AccountTypes.cs" />
     <Compile Include="Account\CompoundAccount.cs" />
     <Compile Include="Account\IAccount.cs" />
