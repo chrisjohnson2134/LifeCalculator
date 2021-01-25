@@ -1,9 +1,9 @@
 ﻿using LifeCalculator.Framework.Account;
-using LifeCalculator.Framework.AccountManager;
 using System;
 using LifeCalculator.Framework.LifeEvents;
 using Microsoft.VisualStudio.PlatformUI;
 using LifeCalculator.Framework.BaseVM;
+using LifeCalculator.Framework.Managers.Interfaces;
 
 namespace LifeCalculator.Control.ViewModels
 {
