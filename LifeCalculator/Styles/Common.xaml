@@ -1,0 +1,20 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:LifeCalculator.Styles">
+
+    <!--  Colors  -->
+    <Color x:Key="PrimaryColor1">#86c232</Color>
+    <Color x:Key="PrimaryColor2">#61892f</Color>
+    <Color x:Key="SecondaryColor1">#222629</Color>
+    <Color x:Key="SecondaryColor2">#474b4f</Color>
+    <Color x:Key="SecondaryColor3">#6b6e70</Color>
+
+    <!--  Brushes  -->
+    <SolidColorBrush x:Key="PrimaryBrush1" Color="{StaticResource PrimaryColor1}" />
+    <SolidColorBrush x:Key="PrimaryBrush2" Color="{StaticResource PrimaryColor2}" />
+    <SolidColorBrush x:Key="SecondaryBrush1" Color="{StaticResource SecondaryColor1}" />
+    <SolidColorBrush x:Key="SecondaryBrush2" Color="{StaticResource SecondaryColor2}" />
+    <SolidColorBrush x:Key="SecondaryBrush3" Color="{StaticResource SecondaryColor3}" />
+
+</ResourceDictionary>

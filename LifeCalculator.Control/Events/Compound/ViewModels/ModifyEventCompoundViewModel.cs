@@ -1,10 +1,11 @@
-﻿using LifeCalculator.Framework.LifeEvents;
-using Prism.Mvvm;
+﻿using LifeCalculator.Framework.BaseVM;
+using LifeCalculator.Framework.Enums;
+using LifeCalculator.Framework.LifeEvents;
 using System;
 
 namespace LifeCalculator.Control.ViewModels
 {
-    public class ModifyEventCompoundViewModel : BindableBase , ILifeEvent
+    public class ModifyEventCompoundViewModel : ViewModelBase , ILifeEvent
     {
         #region Fields
 
@@ -34,7 +35,7 @@ namespace LifeCalculator.Control.ViewModels
             {
                 _lifeEvent.Name = value;
                 ValueChanged?.Invoke(this, new EventArgs());
-                RaisePropertyChanged("Name");
+                OnPropertyChanged(nameof(Name));
             }
         }
 
@@ -47,7 +48,7 @@ namespace LifeCalculator.Control.ViewModels
             {
                 _lifeEvent.Date = value;
                 ValueChanged?.Invoke(this, new EventArgs());
-                RaisePropertyChanged("Date");
+                OnPropertyChanged(nameof(Date));
             }
         }
 
@@ -58,7 +59,7 @@ namespace LifeCalculator.Control.ViewModels
             {
                 _lifeEvent.Amount = value;
                 ValueChanged?.Invoke(this, new EventArgs());
-                RaisePropertyChanged("Amount");
+                OnPropertyChanged(nameof(Amount));
             }
         }
 
@@ -69,7 +70,7 @@ namespace LifeCalculator.Control.ViewModels
             {
                 _lifeEvent.CurrentValue = value;
                 ValueChanged?.Invoke(this, new EventArgs());
-                RaisePropertyChanged("CurrentValue");
+                OnPropertyChanged(nameof(CurrentValue));
             }
         }
 
@@ -80,7 +81,7 @@ namespace LifeCalculator.Control.ViewModels
             {
                 _lifeEvent.InterestRate = value;
                 ValueChanged?.Invoke(this, new EventArgs());
-                RaisePropertyChanged("InterestRate");
+                OnPropertyChanged(nameof(InterestRate));
             }
         }
 
@@ -91,7 +92,7 @@ namespace LifeCalculator.Control.ViewModels
             {
                 _lifeEvent.FinalEvent = value;
                 ValueChanged?.Invoke(this, new EventArgs());
-                RaisePropertyChanged("FinalEvent");
+                OnPropertyChanged(nameof(FinalEvent));
             }
         }
 

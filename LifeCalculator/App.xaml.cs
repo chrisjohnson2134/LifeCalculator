@@ -1,10 +1,7 @@
-﻿using LifeCalculator.Control;
-using LifeCalculator.Control.Views;
-using LifeCalculator.Framework.Managers.Interfaces;
-using LifeCalculator.Framework.Managers;
+﻿using LifeCalculator.Ninject;
+using LifeCalculator.ViewModels;
 using LifeCalculator.Views;
-using Prism.Ioc;
-using Prism.Modularity;
+using Ninject;
 using System.Windows;
 
 namespace LifeCalculator
@@ -14,21 +11,15 @@ namespace LifeCalculator
     /// </summary>
     public partial class App
     {
-        protected override Window CreateShell()
+        protected override void OnStartup(StartupEventArgs e)
         {
-            return Container.Resolve<MainWindow>();
-        }
-
-        protected override void RegisterTypes(IContainerRegistry containerRegistry)
-        {
-            containerRegistry.Register<IAccountManager, AccountManager>();
-            containerRegistry.RegisterForNavigation<AddCompound>("CompoundInterest");
-        }
-
-        protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)
-        {
-            base.ConfigureModuleCatalog(moduleCatalog);
-            moduleCatalog.AddModule<ControlModule>();
+            IKernel kernel = new StandardKernel();
+            NinjectContainer container = new NinjectContainer();
+            kernel.Load(container);
+            Window window = new MainWindow();
+            window.DataContext = kernel.Get<MainWindowViewModel>();
+            window.Show();
+            base.OnStartup(e);
         }
     }
 }

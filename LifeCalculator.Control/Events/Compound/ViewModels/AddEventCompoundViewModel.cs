@@ -1,13 +1,12 @@
 ﻿using LifeCalculator.Framework.Account;
+using LifeCalculator.Framework.BaseVM;
 using LifeCalculator.Framework.LifeEvents;
-using Prism.Commands;
-using Prism.Mvvm;
-using Prism.Regions;
+using Microsoft.VisualStudio.PlatformUI;
 using System;
 
 namespace LifeCalculator.Control.ViewModels
 {
-    public class AddEventCompoundViewModel : BindableBase, INavigationAware
+    public class AddEventCompoundViewModel : ViewModelBase
     {
         #region Fields
 
@@ -54,25 +53,6 @@ namespace LifeCalculator.Control.ViewModels
         }
 
         #endregion
-
-        #region Navigation Methods
-
-        public void OnNavigatedTo(NavigationContext navigationContext)
-        {
-            _account = navigationContext.Parameters["account"] as IAccount;
-        }
-
-        public bool IsNavigationTarget(NavigationContext navigationContext)
-        {
-            return false;
-        }
-
-        public void OnNavigatedFrom(NavigationContext navigationContext)
-        {
-        }
-
-        #endregion
-
     }
 }
 

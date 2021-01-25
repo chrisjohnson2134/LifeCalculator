@@ -1,15 +1,14 @@
 ﻿using LifeCalculator.Framework.Account;
-using LifeCalculator.Framework.Managers.Interfaces;
-using Prism.Commands;
-using Prism.Mvvm;
-using Prism.Regions;
+using LifeCalculator.Framework.AccountManager;
 using System;
 using LifeCalculator.Framework.LifeEvents;
+using Microsoft.VisualStudio.PlatformUI;
+using LifeCalculator.Framework.BaseVM;
 
 namespace LifeCalculator.Control.ViewModels
 {
     //Compound Interest View Model
-    public class AddCompoundViewModel : BindableBase, INavigationAware
+    public class AddCompoundViewModel : ViewModelBase
     {
 
         #region Constructors
@@ -74,24 +73,6 @@ namespace LifeCalculator.Control.ViewModels
             _accountManager.AddAccount(investmentAccount);
         }
 
-        #endregion
-
-        #region Navigation Methods
-
-        public void OnNavigatedTo(NavigationContext navigationContext)
-        {
-            _accountManager = navigationContext.Parameters["accountManager"] as IAccountManager;
-        }
-
-        public bool IsNavigationTarget(NavigationContext navigationContext)
-        {
-            return false;
-        }
-
-        public void OnNavigatedFrom(NavigationContext navigationContext)
-        {
-            //throw new System.NotImplementedException();
-        }
         #endregion
 
     }

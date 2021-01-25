@@ -1,4 +1,5 @@
-﻿using LifeCalculator.Framework.LifeEvents;
+﻿using LifeCalculator.Framework.Enums;
+using LifeCalculator.Framework.LifeEvents;
 using System;
 
 namespace LifeCalculator.Control.Events.Loan.ViewModels

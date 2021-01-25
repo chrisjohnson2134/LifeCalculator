@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LifeCalculator.Framework.Enums;
+using System;
 
 namespace LifeCalculator.Framework.LifeEvents
 {
