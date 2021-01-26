@@ -52,6 +52,8 @@ namespace LifeCalculator.Control.ViewModels
             }
         }
 
+        public DateTime EndDate { get; set; }
+
         public double Amount
         {
             get => _lifeEvent.Amount;

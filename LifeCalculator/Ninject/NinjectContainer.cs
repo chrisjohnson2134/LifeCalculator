@@ -1,5 +1,6 @@
-﻿using LifeCalculator.Framework.AccountManager;
-using LifeCalculator.Framework.BaseVM;
+﻿using LifeCalculator.Framework.BaseVM;
+using LifeCalculator.Framework.Managers;
+using LifeCalculator.Framework.Managers.Interfaces;
 using LifeCalculator.Navigation;
 using LifeCalculator.ViewModels;
 using LifeCalculator.ViewModels.Factory;

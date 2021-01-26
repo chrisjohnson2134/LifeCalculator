@@ -75,7 +75,7 @@
     <Compile Include="ColumnDefinitions\MonthlyColumn.cs" />
     <Compile Include="Enums\CommonEnums.cs" />
     <Compile Include="LifeEvents\Events\InvestmentLifeEvent.cs" />
-    <Compile Include="LifeEvents\Events\MortgageLifeEvent.cs" />
+    <Compile Include="LifeEvents\Events\LoanLifeEvent.cs" />
     <Compile Include="NotNeeded\LifeEventManager\ILifeEventManager.cs" />
     <Compile Include="NotNeeded\LifeEventManager\LifeEventManager.cs" />
     <Compile Include="LifeEvents\Events\ILifeEvent.cs" />
