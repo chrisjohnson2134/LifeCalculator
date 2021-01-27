@@ -8,7 +8,7 @@ namespace LifeCalculator.Framework.LifeEvents
         event EventHandler ValueChanged;
         string Name { get; set; }
         LifeEnum LifeEventType { get; set; }
-        DateTime Date { get; set; }
+        DateTime StartDate { get; set; }
         DateTime EndDate { get; set; }
         bool FinalEvent { get; set; }
         double CurrentValue { get; set; }

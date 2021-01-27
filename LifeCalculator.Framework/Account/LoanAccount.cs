@@ -38,8 +38,8 @@ namespace LifeCalculator.Framework.Account
 
             AccountLifeEvents = new List<ILifeEvent>();
 
-            AddLifeEvent(new LoanLifeEvent() { Name = "Start - " + Name, Date = date, LifeEventType = LifeEnum.StartLifeEvent });
-            AddLifeEvent(new LoanLifeEvent() { Name = "Stop - " + Name, Date = date.AddMonths(loanLengthMonths), LifeEventType = LifeEnum.EndLifeEvent });
+            AddLifeEvent(new LoanLifeEvent() { Name = "Start - " + Name, StartDate = date, LifeEventType = LifeEnum.StartLifeEvent });
+            AddLifeEvent(new LoanLifeEvent() { Name = "Stop - " + Name, StartDate = date.AddMonths(loanLengthMonths), LifeEventType = LifeEnum.EndLifeEvent });
         }
 
         public void AddLifeEvent(ILifeEvent lifeEvent)
@@ -60,12 +60,12 @@ namespace LifeCalculator.Framework.Account
             monthlies.Add(new MonthlyColumn());
             int monthDiff = 0;
 
-            AccountLifeEvents.Sort((x, y) => x.Date.CompareTo(y.Date));
+            AccountLifeEvents.Sort((x, y) => x.StartDate.CompareTo(y.StartDate));
 
             ILifeEvent startLifeEvent = AccountLifeEvents.Find(i => i.LifeEventType == LifeEnum.StartLifeEvent);
             ILifeEvent stopLifeEvent = AccountLifeEvents.Find(i => i.LifeEventType == LifeEnum.EndLifeEvent);
-            monthDiff = Math.Abs(startLifeEvent.Date.Year * 12 + (startLifeEvent.Date.Month - 1)
-                    - (stopLifeEvent.Date.Year * 12 + (stopLifeEvent.Date.Month - 1)));
+            monthDiff = Math.Abs(startLifeEvent.StartDate.Year * 12 + (startLifeEvent.StartDate.Month - 1)
+                    - (stopLifeEvent.StartDate.Year * 12 + (stopLifeEvent.StartDate.Month - 1)));
 
 
             for (int j = 0; j < monthDiff; j++)
@@ -73,7 +73,7 @@ namespace LifeCalculator.Framework.Account
                 interestPay = currValue * InterestRate / 12;
 
                 if (MonthlyPayment < currValue)
-                    principalPay = MonthlyPayment - interestPay + additionalPriPaymentCalculation(startLifeEvent.Date.AddMonths(1 + j));
+                    principalPay = MonthlyPayment - interestPay + additionalPriPaymentCalculation(startLifeEvent.StartDate.AddMonths(1 + j));
                 else if (currValue > 0)
                     principalPay = currValue;
                 else
@@ -88,7 +88,7 @@ namespace LifeCalculator.Framework.Account
                 {
                     Name = startLifeEvent.Name,
                     Gain = PrincipalPaid,
-                    Date = startLifeEvent.Date.AddMonths(1 + j)
+                    Date = startLifeEvent.StartDate.AddMonths(1 + j)
                 });
             }
 
@@ -101,9 +101,14 @@ namespace LifeCalculator.Framework.Account
         {
             double additonalAmount = 0;
 
-            AccountLifeEvents.FindAll(i => i.Date < dateTime && dateTime < i.EndDate)
-                .ForEach(i => additonalAmount += i.Amount); 
+            AccountLifeEvents.FindAll(i => i.StartDate < dateTime && dateTime < i.EndDate && i.LifeEventType == LifeEnum.MonthlyContribute)
+                .ForEach(i => additonalAmount += i.Amount);
 
+            AccountLifeEvents.FindAll(i => i.StartDate.Year == dateTime.Year && dateTime.Month == i.StartDate.Month && i.LifeEventType == LifeEnum.OneTime)
+                .ForEach(i => additonalAmount += i.Amount);
+
+            if(additonalAmount > 0)
+                Console.WriteLine(additonalAmount);
 
             return additonalAmount;
         }

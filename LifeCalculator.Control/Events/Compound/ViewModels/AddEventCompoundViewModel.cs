@@ -45,7 +45,7 @@ namespace LifeCalculator.Control.ViewModels
             {
                 Name = EventName,
                 Amount = AmountToContribute,
-                Date = EventDate,
+                StartDate = EventDate,
                 InterestRate = InterestValue * .01
             });
 

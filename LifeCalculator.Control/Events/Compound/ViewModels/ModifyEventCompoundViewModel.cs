@@ -41,14 +41,14 @@ namespace LifeCalculator.Control.ViewModels
 
         public LifeEnum LifeEventType { get; set; }
 
-        public DateTime Date
+        public DateTime StartDate
         {
-            get => _lifeEvent.Date;
+            get => _lifeEvent.StartDate;
             set
             {
-                _lifeEvent.Date = value;
+                _lifeEvent.StartDate = value;
                 ValueChanged?.Invoke(this, new EventArgs());
-                OnPropertyChanged(nameof(Date));
+                OnPropertyChanged(nameof(StartDate));
             }
         }
 

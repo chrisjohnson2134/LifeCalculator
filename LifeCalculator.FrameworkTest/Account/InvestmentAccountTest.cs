@@ -47,7 +47,7 @@ namespace LifeCalcuator.FrameworkTest.Account
             {
                 Name = "addition",
                 Amount = 10,
-                Date = DateTime.Now,
+                StartDate = DateTime.Now,
                 InterestRate = 10
             });
 
@@ -55,7 +55,7 @@ namespace LifeCalcuator.FrameworkTest.Account
             {
                 Name = "addition",
                 Amount = 1000,
-                Date = DateTime.Now.AddYears(1),
+                StartDate = DateTime.Now.AddYears(1),
                 InterestRate = 10
             });
 
@@ -67,7 +67,7 @@ namespace LifeCalcuator.FrameworkTest.Account
             {
                 Name = "addition",
                 Amount = 0,
-                Date = DateTime.Now.AddYears(2),
+                StartDate = DateTime.Now.AddYears(2),
                 InterestRate = 10
             });
 

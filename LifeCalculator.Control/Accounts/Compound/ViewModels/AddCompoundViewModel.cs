@@ -54,7 +54,7 @@ namespace LifeCalculator.Control.ViewModels
             InvestmentLifeEvent startEvent = new InvestmentLifeEvent()
             {
                 Name = "Start - " + AccountName,
-                Date = StartDate,
+                StartDate = StartDate,
                 InterestRate = Interest,
                 Amount = Contribute
             };
@@ -62,7 +62,7 @@ namespace LifeCalculator.Control.ViewModels
             InvestmentLifeEvent stopEvent = new InvestmentLifeEvent()
             {
                 Name = "Stop - " + AccountName,
-                Date = StopDate,
+                StartDate = StopDate,
                 InterestRate = 0,
                 Amount = 0
             };

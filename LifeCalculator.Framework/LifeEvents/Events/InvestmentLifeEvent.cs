@@ -9,7 +9,7 @@ namespace LifeCalculator.Framework.LifeEvents
 
         public string Name { get; set; }
         public LifeEnum LifeEventType { get; set; }
-        public DateTime Date { get; set; }
+        public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public double Amount { get; set; }
         public double CurrentValue { get; set; }

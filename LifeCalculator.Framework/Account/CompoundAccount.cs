@@ -39,7 +39,7 @@ namespace LifeCalculator.Framework.Account
 
             InvestmentLifeEvent lifeEventStart = new InvestmentLifeEvent()
             {
-                Date = startDate,
+                StartDate = startDate,
                 InterestRate = interestRate,
                 Amount = additionalAmount,
                 Name = this.Name,
@@ -48,7 +48,7 @@ namespace LifeCalculator.Framework.Account
 
             InvestmentLifeEvent lifeEventEnd = new InvestmentLifeEvent()
             {
-                Date = endDate,
+                StartDate = endDate,
                 Name = this.Name,
                 CurrentValue = FinalAmount
             };
@@ -66,20 +66,20 @@ namespace LifeCalculator.Framework.Account
             int monthDiff = 0;
             FinalAmount = 0;
 
-            AccountLifeEvents.Sort((x, y) => x.Date.CompareTo(y.Date));
+            AccountLifeEvents.Sort((x, y) => x.StartDate.CompareTo(y.StartDate));
 
             monthlies.Add(new MonthlyColumn());
 
             for (int i = 0; i < AccountLifeEvents.Count - 1; i++)
             {
-                monthDiff = Math.Abs((AccountLifeEvents[i].Date.Year * 12 + (AccountLifeEvents[i].Date.Month - 1))
-                    - (AccountLifeEvents[(i + 1)].Date.Year * 12 + (AccountLifeEvents[(i + 1)].Date.Month - 1)));
+                monthDiff = Math.Abs((AccountLifeEvents[i].StartDate.Year * 12 + (AccountLifeEvents[i].StartDate.Month - 1))
+                    - (AccountLifeEvents[(i + 1)].StartDate.Year * 12 + (AccountLifeEvents[(i + 1)].StartDate.Month - 1)));
                 AccountLifeEvents[(i + 1)].CurrentValue = 0;
 
                 for (int j = 0; j < monthDiff; j++)
                 {
                     currValue = (currValue + AccountLifeEvents[i].Amount) * (1 + (AccountLifeEvents[i].InterestRate / 100) / 12);
-                    monthlies.Add(new MonthlyColumn() { Name = AccountLifeEvents[i].Name, Gain = currValue, Date = AccountLifeEvents[i].Date.AddMonths(j) });
+                    monthlies.Add(new MonthlyColumn() { Name = AccountLifeEvents[i].Name, Gain = currValue, Date = AccountLifeEvents[i].StartDate.AddMonths(j) });
                 }
 
                 AccountLifeEvents[(i + 1)].CurrentValue = currValue;

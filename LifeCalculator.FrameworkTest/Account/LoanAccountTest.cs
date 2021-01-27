@@ -8,6 +8,7 @@ using System;
 namespace LifeCalcuator.FrameworkTest.Account
 {
     //Calculator Used to check Calculations https://www.bankrate.com/calculators/mortgages/mortgage-calculator.aspx
+    //Contacted company about 
 
     [TestFixture]
     public class LoanAccountTest
@@ -16,7 +17,7 @@ namespace LifeCalcuator.FrameworkTest.Account
 
         public LoanAccountTest()
         {
-            LoanAccount = new LoanAccount("mortgage",DateTime.Now,360, 2.75,327000,65400);
+            LoanAccount = setupLoanAccount();
         }
 
         [Test]
@@ -27,13 +28,14 @@ namespace LifeCalcuator.FrameworkTest.Account
             LoanAccount.AccountLifeEvents[0].Name.ShouldEqual("Start - "+ LoanAccount.Name);
             LoanAccount.AccountLifeEvents[1].Name.ShouldEqual("Stop - " + LoanAccount.Name);
 
-
         }
 
         [Test]
         public void CalculationTest()
         {
-            var calcs = LoanAccount.Calculation();
+            LoanAccount localLoanAccount = setupLoanAccount();
+
+            var calcs = localLoanAccount.Calculation();
 
             calcs[11].Gain.ShouldBeInRange(5201.83, 5201.84);
             calcs[23].Gain.ShouldBeInRange(11027.95, 11027.96);
@@ -57,23 +59,58 @@ namespace LifeCalcuator.FrameworkTest.Account
         [Test]
         public void AddMonthlyPriPaymentsCalculationTest()
         {
+            LoanAccount localLoanAccount = setupLoanAccount();
+
             ILifeEvent monthlyContribute = new LoanLifeEvent()
             {
-                Date = DateTime.Now,
+                StartDate = DateTime.Now,
                 EndDate = DateTime.Now.AddYears(30),
                 Amount = 400,
                 LifeEventType = LifeEnum.MonthlyContribute
             };
 
-            LoanAccount.AddLifeEvent(monthlyContribute);
+            localLoanAccount.AddLifeEvent(monthlyContribute);
 
-            var calcs = LoanAccount.Calculation();
+            var calcs = localLoanAccount.Calculation();
 
             calcs[11].Gain.ShouldBeInRange(9652.59, 9652.60);
             calcs[23].Gain.ShouldBeInRange(20463.63, 20463.64);
             calcs[35].Gain.ShouldBeInRange(31575.74, 31575.75);
             calcs[179].Gain.ShouldBeInRange(191704.72, 191704.73);
             calcs[230].Gain.ShouldBeInRange(261600,261600.01);
+        }
+
+        /// <summary>
+        /// I believe this is correct, Calculations done by hand.
+        /// </summary>
+        [Test]
+        public void AddOneTimePriPaymentsCalculationTest()
+        {
+            LoanAccount localLoanAccount =  setupLoanAccount();
+
+            ILifeEvent oneTimeContribute = new LoanLifeEvent()
+            {
+                StartDate = DateTime.Now.AddYears(1),
+                Amount = 100000,
+                LifeEventType = LifeEnum.OneTime
+            };
+
+            localLoanAccount.AddLifeEvent(oneTimeContribute);
+
+            var calcs = localLoanAccount.Calculation();
+
+            calcs[11].Gain.ShouldBeInRange(5201.83, 5201.84);
+            calcs[12].Gain.ShouldBeInRange(105681.25, 105681.26);
+            calcs[23].Gain.ShouldBeInRange(113577.86, 113577.87);
+            calcs[35].Gain.ShouldBeInRange(122422.18, 122422.19);
+            calcs[47].Gain.ShouldBeInRange(131512.80, 131512.81);
+            (calcs[191].Gain).ShouldBeInRange(261599.99,
+                261600.01);
+        }
+
+        private LoanAccount setupLoanAccount()
+        {
+           return new LoanAccount("mortgage", DateTime.Now, 360, 2.75, 327000, 65400);
         }
     }
 }
