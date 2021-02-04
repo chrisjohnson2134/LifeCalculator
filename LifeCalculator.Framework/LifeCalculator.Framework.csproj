@@ -102,11 +102,11 @@
     <Compile Include="Chart\BarChartColumn.cs" />
     <Compile Include="ColumnDefinitions\MonthlyColumn.cs" />
     <Compile Include="Enums\CommonEnums.cs" />
-    <Compile Include="LifeEvents\Events\InvestmentAccountEvent.cs" />
-    <Compile Include="LifeEvents\Events\LoanAccountEvent.cs" />
+    <Compile Include="Events\Events\InvestmentAccountEvent.cs" />
+    <Compile Include="Events\Events\LoanAccountEvent.cs" />
     <Compile Include="NotNeeded\LifeEventManager\ILifeEventManager.cs" />
     <Compile Include="NotNeeded\LifeEventManager\LifeEventManager.cs" />
-    <Compile Include="LifeEvents\Events\IAccountEvent.cs" />
+    <Compile Include="Events\Events\IAccountEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -118,7 +118,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Database\Queries\Events\" />
-    <Folder Include="LifeEvents\EventManager\" />
+    <Folder Include="Events\EventManager\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
