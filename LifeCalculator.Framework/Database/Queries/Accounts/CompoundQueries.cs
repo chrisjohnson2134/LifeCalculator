@@ -9,7 +9,6 @@ namespace LifeCalculator.Framework.Database.Queries
 {
     public class CompoundQueries : BaseQuery
     {
-
         #region Select Queries
 
         public static List<CompoundAccount> LoadAll()
@@ -55,7 +54,7 @@ namespace LifeCalculator.Framework.Database.Queries
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
                 cnn.Execute("Insert into CompoundAccounts" +
-                    "(Name,InitialAmount,FinalAmount,AccountLifeEvents) " +
+                    "(Name,InitialAmount,FinalAmount) " +
                     "values (@Name,@InitialAmount,@FinalAmount)", account);
             }
         }
