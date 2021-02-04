@@ -1,9 +1,8 @@
 ﻿using NUnit.Framework;
 using LifeCalculator.Framework.Account;
 using LifeCalculator.Framework.Queries;
-using System;
 
-namespace LifeCalculator.DatabaseTest
+namespace LifeCalculator.FrameworkTest.Queries
 {
     [TestFixture]
     public class LoanAccountQueriesTest
