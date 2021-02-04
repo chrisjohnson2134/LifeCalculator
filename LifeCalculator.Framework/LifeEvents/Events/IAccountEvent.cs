@@ -3,7 +3,7 @@ using System;
 
 namespace LifeCalculator.Framework.LifeEvents
 {
-    public interface ILifeEvent
+    public interface IAccountEvent
     {
         event EventHandler ValueChanged;
         string Name { get; set; }

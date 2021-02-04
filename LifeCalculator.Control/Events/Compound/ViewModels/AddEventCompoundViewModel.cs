@@ -41,7 +41,7 @@ namespace LifeCalculator.Control.ViewModels
         private void AddLifeEventCommandHandler()
         {
 
-            _account.AddLifeEvent(new InvestmentLifeEvent()
+            _account.AddLifeEvent(new InvestmentAccountEvent()
             {
                 Name = EventName,
                 Amount = AmountToContribute,

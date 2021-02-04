@@ -4,18 +4,18 @@ using System;
 
 namespace LifeCalculator.Control.Events.Loan.ViewModels
 {
-    public class ModifyEventLoanViewModel : ILifeEvent
+    public class ModifyEventLoanViewModel : IAccountEvent
     {
         #region Fields
 
-        private ILifeEvent lifeEvent;
+        private IAccountEvent lifeEvent;
 
         #endregion
 
 
         #region Constructors
 
-        public ModifyEventLoanViewModel(ILifeEvent lifeEvent)
+        public ModifyEventLoanViewModel(IAccountEvent lifeEvent)
         {
             this.lifeEvent = lifeEvent;
         }

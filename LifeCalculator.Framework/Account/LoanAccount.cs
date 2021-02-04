@@ -1,4 +1,5 @@
 ﻿using LifeCalculator.Framework.ColumnDefinitions;
+using LifeCalculator.Framework.Database;
 using LifeCalculator.Framework.Enums;
 using LifeCalculator.Framework.LifeEvents;
 using System;
@@ -6,8 +7,9 @@ using System.Collections.Generic;
 
 namespace LifeCalculator.Framework.Account
 {
-    public class LoanAccount : IAccount
+    public class LoanAccount : IAccount, IDatabaseable
     {
+        public int id { get; }
         public string Name { get; set; }
         public double MonthlyPayment { get; set; }
         public double LoanAmount { get; set; }
@@ -16,9 +18,11 @@ namespace LifeCalculator.Framework.Account
         public double InterestPaid { get; set; }
         public double PrincipalPaid { get; set; }
         public int LoanLengthMonths { get; set; }
-        public List<ILifeEvent> AccountLifeEvents { get; set; }
+        public List<IAccountEvent> AccountLifeEvents { get; set; }
 
-        public event EventHandler<ILifeEvent> LifeEventAdded;
+        
+
+        public event EventHandler<IAccountEvent> LifeEventAdded;
 
         public LoanAccount()
         {
@@ -36,13 +40,13 @@ namespace LifeCalculator.Framework.Account
             MonthlyPayment = Math.Floor((loanAmount - downPayment) * (Math.Pow((1 + InterestRate / 12), 360) * InterestRate)
                 / (12 * (Math.Pow((1 + InterestRate / 12), loanLengthMonths) - 1)));
 
-            AccountLifeEvents = new List<ILifeEvent>();
+            AccountLifeEvents = new List<IAccountEvent>();
 
-            AddLifeEvent(new LoanLifeEvent() { Name = "Start - " + Name, StartDate = date, LifeEventType = LifeEnum.StartLifeEvent });
-            AddLifeEvent(new LoanLifeEvent() { Name = "Stop - " + Name, StartDate = date.AddMonths(loanLengthMonths), LifeEventType = LifeEnum.EndLifeEvent });
+            AddLifeEvent(new LoanAccountEvent() { Name = "Start - " + Name, StartDate = date, LifeEventType = LifeEnum.StartLifeEvent });
+            AddLifeEvent(new LoanAccountEvent() { Name = "Stop - " + Name, StartDate = date.AddMonths(loanLengthMonths), LifeEventType = LifeEnum.EndLifeEvent });
         }
 
-        public void AddLifeEvent(ILifeEvent lifeEvent)
+        public void AddLifeEvent(IAccountEvent lifeEvent)
         {
             AccountLifeEvents.Add(lifeEvent);
             LifeEventAdded?.Invoke(this, lifeEvent);
@@ -62,8 +66,8 @@ namespace LifeCalculator.Framework.Account
 
             AccountLifeEvents.Sort((x, y) => x.StartDate.CompareTo(y.StartDate));
 
-            ILifeEvent startLifeEvent = AccountLifeEvents.Find(i => i.LifeEventType == LifeEnum.StartLifeEvent);
-            ILifeEvent stopLifeEvent = AccountLifeEvents.Find(i => i.LifeEventType == LifeEnum.EndLifeEvent);
+            IAccountEvent startLifeEvent = AccountLifeEvents.Find(i => i.LifeEventType == LifeEnum.StartLifeEvent);
+            IAccountEvent stopLifeEvent = AccountLifeEvents.Find(i => i.LifeEventType == LifeEnum.EndLifeEvent);
             monthDiff = Math.Abs(startLifeEvent.StartDate.Year * 12 + (startLifeEvent.StartDate.Month - 1)
                     - (stopLifeEvent.StartDate.Year * 12 + (stopLifeEvent.StartDate.Month - 1)));
 
@@ -82,8 +86,8 @@ namespace LifeCalculator.Framework.Account
                 InterestPaid += interestPay;
                 PrincipalPaid += principalPay;
                 currValue = currValue - principalPay;
-                (startLifeEvent as LoanLifeEvent).InterestPaid += interestPay;
-                (startLifeEvent as LoanLifeEvent).PrincipalPaid += principalPay;
+                (startLifeEvent as LoanAccountEvent).InterestPaid += interestPay;
+                (startLifeEvent as LoanAccountEvent).PrincipalPaid += principalPay;
                 monthlies.Add(new MonthlyColumn()
                 {
                     Name = startLifeEvent.Name,

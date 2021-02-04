@@ -5,11 +5,11 @@ using System;
 
 namespace LifeCalculator.Control.ViewModels
 {
-    public class ModifyEventCompoundViewModel : ViewModelBase , ILifeEvent
+    public class ModifyEventCompoundViewModel : ViewModelBase , IAccountEvent
     {
         #region Fields
 
-        private ILifeEvent _lifeEvent;
+        private IAccountEvent _lifeEvent;
 
         #endregion
 
@@ -19,7 +19,7 @@ namespace LifeCalculator.Control.ViewModels
         {
         }
 
-        public ModifyEventCompoundViewModel(ILifeEvent e)
+        public ModifyEventCompoundViewModel(IAccountEvent e)
         {
             _lifeEvent = e;
         }
