@@ -9,7 +9,8 @@
     public enum LifeEnum
     {
         StartLifeEvent,
-        EventModification,
+        OneTime,
+        MonthlyContribute,
         EndLifeEvent
     }
 }

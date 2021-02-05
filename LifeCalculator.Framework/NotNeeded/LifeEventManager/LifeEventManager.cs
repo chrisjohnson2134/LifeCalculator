@@ -13,16 +13,16 @@ namespace LifeCalculator.Framework.LifeEventManager
     /// </summary>
     public class LifeEventManager : ILifeEventManager
     {
-        public List<ILifeEvent> LifeEventList { get; set; }
+        public List<IAccountEvent> LifeEventList { get; set; }
 
-        public event EventHandler<ILifeEvent> LifeEventAdded;
+        public event EventHandler<IAccountEvent> LifeEventAdded;
 
         public LifeEventManager()
         {
-            LifeEventList = new List<ILifeEvent>();
+            LifeEventList = new List<IAccountEvent>();
         }
 
-        public void AddLifeEvent(ILifeEvent lifeEvent)
+        public void AddLifeEvent(IAccountEvent lifeEvent)
         {
             LifeEventList.Add(lifeEvent);
             LifeEventAdded?.Invoke(this, lifeEvent);

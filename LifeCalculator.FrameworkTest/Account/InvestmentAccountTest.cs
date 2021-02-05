@@ -43,19 +43,19 @@ namespace LifeCalcuator.FrameworkTest.Account
         {
             CompoundAccount investmentAccount = new CompoundAccount();
 
-            investmentAccount.AddLifeEvent(new InvestmentLifeEvent
+            investmentAccount.AddLifeEvent(new InvestmentAccountEvent
             {
                 Name = "addition",
                 Amount = 10,
-                Date = DateTime.Now,
+                StartDate = DateTime.Now,
                 InterestRate = 10
             });
 
-            investmentAccount.AddLifeEvent(new InvestmentLifeEvent
+            investmentAccount.AddLifeEvent(new InvestmentAccountEvent
             {
                 Name = "addition",
                 Amount = 1000,
-                Date = DateTime.Now.AddYears(1),
+                StartDate = DateTime.Now.AddYears(1),
                 InterestRate = 10
             });
 
@@ -63,11 +63,11 @@ namespace LifeCalcuator.FrameworkTest.Account
             midCalculationCheck[12].Gain.ShouldBeInRange(126.70, 126.71);
             investmentAccount.FinalAmount.ShouldBeInRange(126.70, 126.71);
 
-            investmentAccount.AddLifeEvent(new InvestmentLifeEvent
+            investmentAccount.AddLifeEvent(new InvestmentAccountEvent
             {
                 Name = "addition",
                 Amount = 0,
-                Date = DateTime.Now.AddYears(2),
+                StartDate = DateTime.Now.AddYears(2),
                 InterestRate = 10
             });
 

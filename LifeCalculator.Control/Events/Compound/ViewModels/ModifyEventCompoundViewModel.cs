@@ -5,11 +5,11 @@ using System;
 
 namespace LifeCalculator.Control.ViewModels
 {
-    public class ModifyEventCompoundViewModel : ViewModelBase , ILifeEvent
+    public class ModifyEventCompoundViewModel : ViewModelBase , IAccountEvent
     {
         #region Fields
 
-        private ILifeEvent _lifeEvent;
+        private IAccountEvent _lifeEvent;
 
         #endregion
 
@@ -19,7 +19,7 @@ namespace LifeCalculator.Control.ViewModels
         {
         }
 
-        public ModifyEventCompoundViewModel(ILifeEvent e)
+        public ModifyEventCompoundViewModel(IAccountEvent e)
         {
             _lifeEvent = e;
         }
@@ -41,16 +41,18 @@ namespace LifeCalculator.Control.ViewModels
 
         public LifeEnum LifeEventType { get; set; }
 
-        public DateTime Date
+        public DateTime StartDate
         {
-            get => _lifeEvent.Date;
+            get => _lifeEvent.StartDate;
             set
             {
-                _lifeEvent.Date = value;
+                _lifeEvent.StartDate = value;
                 ValueChanged?.Invoke(this, new EventArgs());
-                OnPropertyChanged(nameof(Date));
+                OnPropertyChanged(nameof(StartDate));
             }
         }
+
+        public DateTime EndDate { get; set; }
 
         public double Amount
         {

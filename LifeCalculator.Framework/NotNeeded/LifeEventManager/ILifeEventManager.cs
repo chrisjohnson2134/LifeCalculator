@@ -9,8 +9,8 @@ namespace LifeCalculator.Framework.LifeEventManager
 {
     public interface ILifeEventManager
     {
-        List<ILifeEvent> LifeEventList { get; set; }
-        event EventHandler<ILifeEvent> LifeEventAdded;
-        void AddLifeEvent(ILifeEvent lifeEvent);
+        List<IAccountEvent> LifeEventList { get; set; }
+        event EventHandler<IAccountEvent> LifeEventAdded;
+        void AddLifeEvent(IAccountEvent lifeEvent);
     }
 }

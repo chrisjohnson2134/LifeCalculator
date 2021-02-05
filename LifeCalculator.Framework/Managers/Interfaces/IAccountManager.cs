@@ -1,9 +1,8 @@
 ﻿using LifeCalculator.Framework.Account;
-using LifeCalculator.Framework.LifeEvents;
 using System;
 using System.Collections.Generic;
 
-namespace LifeCalculator.Framework.AccountManager
+namespace LifeCalculator.Framework.Managers.Interfaces
 {
     public interface IAccountManager
     {

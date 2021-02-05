@@ -1,8 +1,8 @@
-﻿using LifeCalculator.Framework.AccountManager;
-using LifeCalculator.Framework.BaseVM;
+﻿using LifeCalculator.Framework.BaseVM;
 using LifeCalculator.Framework.FinancialProfile;
 using Microsoft.VisualStudio.PlatformUI;
 using System.Windows.Input;
+using LifeCalculator.Framework.Managers.Interfaces;
 
 namespace LifeCalculator.ViewModels
 {
