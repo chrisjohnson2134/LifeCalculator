@@ -68,6 +68,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\FinancialProfileView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\HomeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -87,10 +91,14 @@
     </Compile>
     <Compile Include="Navigation\Navigator.cs" />
     <Compile Include="Ninject\NinjectContainer.cs" />
+    <Compile Include="ViewModels\FinancialProfileViewModel.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
     <Compile Include="ViewModels\Factory\IViewModelFactory.cs" />
     <Compile Include="ViewModels\Factory\ViewModelFactory.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="Views\FinancialProfileView.xaml.cs">
+      <DependentUpon>FinancialProfileView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\HomeView.xaml.cs">
       <DependentUpon>HomeView.xaml</DependentUpon>
     </Compile>

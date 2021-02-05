@@ -23,7 +23,7 @@ namespace LifeCalculator.Framework.Account
             
         }
 
-        public LoanAccount(string name,DateTime date,double interestRate,double loanAmount,double downPayment)
+        public LoanAccount(string name, DateTime date, double interestRate, double loanAmount, double downPayment)
         {
             Name = name;
             InterestRate = interestRate/100;

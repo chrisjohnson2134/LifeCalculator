@@ -18,9 +18,14 @@ namespace LifeCalculator.Ninject
             Bind<IViewModelFactory>().To<ViewModelFactory>().InSingletonScope();
             Bind<MainWindowViewModel>().ToSelf().InSingletonScope();
             Bind<HomeViewModel>().ToSelf().InSingletonScope();
+            Bind<FinancialProfileViewModel>().ToSelf().InSingletonScope();
             Bind<CreateViewModel<HomeViewModel>>().ToMethod((Kernel) =>
             {
                 return () => kernel.Get<HomeViewModel>();
+            });
+            Bind<CreateViewModel<FinancialProfileViewModel>>().ToMethod((Kernel) =>
+            {
+                return () => kernel.Get<FinancialProfileViewModel>();
             });
 
         }

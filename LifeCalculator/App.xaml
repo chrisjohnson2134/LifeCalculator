@@ -16,6 +16,9 @@
             <DataTemplate DataType="{x:Type viewModels:HomeViewModel}">
                 <views:HomeView />
             </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModels:FinancialProfileViewModel}">
+                <views:FinancialProfileView />
+            </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

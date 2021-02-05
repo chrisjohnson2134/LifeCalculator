@@ -49,12 +49,18 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FinancialProfileEdit\FinancialProfileEditView.xaml.cs">
+      <DependentUpon>FinancialProfileEditView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Events\Loan\ViewModels\ModifyEventLoanViewModel.cs" />
     <Compile Include="Events\Loan\Views\AddEventLoan.xaml.cs">
       <DependentUpon>AddEventLoan.xaml</DependentUpon>
     </Compile>
     <Compile Include="Events\Loan\Views\ModifyEventLoan.xaml.cs">
       <DependentUpon>ModifyEventLoan.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="FinancialProfileSummary\FinancialProfileSummaryView.xaml.cs">
+      <DependentUpon>FinancialProfileSummaryView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -96,6 +102,10 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="FinancialProfileEdit\FinancialProfileEditView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Events\Compound\Views\AddEventCompound.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -117,6 +127,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Events\Loan\Views\ModifyEventLoan.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="FinancialProfileSummary\FinancialProfileSummaryView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

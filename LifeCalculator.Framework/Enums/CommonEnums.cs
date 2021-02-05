@@ -3,6 +3,7 @@
     public enum ViewType
     {
         Home,
+        FinancialProfile,
     }
 
     public enum LifeEnum

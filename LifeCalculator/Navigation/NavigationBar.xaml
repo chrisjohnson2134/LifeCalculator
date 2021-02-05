@@ -43,6 +43,12 @@
                 Command="{Binding UpdateCurrentViewModelCommand}"
                 CommandParameter="{x:Static nav:ViewType.Home}"
                 Content="Home" />
+
+            <RadioButton
+                Grid.Column="1"
+                Command="{Binding UpdateCurrentViewModelCommand}"
+                CommandParameter="{x:Static nav:ViewType.FinancialProfile}"
+                Content="FinancialProfile" />
         </Grid>
     </Grid>
 </UserControl>
