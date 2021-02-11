@@ -27,7 +27,7 @@ namespace LifeCalculator.ViewModels
             _authenticator = authenticator;
             _navigator.StateChanged += Navigator_OnStateChanged;
             UpdateCurrentViewModelCommand = new UpdateCurrentViewModelCommand(navigator, viewModelFactory);
-            //UpdateCurrentViewModelCommand.Execute(ViewType.Home);
+            UpdateCurrentViewModelCommand.Execute(ViewType.Login);
         }
 
         #endregion
@@ -38,7 +38,7 @@ namespace LifeCalculator.ViewModels
 
         public ICommand UpdateCurrentViewModelCommand { get; private set; }
 
-        public bool IsLoggedIn => true;
+        public bool IsLoggedIn => _authenticator.IsLoggedIn;
 
         #endregion
 

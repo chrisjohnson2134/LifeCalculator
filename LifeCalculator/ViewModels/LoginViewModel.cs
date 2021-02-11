@@ -1,6 +1,8 @@
 ﻿using LifeCalculator.Commands;
+using LifeCalculator.Framework.Authenticator;
 using LifeCalculator.Framework.BaseVM;
 using LifeCalculator.Navigation;
+using LifeCalculator.ViewModels.Factory;
 using System.Windows.Input;
 
 namespace LifeCalculator.ViewModels
@@ -16,9 +18,10 @@ namespace LifeCalculator.ViewModels
 
         #region Constructors
 
-        public LoginViewModel(INavigator loginNavigator)
+        public LoginViewModel(INavigator loginNavigator, ViewModelFactory viewModelFactory, IAuthenticator authenticator)
         {
-            LoginCommand = new LoginCommand(this, loginNavigator);
+            LoginCommand = new LoginCommand(this, loginNavigator, authenticator);
+            UpdateCurrentViewModelCommand = new UpdateCurrentViewModelCommand(loginNavigator, viewModelFactory);
         }
 
         #endregion
@@ -51,7 +54,9 @@ namespace LifeCalculator.ViewModels
             }
         }
 
-        public ICommand LoginCommand { get; private set; } 
+        public ICommand LoginCommand { get; private set; }
+
+        public ICommand UpdateCurrentViewModelCommand { get; private set; }
 
         #endregion
     }

@@ -23,10 +23,8 @@ namespace LifeCalculator.Framework.FinancialAccount
         #endregion
 
         #region Properties
-
-
         public int id { get; set; }
-        public User AccountHolder { get; set; }
+        public string AccountHolder { get; set; }
 
         public double Salary { get; set; }
 

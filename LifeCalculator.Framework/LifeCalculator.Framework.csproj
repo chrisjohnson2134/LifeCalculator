@@ -138,6 +138,9 @@
     <Compile Include="Authenticator\IAuthenticator.cs" />
     <Compile Include="CurrentAccountStorage\AccountStore.cs" />
     <Compile Include="CurrentAccountStorage\IAccountStore.cs" />
+    <Compile Include="CustomExceptions\FinancialAccountNotFoundException.cs" />
+    <Compile Include="CustomExceptions\InvalidPasswordException.cs" />
+    <Compile Include="CustomExceptions\UserNotFoundException.cs" />
     <Compile Include="Database\BaseQuery.cs" />
     <Compile Include="Database\DatabaseManager.cs" />
     <Compile Include="Database\Interfaces\IDatabaseable.cs" />
@@ -164,6 +167,10 @@
     <Compile Include="Services\AuthenticationService\IAuthenticationService.cs" />
     <Compile Include="Services\DataService\GenericDataService.cs" />
     <Compile Include="Services\DataService\IDataService.cs" />
+    <Compile Include="Services\FinancialAccountService\FinancialAccountDataService.cs" />
+    <Compile Include="Services\FinancialAccountService\IFinancialAccountDataService.cs" />
+    <Compile Include="Services\UserService\IUserDataService.cs" />
+    <Compile Include="Services\UserService\UserDataService.cs" />
     <Compile Include="Users\User.cs" />
   </ItemGroup>
   <ItemGroup>

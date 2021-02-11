@@ -5,10 +5,10 @@ using LifeCalculator.Framework.Managers;
 using LifeCalculator.Framework.Managers.Interfaces;
 using LifeCalculator.Framework.Services.AuthenticationService;
 using LifeCalculator.Framework.Services.FinancialAccountService;
+using LifeCalculator.Framework.Services.UserService;
 using LifeCalculator.Navigation;
 using LifeCalculator.ViewModels;
 using LifeCalculator.ViewModels.Factory;
-using Microsoft.AspNetCore.Identity;
 using Ninject;
 using Ninject.Modules;
 
@@ -29,7 +29,8 @@ namespace LifeCalculator.Ninject
             Bind<IViewModelFactory>().To<ViewModelFactory>().InSingletonScope();
             Bind<IAccountStore>().To<AccountStore>().InSingletonScope();
             Bind<IAuthenticator>().To<Authenticator>().InSingletonScope();
-            Bind<IFinancialAccountService>().To<FinancialAccountService>().InSingletonScope();
+            Bind<IFinancialAccountDataService>().To<FinancialAccountDataService>().InTransientScope().WithConstructorArgument("FinancialAccounts");
+            Bind<IUserDataService>().To<UserDataService>().InTransientScope().WithConstructorArgument("Users");
             Bind<IAuthenticationService>().To<AuthenticationService>().InSingletonScope();
             Bind<CreateViewModel<HomeViewModel>>().ToMethod((Kernel) =>
             {
