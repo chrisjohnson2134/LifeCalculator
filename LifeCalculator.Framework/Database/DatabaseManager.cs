@@ -5,7 +5,7 @@ namespace LifeCalculator.Framework.Database
 {
     public class DatabaseManager : IDatabaseManager
     {
-        #region MyRegion
+        #region Events
 
         public event EventHandler SaveRequested;
 

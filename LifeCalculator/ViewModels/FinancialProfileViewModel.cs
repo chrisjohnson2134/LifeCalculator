@@ -1,5 +1,5 @@
 ﻿using LifeCalculator.Framework.BaseVM;
-using LifeCalculator.Framework.FinancialProfile;
+using LifeCalculator.Framework.FinancialAccount;
 using Microsoft.VisualStudio.PlatformUI;
 using System.Windows.Input;
 using LifeCalculator.Framework.Managers.Interfaces;
@@ -10,7 +10,7 @@ namespace LifeCalculator.ViewModels
     {
         #region Fields
 
-        private readonly FinancialProfile _financialProfile;
+        private readonly FinancialAccount _financialAccount;
         private bool _editViewVisible;
         private bool _summaryViewVisible;
 
@@ -20,8 +20,8 @@ namespace LifeCalculator.ViewModels
 
         public FinancialProfileViewModel(IAccountManager accountManager)
         {
-            _financialProfile = new FinancialProfile(accountManager);
-            _financialProfile.Salary = 2000;
+            _financialAccount = new FinancialAccount(accountManager);
+            _financialAccount.Salary = 2000;
             SummaryViewVisible = true;
             EditViewCommand = new DelegateCommand(EditViewCommand_Execute, EditViewCommand_CanExecute);
             SummaryViewCommand = new DelegateCommand(SummaryViewCommand_Execute, SummaryViewCommand_CanExecute);
@@ -33,160 +33,160 @@ namespace LifeCalculator.ViewModels
 
         public double Salary
         {
-            get => _financialProfile.Salary;
+            get => _financialAccount.Salary;
             set
             {
-                _financialProfile.Salary = value;
+                _financialAccount.Salary = value;
                 OnPropertyChanged(nameof(Salary));
             }
         }
 
         public double NetMonthlyIncome
         {
-            get => _financialProfile.NetMonthlyIncome;
+            get => _financialAccount.NetMonthlyIncome;
             set
             {
-                _financialProfile.NetMonthlyIncome = value;
+                _financialAccount.NetMonthlyIncome = value;
                 OnPropertyChanged(nameof(NetMonthlyIncome));
             }
         }
 
         public double Rent
         {
-            get => _financialProfile.Rent;
+            get => _financialAccount.Rent;
             set
             {
-                _financialProfile.Rent = value;
+                _financialAccount.Rent = value;
                 OnPropertyChanged(nameof(Rent));
             }
         }
 
         public double WaterBill
         {
-            get => _financialProfile.WaterBill;
+            get => _financialAccount.WaterBill;
             set
             {
-                _financialProfile.WaterBill = value;
+                _financialAccount.WaterBill = value;
                 OnPropertyChanged(nameof(WaterBill));
             }
         }
 
         public double ElectricBill
         {
-            get => _financialProfile.ElectricBill;
+            get => _financialAccount.ElectricBill;
             set
             {
-                _financialProfile.ElectricBill = value;
+                _financialAccount.ElectricBill = value;
                 OnPropertyChanged(nameof(ElectricBill));
             }
         }
 
         public double InternetBill
         {
-            get => _financialProfile.InternetBill;
+            get => _financialAccount.InternetBill;
             set
             {
-                _financialProfile.InternetBill = value;
+                _financialAccount.InternetBill = value;
                 OnPropertyChanged(nameof(InternetBill));
             }
         }
 
         public double CableBill
         {
-            get => _financialProfile.CableBill;
+            get => _financialAccount.CableBill;
             set
             {
-                _financialProfile.CableBill = value;
+                _financialAccount.CableBill = value;
                 OnPropertyChanged(nameof(CableBill));
             }
         }
 
         public double Subscriptions
         {
-            get => _financialProfile.Subscriptions;
+            get => _financialAccount.Subscriptions;
             set
             {
-                _financialProfile.Subscriptions = value;
+                _financialAccount.Subscriptions = value;
                 OnPropertyChanged(nameof(Subscriptions));
             }
         }
 
         public double Groceries
         {
-            get => _financialProfile.Groceries;
+            get => _financialAccount.Groceries;
             set
             {
-                _financialProfile.Groceries = value;
+                _financialAccount.Groceries = value;
                 OnPropertyChanged(nameof(Groceries));
             }
         }
 
         public double EmergencyFundContributions
         {
-            get => _financialProfile.EmergencyFundContributions;
+            get => _financialAccount.EmergencyFundContributions;
             set
             { 
-                _financialProfile.EmergencyFundContributions = value;
+                _financialAccount.EmergencyFundContributions = value;
                 OnPropertyChanged(nameof(EmergencyFundContributions));
             }
         }
 
         public double Gas
         {
-            get => _financialProfile.Gas;
+            get => _financialAccount.Gas;
             set
             {
-                _financialProfile.Gas = value;
+                _financialAccount.Gas = value;
                 OnPropertyChanged(nameof(Gas));
             }
         }
 
         public double CarInsurance
         {
-            get => _financialProfile.CarInsurance;
+            get => _financialAccount.CarInsurance;
             set
             {
-                _financialProfile.CarInsurance = value;
+                _financialAccount.CarInsurance = value;
                 OnPropertyChanged(nameof(CarInsurance));
             }
         }
 
         public double HomeInsurance
         {
-            get => _financialProfile.HomeInsurance;
+            get => _financialAccount.HomeInsurance;
             set
             {
-                _financialProfile.HomeInsurance = value;
+                _financialAccount.HomeInsurance = value;
                 OnPropertyChanged(nameof(HomeInsurance));
             }
         }
 
         public double CarPayments
         {
-            get => _financialProfile.CarPayments;
+            get => _financialAccount.CarPayments;
             set
             {
-                _financialProfile.CarPayments = value;
+                _financialAccount.CarPayments = value;
                 OnPropertyChanged(nameof(CarPayments));
             }
         }
 
         public double OtherDebts
         {
-            get => _financialProfile.OtherDebts;
+            get => _financialAccount.OtherDebts;
             set
             {
-                _financialProfile.OtherDebts = value;
+                _financialAccount.OtherDebts = value;
                 OnPropertyChanged(nameof(OtherDebts));
             }
         }
 
         public double MiscellaneousPayments
         {
-            get => _financialProfile.MiscellaneousPayments;
+            get => _financialAccount.MiscellaneousPayments;
             set
             {
-                _financialProfile.MiscellaneousPayments = value;
+                _financialAccount.MiscellaneousPayments = value;
                 OnPropertyChanged(nameof(MiscellaneousPayments));
             }
         }

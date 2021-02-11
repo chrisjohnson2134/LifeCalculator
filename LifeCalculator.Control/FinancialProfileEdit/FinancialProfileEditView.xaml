@@ -43,6 +43,7 @@
             <Label
                 Grid.Row="0"
                 Grid.Column="0"
+                Margin="5,0,0,0"
                 Padding="2"
                 Content="Salary: "
                 FontSize="12" />
@@ -57,6 +58,7 @@
             <Label
                 Grid.Row="1"
                 Grid.Column="0"
+                Margin="5,0,0,0"
                 Padding="2"
                 Content="Net Monthly Income: "
                 FontSize="12" />
@@ -71,6 +73,7 @@
             <Label
                 Grid.Row="2"
                 Grid.Column="0"
+                Margin="5,0,0,0"
                 Padding="2"
                 Content="Rent: "
                 FontSize="12" />
@@ -85,6 +88,7 @@
             <Label
                 Grid.Row="3"
                 Grid.Column="0"
+                Margin="5,0,0,0"
                 Padding="2"
                 Content="Water Bill: "
                 FontSize="12" />
@@ -99,6 +103,7 @@
             <Label
                 Grid.Row="4"
                 Grid.Column="0"
+                Margin="5,0,0,0"
                 Padding="2"
                 Content="Electric Bill: "
                 FontSize="12" />
@@ -113,6 +118,7 @@
             <Label
                 Grid.Row="5"
                 Grid.Column="0"
+                Margin="5,0,0,0"
                 Padding="2"
                 Content="Internet Bill: "
                 FontSize="12" />
@@ -127,6 +133,7 @@
             <Label
                 Grid.Row="6"
                 Grid.Column="0"
+                Margin="5,0,0,0"
                 Padding="2"
                 Content="Cable Bill: "
                 FontSize="12" />
@@ -141,6 +148,7 @@
             <Label
                 Grid.Row="7"
                 Grid.Column="0"
+                Margin="5,0,0,0"
                 Padding="2"
                 Content="Other Debt: "
                 FontSize="12" />

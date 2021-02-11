@@ -1,10 +1,11 @@
 ﻿using LifeCalculator.Framework.Account;
 using LifeCalculator.Framework.Managers.Interfaces;
 using System.Collections.Generic;
+using LifeCalculator.Framework.Users;
 
-namespace LifeCalculator.Framework.FinancialProfile
+namespace LifeCalculator.Framework.FinancialAccount
 {
-    public class FinancialProfile
+    public class FinancialAccount
     {
         #region Fields
 
@@ -14,7 +15,7 @@ namespace LifeCalculator.Framework.FinancialProfile
 
         #region Constructors
 
-        public FinancialProfile(IAccountManager accountManager)
+        public FinancialAccount(IAccountManager accountManager)
         {
             _accountManager = accountManager;
         }
@@ -22,6 +23,10 @@ namespace LifeCalculator.Framework.FinancialProfile
         #endregion
 
         #region Properties
+
+
+        public int id { get; set; }
+        public User AccountHolder { get; set; }
 
         public double Salary { get; set; }
 
@@ -55,7 +60,7 @@ namespace LifeCalculator.Framework.FinancialProfile
 
         public double MiscellaneousPayments { get; set; }
 
-        public List<IAccount> AccountTypes { get; set; }
+        public List<IAccount> Accounts { get; set; }
 
         #endregion
     }

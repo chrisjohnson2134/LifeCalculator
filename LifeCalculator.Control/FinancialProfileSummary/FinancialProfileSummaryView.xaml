@@ -21,8 +21,11 @@
 
         <Border
             Grid.Row="1"
+            Margin="10"
+            Padding="2"
             BorderBrush="Gray"
-            BorderThickness="1">
+            BorderThickness="2"
+            CornerRadius="8">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -30,9 +33,283 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width=".25*" />
+                    <ColumnDefinition Width=".25*" />
+                    <ColumnDefinition Width=".25*" />
+                    <ColumnDefinition Width=".25*" />
+                </Grid.ColumnDefinitions>
 
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Padding="2"
+                    VerticalContentAlignment="Center"
+                    Content="Salary: "
+                    FontSize="12" />
+
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Width="100"
+                    Margin="5"
+                    Padding="2"
+                    VerticalContentAlignment="Center"
+                    Content="{Binding Salary}"
+                    ContentStringFormat="C"
+                    FontSize="12" />
+
+                <Label
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Padding="2"
+                    VerticalContentAlignment="Center"
+                    Content="Net Monthly Income "
+                    FontSize="12" />
+
+                <Label
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Width="100"
+                    Margin="5"
+                    Padding="2"
+                    VerticalContentAlignment="Center"
+                    Content="{Binding NetMonthlyIncome}"
+                    ContentStringFormat="C"
+                    FontSize="12" />
+
+                <Label
+                    Grid.Row="2"
+                    Grid.Column="0"
+                    Padding="2"
+                    VerticalContentAlignment="Center"
+                    Content="Rent: "
+                    FontSize="12" />
+                <Label
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    Width="100"
+                    Margin="5"
+                    VerticalContentAlignment="Center"
+                    Content="{Binding Rent, UpdateSourceTrigger=PropertyChanged}"
+                    ContentStringFormat="C" />
+
+                <Label
+                    Grid.Row="3"
+                    Grid.Column="0"
+                    Padding="2"
+                    VerticalContentAlignment="Center"
+                    Content="Water Bill: "
+                    FontSize="12" />
+                <Label
+                    Grid.Row="3"
+                    Grid.Column="1"
+                    Width="100"
+                    Margin="5"
+                    VerticalContentAlignment="Center"
+                    Content="{Binding WaterBill, UpdateSourceTrigger=PropertyChanged}"
+                    ContentStringFormat="C" />
+
+                <Label
+                    Grid.Row="4"
+                    Grid.Column="0"
+                    Padding="2"
+                    VerticalContentAlignment="Center"
+                    Content="Electric Bill: "
+                    FontSize="12" />
+                <Label
+                    Grid.Row="4"
+                    Grid.Column="1"
+                    Width="100"
+                    Margin="5"
+                    VerticalContentAlignment="Center"
+                    Content="{Binding ElectricBill, UpdateSourceTrigger=PropertyChanged}"
+                    ContentStringFormat="C" />
+
+                <Label
+                    Grid.Row="5"
+                    Grid.Column="0"
+                    Padding="2"
+                    VerticalContentAlignment="Center"
+                    Content="Internet Bill: "
+                    FontSize="12" />
+
+                <Label
+                    Grid.Row="5"
+                    Grid.Column="1"
+                    Width="100"
+                    Margin="5"
+                    VerticalContentAlignment="Center"
+                    Content="{Binding InternetBill, UpdateSourceTrigger=PropertyChanged}"
+                    ContentStringFormat="C" />
+
+                <Label
+                    Grid.Row="6"
+                    Grid.Column="0"
+                    Padding="2"
+                    VerticalContentAlignment="Center"
+                    Content="Cable Bill: "
+                    FontSize="12" />
+
+                <Label
+                    Grid.Row="6"
+                    Grid.Column="1"
+                    Width="100"
+                    Margin="5"
+                    VerticalContentAlignment="Center"
+                    Content="{Binding CableBill, UpdateSourceTrigger=PropertyChanged}"
+                    ContentStringFormat="C" />
+
+                <Label
+                    Grid.Row="7"
+                    Grid.Column="0"
+                    Padding="2"
+                    VerticalContentAlignment="Center"
+                    Content="Other Debt: "
+                    FontSize="12" />
+                <Label
+                    Grid.Row="7"
+                    Grid.Column="1"
+                    Width="100"
+                    Margin="5"
+                    VerticalContentAlignment="Center"
+                    Content="{Binding OtherDebts, UpdateSourceTrigger=PropertyChanged}"
+                    ContentStringFormat="C" />
+
+                <!--  2nd Column  -->
+
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="2"
+                    Padding="2"
+                    VerticalContentAlignment="Center"
+                    Content="Subscriptions: "
+                    FontSize="12" />
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="3"
+                    Width="100"
+                    Margin="5"
+                    VerticalContentAlignment="Center"
+                    Content="{Binding Subscriptions, UpdateSourceTrigger=PropertyChanged}"
+                    ContentStringFormat="C" />
+
+                <Label
+                    Grid.Row="1"
+                    Grid.Column="2"
+                    Padding="2"
+                    VerticalContentAlignment="Center"
+                    Content="Groceries: "
+                    FontSize="12" />
+                <Label
+                    Grid.Row="1"
+                    Grid.Column="3"
+                    Width="100"
+                    Margin="5"
+                    VerticalContentAlignment="Center"
+                    Content="{Binding Groceries, UpdateSourceTrigger=PropertyChanged}"
+                    ContentStringFormat="C" />
+
+                <Label
+                    Grid.Row="2"
+                    Grid.Column="2"
+                    Padding="2"
+                    VerticalContentAlignment="Center"
+                    Content="Emergency Fund (Monthly): "
+                    FontSize="12" />
+                <Label
+                    Grid.Row="2"
+                    Grid.Column="3"
+                    Width="100"
+                    Margin="5"
+                    VerticalContentAlignment="Center"
+                    Content="{Binding EmergencyFundContributions, UpdateSourceTrigger=PropertyChanged}"
+                    ContentStringFormat="C" />
+
+                <Label
+                    Grid.Row="3"
+                    Grid.Column="2"
+                    Padding="2"
+                    VerticalContentAlignment="Center"
+                    Content="Gas: "
+                    FontSize="12" />
+                <Label
+                    Grid.Row="3"
+                    Grid.Column="3"
+                    Width="100"
+                    Margin="5"
+                    VerticalContentAlignment="Center"
+                    Content="{Binding Gas, UpdateSourceTrigger=PropertyChanged}"
+                    ContentStringFormat="C" />
+
+                <Label
+                    Grid.Row="4"
+                    Grid.Column="2"
+                    Padding="2"
+                    VerticalContentAlignment="Center"
+                    Content="Car Insurance: "
+                    FontSize="12" />
+                <Label
+                    Grid.Row="4"
+                    Grid.Column="3"
+                    Width="100"
+                    Margin="5"
+                    VerticalContentAlignment="Center"
+                    Content="{Binding CarInsurance, UpdateSourceTrigger=PropertyChanged}"
+                    ContentStringFormat="C" />
+
+                <Label
+                    Grid.Row="5"
+                    Grid.Column="2"
+                    Padding="2"
+                    VerticalContentAlignment="Center"
+                    Content="Home Insurance "
+                    FontSize="12" />
+                <Label
+                    Grid.Row="5"
+                    Grid.Column="3"
+                    Width="100"
+                    Margin="5"
+                    VerticalContentAlignment="Center"
+                    Content="{Binding HomeInsurance, UpdateSourceTrigger=PropertyChanged}"
+                    ContentStringFormat="C" />
+
+                <Label
+                    Grid.Row="6"
+                    Grid.Column="2"
+                    Padding="2"
+                    VerticalContentAlignment="Center"
+                    Content="Car Payments "
+                    FontSize="12" />
+                <Label
+                    Grid.Row="6"
+                    Grid.Column="3"
+                    Width="100"
+                    Margin="5"
+                    VerticalContentAlignment="Center"
+                    Content="{Binding CarPayments, UpdateSourceTrigger=PropertyChanged}"
+                    ContentStringFormat="C" />
+
+                <Label
+                    Grid.Row="7"
+                    Grid.Column="2"
+                    Padding="2"
+                    VerticalContentAlignment="Center"
+                    Content="Miscellaneous "
+                    FontSize="12" />
+                <Label
+                    Grid.Row="7"
+                    Grid.Column="3"
+                    Width="100"
+                    Margin="5"
+                    VerticalContentAlignment="Center"
+                    Content="{Binding MiscellaneousPayments, UpdateSourceTrigger=PropertyChanged}"
+                    ContentStringFormat="C" />
 
             </Grid>
         </Border>
