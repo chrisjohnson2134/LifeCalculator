@@ -29,7 +29,7 @@ namespace LifeCalculator.Framework.Services.UserService
 
         public async Task<User> LoadByUsername(string username)
         {
-            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
+            using (IDbConnection cnn = new SQLiteConnection("Data Source=|DataDirectory|\\LifeCalculatorDB.db;Version=3;"))
             {
                 var result = await cnn.QuerySingleOrDefaultAsync<User>($"SELECT * FROM {_tableName} WHERE Username=@Username", new { Username = username });
                 if (result == null)

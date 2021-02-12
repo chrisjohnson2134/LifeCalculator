@@ -15,9 +15,8 @@ namespace LifeCalculator.Framework.FinancialAccount
 
         #region Constructors
 
-        public FinancialAccount(IAccountManager accountManager)
+        public FinancialAccount()
         {
-            _accountManager = accountManager;
         }
 
         #endregion

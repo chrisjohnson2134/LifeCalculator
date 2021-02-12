@@ -19,6 +19,7 @@ namespace LifeCalculator.Framework.Services.FinancialAccountService
 
         public FinancialAccountDataService(string tableName) : base(tableName)
         {
+            _tableName = tableName;
         }
 
         public async Task<FinancialAccount.FinancialAccount> LoadByUsername(string username)

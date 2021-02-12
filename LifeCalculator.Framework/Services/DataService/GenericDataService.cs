@@ -150,7 +150,7 @@ namespace LifeCalculator.Framework.Services.DataService
 
         public static string LoadConnectionString(string id = "Default")
         {
-            return ConfigurationManager.ConnectionStrings[id].ConnectionString;
+            return "Data Source=|DataDirectory|\\LifeCalculatorDB.db;Version=3;";
         }
 
         #endregion

@@ -47,6 +47,7 @@ namespace LifeCalculator.ViewModels
         private void Navigator_OnStateChanged()
         {
             OnPropertyChanged(nameof(CurrentViewModel));
+            OnPropertyChanged(nameof(IsLoggedIn));
         }
 
         #endregion
