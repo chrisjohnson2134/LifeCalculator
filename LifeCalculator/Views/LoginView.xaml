@@ -80,10 +80,11 @@
                         <ColumnDefinition Width="300" />
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Column="0" Text="Password:" />
-                    <PasswordBox
+                    <TextBox
                         x:Name="pwBox"
                         Grid.Column="1"
-                        Margin="20,0,0,0" />
+                        Margin="20,0,0,0"
+                        Text="{Binding Password}" />
                 </Grid>
 
                 <Button

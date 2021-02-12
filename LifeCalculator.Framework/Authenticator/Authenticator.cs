@@ -42,7 +42,7 @@ namespace LifeCalculator.Framework.Authenticator
             private set
             {
                 _accountStore.CurrentAccount = value;
-                StateChanged.Invoke();
+                StateChanged?.Invoke();
             }
         }
 

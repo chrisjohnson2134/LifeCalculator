@@ -27,7 +27,7 @@ namespace LifeCalculator.Framework.CurrentAccountStorage
             set
             {
                 _currentFinancialAccount = value;
-                StateChanged.Invoke();
+                StateChanged?.Invoke();
             }
         }
 

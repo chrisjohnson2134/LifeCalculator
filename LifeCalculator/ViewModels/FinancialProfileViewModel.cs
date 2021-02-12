@@ -18,9 +18,9 @@ namespace LifeCalculator.ViewModels
 
         #region Constructors
 
-        public FinancialProfileViewModel(IAccountManager accountManager)
+        public FinancialProfileViewModel()
         {
-            _financialAccount = new FinancialAccount(accountManager);
+            _financialAccount = new FinancialAccount();
             _financialAccount.Salary = 2000;
             SummaryViewVisible = true;
             EditViewCommand = new DelegateCommand(EditViewCommand_Execute, EditViewCommand_CanExecute);
