@@ -2,7 +2,8 @@
 using LifeCalculator.Framework.FinancialAccount;
 using Microsoft.VisualStudio.PlatformUI;
 using System.Windows.Input;
-using LifeCalculator.Framework.Managers.Interfaces;
+using LifeCalculator.Framework.CurrentAccountStorage;
+using LifeCalculator.Framework.Services.FinancialAccountService;
 
 namespace LifeCalculator.ViewModels
 {
@@ -10,7 +11,8 @@ namespace LifeCalculator.ViewModels
     {
         #region Fields
 
-        private readonly FinancialAccount _financialAccount;
+        private FinancialAccount _currentAccount;
+        private IFinancialAccountDataService _financialAccountService;
         private bool _editViewVisible;
         private bool _summaryViewVisible;
 
@@ -18,10 +20,10 @@ namespace LifeCalculator.ViewModels
 
         #region Constructors
 
-        public FinancialProfileViewModel()
+        public FinancialProfileViewModel(IAccountStore accountStore, IFinancialAccountDataService financialAccountService)
         {
-            _financialAccount = new FinancialAccount();
-            _financialAccount.Salary = 2000;
+            _currentAccount = accountStore.CurrentAccount;
+            _financialAccountService = financialAccountService;
             SummaryViewVisible = true;
             EditViewCommand = new DelegateCommand(EditViewCommand_Execute, EditViewCommand_CanExecute);
             SummaryViewCommand = new DelegateCommand(SummaryViewCommand_Execute, SummaryViewCommand_CanExecute);
@@ -33,160 +35,160 @@ namespace LifeCalculator.ViewModels
 
         public double Salary
         {
-            get => _financialAccount.Salary;
+            get => _currentAccount.Salary;
             set
             {
-                _financialAccount.Salary = value;
+                _currentAccount.Salary = value;
                 OnPropertyChanged(nameof(Salary));
             }
         }
 
         public double NetMonthlyIncome
         {
-            get => _financialAccount.NetMonthlyIncome;
+            get => _currentAccount.NetMonthlyIncome;
             set
             {
-                _financialAccount.NetMonthlyIncome = value;
+                _currentAccount.NetMonthlyIncome = value;
                 OnPropertyChanged(nameof(NetMonthlyIncome));
             }
         }
 
         public double Rent
         {
-            get => _financialAccount.Rent;
+            get => _currentAccount.Rent;
             set
             {
-                _financialAccount.Rent = value;
+                _currentAccount.Rent = value;
                 OnPropertyChanged(nameof(Rent));
             }
         }
 
         public double WaterBill
         {
-            get => _financialAccount.WaterBill;
+            get => _currentAccount.WaterBill;
             set
             {
-                _financialAccount.WaterBill = value;
+                _currentAccount.WaterBill = value;
                 OnPropertyChanged(nameof(WaterBill));
             }
         }
 
         public double ElectricBill
         {
-            get => _financialAccount.ElectricBill;
+            get => _currentAccount.ElectricBill;
             set
             {
-                _financialAccount.ElectricBill = value;
+                _currentAccount.ElectricBill = value;
                 OnPropertyChanged(nameof(ElectricBill));
             }
         }
 
         public double InternetBill
         {
-            get => _financialAccount.InternetBill;
+            get => _currentAccount.InternetBill;
             set
             {
-                _financialAccount.InternetBill = value;
+                _currentAccount.InternetBill = value;
                 OnPropertyChanged(nameof(InternetBill));
             }
         }
 
         public double CableBill
         {
-            get => _financialAccount.CableBill;
+            get => _currentAccount.CableBill;
             set
             {
-                _financialAccount.CableBill = value;
+                _currentAccount.CableBill = value;
                 OnPropertyChanged(nameof(CableBill));
             }
         }
 
         public double Subscriptions
         {
-            get => _financialAccount.Subscriptions;
+            get => _currentAccount.Subscriptions;
             set
             {
-                _financialAccount.Subscriptions = value;
+                _currentAccount.Subscriptions = value;
                 OnPropertyChanged(nameof(Subscriptions));
             }
         }
 
         public double Groceries
         {
-            get => _financialAccount.Groceries;
+            get => _currentAccount.Groceries;
             set
             {
-                _financialAccount.Groceries = value;
+                _currentAccount.Groceries = value;
                 OnPropertyChanged(nameof(Groceries));
             }
         }
 
         public double EmergencyFundContributions
         {
-            get => _financialAccount.EmergencyFundContributions;
+            get => _currentAccount.EmergencyFundContributions;
             set
             { 
-                _financialAccount.EmergencyFundContributions = value;
+                _currentAccount.EmergencyFundContributions = value;
                 OnPropertyChanged(nameof(EmergencyFundContributions));
             }
         }
 
         public double Gas
         {
-            get => _financialAccount.Gas;
+            get => _currentAccount.Gas;
             set
             {
-                _financialAccount.Gas = value;
+                _currentAccount.Gas = value;
                 OnPropertyChanged(nameof(Gas));
             }
         }
 
         public double CarInsurance
         {
-            get => _financialAccount.CarInsurance;
+            get => _currentAccount.CarInsurance;
             set
             {
-                _financialAccount.CarInsurance = value;
+                _currentAccount.CarInsurance = value;
                 OnPropertyChanged(nameof(CarInsurance));
             }
         }
 
         public double HomeInsurance
         {
-            get => _financialAccount.HomeInsurance;
+            get => _currentAccount.HomeInsurance;
             set
             {
-                _financialAccount.HomeInsurance = value;
+                _currentAccount.HomeInsurance = value;
                 OnPropertyChanged(nameof(HomeInsurance));
             }
         }
 
         public double CarPayments
         {
-            get => _financialAccount.CarPayments;
+            get => _currentAccount.CarPayments;
             set
             {
-                _financialAccount.CarPayments = value;
+                _currentAccount.CarPayments = value;
                 OnPropertyChanged(nameof(CarPayments));
             }
         }
 
         public double OtherDebts
         {
-            get => _financialAccount.OtherDebts;
+            get => _currentAccount.OtherDebts;
             set
             {
-                _financialAccount.OtherDebts = value;
+                _currentAccount.OtherDebts = value;
                 OnPropertyChanged(nameof(OtherDebts));
             }
         }
 
         public double MiscellaneousPayments
         {
-            get => _financialAccount.MiscellaneousPayments;
+            get => _currentAccount.MiscellaneousPayments;
             set
             {
-                _financialAccount.MiscellaneousPayments = value;
+                _currentAccount.MiscellaneousPayments = value;
                 OnPropertyChanged(nameof(MiscellaneousPayments));
             }
         }
@@ -240,10 +242,15 @@ namespace LifeCalculator.ViewModels
             return SummaryViewVisible == true;
         }
 
+        /// <summary>
+        /// Saves the entered data into the users financial account in the database
+        /// and swaps back to the edit view.
+        /// </summary>
         public void SummaryViewCommand_Execute()
         {
             SummaryViewVisible = true;
             EditViewVisible = false;
+            _financialAccountService.Save(_currentAccount.Id ,_currentAccount);
         }
 
         public bool SummaryViewCommand_CanExecute()

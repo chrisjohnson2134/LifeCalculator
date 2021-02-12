@@ -30,7 +30,7 @@ namespace LifeCalculator.Framework.Services.DataService
 
         #region IDataService Implementation
 
-        public async Task Save(T entity)
+        public async Task Insert(T entity)
         {
             var saveQuery = GenerateSaveQuery(false);
 
@@ -40,7 +40,7 @@ namespace LifeCalculator.Framework.Services.DataService
             }
         }
 
-        public async Task Save(T entity,bool ignoreID)
+        public async Task Insert(T entity,bool ignoreID)
         {
             var saveQuery = GenerateSaveQuery(ignoreID);
 
@@ -79,7 +79,7 @@ namespace LifeCalculator.Framework.Services.DataService
             }
         }
 
-        public async Task Update(int id, T entity)
+        public async Task Save(int id, T entity)
         {
             var updateQuery = GenerateUpdateQuery();
 
@@ -138,7 +138,7 @@ namespace LifeCalculator.Framework.Services.DataService
 
         #region Helper Methods
 
-        private static List<string> GenerateListOfProperties(IEnumerable<PropertyInfo> listOfProperties,bool ignoreID)
+        private static List<string> GenerateListOfProperties(IEnumerable<PropertyInfo> listOfProperties, bool ignoreID)
         {
             return (from prop in listOfProperties
                     let attributes = prop.GetCustomAttributes(typeof(IgnoreDatabase), false)

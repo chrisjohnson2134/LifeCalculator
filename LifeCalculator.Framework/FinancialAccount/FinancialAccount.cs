@@ -22,7 +22,7 @@ namespace LifeCalculator.Framework.FinancialAccount
         #endregion
 
         #region Properties
-        public int id { get; set; }
+        public int Id { get; set; }
         public string AccountHolder { get; set; }
 
         public double Salary { get; set; }
@@ -57,7 +57,7 @@ namespace LifeCalculator.Framework.FinancialAccount
 
         public double MiscellaneousPayments { get; set; }
 
-        public List<IAccount> Accounts { get; set; }
+        //public List<IAccount> Accounts { get; set; }
 
         #endregion
     }

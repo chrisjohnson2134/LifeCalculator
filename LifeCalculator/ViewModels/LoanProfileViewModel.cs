@@ -1,5 +1,6 @@
 ﻿using LifeCalculator.Framework.Account;
 using LifeCalculator.Framework.BaseVM;
+using LifeCalculator.Framework.CurrentAccountStorage;
 using System.Collections.ObjectModel;
 
 namespace LifeCalculator.ViewModels
@@ -8,14 +9,16 @@ namespace LifeCalculator.ViewModels
     {
         #region Fields
 
+        private IAccountStore _accountStore;
+
         #endregion
 
 
         #region Constructors
 
-        public LoanProfileViewModel()
+        public LoanProfileViewModel(IAccountStore accountStore)
         {
-
+            _accountStore = accountStore;
         }
 
         #endregion

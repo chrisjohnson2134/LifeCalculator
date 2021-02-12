@@ -83,10 +83,10 @@ namespace LifeCalculator.FrameworkTest.Queries
         {
             //will insert 2 chris
             var createdAccount = CreateCompoundAccount("chris");
-            createdAccount.Save(createdAccount);//will work
-            createdAccount.Save(createdAccount, true);//will work
-            createdAccount.Save(createdAccount, false);//won't work
-            createdAccount.Save(createdAccount);//won't work
+            createdAccount.Insert(createdAccount);//will work
+            createdAccount.Insert(createdAccount, true);//will work
+            createdAccount.Insert(createdAccount, false);//won't work
+            createdAccount.Insert(createdAccount);//won't work
         }
     }
 }

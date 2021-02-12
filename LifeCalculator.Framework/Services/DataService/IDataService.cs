@@ -7,8 +7,9 @@ namespace LifeCalculator.Framework.Services.DataService
     {
         Task<IEnumerable<T>> LoadAll();
         Task<T> Load(int id);
-        Task Save(T entity);
-        Task Update(int id, T entity);
+        Task Insert(T entity);
+        Task Insert(T entity, bool ignoreID);
+        Task Save(int id, T entity);
         Task Delete(int id);
 
     }

@@ -2,7 +2,8 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:control="http://schemas.canself.com/wpf/xaml/toolkit"
-    xmlns:local="clr-namespace:LifeCalculator.Styles">
+    xmlns:local="clr-namespace:LifeCalculator.Styles"
+    xmlns:pwbox="clr-namespace:LifeCalculator.Control.PasswordBoxControl;assembly=LifeCalculator.Control">
 
     <!--  Colors  -->
     <Color x:Key="PrimaryColor1">#86c232</Color>
@@ -38,16 +39,21 @@
         </Setter>
     </Style>
 
+
     <Style BasedOn="{StaticResource TextBoxBase}" TargetType="TextBox" />
 
-    <!--  Cypher Box  -->
-    <Style BasedOn="{StaticResource TextBoxBase}" TargetType="PasswordBox" />
+    <!--  Password Box  -->
+
+
+    <!--<Style BasedOn="{StaticResource pwBoxBase}" TargetType="pwbox:BindablePasswordBox" />-->
+
     <!--  Button Style  -->
     <Style TargetType="Button">
         <Setter Property="Background" Value="{StaticResource SecondaryBrush1}" />
         <Setter Property="Foreground" Value="WhiteSmoke" />
         <Setter Property="Padding" Value="10,5" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="Cursor" Value="Hand" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">

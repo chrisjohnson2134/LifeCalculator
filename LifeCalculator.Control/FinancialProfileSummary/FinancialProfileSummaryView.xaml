@@ -58,18 +58,16 @@
                     Grid.Column="1"
                     Width="100"
                     Margin="5"
-                    Padding="2"
                     VerticalContentAlignment="Center"
                     Content="{Binding Salary}"
-                    ContentStringFormat="C"
-                    FontSize="12" />
+                    ContentStringFormat="C" />
 
                 <Label
                     Grid.Row="1"
                     Grid.Column="0"
                     Padding="2"
                     VerticalContentAlignment="Center"
-                    Content="Net Monthly Income "
+                    Content="Net Monthly Income: "
                     FontSize="12" />
 
                 <Label
@@ -77,11 +75,9 @@
                     Grid.Column="1"
                     Width="100"
                     Margin="5"
-                    Padding="2"
                     VerticalContentAlignment="Center"
                     Content="{Binding NetMonthlyIncome}"
-                    ContentStringFormat="C"
-                    FontSize="12" />
+                    ContentStringFormat="C" />
 
                 <Label
                     Grid.Row="2"
