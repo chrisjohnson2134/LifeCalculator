@@ -32,11 +32,21 @@ namespace LifeCalculator.Framework.Services.DataService
 
         public async Task Save(T entity)
         {
-            var saveQuery = GenerateSaveQuery();
+            var saveQuery = GenerateSaveQuery(false);
 
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
                  await cnn.ExecuteAsync(saveQuery, entity);
+            }
+        }
+
+        public async Task Save(T entity,bool ignoreID)
+        {
+            var saveQuery = GenerateSaveQuery(ignoreID);
+
+            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
+            {
+                await cnn.ExecuteAsync(saveQuery, entity);
             }
         }
 
@@ -86,7 +96,7 @@ namespace LifeCalculator.Framework.Services.DataService
         private string GenerateUpdateQuery()
         {
             var updateQuery = new StringBuilder($"UPDATE {_tableName} SET ");
-            var properties = GenerateListOfProperties(GetProperties);
+            var properties = GenerateListOfProperties(GetProperties,false);
 
             properties.ForEach(property =>
             {
@@ -102,13 +112,13 @@ namespace LifeCalculator.Framework.Services.DataService
             return updateQuery.ToString();
         }
 
-        private string GenerateSaveQuery()
+        private string GenerateSaveQuery(bool ignoreID)
         {
             var insertQuery = new StringBuilder($"INSERT INTO {_tableName} ");
 
             insertQuery.Append("(");
 
-            var properties = GenerateListOfProperties(GetProperties);
+            var properties = GenerateListOfProperties(GetProperties, ignoreID);
             properties.ForEach(prop => { insertQuery.Append($"[{prop}],"); });
 
             insertQuery
@@ -128,17 +138,17 @@ namespace LifeCalculator.Framework.Services.DataService
 
         #region Helper Methods
 
-        private static List<string> GenerateListOfProperties(IEnumerable<PropertyInfo> listOfProperties)
+        private static List<string> GenerateListOfProperties(IEnumerable<PropertyInfo> listOfProperties,bool ignoreID)
         {
             return (from prop in listOfProperties
-                    let attributes = prop.GetCustomAttributes(typeof(DescriptionAttribute), false)
-                    where attributes.Length <= 0 || (attributes[0] as DescriptionAttribute)?.Description != "ignore"
+                    let attributes = prop.GetCustomAttributes(typeof(IgnoreDatabase), false)
+                    where attributes.Length <= 0 && !(ignoreID && prop.Name.Equals("id"))
                     select prop.Name).ToList();
         }
 
         private IEnumerable<PropertyInfo> GetProperties => typeof(T).GetProperties();
 
-        public string LoadConnectionString(string id = "Default")
+        public static string LoadConnectionString(string id = "Default")
         {
             return ConfigurationManager.ConnectionStrings[id].ConnectionString;
         }

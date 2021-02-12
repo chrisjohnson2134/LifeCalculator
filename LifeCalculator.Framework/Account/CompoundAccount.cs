@@ -2,12 +2,14 @@
 using LifeCalculator.Framework.Database;
 using LifeCalculator.Framework.Database.Queries;
 using LifeCalculator.Framework.LifeEvents;
+using LifeCalculator.Framework.Services.DataService;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace LifeCalculator.Framework.Account
 {
-    public class CompoundAccount : IAccount, IDatabaseable
+    public class CompoundAccount : GenericDataService<CompoundAccount> , IAccount, IDatabaseable
     {
         #region Events
 
@@ -18,11 +20,13 @@ namespace LifeCalculator.Framework.Account
         #region Constructors
 
         public CompoundAccount()
+            :base("CompoundAccount")
         {
             AccountLifeEvents = new List<IAccountEvent>();
         }
 
         public CompoundAccount(string AccountName)
+            :base("CompoundAccount")
         {
             Name = AccountName;
             AccountLifeEvents = new List<IAccountEvent>();
@@ -36,6 +40,7 @@ namespace LifeCalculator.Framework.Account
         public int id { get; }
         public double InitialAmount { get; set; }
         public double FinalAmount { get; set; }
+        [IgnoreDatabase]
         public List<IAccountEvent> AccountLifeEvents { get; set; }
 
         #endregion

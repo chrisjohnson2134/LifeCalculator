@@ -165,6 +165,7 @@
     <Compile Include="FinancialAccount\FinancialAccount.cs" />
     <Compile Include="Services\AuthenticationService\AuthenticationService.cs" />
     <Compile Include="Services\AuthenticationService\IAuthenticationService.cs" />
+    <Compile Include="Services\DataService\DatabaseAtributes.cs" />
     <Compile Include="Services\DataService\GenericDataService.cs" />
     <Compile Include="Services\DataService\IDataService.cs" />
     <Compile Include="Services\FinancialAccountService\FinancialAccountDataService.cs" />

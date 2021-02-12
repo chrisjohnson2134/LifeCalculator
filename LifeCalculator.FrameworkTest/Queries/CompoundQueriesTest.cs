@@ -29,6 +29,21 @@ namespace LifeCalculator.FrameworkTest.Queries
             };
         }
 
+        public CompoundAccount CreateCompoundAccount(string name)
+        {
+            AccountLifeEventsExpected = new List<IAccountEvent>();
+            AccountLifeEventsExpected.Add(new InvestmentAccountEvent() { Name = "start" });
+            AccountLifeEventsExpected.Add(new InvestmentAccountEvent() { Name = "stop" });
+
+            return new CompoundAccount()
+            {
+                Name = name,
+                InitialAmount = InitialAmountExpected,
+                FinalAmount = FinalAmountExpected,
+                AccountLifeEvents = AccountLifeEventsExpected
+            };
+        }
+
         [Test]
         public void CRUDMethodsDatabaseTest()
         {
@@ -61,6 +76,17 @@ namespace LifeCalculator.FrameworkTest.Queries
             loadLoanAccounts = CompoundQueries.LoadByName("Chris");
 
             Assert.That(loadLoanAccounts.Find(x => x.Name.Equals("Chris")) == null);
+        }
+
+        [Test]
+        public void DBGenericTest()
+        {
+            //will insert 2 chris
+            var createdAccount = CreateCompoundAccount("chris");
+            createdAccount.Save(createdAccount);//will work
+            createdAccount.Save(createdAccount, true);//will work
+            createdAccount.Save(createdAccount, false);//won't work
+            createdAccount.Save(createdAccount);//won't work
         }
     }
 }

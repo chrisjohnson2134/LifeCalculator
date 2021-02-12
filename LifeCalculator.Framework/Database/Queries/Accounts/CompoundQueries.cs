@@ -15,7 +15,7 @@ namespace LifeCalculator.Framework.Database.Queries
         {
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
-                var output = cnn.Query<CompoundAccount>("Select * from CompoundAccounts", new DynamicParameters());
+                var output = cnn.Query<CompoundAccount>("Select * from CompoundAccount", new DynamicParameters());
                 return output.ToList();
             }
 
@@ -27,7 +27,7 @@ namespace LifeCalculator.Framework.Database.Queries
         {
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
-                var output = cnn.Query<CompoundAccount>("Select * from CompoundAccounts Where Name = @name", new { name = Name });
+                var output = cnn.Query<CompoundAccount>("Select * from CompoundAccount Where Name = @name", new { name = Name });
                 return output.ToList();
             }
 
@@ -38,7 +38,7 @@ namespace LifeCalculator.Framework.Database.Queries
         {
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
-                var output = cnn.Query<CompoundAccount>("Select * from CompoundAccounts Where id = @id", account);
+                var output = cnn.Query<CompoundAccount>("Select * from CompoundAccount Where id = @id", account);
                 return output.ToList()[0];
             }
 
@@ -53,7 +53,7 @@ namespace LifeCalculator.Framework.Database.Queries
         {
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
-                cnn.Execute("Insert into CompoundAccounts" +
+                cnn.Execute("Insert into CompoundAccount" +
                     "(Name,InitialAmount,FinalAmount) " +
                     "values (@Name,@InitialAmount,@FinalAmount)", account);
             }
@@ -67,7 +67,7 @@ namespace LifeCalculator.Framework.Database.Queries
         {
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
-                cnn.Execute("Update CompoundAccounts " +
+                cnn.Execute("Update CompoundAccount " +
                     "Set Name=@Name,InitialAmount=@InitialAmount,FinalAmount=@FinalAmount " +
                     "Where ID = @id",
                     account);
@@ -82,7 +82,7 @@ namespace LifeCalculator.Framework.Database.Queries
         {
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
-                cnn.Execute("Delete From CompoundAccounts Where @id", new { id = account.id });
+                cnn.Execute("Delete From CompoundAccount Where @id", new { id = account.id });
             }
         }
 
