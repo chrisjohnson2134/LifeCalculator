@@ -82,11 +82,14 @@ namespace LifeCalculator.FrameworkTest.Queries
         public void DBGenericTest()
         {
             //will insert 2 chris
-            var createdAccount = CreateCompoundAccount("chris");
-            createdAccount.Insert(createdAccount);//will work
-            createdAccount.Insert(createdAccount, true);//will work
-            createdAccount.Insert(createdAccount, false);//won't work
-            createdAccount.Insert(createdAccount);//won't work
+            var GusAccount = CreateCompoundAccount("Gus");
+            var RoulphAccount = CreateCompoundAccount("Roulph");
+
+            GusAccount.Insert(GusAccount);
+            var insertedRoulphAccount = RoulphAccount.Insert(RoulphAccount).Result;
+
+            Assert.That(insertedRoulphAccount.Name.Equals(RoulphAccount.Name));
+
         }
     }
 }

@@ -23,6 +23,8 @@ namespace LifeCalculator.Framework.FinancialAccount
 
         #region Properties
         public int Id { get; set; }
+
+        //public int FinancialAccountId { get; set; }
         public string AccountHolder { get; set; }
 
         public double Salary { get; set; }
