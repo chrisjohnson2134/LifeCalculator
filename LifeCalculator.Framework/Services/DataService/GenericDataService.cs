@@ -1,7 +1,5 @@
 ﻿using Dapper;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Configuration;
 using System.Data;
 using System.Data.SQLite;
 using System.Linq;
@@ -32,21 +30,11 @@ namespace LifeCalculator.Framework.Services.DataService
 
         public async Task Insert(T entity)
         {
-            var saveQuery = GenerateSaveQuery(false);
+            var saveQuery = GenerateSaveQuery(true);
 
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
                  await cnn.ExecuteAsync(saveQuery, entity);
-            }
-        }
-
-        public async Task Insert(T entity,bool ignoreID)
-        {
-            var saveQuery = GenerateSaveQuery(ignoreID);
-
-            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
-            {
-                await cnn.ExecuteAsync(saveQuery, entity);
             }
         }
 
@@ -142,7 +130,7 @@ namespace LifeCalculator.Framework.Services.DataService
         {
             return (from prop in listOfProperties
                     let attributes = prop.GetCustomAttributes(typeof(IgnoreDatabase), false)
-                    where attributes.Length <= 0 && !(ignoreID && prop.Name.Equals("id"))
+                    where attributes.Length <= 0 && !(ignoreID && prop.Name.Equals("Id"))
                     select prop.Name).ToList();
         }
 
