@@ -4,18 +4,18 @@ using System;
 
 namespace LifeCalculator.Control.Events.Loan.ViewModels
 {
-    public class ModifyEventLoanViewModel : ILifeEvent
+    public class ModifyEventLoanViewModel : IAccountEvent
     {
         #region Fields
 
-        private ILifeEvent lifeEvent;
+        private IAccountEvent lifeEvent;
 
         #endregion
 
 
         #region Constructors
 
-        public ModifyEventLoanViewModel(ILifeEvent lifeEvent)
+        public ModifyEventLoanViewModel(IAccountEvent lifeEvent)
         {
             this.lifeEvent = lifeEvent;
         }
@@ -25,13 +25,14 @@ namespace LifeCalculator.Control.Events.Loan.ViewModels
 
         #region Properties
 
-        public string Name { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public LifeEnum LifeEventType { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public DateTime Date { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public bool FinalEvent { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public double CurrentValue { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public double Amount { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public double InterestRate { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string Name { get; set; }
+        public LifeEnum LifeEventType { get; set; }
+        public DateTime StartDate { get; set; }
+        public bool FinalEvent { get; set; }
+        public double CurrentValue { get; set; }
+        public double Amount { get; set; }
+        public double InterestRate { get; set; }
+        public DateTime EndDate { get; set; }
 
         public event EventHandler ValueChanged;
 

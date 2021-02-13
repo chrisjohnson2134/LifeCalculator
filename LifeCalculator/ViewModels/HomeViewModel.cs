@@ -1,5 +1,4 @@
 ﻿using LifeCalculator.Framework.Account;
-using LifeCalculator.Framework.AccountManager;
 using LifeCalculator.Framework.LifeEvents;
 using System;
 using System.Collections.Generic;
@@ -12,6 +11,7 @@ using LifeCalculator.Control.ViewModels;
 using LifeCalculator.Framework.Chart;
 using LifeCalculator.Control.Events.Loan.ViewModels;
 using LifeCalculator.Framework.BaseVM;
+using LifeCalculator.Framework.Managers.Interfaces;
 
 namespace LifeCalculator.ViewModels
 {
@@ -23,7 +23,7 @@ namespace LifeCalculator.ViewModels
 
         private string _accountType;
         private string _accountSelected;
-        private List<ILifeEvent> _lifeEvents;
+        private List<IAccountEvent> _lifeEvents;
 
         #endregion
 
@@ -66,7 +66,7 @@ namespace LifeCalculator.ViewModels
 
         //Everything Else
         public ObservableCollection<IAccount> AccountsList { get; set; }
-        public ObservableCollection<ILifeEvent> LifeEvents { get; set; }
+        public ObservableCollection<IAccountEvent> LifeEvents { get; set; }
 
         #endregion
 

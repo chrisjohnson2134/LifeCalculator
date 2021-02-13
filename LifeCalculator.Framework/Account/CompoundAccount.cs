@@ -1,31 +1,47 @@
 ﻿using LifeCalculator.Framework.ColumnDefinitions;
+using LifeCalculator.Framework.Database;
+using LifeCalculator.Framework.Database.Queries;
 using LifeCalculator.Framework.LifeEvents;
+using LifeCalculator.Framework.Services.DataService;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace LifeCalculator.Framework.Account
 {
-    public class CompoundAccount : IAccount
+    public class CompoundAccount : GenericDataService<CompoundAccount> , IAccount, IDatabaseable
     {
-        public string Name { get; set; }
-        public double InitialAmount { get; set; }
-        public double FinalAmount { get; set; }
-        public List<ILifeEvent> AccountLifeEvents { get; set; }
+        #region Events
 
-        public event EventHandler<ILifeEvent> LifeEventAdded;
+        public event EventHandler<IAccountEvent> LifeEventAdded;
+
+        #endregion
 
         #region Constructors
 
         public CompoundAccount()
+            :base("CompoundAccount")
         {
-            AccountLifeEvents = new List<ILifeEvent>();
+            AccountLifeEvents = new List<IAccountEvent>();
         }
 
         public CompoundAccount(string AccountName)
+            :base("CompoundAccount")
         {
             Name = AccountName;
-            AccountLifeEvents = new List<ILifeEvent>();
+            AccountLifeEvents = new List<IAccountEvent>();
         }
+
+        #endregion
+
+        #region Properties
+
+        public string Name { get; set; }
+        public int id { get; }
+        public double InitialAmount { get; set; }
+        public double FinalAmount { get; set; }
+        [IgnoreDatabase]
+        public List<IAccountEvent> AccountLifeEvents { get; set; }
 
         #endregion
 
@@ -37,18 +53,18 @@ namespace LifeCalculator.Framework.Account
 
             InitialAmount = initialAmount;
 
-            InvestmentLifeEvent lifeEventStart = new InvestmentLifeEvent()
+            InvestmentAccountEvent lifeEventStart = new InvestmentAccountEvent()
             {
-                Date = startDate,
+                StartDate = startDate,
                 InterestRate = interestRate,
                 Amount = additionalAmount,
                 Name = this.Name,
                 CurrentValue = initialAmount
             };
 
-            InvestmentLifeEvent lifeEventEnd = new InvestmentLifeEvent()
+            InvestmentAccountEvent lifeEventEnd = new InvestmentAccountEvent()
             {
-                Date = endDate,
+                StartDate = endDate,
                 Name = this.Name,
                 CurrentValue = FinalAmount
             };
@@ -57,6 +73,7 @@ namespace LifeCalculator.Framework.Account
             AddLifeEvent(lifeEventEnd);
 
             Calculation();
+            CompoundQueries.Save(this);
         }
 
         public List<MonthlyColumn> Calculation()
@@ -66,20 +83,20 @@ namespace LifeCalculator.Framework.Account
             int monthDiff = 0;
             FinalAmount = 0;
 
-            AccountLifeEvents.Sort((x, y) => x.Date.CompareTo(y.Date));
+            AccountLifeEvents.Sort((x, y) => x.StartDate.CompareTo(y.StartDate));
 
             monthlies.Add(new MonthlyColumn());
 
             for (int i = 0; i < AccountLifeEvents.Count - 1; i++)
             {
-                monthDiff = Math.Abs((AccountLifeEvents[i].Date.Year * 12 + (AccountLifeEvents[i].Date.Month - 1))
-                    - (AccountLifeEvents[(i + 1)].Date.Year * 12 + (AccountLifeEvents[(i + 1)].Date.Month - 1)));
+                monthDiff = Math.Abs((AccountLifeEvents[i].StartDate.Year * 12 + (AccountLifeEvents[i].StartDate.Month - 1))
+                    - (AccountLifeEvents[(i + 1)].StartDate.Year * 12 + (AccountLifeEvents[(i + 1)].StartDate.Month - 1)));
                 AccountLifeEvents[(i + 1)].CurrentValue = 0;
 
                 for (int j = 0; j < monthDiff; j++)
                 {
                     currValue = (currValue + AccountLifeEvents[i].Amount) * (1 + (AccountLifeEvents[i].InterestRate / 100) / 12);
-                    monthlies.Add(new MonthlyColumn() { Name = AccountLifeEvents[i].Name, Gain = currValue, Date = AccountLifeEvents[i].Date.AddMonths(j) });
+                    monthlies.Add(new MonthlyColumn() { Name = AccountLifeEvents[i].Name, Gain = currValue, Date = AccountLifeEvents[i].StartDate.AddMonths(j) });
                 }
 
                 AccountLifeEvents[(i + 1)].CurrentValue = currValue;
@@ -91,14 +108,12 @@ namespace LifeCalculator.Framework.Account
             return monthlies;
         }
 
-        public void AddLifeEvent(ILifeEvent lifeEvent)
+        public void AddLifeEvent(IAccountEvent lifeEvent)
         {
             AccountLifeEvents.Add(lifeEvent);
             LifeEventAdded?.Invoke(this, lifeEvent);
         }
 
         #endregion
-
-
     }
 }

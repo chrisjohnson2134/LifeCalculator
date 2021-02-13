@@ -1,6 +1,6 @@
 ﻿using LifeCalculator.Framework.Account;
-using LifeCalculator.Framework.AccountManager;
 using LifeCalculator.Framework.BaseVM;
+using LifeCalculator.Framework.Managers.Interfaces;
 using Microsoft.VisualStudio.PlatformUI;
 using System;
 using System.Collections.Generic;
@@ -37,7 +37,7 @@ namespace LifeCalculator.Control.ViewModels
         public DateTime StartDate { get; set; }
         public double InitialLoanAmount { get; set; }
         public double InterestRate { get; set; }
-        public string LoanLength { get; set; }
+        public int LoanLength { get; set; }
         public double DownPayment { get; set; }
 
         public List<string> LoanLengths
@@ -55,7 +55,7 @@ namespace LifeCalculator.Control.ViewModels
         private void AddAccountCommandHandler()
         {
 
-            var acc = new LoanAccount(AccountName, StartDate, InterestRate,InitialLoanAmount,
+            var acc = new LoanAccount(AccountName, StartDate,LoanLength * 12, InterestRate,InitialLoanAmount,
             DownPayment);
 
             _accountManager.AddAccount(acc);

@@ -1,12 +1,15 @@
 ﻿using LifeCalculator.Framework.ColumnDefinitions;
+using LifeCalculator.Framework.Database;
+using LifeCalculator.Framework.Enums;
 using LifeCalculator.Framework.LifeEvents;
 using System;
 using System.Collections.Generic;
 
 namespace LifeCalculator.Framework.Account
 {
-    public class LoanAccount : IAccount
+    public class LoanAccount : IAccount, IDatabaseable
     {
+        public int id { get; }
         public string Name { get; set; }
         public double MonthlyPayment { get; set; }
         public double LoanAmount { get; set; }
@@ -14,32 +17,36 @@ namespace LifeCalculator.Framework.Account
         public double InterestRate { get; set; }
         public double InterestPaid { get; set; }
         public double PrincipalPaid { get; set; }
-        public List<ILifeEvent> AccountLifeEvents { get; set; }
+        public int LoanLengthMonths { get; set; }
+        public List<IAccountEvent> AccountLifeEvents { get; set; }
 
-        public event EventHandler<ILifeEvent> LifeEventAdded;
+        
+
+        public event EventHandler<IAccountEvent> LifeEventAdded;
 
         public LoanAccount()
         {
-            
+
         }
 
-        public LoanAccount(string name,DateTime date,double interestRate,double loanAmount,double downPayment)
+        public LoanAccount(string name, DateTime date, int loanLengthMonths, double interestRate, double loanAmount, double downPayment)
         {
             Name = name;
-            InterestRate = interestRate/100;
+            InterestRate = interestRate / 100;
             LoanAmount = loanAmount - downPayment;
             DownPayment = downPayment;
+            LoanLengthMonths = loanLengthMonths;
 
-            MonthlyPayment = Math.Floor((loanAmount - downPayment) * (Math.Pow((1 + InterestRate / 12), 360) * InterestRate) 
-                / (12 * (Math.Pow((1 + InterestRate / 12), 360) - 1)));
+            MonthlyPayment = Math.Floor((loanAmount - downPayment) * (Math.Pow((1 + InterestRate / 12), 360) * InterestRate)
+                / (12 * (Math.Pow((1 + InterestRate / 12), loanLengthMonths) - 1)));
 
-            AccountLifeEvents = new List<ILifeEvent>();
+            AccountLifeEvents = new List<IAccountEvent>();
 
-            AddLifeEvent(new MortgageLifeEvent() {Name="Start - " + Name, Date = date });
-            AddLifeEvent(new MortgageLifeEvent() {Name="Stop - " + Name, Date = date.AddYears(30) });
+            AddLifeEvent(new LoanAccountEvent() { Name = "Start - " + Name, StartDate = date, LifeEventType = LifeEnum.StartLifeEvent });
+            AddLifeEvent(new LoanAccountEvent() { Name = "Stop - " + Name, StartDate = date.AddMonths(loanLengthMonths), LifeEventType = LifeEnum.EndLifeEvent });
         }
 
-        public void AddLifeEvent(ILifeEvent lifeEvent)
+        public void AddLifeEvent(IAccountEvent lifeEvent)
         {
             AccountLifeEvents.Add(lifeEvent);
             LifeEventAdded?.Invoke(this, lifeEvent);
@@ -57,25 +64,36 @@ namespace LifeCalculator.Framework.Account
             monthlies.Add(new MonthlyColumn());
             int monthDiff = 0;
 
-            AccountLifeEvents.Sort((x, y) => x.Date.CompareTo(y.Date));
+            AccountLifeEvents.Sort((x, y) => x.StartDate.CompareTo(y.StartDate));
 
-            for (int i = 0; i < AccountLifeEvents.Count - 1; i++)
+            IAccountEvent startLifeEvent = AccountLifeEvents.Find(i => i.LifeEventType == LifeEnum.StartLifeEvent);
+            IAccountEvent stopLifeEvent = AccountLifeEvents.Find(i => i.LifeEventType == LifeEnum.EndLifeEvent);
+            monthDiff = Math.Abs(startLifeEvent.StartDate.Year * 12 + (startLifeEvent.StartDate.Month - 1)
+                    - (stopLifeEvent.StartDate.Year * 12 + (stopLifeEvent.StartDate.Month - 1)));
+
+
+            for (int j = 0; j < monthDiff; j++)
             {
-                monthDiff = Math.Abs((AccountLifeEvents[i].Date.Year * 12 + (AccountLifeEvents[i].Date.Month - 1))
-                    - (AccountLifeEvents[(i + 1)].Date.Year * 12 + (AccountLifeEvents[(i + 1)].Date.Month - 1)));
+                interestPay = currValue * InterestRate / 12;
 
-                for (int j = 0; j < monthDiff; j++)
+                if (MonthlyPayment < currValue)
+                    principalPay = MonthlyPayment - interestPay + additionalPriPaymentCalculation(startLifeEvent.StartDate.AddMonths(1 + j));
+                else if (currValue > 0)
+                    principalPay = currValue;
+                else
+                    principalPay = 0;
+
+                InterestPaid += interestPay;
+                PrincipalPaid += principalPay;
+                currValue = currValue - principalPay;
+                (startLifeEvent as LoanAccountEvent).InterestPaid += interestPay;
+                (startLifeEvent as LoanAccountEvent).PrincipalPaid += principalPay;
+                monthlies.Add(new MonthlyColumn()
                 {
-                    interestPay = currValue * InterestRate / 12;
-                    principalPay = MonthlyPayment - interestPay;
-                    InterestPaid += interestPay;
-                    PrincipalPaid += principalPay;
-                    currValue = currValue - principalPay;
-                    (AccountLifeEvents[i] as MortgageLifeEvent).InterestPaid += interestPay;
-                    (AccountLifeEvents[i] as MortgageLifeEvent).PrincipalPaid += principalPay;
-                    monthlies.Add(new MonthlyColumn() { Name = AccountLifeEvents[i].Name, Gain = PrincipalPaid,
-                        Date = AccountLifeEvents[i].Date.AddMonths(1+j) });
-                }
+                    Name = startLifeEvent.Name,
+                    Gain = PrincipalPaid,
+                    Date = startLifeEvent.StartDate.AddMonths(1 + j)
+                });
             }
 
             monthlies[monthlies.Count - 1].Gain = monthlies[monthlies.Count - 1].Gain + currValue;
@@ -83,5 +101,20 @@ namespace LifeCalculator.Framework.Account
             return monthlies;
         }
 
+        private double additionalPriPaymentCalculation(DateTime dateTime)
+        {
+            double additonalAmount = 0;
+
+            AccountLifeEvents.FindAll(i => i.StartDate < dateTime && dateTime < i.EndDate && i.LifeEventType == LifeEnum.MonthlyContribute)
+                .ForEach(i => additonalAmount += i.Amount);
+
+            AccountLifeEvents.FindAll(i => i.StartDate.Year == dateTime.Year && dateTime.Month == i.StartDate.Month && i.LifeEventType == LifeEnum.OneTime)
+                .ForEach(i => additonalAmount += i.Amount);
+
+            if(additonalAmount > 0)
+                Console.WriteLine(additonalAmount);
+
+            return additonalAmount;
+        }
     }
 }

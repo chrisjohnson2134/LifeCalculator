@@ -1,9 +1,9 @@
 ﻿using LifeCalculator.Framework.Account;
-using LifeCalculator.Framework.AccountManager;
 using System;
 using LifeCalculator.Framework.LifeEvents;
 using Microsoft.VisualStudio.PlatformUI;
 using LifeCalculator.Framework.BaseVM;
+using LifeCalculator.Framework.Managers.Interfaces;
 
 namespace LifeCalculator.Control.ViewModels
 {
@@ -51,18 +51,18 @@ namespace LifeCalculator.Control.ViewModels
                 InitialAmount = InitialValue
             };
 
-            InvestmentLifeEvent startEvent = new InvestmentLifeEvent()
+            InvestmentAccountEvent startEvent = new InvestmentAccountEvent()
             {
                 Name = "Start - " + AccountName,
-                Date = StartDate,
+                StartDate = StartDate,
                 InterestRate = Interest,
                 Amount = Contribute
             };
 
-            InvestmentLifeEvent stopEvent = new InvestmentLifeEvent()
+            InvestmentAccountEvent stopEvent = new InvestmentAccountEvent()
             {
                 Name = "Stop - " + AccountName,
-                Date = StopDate,
+                StartDate = StopDate,
                 InterestRate = 0,
                 Amount = 0
             };
