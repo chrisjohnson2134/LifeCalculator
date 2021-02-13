@@ -1,8 +1,10 @@
 ﻿using LifeCalculator.Framework.Authenticator;
+using LifeCalculator.Framework.CustomExceptions;
 using LifeCalculator.Framework.Enums;
 using LifeCalculator.Navigation;
 using LifeCalculator.ViewModels;
 using System;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
@@ -20,7 +22,6 @@ namespace LifeCalculator.Commands
         #region Fields
 
         private readonly LoginViewModel _loginViewModel;
-        private readonly INavigator _navigator;
         private readonly IAuthenticator _authenticator;
 
         #endregion
@@ -28,10 +29,9 @@ namespace LifeCalculator.Commands
 
         #region Constructors
 
-        public LoginCommand(LoginViewModel loginViewModel, INavigator navigator, IAuthenticator authenticator)
+        public LoginCommand(LoginViewModel loginViewModel, IAuthenticator authenticator)
         {
             _loginViewModel = loginViewModel;
-            _navigator = navigator;
             _authenticator = authenticator;
         }
 
@@ -49,12 +49,16 @@ namespace LifeCalculator.Commands
         {
             try
             {
-                await _authenticator.Login(_loginViewModel.Username, _loginViewModel.Password);
+                 await _authenticator.Login(_loginViewModel.Username, _loginViewModel.Password);
                 _loginViewModel.UpdateCurrentViewModelCommand.Execute(ViewType.Home);
             }
-            catch(Exception e)
+            catch(UserNotFoundException e)
             {
-                MessageBox.Show(e.Message);
+                _loginViewModel.ErrorMessage = e.Message;
+            }
+            catch (InvalidPasswordException e)
+            {
+                _loginViewModel.ErrorMessage = e.Message;
             }
         }
 

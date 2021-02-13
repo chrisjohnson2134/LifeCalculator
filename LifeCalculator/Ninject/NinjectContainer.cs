@@ -19,19 +19,24 @@ namespace LifeCalculator.Ninject
         public override void Load()
         {
             IKernel kernel = Kernel;
+
             Bind<MainWindowViewModel>().ToSelf().InSingletonScope();
             Bind<HomeViewModel>().ToSelf().InSingletonScope();
             Bind<LoanProfileViewModel>().ToSelf().InSingletonScope();
             Bind<FinancialProfileViewModel>().ToSelf().InSingletonScope();
             Bind<LoginViewModel>().ToSelf().InSingletonScope();
+            Bind<RegisterViewModel>().ToSelf().InSingletonScope();
+
             Bind<INavigator>().To<Navigator>().InSingletonScope();
             Bind<IAccountManager>().To<AccountManager>().InSingletonScope();
             Bind<IViewModelFactory>().To<ViewModelFactory>().InSingletonScope();
             Bind<IAccountStore>().To<AccountStore>().InSingletonScope();
             Bind<IAuthenticator>().To<Authenticator>().InSingletonScope();
+
             Bind<IFinancialAccountDataService>().To<FinancialAccountDataService>().InTransientScope().WithConstructorArgument("FinancialAccounts");
             Bind<IUserDataService>().To<UserDataService>().InTransientScope().WithConstructorArgument("Users");
             Bind<IAuthenticationService>().To<AuthenticationService>().InSingletonScope();
+
             Bind<CreateViewModel<HomeViewModel>>().ToMethod((Kernel) =>
             {
                 return () => kernel.Get<HomeViewModel>();
@@ -47,6 +52,10 @@ namespace LifeCalculator.Ninject
             Bind<CreateViewModel<LoginViewModel>>().ToMethod((Kernel) =>
             {
                 return () => kernel.Get<LoginViewModel>();
+            });
+            Bind<CreateViewModel<RegisterViewModel>>().ToMethod((Kernel) =>
+            {
+                return () => kernel.Get<RegisterViewModel>();
             });
 
         }

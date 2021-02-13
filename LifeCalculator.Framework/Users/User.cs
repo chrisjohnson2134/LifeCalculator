@@ -12,7 +12,7 @@ namespace LifeCalculator.Framework.Users
 
         public string Email { get; set; }
 
-        public DateTime DateRegistred { get; set; }
+        public string DateRegistered { get; set; }
 
         #endregion
     }

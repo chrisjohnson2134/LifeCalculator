@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LifeCalculator.Framework.Enums;
+using System;
 using System.Threading.Tasks;
 
 namespace LifeCalculator.Framework.Authenticator
@@ -29,6 +30,11 @@ namespace LifeCalculator.Framework.Authenticator
         /// <returns>The account for the user.</returns>
         Task Login(string username, string password);
 
+        Task<RegistrationResult> Register(string username, string password, string confirmpassword, string email);
+
+        /// <summary>
+        /// Set's the account store current account to null.
+        /// </summary>
         void Logout();
 
         #endregion

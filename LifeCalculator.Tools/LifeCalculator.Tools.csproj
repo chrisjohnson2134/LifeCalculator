@@ -57,11 +57,19 @@
   <ItemGroup>
     <Compile Include="Common\Converters\ConvertString.cs" />
     <Compile Include="Common\Converters\EqualValueToParameterConverter.cs" />
+    <Compile Include="Common\Messages\ViewModelMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LifeCalculator.Framework\LifeCalculator.Framework.csproj">
+      <Project>{f7416421-40c3-47a3-93a6-d68cc3f22959}</Project>
+      <Name>LifeCalculator.Framework</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,4 +1,5 @@
 ﻿using LifeCalculator.Framework.CurrentAccountStorage;
+using LifeCalculator.Framework.Enums;
 using LifeCalculator.Framework.Services.AuthenticationService;
 using System;
 using System.Threading.Tasks;
@@ -60,6 +61,11 @@ namespace LifeCalculator.Framework.Authenticator
         public void Logout()
         {
             CurrentAccount = null;
+        }
+
+        public async Task<RegistrationResult> Register(string email, string username, string password, string confirmpassword)
+        {
+            return await _authenticationService.Register(email, username, password, confirmpassword);
         }
 
         #endregion

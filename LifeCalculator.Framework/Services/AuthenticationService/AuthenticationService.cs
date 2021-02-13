@@ -1,9 +1,10 @@
 ﻿using LifeCalculator.Framework.CustomExceptions;
 using LifeCalculator.Framework.Enums;
-using LifeCalculator.Framework.Services.DataService;
 using LifeCalculator.Framework.Services.FinancialAccountService;
 using LifeCalculator.Framework.Services.UserService;
 using Microsoft.AspNetCore.Identity;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace LifeCalculator.Framework.Services.AuthenticationService
@@ -32,33 +33,72 @@ namespace LifeCalculator.Framework.Services.AuthenticationService
 
         public async Task<FinancialAccount.FinancialAccount> Login(string username, string password)
         {
-            Users.User storedUser =  await _userDataService.LoadByUsername(username);
+            Users.User storedUser = await _userDataService.LoadByUsername(username);
+                       
+            PasswordVerificationResult passwordResult =
+                _passwordHasher.VerifyHashedPassword(username, storedUser.PasswordHashed, password);
 
-            if (storedUser == null)
-                throw new UserNotFoundException("Username does not exist.");
-
-            else
+            if (passwordResult != PasswordVerificationResult.Success)
             {
-                PasswordVerificationResult passwordResult =
-                    _passwordHasher.VerifyHashedPassword(username, storedUser.PasswordHashed, password);
-
-                if (passwordResult != PasswordVerificationResult.Success)
-                {
-                    throw new InvalidPasswordException(username, password);
-                }
-
-                FinancialAccount.FinancialAccount storedAccount = _financialAccountService.LoadByUsername(username).Result;
-
-                if (storedAccount == null)
-                    throw new FinancialAccountNotFoundException("This financial account does not exist.");
-
-                return storedAccount;
+                throw new InvalidPasswordException("Username or password is incorrect.");
             }
+
+            FinancialAccount.FinancialAccount storedAccount = _financialAccountService.LoadByUsername(username).Result;         
+
+            return storedAccount;
+            
         }
 
         public async Task<RegistrationResult> Register(string email, string username, string password, string confirmPassword)
         {
-            throw new System.NotImplementedException();
+            RegistrationResult result = RegistrationResult.Success;
+
+            if (password == confirmPassword)
+            {              
+                bool existingAccount = await _userDataService.DoesUserExistByEmail(email);
+
+                if (existingAccount == false)
+                {
+                    bool usernameAccount = await _userDataService.DoesUserExistByUsername(username);
+
+                    if (usernameAccount == false)
+                    {
+                        string hashedPassword = _passwordHasher.HashPassword(username, password);
+
+                        Users.User user = new Users.User
+                        {
+                            Email = email,
+                            Username = username,
+                            PasswordHashed = hashedPassword,
+                            DateRegistered = DateTime.Now.ToString()
+                        };
+
+                        FinancialAccount.FinancialAccount financialAccount = new FinancialAccount.FinancialAccount
+                        {
+                            AccountHolder = user.Username
+                        };
+
+                        await _userDataService.Insert(user);
+                        await _financialAccountService.Insert(financialAccount);
+                    }
+                    else
+                    {
+                        result = RegistrationResult.UsernameAlreadyExists;
+                    }
+                }
+                else
+                {
+                    result = RegistrationResult.EmailAlreadyExists;
+                }
+            }
+            else
+            {
+                result = RegistrationResult.PasswordsDoNotMatch;
+            }
+
+            
+            
+            return result;
         }
     }
 }

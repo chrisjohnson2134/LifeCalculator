@@ -17,13 +17,13 @@ namespace LifeCalculator.Commands
         #region Fields
 
         private readonly INavigator _navigator;
-        private readonly ViewModelFactory _viewModelFactory;
+        private readonly IViewModelFactory _viewModelFactory;
 
         #endregion
 
         #region Constructors
 
-        public UpdateCurrentViewModelCommand(INavigator navigator, ViewModelFactory viewModelFactory)
+        public UpdateCurrentViewModelCommand(INavigator navigator, IViewModelFactory viewModelFactory)
         {
             _navigator = navigator;
             _viewModelFactory = viewModelFactory;

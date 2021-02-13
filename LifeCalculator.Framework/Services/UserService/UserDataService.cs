@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using LifeCalculator.Framework.CustomExceptions;
 using LifeCalculator.Framework.Services.DataService;
 using LifeCalculator.Framework.Users;
 using System.Collections.Generic;
@@ -29,13 +30,55 @@ namespace LifeCalculator.Framework.Services.UserService
 
         public async Task<User> LoadByUsername(string username)
         {
-            using (IDbConnection cnn = new SQLiteConnection("Data Source=|DataDirectory|\\LifeCalculatorDB.db;Version=3;"))
+            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
                 var result = await cnn.QuerySingleOrDefaultAsync<User>($"SELECT * FROM {_tableName} WHERE Username=@Username", new { Username = username });
                 if (result == null)
-                    throw new KeyNotFoundException($"{_tableName} with user [{username}] could not be found.");
+                    throw new UserNotFoundException($"username [{username}] could not be found.");
 
                 return result;
+            }
+        }
+
+        public async Task<User> LoadByEmail(string email)
+        {
+            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
+            {
+                var result = await cnn.QuerySingleOrDefaultAsync<User>($"SELECT * FROM {_tableName} WHERE Email=@Email", new { Email = email });
+                if (result == null)
+                    throw new UserNotFoundException($"user with email [{email}] could not be found.");
+
+                return result;
+            }
+        }
+
+        public async Task<bool> DoesUserExistByEmail(string email)
+        {
+            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
+            {
+                var userExists = false;
+                var result = await cnn.QuerySingleOrDefaultAsync<User>($"SELECT * FROM {_tableName} WHERE Email=@Email", new { Email = email });
+                if (result == null)
+                    userExists = false;
+                else
+                    userExists = true;
+
+                return userExists;
+            }
+        }
+
+        public async Task<bool> DoesUserExistByUsername(string username)
+        {
+            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
+            {
+                var userExists = false;
+                var result = await cnn.QuerySingleOrDefaultAsync<User>($"SELECT * FROM {_tableName} WHERE Username=@Username", new { Username = username });
+                if (result == null)
+                    userExists = false;
+                else
+                    userExists = true;
+
+                return userExists;
             }
         }
 

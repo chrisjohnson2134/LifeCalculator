@@ -7,7 +7,8 @@ namespace LifeCalculator.Framework.Enums
         Home,
         FinancialProfile,
         LoanProfile,
-        Login
+        Login,
+        Register
     }
 
     public enum LifeEnum

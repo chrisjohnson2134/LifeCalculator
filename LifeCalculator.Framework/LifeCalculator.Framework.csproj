@@ -138,8 +138,11 @@
     <Compile Include="Authenticator\IAuthenticator.cs" />
     <Compile Include="CurrentAccountStorage\AccountStore.cs" />
     <Compile Include="CurrentAccountStorage\IAccountStore.cs" />
+    <Compile Include="CustomExceptions\EmailAlreadyExistsException.cs" />
     <Compile Include="CustomExceptions\FinancialAccountNotFoundException.cs" />
     <Compile Include="CustomExceptions\InvalidPasswordException.cs" />
+    <Compile Include="CustomExceptions\PasswordsDoNotMatchException.cs" />
+    <Compile Include="CustomExceptions\UsernameAlreadyExistsException.cs" />
     <Compile Include="CustomExceptions\UserNotFoundException.cs" />
     <Compile Include="Database\BaseQuery.cs" />
     <Compile Include="Database\DatabaseManager.cs" />

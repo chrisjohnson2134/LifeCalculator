@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using LifeCalculator.Framework.CustomExceptions;
 using LifeCalculator.Framework.Services.DataService;
 using System.Collections.Generic;
 using System.Data;
@@ -28,7 +29,7 @@ namespace LifeCalculator.Framework.Services.FinancialAccountService
             {
                 var result = await cnn.QuerySingleOrDefaultAsync<FinancialAccount.FinancialAccount>($"SELECT * FROM {_tableName} WHERE AccountHolder=@AccountHolder", new { AccountHolder = username });
                 if (result == null)
-                    throw new KeyNotFoundException($"{_tableName} with account [{username}] could not be found.");
+                    throw new FinancialAccountNotFoundException($"{_tableName} with account holder [{username}] could not be found.");
 
                 return result;
             }

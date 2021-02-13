@@ -12,18 +12,21 @@ namespace LifeCalculator.ViewModels.Factory
         private readonly CreateViewModel<FinancialProfileViewModel> _createFinancialProfileViewModel;
         private readonly CreateViewModel<LoanProfileViewModel> _createLoanProfileViewModel;
         private readonly CreateViewModel<LoginViewModel> _createLoginViewModel;
+        private readonly CreateViewModel<RegisterViewModel> _createRegisterViewModel;
 
         #endregion
 
         #region Constructors
 
         public ViewModelFactory(CreateViewModel<HomeViewModel> createHomeViewModel, CreateViewModel<FinancialProfileViewModel> createFinancialProfileViewModel,
-            CreateViewModel<LoanProfileViewModel> createLoanProfileViewModel, CreateViewModel<LoginViewModel> createLoginViewModel)
+            CreateViewModel<LoanProfileViewModel> createLoanProfileViewModel, CreateViewModel<LoginViewModel> createLoginViewModel,
+            CreateViewModel<RegisterViewModel> createRegisterViewModel)
         {
             _createHomeViewModel = createHomeViewModel;
             _createFinancialProfileViewModel = createFinancialProfileViewModel;
             _createLoanProfileViewModel = createLoanProfileViewModel;
             _createLoginViewModel = createLoginViewModel;
+            _createRegisterViewModel = createRegisterViewModel;
         }
 
         #endregion
@@ -42,6 +45,8 @@ namespace LifeCalculator.ViewModels.Factory
                     return _createLoanProfileViewModel();
                 case ViewType.Login:
                     return _createLoginViewModel();
+                case ViewType.Register:
+                    return _createRegisterViewModel();
                 default:
                     throw new ArgumentException("This view type does not have a view model.");
             }
