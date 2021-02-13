@@ -9,7 +9,7 @@ using System.ComponentModel;
 
 namespace LifeCalculator.Framework.Account
 {
-    public class CompoundAccount : GenericDataService<CompoundAccount> , IAccount, IDatabaseable
+    public class CompoundAccount : GenericDataService<CompoundAccount> , IAccount
     {
         #region Events
 
@@ -20,13 +20,13 @@ namespace LifeCalculator.Framework.Account
         #region Constructors
 
         public CompoundAccount()
-            :base("CompoundAccount")
+            :base("CompoundAccounts")
         {
             AccountLifeEvents = new List<IAccountEvent>();
         }
 
         public CompoundAccount(string AccountName)
-            :base("CompoundAccount")
+            :base("CompoundAccounts")
         {
             Name = AccountName;
             AccountLifeEvents = new List<IAccountEvent>();
@@ -37,7 +37,7 @@ namespace LifeCalculator.Framework.Account
         #region Properties
 
         public string Name { get; set; }
-        public int id { get; }
+        public int Id { get; }
         public double InitialAmount { get; set; }
         public double FinalAmount { get; set; }
         [IgnoreDatabase]

@@ -84,7 +84,7 @@ namespace LifeCalculator.Framework.Queries
         {
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
-                cnn.Execute("Delete From LoanAccounts Where @id", new { id = account.id });
+                cnn.Execute("Delete From LoanAccounts Where @id", new { id = account.Id });
             }
         }
 

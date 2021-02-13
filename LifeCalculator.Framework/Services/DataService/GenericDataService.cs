@@ -1,5 +1,7 @@
 ﻿using Dapper;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Configuration;
 using System.Data;
 using System.Data.SQLite;
 using System.Linq;
@@ -26,15 +28,20 @@ namespace LifeCalculator.Framework.Services.DataService
 
         #endregion
 
+        #region Properties
+
+
+        #endregion
+
         #region IDataService Implementation
 
-        public async Task Insert(T entity)
+        public async Task<T> Insert(T entity)
         {
             var saveQuery = GenerateSaveQuery(true);
 
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
-                 await cnn.ExecuteAsync(saveQuery, entity);
+                return await Load(cnn.ExecuteScalarAsync<int>(saveQuery, entity).Result);
             }
         }
 
@@ -117,7 +124,7 @@ namespace LifeCalculator.Framework.Services.DataService
 
             insertQuery
                 .Remove(insertQuery.Length - 1, 1)
-                .Append(")");
+                .Append("); select last_insert_rowid(); ");
 
             return insertQuery.ToString();
         }
@@ -130,7 +137,7 @@ namespace LifeCalculator.Framework.Services.DataService
         {
             return (from prop in listOfProperties
                     let attributes = prop.GetCustomAttributes(typeof(IgnoreDatabase), false)
-                    where attributes.Length <= 0 && !(ignoreID && prop.Name.Equals("Id"))
+                    where attributes.Length <= 0 && !(ignoreID && prop.Name.ToLower().Equals("id"))
                     select prop.Name).ToList();
         }
 
