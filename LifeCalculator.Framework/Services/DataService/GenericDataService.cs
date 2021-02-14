@@ -28,11 +28,6 @@ namespace LifeCalculator.Framework.Services.DataService
 
         #endregion
 
-        #region Properties
-
-
-        #endregion
-
         #region IDataService Implementation
 
         public async Task<T> Insert(T entity)
