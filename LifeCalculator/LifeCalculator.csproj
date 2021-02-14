@@ -209,5 +209,13 @@
   <ItemGroup>
     <Resource Include="Resources\piggybank.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\home.png" />
+    <Resource Include="Resources\logout.png" />
+    <Resource Include="Resources\profile.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\bank.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

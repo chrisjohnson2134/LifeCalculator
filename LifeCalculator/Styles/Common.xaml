@@ -6,9 +6,9 @@
     xmlns:pwbox="clr-namespace:LifeCalculator.Control.PasswordBoxControl;assembly=LifeCalculator.Control">
 
     <!--  Colors  -->
-    <Color x:Key="PrimaryColor1">#15db95</Color>
-    <Color x:Key="PrimaryColor2">#00887A</Color>
-    <Color x:Key="SecondaryColor1">#222629</Color>
+    <Color x:Key="PrimaryColor1">#1A936F</Color>
+    <Color x:Key="PrimaryColor2">#15795B</Color>
+    <Color x:Key="SecondaryColor1">#221E22</Color>
     <Color x:Key="SecondaryColor2">#474b4f</Color>
     <Color x:Key="SecondaryColor3">#6b6e70</Color>
     <Color x:Key="SecondaryColor4">#F64C72</Color>

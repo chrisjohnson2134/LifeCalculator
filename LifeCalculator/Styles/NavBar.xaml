@@ -7,7 +7,7 @@
         <Setter Property="Foreground" Value="White" />
         <Setter Property="Padding" Value="10,5" />
         <Setter Property="FontSize" Value="18" />
-        <Setter Property="Background" Value="{StaticResource SecondaryBrush2}" />
+        <Setter Property="Background" Value="{StaticResource PrimaryBrush1}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="RadioButton">
@@ -19,7 +19,7 @@
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="True">
-                            <Setter TargetName="mainGrid" Property="Background" Value="{StaticResource SecondaryBrush1}" />
+                            <Setter TargetName="mainGrid" Property="Background" Value="{StaticResource PrimaryBrush2}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -32,7 +32,7 @@
                     <Storyboard>
                         <ColorAnimation
                             Storyboard.TargetProperty="Background.Color"
-                            To="{StaticResource SecondaryColor1}"
+                            To="{StaticResource PrimaryColor2}"
                             Duration="0:0:0.1" />
                     </Storyboard>
                 </BeginStoryboard>
@@ -42,7 +42,7 @@
                     <Storyboard>
                         <ColorAnimation
                             Storyboard.TargetProperty="Background.Color"
-                            To="{StaticResource SecondaryColor2}"
+                            To="{StaticResource PrimaryColor1}"
                             Duration="0:0:0.1" />
                     </Storyboard>
                 </BeginStoryboard>

@@ -19,6 +19,7 @@
             Padding="10"
             HorizontalAlignment="Center"
             Content="Edit Your Profile"
+            Foreground="WhiteSmoke"
             FontSize="20" />
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>

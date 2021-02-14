@@ -6,6 +6,7 @@ namespace LifeCalculator.Framework.Users
     {
         #region Properties
 
+        public int Id { get; set; }
         public string Username { get; set; }
 
         public string PasswordHashed { get; set; }
