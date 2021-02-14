@@ -25,16 +25,17 @@
         <TextBlock
             Grid.Row="0"
             Padding="5,5"
-            Background="{StaticResource SecondaryBrush1}"
+            Background="{StaticResource PrimaryBrush2}"
             FontSize="28"
             FontWeight="DemiBold"
             Foreground="WhiteSmoke"
             Text="On Track" />
         <Grid
             Grid.Row="1"
-            Background="{StaticResource SecondaryBrush2}"
+            Background="{StaticResource PrimaryBrush1}"
             RenderOptions.EdgeMode="Aliased">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
@@ -46,21 +47,37 @@
                 <Style BasedOn="{StaticResource NavButton}" TargetType="RadioButton" />
             </Grid.Resources>
 
-            <RadioButton
-                Grid.Column="0"
-                Command="{Binding UpdateCurrentViewModelCommand}"
-                CommandParameter="{x:Static nav:ViewType.Home}"
-                Content="Home"
-                IsChecked="{Binding CurrentViewModel, Mode=OneWay, Converter={StaticResource EqualValueToParameterConverter}, ConverterParameter={x:Type viewModels:HomeViewModel}}" />
+            <StackPanel Grid.Column="0" Orientation="Horizontal">
+                <Image
+                    Width="20"
+                    Margin="5,0,0,0"
+                    VerticalAlignment="Center"
+                    Source="/resources/home.png" />
+                <RadioButton
+                    Command="{Binding UpdateCurrentViewModelCommand}"
+                    CommandParameter="{x:Static nav:ViewType.Home}"
+                    Content="Home"
+                    IsChecked="{Binding CurrentViewModel, Mode=OneWay, Converter={StaticResource EqualValueToParameterConverter}, ConverterParameter={x:Type viewModels:HomeViewModel}}" />
+            </StackPanel>
 
-            <RadioButton
+            <Image
                 Grid.Column="1"
+                Width="20"
+                VerticalAlignment="Center"
+                Source="/resources/profile.png" />
+            <RadioButton
+                Grid.Column="2"
                 Command="{Binding UpdateCurrentViewModelCommand}"
                 CommandParameter="{x:Static nav:ViewType.FinancialProfile}"
                 Content="Financial Profile"
                 IsChecked="{Binding CurrentViewModel, Mode=OneWay, Converter={StaticResource EqualValueToParameterConverter}, ConverterParameter={x:Type viewModels:FinancialProfileViewModel}}" />
+            <Image
+                Grid.Column="3"
+                Width="20"
+                VerticalAlignment="Center"
+                Source="/resources/bank.png" />
             <RadioButton
-                Grid.Column="2"
+                Grid.Column="4"
                 Command="{Binding UpdateCurrentViewModelCommand}"
                 CommandParameter="{x:Static nav:ViewType.LoanProfile}"
                 Content="Loans"

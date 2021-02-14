@@ -6,11 +6,15 @@
     xmlns:pwbox="clr-namespace:LifeCalculator.Control.PasswordBoxControl;assembly=LifeCalculator.Control">
 
     <!--  Colors  -->
-    <Color x:Key="PrimaryColor1">#86c232</Color>
-    <Color x:Key="PrimaryColor2">#61892f</Color>
-    <Color x:Key="SecondaryColor1">#222629</Color>
+    <Color x:Key="PrimaryColor1">#1A936F</Color>
+    <Color x:Key="PrimaryColor2">#15795B</Color>
+    <Color x:Key="SecondaryColor1">#221E22</Color>
     <Color x:Key="SecondaryColor2">#474b4f</Color>
     <Color x:Key="SecondaryColor3">#6b6e70</Color>
+    <Color x:Key="SecondaryColor4">#F64C72</Color>
+    <Color x:Key="SecondaryColor5">#F4E4C1</Color>
+    <Color x:Key="SecondaryColor6">#0C0032</Color>
+
 
     <!--  Brushes  -->
     <SolidColorBrush x:Key="PrimaryBrush1" Color="{StaticResource PrimaryColor1}" />
@@ -18,13 +22,14 @@
     <SolidColorBrush x:Key="SecondaryBrush1" Color="{StaticResource SecondaryColor1}" />
     <SolidColorBrush x:Key="SecondaryBrush2" Color="{StaticResource SecondaryColor2}" />
     <SolidColorBrush x:Key="SecondaryBrush3" Color="{StaticResource SecondaryColor3}" />
-
+    <SolidColorBrush x:Key="SecondaryBrush4" Color="{StaticResource SecondaryColor4}" />
+    <SolidColorBrush x:Key="SecondaryBrush5" Color="{StaticResource SecondaryColor5}" />
+    <SolidColorBrush x:Key="SecondaryBrush6" Color="{StaticResource SecondaryColor6}" />
 
     <!--  Text Boxes  -->
     <Style x:Key="TextBoxBase" TargetType="Control">
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Padding" Value="2" />
-        <Setter Property="Height" Value="25" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Control">
@@ -39,37 +44,44 @@
         </Setter>
     </Style>
 
+    <!--  Label Style  -->
+
+    <Style TargetType="Label">
+        <Setter Property="FontFamily" Value="/Fonts/#MontM" />
+    </Style>
 
     <Style BasedOn="{StaticResource TextBoxBase}" TargetType="TextBox" />
 
-    <!--  Password Box  -->
-
-
-    <!--<Style BasedOn="{StaticResource pwBoxBase}" TargetType="pwbox:BindablePasswordBox" />-->
 
     <!--  Button Style  -->
     <Style TargetType="Button">
-        <Setter Property="Background" Value="{StaticResource SecondaryBrush1}" />
+        <Setter Property="Background" Value="{StaticResource PrimaryBrush1}" />
         <Setter Property="Foreground" Value="WhiteSmoke" />
         <Setter Property="Padding" Value="10,5" />
+        <Setter Property="TextElement.FontFamily" Value="/Fonts/#Amatic" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="Cursor" Value="Hand" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <Border
+                        Height="35"
                         Margin="{TemplateBinding Margin}"
                         Padding="{TemplateBinding Padding}"
                         Background="{TemplateBinding Background}"
-                        CornerRadius="3">
-                        <ContentPresenter HorizontalAlignment="Center" />
+                        CornerRadius="12"
+                        TextElement.FontSize="15">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="{StaticResource SecondaryBrush2}" />
+                <Setter Property="Background" Value="{StaticResource PrimaryBrush2}" />
+            </Trigger>
+            <Trigger Property="ClickMode" Value="Press">
+                <Setter Property="Background" Value="{StaticResource PrimaryBrush1}" />
             </Trigger>
         </Style.Triggers>
     </Style>

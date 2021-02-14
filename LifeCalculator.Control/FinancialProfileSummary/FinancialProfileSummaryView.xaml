@@ -17,12 +17,15 @@
             Grid.Row="0"
             HorizontalAlignment="Center"
             Content="Your Financial Profile"
-            FontSize="20" />
+            FontSize="20"
+            Foreground="Black" />
 
         <Border
             Grid.Row="1"
+            Width="500"
             Margin="10"
             Padding="2"
+            Background="WhiteSmoke"
             BorderBrush="Gray"
             BorderThickness="2"
             CornerRadius="8">

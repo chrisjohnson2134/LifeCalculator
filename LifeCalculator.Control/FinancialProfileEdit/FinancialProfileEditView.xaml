@@ -19,8 +19,9 @@
             Padding="10"
             HorizontalAlignment="Center"
             Content="Edit Your Profile"
-            FontSize="20" />
-        <Grid Grid.Row="1">
+            FontSize="20"
+            Foreground="Black" />
+        <Grid Grid.Row="1" Width="500">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
