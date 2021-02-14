@@ -29,7 +29,7 @@
             <summaryControl:FinancialProfileSummaryView Visibility="{Binding SummaryViewVisible, Converter={StaticResource booltovis}}" />
         </ContentControl>
 
-        <Grid Grid.Row="1" Background="{StaticResource SecondaryBrush6}">
+        <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />

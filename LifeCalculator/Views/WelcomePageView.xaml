@@ -78,21 +78,21 @@
                 <RotateTransform Angle="-45" />
             </Grid.RenderTransform>
 
-            <StackPanel Margin="-500,0,0,0" Orientation="Vertical">
+            <StackPanel Margin="-1300,0,0,0" Orientation="Vertical">
                 <Border
-                    Width="1300"
+                    Width="1600"
                     Height="25"
                     Margin="5"
                     Background="{StaticResource SecondaryBrush4}"
                     CornerRadius="20" />
                 <Border
-                    Width="1300"
+                    Width="1600"
                     Height="25"
                     Margin="30,5,5,5"
                     Background="{StaticResource SecondaryBrush5}"
                     CornerRadius="20" />
                 <Border
-                    Width="1300"
+                    Width="1600"
                     Height="25"
                     Margin="5"
                     Background="{StaticResource PrimaryBrush2}"

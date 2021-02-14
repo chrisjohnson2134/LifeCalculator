@@ -58,7 +58,7 @@
         <Setter Property="Background" Value="{StaticResource PrimaryBrush1}" />
         <Setter Property="Foreground" Value="WhiteSmoke" />
         <Setter Property="Padding" Value="10,5" />
-        <Setter Property="TextElement.FontFamily" Value="/Fonts/#Dosis" />
+        <Setter Property="TextElement.FontFamily" Value="/Fonts/#Amatic" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="Cursor" Value="Hand" />
         <Setter Property="Template">

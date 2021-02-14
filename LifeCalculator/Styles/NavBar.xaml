@@ -15,6 +15,7 @@
                         <TextBlock
                             Padding="{TemplateBinding Padding}"
                             HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            FontSize="{TemplateBinding FontSize}"
                             Text="{TemplateBinding Content}" />
                     </Grid>
                     <ControlTemplate.Triggers>
