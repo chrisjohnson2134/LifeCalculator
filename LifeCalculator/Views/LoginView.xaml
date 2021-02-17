@@ -9,7 +9,10 @@
     xmlns:pwbox="clr-namespace:LifeCalculator.Control.PasswordBoxControl;assembly=LifeCalculator.Control"
     mc:Ignorable="d">
     <UserControl.Background>
-        <SolidColorBrush Color="{StaticResource SecondaryColor6}" />
+        <LinearGradientBrush>
+            <GradientStop Color="{StaticResource SecondaryColor1}" Offset="0.0"/>
+            <GradientStop Color="{StaticResource SecondaryColor2}" Offset="1.0"/>
+        </LinearGradientBrush>
     </UserControl.Background>
 
     <UserControl.Resources>

@@ -13,7 +13,10 @@
     </UserControl.Resources>
 
     <UserControl.Background>
-        <SolidColorBrush Color="{StaticResource SecondaryColor6}" />
+        <LinearGradientBrush>
+            <GradientStop Color="{StaticResource SecondaryColor1}" Offset="0.0"/>
+            <GradientStop Color="{StaticResource SecondaryColor2}" Offset="1.0"/>
+        </LinearGradientBrush>
     </UserControl.Background>
 
     <Border

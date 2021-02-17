@@ -6,7 +6,13 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="{StaticResource SecondaryBrush6}">
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush>
+                <GradientStop Color="{StaticResource SecondaryColor1}" Offset="0.0"/>
+                <GradientStop Color="{StaticResource SecondaryColor2}" Offset="1.0"/>
+            </LinearGradientBrush>
+        </Grid.Background>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
@@ -95,7 +101,7 @@
                     Width="1600"
                     Height="25"
                     Margin="5"
-                    Background="{StaticResource PrimaryBrush2}"
+                    Background="{StaticResource PrimaryBrush1}"
                     CornerRadius="20" />
             </StackPanel>
         </Grid>

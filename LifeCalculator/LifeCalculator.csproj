@@ -57,6 +57,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Commands\RegisterCommand.cs" />
+    <Compile Include="ViewModels\LoanProfileViewModel.cs" />
     <Compile Include="ViewModels\RegisterViewModel.cs" />
     <Compile Include="ViewModels\WelcomePageViewModel.cs" />
     <Compile Include="Views\FinancialProfileView.xaml.cs">
@@ -108,7 +109,6 @@
     <Compile Include="ViewModels\HomeViewModel.cs" />
     <Compile Include="ViewModels\Factory\IViewModelFactory.cs" />
     <Compile Include="ViewModels\Factory\ViewModelFactory.cs" />
-    <Compile Include="ViewModels\LoanProfileViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Page Include="Views\FinancialProfileView.xaml">

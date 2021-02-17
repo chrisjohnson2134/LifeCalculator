@@ -1,5 +1,11 @@
-﻿using LifeCalculator.Framework.BaseVM;
+﻿using LifeCalculator.Commands;
+using LifeCalculator.Framework.BaseVM;
+using LifeCalculator.Framework.CurrentAccountStorage;
+using LifeCalculator.Framework.Enums;
+using LifeCalculator.ViewModels.Factory;
+using Microsoft.VisualStudio.PlatformUI;
 using System;
+using System.Windows.Input;
 
 namespace LifeCalculator.Navigation
 {
@@ -19,9 +25,8 @@ namespace LifeCalculator.Navigation
 
         #region Constructors
 
-        public Navigator()
+        public Navigator( IViewModelFactory viewModelFactory)
         {
-
         }
 
         #endregion

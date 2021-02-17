@@ -8,8 +8,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:nav="clr-namespace:LifeCalculator.Framework.Enums;assembly=LifeCalculator.Framework"
     xmlns:viewModels="clr-namespace:LifeCalculator.ViewModels"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
     mc:Ignorable="d">
 
     <UserControl.Resources>
@@ -21,67 +19,83 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-
+        
         <TextBlock
             Grid.Row="0"
             Padding="5,5"
-            Background="{StaticResource PrimaryBrush2}"
+            Background="{StaticResource SecondaryBrush1}"
             FontSize="28"
             FontWeight="DemiBold"
             Foreground="WhiteSmoke"
             Text="On Track" />
+        <StackPanel Grid.Row="0" HorizontalAlignment="Right" Margin="0 0 10 0" Orientation="Horizontal">
+            <Image Source="/Resources/Logout.png" Width="35"/>
+            <Button Grid.Row="0" Content="Logout" Command="{Binding LogoutCommand}"/>
+        </StackPanel>
+        
         <Grid
             Grid.Row="1"
-            Background="{StaticResource PrimaryBrush1}"
+            Background="{StaticResource SecondaryBrush2}"
             RenderOptions.EdgeMode="Aliased">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
             <Grid.Resources>
                 <Style BasedOn="{StaticResource NavButton}" TargetType="RadioButton" />
             </Grid.Resources>
-
-            <StackPanel Grid.Column="0" Orientation="Horizontal">
-                <Image
-                    Width="20"
-                    Margin="5,0,0,0"
-                    VerticalAlignment="Center"
-                    Source="/resources/home.png" />
-                <RadioButton
-                    Command="{Binding UpdateCurrentViewModelCommand}"
-                    CommandParameter="{x:Static nav:ViewType.Home}"
-                    Content="Home"
-                    IsChecked="{Binding CurrentViewModel, Mode=OneWay, Converter={StaticResource EqualValueToParameterConverter}, ConverterParameter={x:Type viewModels:HomeViewModel}}" />
-            </StackPanel>
+            
+            <Image
+                Width="20"
+                Margin="5,0,0,0"
+                Grid.Column="0"
+                Grid.Row="0"
+                VerticalAlignment="Center"
+                Source="/resources/home.png" />
+            <RadioButton
+                Grid.Row="0"
+                Grid.Column="1"
+                Command="{Binding UpdateCurrentViewModelCommand}"
+                CommandParameter="{x:Static nav:ViewType.Home}"
+                Content="Home"
+                IsChecked="{Binding CurrentViewModel, Mode=OneWay, Converter={StaticResource EqualValueToParameterConverter}, ConverterParameter={x:Type viewModels:HomeViewModel}}" />
 
             <Image
-                Grid.Column="1"
+                Grid.Row="1"
+                Grid.Column="0"
                 Width="20"
                 VerticalAlignment="Center"
                 Source="/resources/profile.png" />
             <RadioButton
-                Grid.Column="2"
+                Grid.Row="1"
+                Grid.Column="1"
                 Command="{Binding UpdateCurrentViewModelCommand}"
                 CommandParameter="{x:Static nav:ViewType.FinancialProfile}"
                 Content="Financial Profile"
                 IsChecked="{Binding CurrentViewModel, Mode=OneWay, Converter={StaticResource EqualValueToParameterConverter}, ConverterParameter={x:Type viewModels:FinancialProfileViewModel}}" />
             <Image
-                Grid.Column="3"
+                Grid.Row="2"
+                Grid.Column="0"
                 Width="20"
                 VerticalAlignment="Center"
                 Source="/resources/bank.png" />
             <RadioButton
-                Grid.Column="4"
+                Grid.Row="2"
+                Grid.Column="1"
                 Command="{Binding UpdateCurrentViewModelCommand}"
                 CommandParameter="{x:Static nav:ViewType.LoanProfile}"
                 Content="Loans"
                 IsChecked="{Binding CurrentViewModel, Mode=OneWay, Converter={StaticResource EqualValueToParameterConverter}, ConverterParameter={x:Type viewModels:LoanProfileViewModel}}" />
+            <TextBlock Grid.Row="3"/>
+            
         </Grid>
     </Grid>
 </UserControl>
