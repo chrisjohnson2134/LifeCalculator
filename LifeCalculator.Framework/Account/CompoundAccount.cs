@@ -6,11 +6,13 @@ using LifeCalculator.Framework.Services.DataService;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 
 namespace LifeCalculator.Framework.Account
 {
     public class CompoundAccount : GenericDataService<CompoundAccount> , IAccount
     {
+
         #region Events
 
         public event EventHandler<IAccountEvent> LifeEventAdded;
@@ -29,6 +31,14 @@ namespace LifeCalculator.Framework.Account
             :base("CompoundAccounts")
         {
             Name = AccountName;
+            AccountLifeEvents = new List<IAccountEvent>();
+        }
+
+        public CompoundAccount(CompoundAccount compoundAccount,int id)
+            : base("CompoundAccounts")
+        {
+            Name = compoundAccount.Name;
+            this.Id = id;
             AccountLifeEvents = new List<IAccountEvent>();
         }
 
@@ -112,6 +122,25 @@ namespace LifeCalculator.Framework.Account
         {
             AccountLifeEvents.Add(lifeEvent);
             LifeEventAdded?.Invoke(this, lifeEvent);
+        }
+
+        #endregion
+
+        #region Overrident Methods
+
+        public override bool Equals(object obj)
+        {
+            var temp = obj as CompoundAccount;
+
+            if (temp.FinalAmount == this.FinalAmount &&
+               temp.InitialAmount == InitialAmount &&
+                temp.Id == Id &&
+                temp.Name.Equals(Name) )
+                //temp.AccountLifeEvents.All(AccountLifeEvents.Contains))
+                return true;
+            else
+                return false;
+
         }
 
         #endregion

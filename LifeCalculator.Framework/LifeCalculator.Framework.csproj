@@ -166,6 +166,8 @@
     <Compile Include="Events\Events\IAccountEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="FinancialAccount\FinancialAccount.cs" />
+    <Compile Include="Services\CompoundAccountDataServices\CompoundAccountDataService.cs" />
+    <Compile Include="Services\CompoundAccountDataServices\ICompoundAccountDataService.cs" />
     <Compile Include="Services\AuthenticationService\AuthenticationService.cs" />
     <Compile Include="Services\AuthenticationService\IAuthenticationService.cs" />
     <Compile Include="Services\DataService\DatabaseAtributes.cs" />

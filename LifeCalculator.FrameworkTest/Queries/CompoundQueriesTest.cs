@@ -1,6 +1,7 @@
 ﻿using LifeCalculator.Framework.Account;
 using LifeCalculator.Framework.Database.Queries;
 using LifeCalculator.Framework.LifeEvents;
+using LifeCalculator.Framework.Services.AccountDataServices;
 using NUnit.Framework;
 using System.Collections.Generic;
 
@@ -85,10 +86,17 @@ namespace LifeCalculator.FrameworkTest.Queries
             var GusAccount = CreateCompoundAccount("Gus");
             var RoulphAccount = CreateCompoundAccount("Roulph");
 
-            GusAccount.Insert(GusAccount);
-            var insertedRoulphAccount = RoulphAccount.Insert(RoulphAccount).Result;
+            var dataService = new CompoundAccountDataService("CompoundAccounts");
 
-            Assert.That(insertedRoulphAccount.Name.Equals(RoulphAccount.Name));
+
+            GusAccount = dataService.Insert(GusAccount).Result;
+            var y = RoulphAccount.Insert(RoulphAccount).Result;
+
+            Assert.That(!y.Equals(RoulphAccount));
+
+            var RoulphLoadedAccount = RoulphAccount.Load(y.Id).Result;
+
+            Assert.That(RoulphAccount.Equals(RoulphLoadedAccount));
 
         }
     }
