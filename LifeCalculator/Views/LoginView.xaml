@@ -5,13 +5,13 @@
     xmlns:control="http://schemas.canself.com/wpf/xaml/toolkit"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:LifeCalculator.Views"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:pwbox="clr-namespace:LifeCalculator.Control.PasswordBoxControl;assembly=LifeCalculator.Control"
     mc:Ignorable="d">
     <UserControl.Background>
         <LinearGradientBrush>
-            <GradientStop Color="{StaticResource SecondaryColor1}" Offset="0.0"/>
-            <GradientStop Color="{StaticResource SecondaryColor2}" Offset="1.0"/>
+            <GradientStop Offset="0.0" Color="{StaticResource SecondaryColor1}" />
+            <GradientStop Offset="1.0" Color="{StaticResource SecondaryColor2}" />
         </LinearGradientBrush>
     </UserControl.Background>
 
@@ -19,104 +19,116 @@
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </UserControl.Resources>
 
-    <Border
-        Margin="25"
-        Padding="50"
-        HorizontalAlignment="Center"
-        VerticalAlignment="Center"
-        Background="GhostWhite"
-        BorderBrush="{StaticResource SecondaryBrush1}"
-        BorderThickness="3"
-        CornerRadius="10">
-        <Border.Effect>
-            <DropShadowEffect BlurRadius="10" Color="Gray" />
-        </Border.Effect>
-        <Grid IsSharedSizeScope="True">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
+    <Grid Width="900">
+        <Border
+            Height="390"
+            VerticalAlignment="Top"
+            CornerRadius="0,0,180,0" />
+        <StackPanel Grid.Column="1" />
 
-            <TextBlock
-                Grid.Row="0"
-                HorizontalAlignment="Center"
-                FontFamily="/Fonts/#Amatic"
-                FontSize="48"
-                FontWeight="Regular"
-                Text="On Track" />
-            <TextBlock
-                Grid.Row="1"
-                Margin="0,10"
-                HorizontalAlignment="Center"
-                FontSize="18"
-                FontWeight="Thin"
-                Text="Stay on track with your debt." />
-
-            <Grid Grid.Row="2" Margin="0,20">
+        <Border
+            Grid.Column="1"
+            Margin="25"
+            Padding="50"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Background="GhostWhite"
+            BorderBrush="{StaticResource SecondaryBrush1}"
+            BorderThickness="3"
+            CornerRadius="10">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="10" Color="Gray" />
+            </Border.Effect>
+            <Grid IsSharedSizeScope="True">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <Grid Grid.Row="0" Margin="0,10">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" SharedSizeGroup="Label" />
-                        <ColumnDefinition Width="300" />
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="Username:" />
-                    <TextBox
-                        Grid.Column="1"
-                        Margin="20,0,0,0"
-                        Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}" />
-                </Grid>
-
-
-                <Grid Grid.Row="1" Margin="0,10">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" SharedSizeGroup="Label" />
-                        <ColumnDefinition Width="300" />
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="Password:" />
-                    <TextBox
-                        x:Name="pwBox"
-                        Grid.Column="1"
-                        Margin="20,0,0,0"
-                        Text="{Binding Password}" />
-                </Grid>
-
-                <Button
-                    Grid.Row="2"
-                    Margin="0,10"
-                    HorizontalAlignment="Center"
-                    Command="{Binding LoginCommand}"
-                    Content="Login"
-                    IsDefault="True" />
-
-                <Button
-                    Grid.Row="3"
-                    Margin="0,10"
-                    HorizontalAlignment="Center"
-                    Background="Transparent"
-                    Command="{Binding ViewRegisterCommand}"
-                    Content="Don't have an account?"
-                    FontSize="14"
-                    Foreground="Blue"
-                    IsDefault="True" />
-
                 <TextBlock
-                    Grid.Row="4"
+                    Grid.Row="0"
+                    HorizontalAlignment="Center"
+                    FontFamily="/Fonts/#Amatic"
+                    FontSize="48"
+                    FontWeight="Regular"
+                    Text="On Track" />
+                <TextBlock
+                    Grid.Row="1"
                     Margin="0,10"
                     HorizontalAlignment="Center"
-                    DataContext="{Binding LoginErrorMessage}"
-                    FontSize="14"
-                    Foreground="DarkRed"
-                    Text="{Binding Message}"
-                    Visibility="{Binding HasMessage, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                    FontSize="18"
+                    FontWeight="Thin"
+                    Text="Stay on track with your debt." />
+
+                <Grid Grid.Row="2" Margin="0,20">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0" Margin="0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="Label" />
+                            <ColumnDefinition Width="300" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Username:" />
+                        <TextBox
+                            Grid.Column="1"
+                            Margin="20,0,0,0"
+                            Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}" />
+                    </Grid>
+
+
+                    <Grid Grid.Row="1" Margin="0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="Label" />
+                            <ColumnDefinition Width="300" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Password:" />
+                        <TextBox
+                            x:Name="pwBox"
+                            Grid.Column="1"
+                            Margin="20,0,0,0"
+                            Text="{Binding Password}" />
+                    </Grid>
+
+                    <Button
+                        Grid.Row="2"
+                        Margin="0,10"
+                        HorizontalAlignment="Center"
+                        Command="{Binding LoginCommand}"
+                        Content="Login"
+                        IsDefault="True" />
+
+                    <Button
+                        Grid.Row="3"
+                        Margin="0,10"
+                        HorizontalAlignment="Center"
+                        Background="Transparent"
+                        Command="{Binding ViewRegisterCommand}"
+                        Content="Don't have an account?"
+                        FontSize="14"
+                        Foreground="Blue"
+                        IsDefault="True" />
+
+                    <TextBlock
+                        Grid.Row="4"
+                        Margin="0,10"
+                        HorizontalAlignment="Center"
+                        DataContext="{Binding LoginErrorMessage}"
+                        FontSize="14"
+                        Foreground="DarkRed"
+                        Text="{Binding Message}"
+                        Visibility="{Binding HasMessage, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                </Grid>
             </Grid>
-        </Grid>
-    </Border>
+        </Border>
+
+    </Grid>
+
+
 </UserControl>

@@ -26,9 +26,10 @@
     <SolidColorBrush x:Key="SecondaryBrush4" Color="{StaticResource SecondaryColor4}" />
     <SolidColorBrush x:Key="SecondaryBrush5" Color="{StaticResource SecondaryColor5}" />
     <SolidColorBrush x:Key="SecondaryBrush6" Color="{StaticResource SecondaryColor6}" />
-    <SolidColorBrush x:Key="ButtonTextBrush" Color="{StaticResource ButtonTextColor}"/>
+    <SolidColorBrush x:Key="ButtonTextBrush" Color="{StaticResource ButtonTextColor}" />
 
     <!--  Text Boxes  -->
+    <!--
     <Style x:Key="TextBoxBase" TargetType="Control">
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Padding" Value="2" />
@@ -44,7 +45,7 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-    </Style>
+    </Style>-->
 
     <!--  Label Style  -->
 
@@ -52,40 +53,6 @@
         <Setter Property="FontFamily" Value="/Fonts/#Amatic" />
     </Style>
 
-    <Style BasedOn="{StaticResource TextBoxBase}" TargetType="TextBox" />
-
-
-    <!--  Button Style  -->
-    <Style TargetType="Button">
-        <Setter Property="Background" Value="{StaticResource PrimaryBrush1}" />
-        <Setter Property="Foreground" Value="{StaticResource ButtonTextBrush }" />
-        <Setter Property="Padding" Value="10,5" />
-        <Setter Property="TextElement.FontFamily" Value="/Fonts/#Amatic" />
-        <Setter Property="HorizontalContentAlignment" Value="Center" />
-        <Setter Property="Cursor" Value="Hand" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="Button">
-                    <Border
-                        Height="35"
-                        Margin="{TemplateBinding Margin}"
-                        Padding="{TemplateBinding Padding}"
-                        Background="{TemplateBinding Background}"
-                        CornerRadius="12"
-                        TextElement.FontSize="15">
-                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="{StaticResource PrimaryBrush2}" />
-            </Trigger>
-            <Trigger Property="ClickMode" Value="Press">
-                <Setter Property="Background" Value="{StaticResource PrimaryBrush1}" />
-            </Trigger>
-        </Style.Triggers>
-    </Style>
+    <!--<Style BasedOn="{StaticResource TextBoxBase}" TargetType="TextBox" />-->
 
 </ResourceDictionary>

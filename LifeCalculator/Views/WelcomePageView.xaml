@@ -9,8 +9,8 @@
     <Grid>
         <Grid.Background>
             <LinearGradientBrush>
-                <GradientStop Color="{StaticResource SecondaryColor1}" Offset="0.0"/>
-                <GradientStop Color="{StaticResource SecondaryColor2}" Offset="1.0"/>
+                <GradientStop Offset="0.0" Color="{StaticResource SecondaryColor1}" />
+                <GradientStop Offset="1.0" Color="{StaticResource SecondaryColor2}" />
             </LinearGradientBrush>
         </Grid.Background>
         <Grid.ColumnDefinitions>
@@ -118,8 +118,8 @@
                 Width="100"
                 Height="35"
                 Margin="10,0,0,0"
-                HorizontalAlignment="Stretch"
-                VerticalContentAlignment="Stretch"
+                HorizontalAlignment="Center"
+                VerticalContentAlignment="Center"
                 Command="{Binding NavigateToLoginViewCommand}"
                 Content="Login" />
             <Button
@@ -127,7 +127,7 @@
                 Height="35"
                 Margin="10,0,0,0"
                 HorizontalAlignment="Stretch"
-                VerticalContentAlignment="Stretch"
+                VerticalContentAlignment="Center"
                 Command="{Binding NavigateToRegisterViewCommand}"
                 Content="Register" />
         </StackPanel>

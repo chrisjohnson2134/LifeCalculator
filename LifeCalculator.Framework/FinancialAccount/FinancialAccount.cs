@@ -59,7 +59,7 @@ namespace LifeCalculator.Framework.FinancialAccount
 
         public double MiscellaneousPayments { get; set; }
 
-        public List<IAccount> Accounts { get; set; }
+        //public List<IAccount> Accounts { get; set; }
 
         #endregion
     }
