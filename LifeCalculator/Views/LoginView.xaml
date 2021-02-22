@@ -7,13 +7,8 @@
     xmlns:local="clr-namespace:LifeCalculator.Views"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Background="{StaticResource SecondaryBrush5}"
     mc:Ignorable="d">
-    <UserControl.Background>
-        <LinearGradientBrush>
-            <GradientStop Offset="0.0" Color="{StaticResource SecondaryColor1}" />
-            <GradientStop Offset="1.0" Color="{StaticResource SecondaryColor2}" />
-        </LinearGradientBrush>
-    </UserControl.Background>
 
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
@@ -32,7 +27,7 @@
             Padding="50"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
-            Background="GhostWhite"
+            Background="White"
             BorderBrush="{StaticResource SecondaryBrush1}"
             BorderThickness="3"
             CornerRadius="10">

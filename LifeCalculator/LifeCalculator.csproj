@@ -57,6 +57,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Commands\RegisterCommand.cs" />
+    <Compile Include="Navigation\SideNavigationBar.xaml.cs">
+      <DependentUpon>SideNavigationBar.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\LoanProfileViewModel.cs" />
     <Compile Include="ViewModels\RegisterViewModel.cs" />
     <Compile Include="ViewModels\WelcomePageViewModel.cs" />
@@ -81,9 +84,9 @@
     <Compile Include="Views\WelcomePageView.xaml.cs">
       <DependentUpon>WelcomePageView.xaml</DependentUpon>
     </Compile>
-    <Page Include="Navigation\NavigationBar.xaml">
-      <Generator>MSBuild:Compile</Generator>
+    <Page Include="Navigation\SideNavigationBar.xaml">
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Styles\Common.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -100,9 +103,6 @@
     <Compile Include="Commands\LoginCommand.cs" />
     <Compile Include="Commands\UpdateCurrentViewModelCommand.cs" />
     <Compile Include="Navigation\INavigator.cs" />
-    <Compile Include="Navigation\NavigationBar.xaml.cs">
-      <DependentUpon>NavigationBar.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Navigation\Navigator.cs" />
     <Compile Include="Ninject\NinjectContainer.cs" />
     <Compile Include="ViewModels\FinancialProfileViewModel.cs" />

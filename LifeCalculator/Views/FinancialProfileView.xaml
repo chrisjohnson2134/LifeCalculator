@@ -10,7 +10,7 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <Grid>
+    <Grid Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -19,14 +19,6 @@
         <Grid.Resources>
             <BooleanToVisibilityConverter x:Key="booltovis" />
         </Grid.Resources>
-
-        <Grid.Background>
-            <LinearGradientBrush>
-                <GradientStop Color="{StaticResource SecondaryColor1}" Offset="0.0"/>
-                <GradientStop Color="{StaticResource SecondaryColor2}" Offset="1.0"/>
-            </LinearGradientBrush>
-        </Grid.Background>
-
 
         <ContentControl Grid.Row="0">
             <editcontrol:FinancialProfileEditView Visibility="{Binding EditViewVisible, Converter={StaticResource booltovis}}" />
@@ -41,23 +33,26 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <StackPanel Margin="20,0,0,0" Grid.Row="0" Orientation="Horizontal">
+            <StackPanel
+                Grid.Row="0"
+                Margin="20,0,0,0"
+                Orientation="Horizontal">
                 <Button
-                Grid.Column="0"
-                Width="80"
+                    Grid.Column="0"
+                    Width="80"
                     Margin="0,0,5,0"
-                HorizontalAlignment="Center"
-                Command="{Binding EditViewCommand}"
-                Content="Edit"
-                Visibility="{Binding SummaryViewVisible, Converter={StaticResource booltovis}}" />
+                    HorizontalAlignment="Center"
+                    Command="{Binding EditViewCommand}"
+                    Content="Edit"
+                    Visibility="{Binding SummaryViewVisible, Converter={StaticResource booltovis}}" />
                 <Button
-                Grid.Column="1"
-                Width="80"
-                Margin="5,10"
-                HorizontalAlignment="Center"
-                Command="{Binding SummaryViewCommand}"
-                Content="Save"
-                Visibility="{Binding EditViewVisible, Converter={StaticResource booltovis}}" />
+                    Grid.Column="1"
+                    Width="80"
+                    Margin="5,10"
+                    HorizontalAlignment="Center"
+                    Command="{Binding SummaryViewCommand}"
+                    Content="Save"
+                    Visibility="{Binding EditViewVisible, Converter={StaticResource booltovis}}" />
             </StackPanel>
         </Grid>
     </Grid>

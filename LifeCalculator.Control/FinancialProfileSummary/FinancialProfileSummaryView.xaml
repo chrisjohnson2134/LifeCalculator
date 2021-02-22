@@ -18,7 +18,7 @@
             HorizontalAlignment="Center"
             Content="Your Financial Profile"
             FontSize="20"
-            Foreground="WhiteSmoke" />
+            Foreground="Black" />
 
         <Border
             Grid.Row="1"

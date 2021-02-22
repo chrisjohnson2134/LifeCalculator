@@ -8,10 +8,8 @@
     xmlns:local="clr-namespace:LifeCalculator.Views"
     xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Width="870"
-    Height="621"
     mc:Ignorable="d">
-    <Grid>
+    <Grid Background="White">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto" />
@@ -56,12 +54,15 @@
                 Grid.Row="0"
                 Grid.Column="0"
                 Margin="2"
-                Content="Account Types:" />
+                Content="Account Types:"
+                Foreground="Black" />
             <ComboBox
                 x:Name="AccountTypeSelection"
                 Grid.Row="0"
                 Grid.Column="1"
                 Margin="2"
+                BorderBrush="Black"
+                Foreground="White"
                 ItemsSource="{Binding AccountTypesList}"
                 Text="{Binding AccountType}" />
 
@@ -92,13 +93,16 @@
                 Grid.Row="0"
                 Grid.Column="0"
                 Margin="2"
-                Content="Events:" />
+                Content="Events:"
+                Foreground="White" />
             <ComboBox
                 x:Name="EventNameTextbox"
                 Grid.Row="0"
                 Grid.Column="1"
                 Margin="2"
+                BorderBrush="White"
                 DisplayMemberPath="Name"
+                Foreground="White"
                 ItemsSource="{Binding AccountsList}"
                 Text="{Binding AccountSelected}" />
 

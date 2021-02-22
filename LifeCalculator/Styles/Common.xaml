@@ -6,14 +6,14 @@
     xmlns:pwbox="clr-namespace:LifeCalculator.Control.PasswordBoxControl;assembly=LifeCalculator.Control">
 
     <!--  Colors  -->
-    <Color x:Key="PrimaryColor1">#62AB49</Color>
-    <Color x:Key="PrimaryColor2">#528F3D</Color>
-    <Color x:Key="SecondaryColor1">#221E22</Color>
-    <Color x:Key="SecondaryColor2">#474b4f</Color>
-    <Color x:Key="SecondaryColor3">#E8E9ED</Color>
-    <Color x:Key="SecondaryColor4">#B9314F</Color>
-    <Color x:Key="SecondaryColor5">#D6D84F</Color>
-    <Color x:Key="SecondaryColor6">#2D2D2A</Color>
+    <Color x:Key="PrimaryColor1">#333232</Color>
+    <Color x:Key="PrimaryColor2">#113537</Color>
+    <Color x:Key="SecondaryColor1">#1982C4</Color>
+    <Color x:Key="SecondaryColor2">#FFCA3A</Color>
+    <Color x:Key="SecondaryColor3">#FF595E</Color>
+    <Color x:Key="SecondaryColor4">#a4161a</Color>
+    <Color x:Key="SecondaryColor5">#161a1d</Color>
+    <Color x:Key="SecondaryColor6">#121517</Color>
     <Color x:Key="ButtonTextColor">White</Color>
 
 
