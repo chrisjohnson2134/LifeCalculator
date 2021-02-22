@@ -20,6 +20,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+
         <Grid>
             <Grid.Style>
                 <Style TargetType="Grid">
@@ -30,7 +31,7 @@
                     </Style.Triggers>
                 </Style>
             </Grid.Style>
-            <navbar:NavigationBar />
+            <navbar:NavigationBar Grid.Row="0" />
         </Grid>
         <ContentControl Grid.Row="1" Content="{Binding CurrentViewModel}" />
     </Grid>

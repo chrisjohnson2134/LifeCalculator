@@ -6,7 +6,13 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="{StaticResource SecondaryBrush6}">
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush>
+                <GradientStop Offset="0.0" Color="{StaticResource SecondaryColor1}" />
+                <GradientStop Offset="1.0" Color="{StaticResource SecondaryColor2}" />
+            </LinearGradientBrush>
+        </Grid.Background>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
@@ -95,7 +101,7 @@
                     Width="1600"
                     Height="25"
                     Margin="5"
-                    Background="{StaticResource PrimaryBrush2}"
+                    Background="{StaticResource PrimaryBrush1}"
                     CornerRadius="20" />
             </StackPanel>
         </Grid>
@@ -112,8 +118,8 @@
                 Width="100"
                 Height="35"
                 Margin="10,0,0,0"
-                HorizontalAlignment="Stretch"
-                VerticalContentAlignment="Stretch"
+                HorizontalAlignment="Center"
+                VerticalContentAlignment="Center"
                 Command="{Binding NavigateToLoginViewCommand}"
                 Content="Login" />
             <Button
@@ -121,7 +127,7 @@
                 Height="35"
                 Margin="10,0,0,0"
                 HorizontalAlignment="Stretch"
-                VerticalContentAlignment="Stretch"
+                VerticalContentAlignment="Center"
                 Command="{Binding NavigateToRegisterViewCommand}"
                 Content="Register" />
         </StackPanel>

@@ -6,14 +6,15 @@
     xmlns:pwbox="clr-namespace:LifeCalculator.Control.PasswordBoxControl;assembly=LifeCalculator.Control">
 
     <!--  Colors  -->
-    <Color x:Key="PrimaryColor1">#1A936F</Color>
-    <Color x:Key="PrimaryColor2">#15795B</Color>
+    <Color x:Key="PrimaryColor1">#62AB49</Color>
+    <Color x:Key="PrimaryColor2">#528F3D</Color>
     <Color x:Key="SecondaryColor1">#221E22</Color>
     <Color x:Key="SecondaryColor2">#474b4f</Color>
-    <Color x:Key="SecondaryColor3">#6b6e70</Color>
-    <Color x:Key="SecondaryColor4">#F64C72</Color>
-    <Color x:Key="SecondaryColor5">#F4E4C1</Color>
-    <Color x:Key="SecondaryColor6">#0C0032</Color>
+    <Color x:Key="SecondaryColor3">#E8E9ED</Color>
+    <Color x:Key="SecondaryColor4">#B9314F</Color>
+    <Color x:Key="SecondaryColor5">#D6D84F</Color>
+    <Color x:Key="SecondaryColor6">#2D2D2A</Color>
+    <Color x:Key="ButtonTextColor">White</Color>
 
 
     <!--  Brushes  -->
@@ -25,8 +26,10 @@
     <SolidColorBrush x:Key="SecondaryBrush4" Color="{StaticResource SecondaryColor4}" />
     <SolidColorBrush x:Key="SecondaryBrush5" Color="{StaticResource SecondaryColor5}" />
     <SolidColorBrush x:Key="SecondaryBrush6" Color="{StaticResource SecondaryColor6}" />
+    <SolidColorBrush x:Key="ButtonTextBrush" Color="{StaticResource ButtonTextColor}" />
 
     <!--  Text Boxes  -->
+    <!--
     <Style x:Key="TextBoxBase" TargetType="Control">
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Padding" Value="2" />
@@ -42,48 +45,14 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-    </Style>
+    </Style>-->
 
     <!--  Label Style  -->
 
     <Style TargetType="Label">
-        <Setter Property="FontFamily" Value="/Fonts/#MontM" />
+        <Setter Property="FontFamily" Value="/Fonts/#Amatic" />
     </Style>
 
-    <Style BasedOn="{StaticResource TextBoxBase}" TargetType="TextBox" />
-
-
-    <!--  Button Style  -->
-    <Style TargetType="Button">
-        <Setter Property="Background" Value="{StaticResource PrimaryBrush1}" />
-        <Setter Property="Foreground" Value="WhiteSmoke" />
-        <Setter Property="Padding" Value="10,5" />
-        <Setter Property="TextElement.FontFamily" Value="/Fonts/#Amatic" />
-        <Setter Property="HorizontalContentAlignment" Value="Center" />
-        <Setter Property="Cursor" Value="Hand" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="Button">
-                    <Border
-                        Height="35"
-                        Margin="{TemplateBinding Margin}"
-                        Padding="{TemplateBinding Padding}"
-                        Background="{TemplateBinding Background}"
-                        CornerRadius="12"
-                        TextElement.FontSize="15">
-                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="{StaticResource PrimaryBrush2}" />
-            </Trigger>
-            <Trigger Property="ClickMode" Value="Press">
-                <Setter Property="Background" Value="{StaticResource PrimaryBrush1}" />
-            </Trigger>
-        </Style.Triggers>
-    </Style>
+    <!--<Style BasedOn="{StaticResource TextBoxBase}" TargetType="TextBox" />-->
 
 </ResourceDictionary>

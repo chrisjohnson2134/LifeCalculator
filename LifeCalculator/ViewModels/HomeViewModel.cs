@@ -12,6 +12,7 @@ using LifeCalculator.Framework.Chart;
 using LifeCalculator.Control.Events.Loan.ViewModels;
 using LifeCalculator.Framework.BaseVM;
 using LifeCalculator.Framework.Managers.Interfaces;
+using LifeCalculator.Framework.CurrentAccountStorage;
 
 namespace LifeCalculator.ViewModels
 {
@@ -19,11 +20,11 @@ namespace LifeCalculator.ViewModels
     {
         #region Fields
 
-        private IAccountManager _accountManager;
+        private IAccountStore _accountStore;
 
         private string _accountType;
         private string _accountSelected;
-        private List<IAccountEvent> _lifeEvents;
+        private List<IAccountEvent> _accountEvents;
 
         #endregion
 
@@ -72,38 +73,20 @@ namespace LifeCalculator.ViewModels
 
         #region Constructors
 
-        //public HomeViewModel(IAccountManager accountManager)
+        //public HomeViewModel(IAccountStore accountStore)
         //{
-        //    _accountManager = accountManager;
-        //    _accountManager.AccountAdded += AccountAddedHandler;
+        //    _accountStore = accountStore;
+        //    AccountsList.CollectionChanged += AccountsList_CollectionChanged;
 
 
-        //    LifeEvents = new ObservableCollection<ILifeEvent>();
+        //    LifeEvents = new ObservableCollection<IAccountEvent>();
         //    AccountsList = new ObservableCollection<IAccount>();
-        //    _lifeEvents = new List<ILifeEvent>();
+        //    _accountEvents = new List<IAccountEvent>();
 
         //    ValueCollection = new SeriesCollection();
         //}
 
-        #endregion
-
-        #region Event Handlers
-
-        /// <summary>
-        /// Life Event Added to an Account 
-        /// </summary>
-        //private void LifeEventAddedHandler(object sender, ILifeEvent e)
-        //{
-        //    addEventToList(e);
-        //}
-
-        ///// <summary>
-        ///// User Added account
-        ///// </summary>
-        ///// <remarks>
-        ///// Also sets up a chart for the chart.
-        ///// </remarks>
-        //private void AccountAddedHandler(object sender, IAccount e)
+        //private void AccountsList_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         //{
         //    AccountsList.Add(e);
         //    e.LifeEventAdded += LifeEventAddedHandler;
@@ -128,6 +111,18 @@ namespace LifeCalculator.ViewModels
         //    ReChart(new object(), new EventArgs());
         //}
 
+        //#endregion
+
+        //#region Event Handlers
+
+        ///// <summary>
+        ///// Life Event Added to an Account 
+        ///// </summary>
+        //private void LifeEventAddedHandler(object sender, ILifeEvent e)
+        //{
+        //    addEventToList(e);
+        //}
+
         #endregion
 
         #region Private Methods
@@ -139,7 +134,7 @@ namespace LifeCalculator.ViewModels
         /// Uses the _lifeEvents List<> to sort the events and then add it 
         /// to the Observable collection.
         /// </remarks>
-        /// <param name="lifeEvent"></param>
+        /// <param name = "lifeEvent" ></ param >
         //private void addEventToList(ILifeEvent lifeEvent)
         //{
         //    lifeEvent.ValueChanged += ReChart;
@@ -162,7 +157,7 @@ namespace LifeCalculator.ViewModels
         /// <summary>
         /// Navigate the Account Region to specified region
         /// </summary>
-        /// <param name="viewName"></param>
+        /// <param name = "viewName" ></ param >
         //private void NavigateAddAccount(string viewName)
         //{
         //    var navigationParams = new NavigationParameters();
@@ -190,39 +185,39 @@ namespace LifeCalculator.ViewModels
 
         //}
 
-        /// <summary>
-        /// Method Recomputes the Chart
-        /// </summary>
-        /// <remarks>
-        /// Use Method to Re-Display the chart whenever modifications are made or Events
-        /// are added
-        /// </remarks>
-        private void ReChart(object sender, EventArgs e)
-        {
-            foreach (var acc in _accountManager.Accounts)
-                foreach (var collection in ValueCollection)
-                {
-                    if (collection.Title.Equals(acc.Name))
-                    {
-                        collection.Values.Clear();
+        ///// <summary>
+        ///// Method Recomputes the Chart
+        ///// </summary>
+        ///// <remarks>
+        ///// Use Method to Re-Display the chart whenever modifications are made or Events
+        ///// are added
+        ///// </remarks>
+        //private void ReChart(object sender, EventArgs e)
+        //{
+        //    foreach (var acc in _accountManager.Accounts)
+        //        foreach (var collection in ValueCollection)
+        //        {
+        //            if (collection.Title.Equals(acc.Name))
+        //            {
+        //                collection.Values.Clear();
 
-                        var monthlyCalculation = acc.Calculation();
+        //                var monthlyCalculation = acc.Calculation();
 
-                        for (int i = 0; i < monthlyCalculation.Count; i++)
-                        {
-                            if (i % 12 == 0 && i != 0)
-                            {
-                                collection.Values.Add(new BarChartColumn()
-                                {
-                                    Name = acc.Name,
-                                    CurrentValue = monthlyCalculation[i].Gain,
-                                    Date = monthlyCalculation[i].Date
-                                });
-                            }
-                        }
-                    }
-                }
-        }
+        //                for (int i = 0; i < monthlyCalculation.Count; i++)
+        //                {
+        //                    if (i % 12 == 0 && i != 0)
+        //                    {
+        //                        collection.Values.Add(new BarChartColumn()
+        //                        {
+        //                            Name = acc.Name,
+        //                            CurrentValue = monthlyCalculation[i].Gain,
+        //                            Date = monthlyCalculation[i].Date
+        //                        });
+        //                    }
+        //                }
+        //            }
+        //        }
+        //}
 
         #endregion
     }
