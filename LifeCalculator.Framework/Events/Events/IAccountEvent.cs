@@ -7,10 +7,11 @@ namespace LifeCalculator.Framework.LifeEvents
     {
         event EventHandler ValueChanged;
         string Name { get; set; }
+        int Id { get; }
+        int AccountId { get; set; }
         LifeEnum LifeEventType { get; set; }
         DateTime StartDate { get; set; }
         DateTime EndDate { get; set; }
-        bool FinalEvent { get; set; }
         double CurrentValue { get; set; }
         double Amount { get; set; }
         double InterestRate { get; set; }

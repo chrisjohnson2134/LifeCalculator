@@ -51,7 +51,7 @@ namespace LifeCalculator.Control.ViewModels
                 InitialAmount = InitialValue
             };
 
-            InvestmentAccountEvent startEvent = new InvestmentAccountEvent()
+            AccountEvent startEvent = new AccountEvent()
             {
                 Name = "Start - " + AccountName,
                 StartDate = StartDate,
@@ -59,7 +59,7 @@ namespace LifeCalculator.Control.ViewModels
                 Amount = Contribute
             };
 
-            InvestmentAccountEvent stopEvent = new InvestmentAccountEvent()
+            AccountEvent stopEvent = new AccountEvent()
             {
                 Name = "Stop - " + AccountName,
                 StartDate = StopDate,

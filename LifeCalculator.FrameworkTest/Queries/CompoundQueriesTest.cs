@@ -18,8 +18,8 @@ namespace LifeCalculator.FrameworkTest.Queries
         public CompoundAccount CreateCompoundAccount()
         {
             AccountLifeEventsExpected = new List<IAccountEvent>();
-            AccountLifeEventsExpected.Add(new InvestmentAccountEvent() {Name="start" });
-            AccountLifeEventsExpected.Add(new InvestmentAccountEvent() { Name = "stop" });
+            AccountLifeEventsExpected.Add(new AccountEvent() {Name="start" });
+            AccountLifeEventsExpected.Add(new AccountEvent() { Name = "stop" });
 
             return new CompoundAccount()
             {
@@ -33,8 +33,8 @@ namespace LifeCalculator.FrameworkTest.Queries
         public CompoundAccount CreateCompoundAccount(string name)
         {
             AccountLifeEventsExpected = new List<IAccountEvent>();
-            AccountLifeEventsExpected.Add(new InvestmentAccountEvent() { Name = "start" });
-            AccountLifeEventsExpected.Add(new InvestmentAccountEvent() { Name = "stop" });
+            AccountLifeEventsExpected.Add(new AccountEvent() { Name = "start" });
+            AccountLifeEventsExpected.Add(new AccountEvent() { Name = "stop" });
 
             return new CompoundAccount()
             {
@@ -43,40 +43,6 @@ namespace LifeCalculator.FrameworkTest.Queries
                 FinalAmount = FinalAmountExpected,
                 AccountLifeEvents = AccountLifeEventsExpected
             };
-        }
-
-        [Test]
-        public void CRUDMethodsDatabaseTest()
-        {
-            //Save Data to Database
-            var createdAccount = CreateCompoundAccount();
-            CompoundQueries.Save(createdAccount);
-
-            //Load Data From Database
-            var loadLoanAccounts = CompoundQueries.LoadByName("Chris");
-            var accountCreatedLoaded = loadLoanAccounts.Find(x => x.Name.Equals(createdAccount.Name));
-            Assert.That(loadLoanAccounts.Find(x => x.Name.Equals("josh")) == null);
-            Assert.That(accountCreatedLoaded.Name.Equals(createdAccount.Name));
-
-            //UpdateData
-            accountCreatedLoaded.Name = "Josh";
-            accountCreatedLoaded.InitialAmount = 321.1;
-            accountCreatedLoaded.FinalAmount = 123.2;
-
-            CompoundQueries.Update(accountCreatedLoaded);
-
-            var loadUpdatedAccount = CompoundQueries.Load(accountCreatedLoaded);
-            Assert.That(!loadUpdatedAccount.Name.Equals(accountNameExpected));
-            Assert.That(!loadUpdatedAccount.InitialAmount.Equals(InitialAmountExpected));
-            Assert.That(!loadUpdatedAccount.FinalAmount.Equals(FinalAmountExpected));
-
-            //Delete Account
-
-            CompoundQueries.Delete(loadUpdatedAccount);
-
-            loadLoanAccounts = CompoundQueries.LoadByName("Chris");
-
-            Assert.That(loadLoanAccounts.Find(x => x.Name.Equals("Chris")) == null);
         }
 
         [Test]
@@ -90,11 +56,11 @@ namespace LifeCalculator.FrameworkTest.Queries
 
 
             GusAccount = dataService.Insert(GusAccount).Result;
-            var y = RoulphAccount.Insert(RoulphAccount).Result;
+            var y = dataService.Insert(RoulphAccount).Result;
 
             Assert.That(!y.Equals(RoulphAccount));
 
-            var RoulphLoadedAccount = RoulphAccount.Load(y.Id).Result;
+            var RoulphLoadedAccount = dataService.Load(RoulphAccount.Id).Result;
 
             Assert.That(RoulphAccount.Equals(RoulphLoadedAccount));
 

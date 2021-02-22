@@ -84,6 +84,7 @@
     <Compile Include="Queries\CompoundQueriesTest.cs" />
     <Compile Include="Queries\LoanAccountQueriesTest.cs" />
     <Compile Include="Services\CompoundAccountDataServices\CompoundAccountDataServiceTest.cs" />
+    <Compile Include="Services\EventsDataService\CompoundAccountEventDataServiceTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
