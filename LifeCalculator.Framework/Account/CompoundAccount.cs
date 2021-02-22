@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace LifeCalculator.Framework.Account
 {
-    public class CompoundAccount : GenericDataService<CompoundAccount> , IAccount
+    public class CompoundAccount :  IAccount
     {
 
         #region Events
@@ -22,20 +22,17 @@ namespace LifeCalculator.Framework.Account
         #region Constructors
 
         public CompoundAccount()
-            :base("CompoundAccounts")
         {
             AccountLifeEvents = new List<IAccountEvent>();
         }
 
         public CompoundAccount(string AccountName)
-            :base("CompoundAccounts")
         {
             Name = AccountName;
             AccountLifeEvents = new List<IAccountEvent>();
         }
 
         public CompoundAccount(CompoundAccount compoundAccount,int id)
-            : base("CompoundAccounts")
         {
             Name = compoundAccount.Name;
             this.Id = id;
@@ -53,6 +50,7 @@ namespace LifeCalculator.Framework.Account
         [IgnoreDatabase]
         public List<IAccountEvent> AccountLifeEvents { get; set; }
 
+
         #endregion
 
         #region Methods
@@ -63,7 +61,7 @@ namespace LifeCalculator.Framework.Account
 
             InitialAmount = initialAmount;
 
-            InvestmentAccountEvent lifeEventStart = new InvestmentAccountEvent()
+            AccountEvent lifeEventStart = new AccountEvent()
             {
                 StartDate = startDate,
                 InterestRate = interestRate,
@@ -72,7 +70,7 @@ namespace LifeCalculator.Framework.Account
                 CurrentValue = initialAmount
             };
 
-            InvestmentAccountEvent lifeEventEnd = new InvestmentAccountEvent()
+            AccountEvent lifeEventEnd = new AccountEvent()
             {
                 StartDate = endDate,
                 Name = this.Name,
@@ -83,7 +81,6 @@ namespace LifeCalculator.Framework.Account
             AddLifeEvent(lifeEventEnd);
 
             Calculation();
-            CompoundQueries.Save(this);
         }
 
         public List<MonthlyColumn> Calculation()
@@ -132,12 +129,21 @@ namespace LifeCalculator.Framework.Account
         {
             var temp = obj as CompoundAccount;
 
-            if (temp.FinalAmount == this.FinalAmount &&
+            if (temp == null)
+                return false;
+            else if (temp.FinalAmount == this.FinalAmount &&
                temp.InitialAmount == InitialAmount &&
                 temp.Id == Id &&
-                temp.Name.Equals(Name) )
-                //temp.AccountLifeEvents.All(AccountLifeEvents.Contains))
+                temp.Name.Equals(Name))
+            {
+                foreach (var item in AccountLifeEvents)
+                {
+                    var accEvent = temp.AccountLifeEvents.Find(t => t.Id == item.Id);
+                    if (!accEvent.Equals(item))
+                        return false;
+                }
                 return true;
+            }
             else
                 return false;
 

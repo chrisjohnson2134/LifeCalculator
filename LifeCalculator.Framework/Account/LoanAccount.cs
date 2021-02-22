@@ -42,8 +42,8 @@ namespace LifeCalculator.Framework.Account
 
             AccountLifeEvents = new List<IAccountEvent>();
 
-            AddLifeEvent(new LoanAccountEvent() { Name = "Start - " + Name, StartDate = date, LifeEventType = LifeEnum.StartLifeEvent });
-            AddLifeEvent(new LoanAccountEvent() { Name = "Stop - " + Name, StartDate = date.AddMonths(loanLengthMonths), LifeEventType = LifeEnum.EndLifeEvent });
+            AddLifeEvent(new AccountEvent() { Name = "Start - " + Name, StartDate = date, LifeEventType = LifeEnum.StartLifeEvent });
+            AddLifeEvent(new AccountEvent() { Name = "Stop - " + Name, StartDate = date.AddMonths(loanLengthMonths), LifeEventType = LifeEnum.EndLifeEvent });
         }
 
         public void AddLifeEvent(IAccountEvent lifeEvent)
@@ -86,8 +86,6 @@ namespace LifeCalculator.Framework.Account
                 InterestPaid += interestPay;
                 PrincipalPaid += principalPay;
                 currValue = currValue - principalPay;
-                (startLifeEvent as LoanAccountEvent).InterestPaid += interestPay;
-                (startLifeEvent as LoanAccountEvent).PrincipalPaid += principalPay;
                 monthlies.Add(new MonthlyColumn()
                 {
                     Name = startLifeEvent.Name,

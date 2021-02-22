@@ -43,7 +43,7 @@ namespace LifeCalcuator.FrameworkTest.Account
         {
             CompoundAccount investmentAccount = new CompoundAccount();
 
-            investmentAccount.AddLifeEvent(new InvestmentAccountEvent
+            investmentAccount.AddLifeEvent(new AccountEvent
             {
                 Name = "addition",
                 Amount = 10,
@@ -51,7 +51,7 @@ namespace LifeCalcuator.FrameworkTest.Account
                 InterestRate = 10
             });
 
-            investmentAccount.AddLifeEvent(new InvestmentAccountEvent
+            investmentAccount.AddLifeEvent(new AccountEvent
             {
                 Name = "addition",
                 Amount = 1000,
@@ -63,7 +63,7 @@ namespace LifeCalcuator.FrameworkTest.Account
             midCalculationCheck[12].Gain.ShouldBeInRange(126.70, 126.71);
             investmentAccount.FinalAmount.ShouldBeInRange(126.70, 126.71);
 
-            investmentAccount.AddLifeEvent(new InvestmentAccountEvent
+            investmentAccount.AddLifeEvent(new AccountEvent
             {
                 Name = "addition",
                 Amount = 0,

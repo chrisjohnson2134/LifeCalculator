@@ -87,16 +87,8 @@ namespace LifeCalculator.Control.ViewModels
             }
         }
 
-        public bool FinalEvent
-        {
-            get => _lifeEvent.FinalEvent;
-            set
-            {
-                _lifeEvent.FinalEvent = value;
-                ValueChanged?.Invoke(this, new EventArgs());
-                OnPropertyChanged(nameof(FinalEvent));
-            }
-        }
+        public int Id { get; }
+        public int AccountId { get; set; }
 
         public event EventHandler ValueChanged;
 

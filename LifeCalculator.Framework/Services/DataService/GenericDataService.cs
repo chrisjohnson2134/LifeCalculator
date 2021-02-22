@@ -28,7 +28,7 @@ namespace LifeCalculator.Framework.Services.DataService
 
         #region IDataService Implementation
 
-        public async Task<T> Insert(T entity)
+        public virtual async Task<T> Insert(T entity)
         {
             var saveQuery = GenerateSaveQuery(true);
 
@@ -38,7 +38,7 @@ namespace LifeCalculator.Framework.Services.DataService
             }
         }
 
-        public async Task Delete(int id)
+        public virtual async Task Delete(int id)
         {
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
@@ -46,7 +46,7 @@ namespace LifeCalculator.Framework.Services.DataService
             }
         }
 
-        public async Task<T> Load(int id)
+        public virtual async Task<T> Load(int id)
         {
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
@@ -67,7 +67,7 @@ namespace LifeCalculator.Framework.Services.DataService
             }
         }
 
-        public async Task Save(int id, T entity)
+        public virtual async Task Save(int id, T entity)
         {
             var updateQuery = GenerateUpdateQuery();
 

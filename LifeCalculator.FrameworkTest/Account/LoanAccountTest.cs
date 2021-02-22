@@ -61,7 +61,7 @@ namespace LifeCalcuator.FrameworkTest.Account
         {
             LoanAccount localLoanAccount = setupLoanAccount();
 
-            IAccountEvent monthlyContribute = new LoanAccountEvent()
+            IAccountEvent monthlyContribute = new AccountEvent()
             {
                 StartDate = DateTime.Now,
                 EndDate = DateTime.Now.AddYears(30),
@@ -88,7 +88,7 @@ namespace LifeCalcuator.FrameworkTest.Account
         {
             LoanAccount localLoanAccount =  setupLoanAccount();
 
-            IAccountEvent oneTimeContribute = new LoanAccountEvent()
+            IAccountEvent oneTimeContribute = new AccountEvent()
             {
                 StartDate = DateTime.Now.AddYears(1),
                 Amount = 100000,
