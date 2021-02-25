@@ -27,8 +27,8 @@ namespace LifeCalculator.Framework.Services.AccDataService
         {
             AccountEventDataService dataService = new AccountEventDataService();
 
-            ConcreteAccount outputObj = base.Insert(new ConcreteAccount(entity)).Result;
-            outputObj.AccountLifeEvents = dataService.InsertAccountEvents(outputObj.Id,entity.AccountLifeEvents).Result;
+            ConcreteAccount outputObj = await base.Insert(new ConcreteAccount(entity));
+            outputObj.AccountLifeEvents = await dataService.InsertAccountEvents(outputObj.Id,entity.AccountLifeEvents);
 
             return outputObj;
         }
@@ -40,8 +40,8 @@ namespace LifeCalculator.Framework.Services.AccDataService
             ConcreteAccount outputObj = new ConcreteAccount();
             try
             {
-                outputObj = base.Load(entityId).Result;
-                outputObj.AccountLifeEvents = dataService.LoadFromAccountID(outputObj.Id).Result;
+                outputObj = await base.Load(entityId);
+                outputObj.AccountLifeEvents = await dataService.LoadFromAccountID(outputObj.Id);
             }
             catch 
             {
@@ -75,7 +75,7 @@ namespace LifeCalculator.Framework.Services.AccDataService
             var outputList = new List<IAccount>();
             foreach (var item in accounts)
             {
-                outputList.Add(Insert(new ConcreteAccount(item)).Result);
+                outputList.Add( await Insert(new ConcreteAccount(item)));
             }
 
             return outputList;
@@ -112,7 +112,7 @@ namespace LifeCalculator.Framework.Services.AccDataService
 
                 foreach(var item in outputObject)
                 {
-                    item.AccountLifeEvents = dataService.LoadFromAccountID(item.Id).Result;
+                    item.AccountLifeEvents = await dataService.LoadFromAccountID(item.Id);
                 }
 
                 return outputObject;

@@ -34,7 +34,7 @@ namespace LifeCalculator.Framework.Services.DataService
 
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
-                return await Load(cnn.ExecuteScalarAsync<int>(saveQuery, entity).Result);
+                return await Load( await cnn.ExecuteScalarAsync<int>(saveQuery, entity));
             }
         }
 

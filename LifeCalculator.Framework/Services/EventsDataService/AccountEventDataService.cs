@@ -38,7 +38,7 @@ namespace LifeCalculator.Framework.Services.EventsDataService
             {
                 var result = new AccountEvent(item);
                 result.AccountId = accountId;
-                result = base.Insert(result).Result;
+                result = await base.Insert(result);
                 outputList.Add(result);
             }
 

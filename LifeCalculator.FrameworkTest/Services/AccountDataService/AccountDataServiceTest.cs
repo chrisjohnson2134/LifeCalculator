@@ -3,6 +3,7 @@ using LifeCalculator.Framework.LifeEvents;
 using LifeCalculator.Framework.Services.AccDataService;
 using NUnit.Framework;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace LifeCalculator.FrameworkTest.Services.AccountDataService
 {
@@ -25,7 +26,7 @@ namespace LifeCalculator.FrameworkTest.Services.AccountDataService
         }
 
         [Test]
-        public void LoadAccountsCRUDTest()
+        public async Task LoadAccountsCRUDTest()
         {
             Framework.Services.AccDataService.AccountDataService data = new Framework.Services.AccDataService.AccountDataService();
 
@@ -36,12 +37,12 @@ namespace LifeCalculator.FrameworkTest.Services.AccountDataService
             accountList.Add(compound1Account);
             accountList.Add(compound2Account);
 
-            var insertedAccountList = data.InsertAccountsList(accountList).Result;
+            var insertedAccountList = await data.InsertAccountsList(accountList);
 
             Assert.That(accountList[0].Name.Equals(insertedAccountList[0].Name));
             Assert.That(accountList[1].Name.Equals(insertedAccountList[1].Name));
 
-            var loadedAccountList = data.LoadAccountsByUserId(123).Result;
+            var loadedAccountList = await data.LoadAccountsByUserId(123);
 
             Assert.That(accountList[0].Name.Equals(loadedAccountList[0].Name));
             Assert.That(accountList[1].Name.Equals(loadedAccountList[1].Name));
@@ -60,25 +61,25 @@ namespace LifeCalculator.FrameworkTest.Services.AccountDataService
             loadedAccountList[1].Name = "wrongName2";
 
             var updatedList = data.UpdateAccountList(loadedAccountList);
-            var updatedAccountList = data.LoadAccountsByUserId(123).Result;
+            var updatedAccountList = await data.LoadAccountsByUserId(123);
 
             Assert.That(!accountList[0].Name.Equals(updatedAccountList[0].Name));
             Assert.That(!accountList[1].Name.Equals(updatedAccountList[1].Name));
 
-            data.DeleteAccountList(updatedAccountList);
-            var DeletedAccountList = data.LoadAccountsByUserId(123).Result;
+            await data.DeleteAccountList(updatedAccountList);
+            var DeletedAccountList = await data.LoadAccountsByUserId(123);
 
             Assert.That(DeletedAccountList.Count == 0);
         }
 
         [Test]
-        public void BasicCRUDTest()
+        public async Task BasicCRUDTest()
         {
             Framework.Services.AccDataService.AccountDataService data = new Framework.Services.AccDataService.AccountDataService();
 
-            var insertedAccount = data.Insert(CreateCompoundAccount("ChrisAccount1")).Result;
+            var insertedAccount = await data.Insert(CreateCompoundAccount("ChrisAccount1"));
 
-            var loadedAccount = data.Load(insertedAccount.Id).Result;
+            var loadedAccount = await data.Load(insertedAccount.Id);
 
             Assert.That(insertedAccount.Name.Equals(loadedAccount.Name));//.Equals issue
 
@@ -86,17 +87,17 @@ namespace LifeCalculator.FrameworkTest.Services.AccountDataService
             loadedAccount.AccountLifeEvents[0].Name = "lost";
             loadedAccount.AccountLifeEvents[1].Name = "low";
 
-            data.Save(loadedAccount);
+            await data.Save(loadedAccount);
 
-            loadedAccount = data.Load(insertedAccount.Id).Result;
+            loadedAccount = await data.Load(insertedAccount.Id);
 
             Assert.That(!insertedAccount.Name.Equals(loadedAccount.Name));
             Assert.That(!insertedAccount.AccountLifeEvents[0].Name.Equals(loadedAccount.AccountLifeEvents[0].Name));
             Assert.That(!insertedAccount.AccountLifeEvents[1].Name.Equals(loadedAccount.AccountLifeEvents[1].Name));
 
-            data.Delete(loadedAccount);
+            await data.Delete(loadedAccount);
 
-            loadedAccount = data.Load(insertedAccount.Id).Result;
+            loadedAccount = await data.Load(insertedAccount.Id);
 
             Assert.That(loadedAccount == null);
         }

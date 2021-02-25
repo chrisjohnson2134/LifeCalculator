@@ -37,13 +37,13 @@ namespace LifeCalculator.Framework.Services.AccountDataServices
         {
             CompoundAccountEventDataService dataService = new CompoundAccountEventDataService();
 
-            CompoundAccount outputObj = base.Insert(entity).Result;
+            CompoundAccount outputObj = await base.Insert(entity);
             outputObj.AccountLifeEvents = new List<IAccountEvent>();
 
             for (int i = 0; i < entity.AccountLifeEvents.Count; i++)
             {
                 entity.AccountLifeEvents[i].AccountId = outputObj.Id;
-                outputObj.AddLifeEvent(dataService.Insert((AccountEvent)entity.AccountLifeEvents[i]).Result);
+                outputObj.AddLifeEvent( await dataService.Insert((AccountEvent)entity.AccountLifeEvents[i]));
             }
 
             return outputObj;
@@ -53,9 +53,9 @@ namespace LifeCalculator.Framework.Services.AccountDataServices
         {
             CompoundAccountEventDataService dataService = new CompoundAccountEventDataService();
 
-            CompoundAccount outputObj = base.Load(id).Result;
+            CompoundAccount outputObj = await base.Load(id);
 
-            var eventList = dataService.LoadFromAccountID(id).Result;
+            var eventList = await dataService.LoadFromAccountID(id);
 
             foreach (var item in eventList)
             {
