@@ -32,10 +32,9 @@ namespace LifeCalculator.Framework.Account
             AccountLifeEvents = new List<IAccountEvent>();
         }
 
-        public CompoundAccount(CompoundAccount compoundAccount,int id)
+        public CompoundAccount(CompoundAccount compoundAccount)
         {
             Name = compoundAccount.Name;
-            this.Id = id;
             AccountLifeEvents = new List<IAccountEvent>();
         }
 
@@ -44,11 +43,12 @@ namespace LifeCalculator.Framework.Account
         #region Properties
 
         public string Name { get; set; }
-        public int Id { get; }
         public double InitialAmount { get; set; }
         public double FinalAmount { get; set; }
         [IgnoreDatabase]
         public List<IAccountEvent> AccountLifeEvents { get; set; }
+        public int Id { get;  }
+        public int UserId { get; set; }
 
 
         #endregion

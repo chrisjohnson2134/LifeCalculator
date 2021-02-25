@@ -31,6 +31,8 @@ namespace LifeCalculator.Framework.Services.AccountDataServices
 
         #endregion
 
+        #region CRUD Methods
+
         public override async Task<CompoundAccount> Insert(CompoundAccount entity)
         {
             CompoundAccountEventDataService dataService = new CompoundAccountEventDataService();
@@ -41,7 +43,7 @@ namespace LifeCalculator.Framework.Services.AccountDataServices
             for (int i = 0; i < entity.AccountLifeEvents.Count; i++)
             {
                 entity.AccountLifeEvents[i].AccountId = outputObj.Id;
-                outputObj.AddLifeEvent( dataService.Insert((AccountEvent)entity.AccountLifeEvents[i]).Result );
+                outputObj.AddLifeEvent(dataService.Insert((AccountEvent)entity.AccountLifeEvents[i]).Result);
             }
 
             return outputObj;
@@ -83,6 +85,8 @@ namespace LifeCalculator.Framework.Services.AccountDataServices
 
             dataService.DeleteByAccountID(id);
         }
+
+        #endregion
 
     }
 }

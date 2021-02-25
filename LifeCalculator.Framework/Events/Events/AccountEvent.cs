@@ -22,7 +22,22 @@ namespace LifeCalculator.Framework.LifeEvents
         public double Amount { get; set; }
         public double InterestRate { get; set; }
 
+        public AccountEvent()
+        {
+        }
 
+        public AccountEvent(IAccountEvent entity)
+        {
+            Name = entity.Name;
+            Id = entity.Id;
+            AccountId = entity.AccountId;
+            LifeEventType = entity.LifeEventType;
+            StartDate = entity.StartDate;
+            EndDate = entity.EndDate;
+            CurrentValue = entity.CurrentValue;
+            Amount = entity.Amount;
+            InterestRate = entity.InterestRate;
+        }
 
         public override bool Equals(object obj)
         {

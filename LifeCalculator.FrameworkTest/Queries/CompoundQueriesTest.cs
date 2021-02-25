@@ -45,25 +45,5 @@ namespace LifeCalculator.FrameworkTest.Queries
             };
         }
 
-        [Test]
-        public void DBGenericTest()
-        {
-            //will insert 2 chris
-            var GusAccount = CreateCompoundAccount("Gus");
-            var RoulphAccount = CreateCompoundAccount("Roulph");
-
-            var dataService = new CompoundAccountDataService("CompoundAccounts");
-
-
-            GusAccount = dataService.Insert(GusAccount).Result;
-            var y = dataService.Insert(RoulphAccount).Result;
-
-            Assert.That(!y.Equals(RoulphAccount));
-
-            var RoulphLoadedAccount = dataService.Load(RoulphAccount.Id).Result;
-
-            Assert.That(RoulphAccount.Equals(RoulphLoadedAccount));
-
-        }
     }
 }

@@ -34,6 +34,10 @@ namespace LifeCalculator.Control.Events.Loan.ViewModels
         public double InterestRate { get; set; }
         public DateTime EndDate { get; set; }
 
+        public int Id { get; }
+
+        public int AccountId { get; set; }
+
         public event EventHandler ValueChanged;
 
         #endregion

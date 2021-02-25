@@ -8,6 +8,8 @@ namespace LifeCalculator.Framework.Account
     public interface IAccount
     {
         string Name { get; set; }
+        int Id { get; }
+        int UserId { get; set; }
         List<IAccountEvent> AccountLifeEvents { get; set; }
 
         event EventHandler<IAccountEvent> LifeEventAdded;

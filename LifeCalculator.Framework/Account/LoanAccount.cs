@@ -10,6 +10,7 @@ namespace LifeCalculator.Framework.Account
     public class LoanAccount : IAccount, IDatabaseable
     {
         public int Id { get; }
+        public int UserId { get; set; }
         public string Name { get; set; }
         public double MonthlyPayment { get; set; }
         public double LoanAmount { get; set; }
