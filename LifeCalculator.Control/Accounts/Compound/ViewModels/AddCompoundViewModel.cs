@@ -4,17 +4,26 @@ using LifeCalculator.Framework.LifeEvents;
 using Microsoft.VisualStudio.PlatformUI;
 using LifeCalculator.Framework.BaseVM;
 using LifeCalculator.Framework.Managers.Interfaces;
+using LifeCalculator.Framework.CurrentAccountStorage;
+using LifeCalculator.Control.Accounts;
 
 namespace LifeCalculator.Control.ViewModels
 {
     //Compound Interest View Model
-    public class AddCompoundViewModel : ViewModelBase
+    public class AddCompoundViewModel : ViewModelBase , IControlAccount
     {
+        #region Events
+
+        public event EventHandler<IAccount> AccountAdded;
+
+        #endregion
 
         #region Constructors
 
-        public AddCompoundViewModel()
+        public AddCompoundViewModel(IAccountStore accountStore)
         {
+            _accountStore = accountStore;
+
             AddAccountCommand = new DelegateCommand(AddAccountCommandHandler);
 
             StartDate = DateTime.Now;
@@ -34,7 +43,7 @@ namespace LifeCalculator.Control.ViewModels
         public DateTime StopDate { get; set; }
         public DelegateCommand AddAccountCommand { get; set; }
 
-        private IAccountManager _accountManager;
+        private IAccountStore _accountStore;
 
         #endregion
 
@@ -48,7 +57,8 @@ namespace LifeCalculator.Control.ViewModels
 
             var investmentAccount = new CompoundAccount(AccountName)
             {
-                InitialAmount = InitialValue
+                InitialAmount = InitialValue,
+                UserId = _accountStore.CurrentAccount.Id
             };
 
             AccountEvent startEvent = new AccountEvent()
@@ -70,7 +80,9 @@ namespace LifeCalculator.Control.ViewModels
             investmentAccount.AddLifeEvent(startEvent);
             investmentAccount.AddLifeEvent(stopEvent);
 
-            _accountManager.AddAccount(investmentAccount);
+            _accountStore.CurrentAccount.Accounts.Add(investmentAccount);
+
+            AccountAdded?.Invoke(this, investmentAccount);
         }
 
         #endregion

@@ -5,7 +5,10 @@
     xmlns:local="clr-namespace:LifeCalculator"
     xmlns:navigator="clr-namespace:LifeCalculator.Navigation"
     xmlns:viewModels="clr-namespace:LifeCalculator.ViewModels"
-    xmlns:views="clr-namespace:LifeCalculator.Views">
+    xmlns:views="clr-namespace:LifeCalculator.Views"
+    xmlns:controlsViewModels="clr-namespace:LifeCalculator.Control.ViewModels;assembly=LifeCalculator.Control"
+    xmlns:controlsView="clr-namespace:LifeCalculator.Control.Views;assembly=LifeCalculator.Control">
+    
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -35,6 +38,9 @@
             </DataTemplate>
             <DataTemplate DataType="{x:Type viewModels:WelcomePageViewModel}">
                 <views:WelcomePageView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type controlsViewModels:AddCompoundViewModel}">
+                <controlsView:AddCompound />
             </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>

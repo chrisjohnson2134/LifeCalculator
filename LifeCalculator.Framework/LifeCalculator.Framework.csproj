@@ -179,6 +179,7 @@
     <Compile Include="Services\EventsDataService\EventConcrete.cs" />
     <Compile Include="Services\FinancialAccountService\FinancialAccountDataService.cs" />
     <Compile Include="Services\FinancialAccountService\IFinancialAccountDataService.cs" />
+    <Compile Include="Services\LoanAccountDataService\LoanAccountDataService.cs" />
     <Compile Include="Services\UserService\IUserDataService.cs" />
     <Compile Include="Services\UserService\UserDataService.cs" />
     <Compile Include="Users\User.cs" />

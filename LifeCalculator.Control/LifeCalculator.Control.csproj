@@ -49,6 +49,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Accounts\IControlAccount.cs" />
     <Compile Include="FinancialProfileEdit\FinancialProfileEditView.xaml.cs">
       <DependentUpon>FinancialProfileEditView.xaml</DependentUpon>
     </Compile>

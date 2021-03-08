@@ -1,7 +1,6 @@
 ﻿using LifeCalculator.Framework.Account;
 using LifeCalculator.Framework.LifeEvents;
-using LifeCalculator.Framework.Services.AccountDataServices;
-using LifeCalculator.Framework.Services.EventsDataService;
+using LifeCalculator.Framework.Services;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -9,39 +8,34 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LifeCalculator.FrameworkTest.Services.CompoundAccountDataServices
+namespace LifeCalculator.FrameworkTest.Services
 {
     [TestFixture]
-    public class CompoundAccountDataServiceTest
+    public class LoanAccountDataServiceTest
     {
-        protected List<IAccountEvent> AccountLifeEventsExpected;
-        public readonly double InitialAmountExpected = 100.1;
-        public readonly double FinalAmountExpected = 200.2;
 
-        public CompoundAccount CreateCompoundAccount(string name)
+        protected List<IAccountEvent> AccountLifeEventsExpected;
+        public LoanAccount CreateCompoundAccount(string name)
         {
             var AccountLifeEventsExpected = new List<IAccountEvent>();
             AccountLifeEventsExpected.Add(new AccountEvent() { Name = "start" });
             AccountLifeEventsExpected.Add(new AccountEvent() { Name = "stop" });
 
-            return new CompoundAccount()
+            return new LoanAccount()
             {
                 Name = name,
-                UserId = 1234,
-                InitialAmount = InitialAmountExpected,
-                FinalAmount = FinalAmountExpected,
                 AccountLifeEvents = AccountLifeEventsExpected
             };
         }
 
         [Test]
         //not fully working list need to be compared in equals method.
-        public async Task DBGenericTest()
+        public async Task GeneralCRUDTest()
         {
             var GusAccount = CreateCompoundAccount("Gus");
             var RoulphAccount = CreateCompoundAccount("Roulph");
 
-            var dataService = new CompoundAccountDataService();
+            var dataService = new LoanAccountDataService();
 
             //INSERT
             GusAccount = await dataService.Insert(GusAccount);
@@ -54,8 +48,6 @@ namespace LifeCalculator.FrameworkTest.Services.CompoundAccountDataServices
 
             Assert.That(RoulphInsertedAccount.Equals(RoulphLoadedAccount));
 
-            RoulphInsertedAccount.FinalAmount = 123.1;
-            RoulphInsertedAccount.InitialAmount = 321.2;
             RoulphInsertedAccount.Name = "newName";
 
             //SAVE
@@ -67,6 +59,7 @@ namespace LifeCalculator.FrameworkTest.Services.CompoundAccountDataServices
 
             //DELETE
             dataService.Delete(RoulphLoadedAccount.Id);
+            dataService.Delete(GusAccount.Id);
 
             try
             {
@@ -78,6 +71,10 @@ namespace LifeCalculator.FrameworkTest.Services.CompoundAccountDataServices
             }
 
             Assert.IsFalse(RoulphInsertedAccount.Equals(RoulphLoadedAccount));
+
         }
+
+        
+
     }
 }

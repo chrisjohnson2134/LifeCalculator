@@ -42,15 +42,15 @@ namespace LifeCalculator.Framework.Account
 
         #region Properties
 
+        public int Id { get; }
+        public int UserId { get; set; }
         public string Name { get; set; }
         public double InitialAmount { get; set; }
+        public double InterestRate { get; set; }
         public double FinalAmount { get; set; }
         [IgnoreDatabase]
         public List<IAccountEvent> AccountLifeEvents { get; set; }
-        public int Id { get;  }
-        public int UserId { get; set; }
-
-
+        
         #endregion
 
         #region Methods

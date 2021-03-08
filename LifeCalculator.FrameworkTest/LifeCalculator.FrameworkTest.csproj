@@ -86,6 +86,7 @@
     <Compile Include="Services\AccountDataService\AccountDataServiceTest.cs" />
     <Compile Include="Services\CompoundAccountDataServices\CompoundAccountDataServiceTest.cs" />
     <Compile Include="Services\EventsDataService\CompoundAccountEventDataServiceTest.cs" />
+    <Compile Include="Services\LoanAccountDataService\LoanAccountDataServiceTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

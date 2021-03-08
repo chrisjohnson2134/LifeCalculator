@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using LifeCalculator.Framework.CustomExceptions;
+using LifeCalculator.Framework.Services.AccDataService;
 using LifeCalculator.Framework.Services.DataService;
 using System.Collections.Generic;
 using System.Data;
@@ -27,7 +28,12 @@ namespace LifeCalculator.Framework.Services.FinancialAccountService
         {
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
+                var accountsDataService = new AccountDataService();
+
                 var result = await cnn.QuerySingleOrDefaultAsync<FinancialAccount.FinancialAccount>($"SELECT * FROM {_tableName} WHERE AccountHolder=@AccountHolder", new { AccountHolder = username });
+                
+                result.Accounts = await accountsDataService.LoadAccountsByUserId(result.Id);
+                
                 if (result == null)
                     throw new FinancialAccountNotFoundException($"{_tableName} with account holder [{username}] could not be found.");
 

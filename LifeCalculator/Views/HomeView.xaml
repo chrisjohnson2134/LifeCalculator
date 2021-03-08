@@ -9,6 +9,7 @@
     xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
+    
     <Grid Background="White">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -62,14 +63,17 @@
                 Grid.Column="1"
                 Margin="2"
                 BorderBrush="Black"
-                Foreground="White"
+                Foreground="Black"
                 ItemsSource="{Binding AccountTypesList}"
                 Text="{Binding AccountType}" />
 
-            <ContentControl
+            <ContentControl 
                 Grid.Row="1"
                 Grid.Column="0"
-                Grid.ColumnSpan="2" />
+                Grid.ColumnSpan="2"  
+                Content="{Binding CurrentViewModel}" />
+
+
         </Grid>
 
         <!--  Events Grid  -->
@@ -94,15 +98,14 @@
                 Grid.Column="0"
                 Margin="2"
                 Content="Events:"
-                Foreground="White" />
+                Foreground="Black" />
             <ComboBox
                 x:Name="EventNameTextbox"
                 Grid.Row="0"
                 Grid.Column="1"
                 Margin="2"
-                BorderBrush="White"
+                BorderBrush="Black"
                 DisplayMemberPath="Name"
-                Foreground="White"
                 ItemsSource="{Binding AccountsList}"
                 Text="{Binding AccountSelected}" />
 

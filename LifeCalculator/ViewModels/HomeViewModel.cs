@@ -3,16 +3,17 @@ using LifeCalculator.Framework.LifeEvents;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using LiveCharts;
 using LiveCharts.Configurations;
 using LiveCharts.Wpf;
-using LifeCalculator.Control.ViewModels;
 using LifeCalculator.Framework.Chart;
-using LifeCalculator.Control.Events.Loan.ViewModels;
 using LifeCalculator.Framework.BaseVM;
-using LifeCalculator.Framework.Managers.Interfaces;
 using LifeCalculator.Framework.CurrentAccountStorage;
+using System.Collections.Specialized;
+using LifeCalculator.Control.ViewModels;
+using LifeCalculator.Framework.Services.AccDataService;
+using LifeCalculator.Control.Accounts;
+using System.Linq;
 
 namespace LifeCalculator.ViewModels
 {
@@ -25,7 +26,7 @@ namespace LifeCalculator.ViewModels
         private string _accountType;
         private string _accountSelected;
         private List<IAccountEvent> _accountEvents;
-
+        AccountDataService accountService;
         #endregion
 
         #region Properties
@@ -46,11 +47,11 @@ namespace LifeCalculator.ViewModels
             }
         }
 
-        public List<string> AccountTypesList
+        public ObservableCollection<string> AccountTypesList
         {
             get
             {
-                return new List<string>() { "Add Compound", "Add Loan" };
+                return new ObservableCollection<string>() { "Add Compound", "Add Loan" };
             }
         }
 
@@ -65,6 +66,16 @@ namespace LifeCalculator.ViewModels
             }
         }
 
+        private IControlAccount _currentViewModel;
+        public IControlAccount CurrentViewModel { 
+            get{ return _currentViewModel; }
+            set
+            {
+                _currentViewModel = value;
+                OnPropertyChanged("CurrentViewModel");
+            }
+        }
+
         //Everything Else
         public ObservableCollection<IAccount> AccountsList { get; set; }
         public ObservableCollection<IAccountEvent> LifeEvents { get; set; }
@@ -73,43 +84,39 @@ namespace LifeCalculator.ViewModels
 
         #region Constructors
 
-        //public HomeViewModel(IAccountStore accountStore)
-        //{
-        //    _accountStore = accountStore;
-        //    AccountsList.CollectionChanged += AccountsList_CollectionChanged;
+        public HomeViewModel(IAccountStore accountStore)
+        {
+            _accountStore = accountStore;
+
+            ValueCollection = new SeriesCollection();
+
+            _accountEvents = new List<IAccountEvent>();
+            LifeEvents = new ObservableCollection<IAccountEvent>();
+            AccountsList = new ObservableCollection<IAccount>();
+            AccountsList.CollectionChanged += AccountsList_CollectionChanged;
 
 
-        //    LifeEvents = new ObservableCollection<IAccountEvent>();
-        //    AccountsList = new ObservableCollection<IAccount>();
-        //    _accountEvents = new List<IAccountEvent>();
+            accountService = new AccountDataService();
 
-        //    ValueCollection = new SeriesCollection();
-        //}
+            CurrentViewModel = new AddCompoundViewModel(accountStore);
+            CurrentViewModel.AccountAdded += CurrentViewModel_AccountAdded;
+            //_accountEvents = new List<IAccountEvent>();
 
-        //private void AccountsList_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        //{
-        //    AccountsList.Add(e);
-        //    e.LifeEventAdded += LifeEventAddedHandler;
-        //    e.AccountLifeEvents.ForEach(i => addEventToList(i));
+            foreach (var account in _accountStore.CurrentAccount.Accounts)
+            {
+                AccountsList.Add(account);
+                AddChartSeries(account.Name);
+                foreach (var item in account.AccountLifeEvents)
+                {
+                    //LifeEvents.Add(item);
+                    addEventToList(item);
 
-        //    try
-        //    {
-        //        var dayConfig = Mappers.Xy<BarChartColumn>()
-        //        .X(dayModel => dayModel.Date.Ticks / (TimeSpan.FromDays(1).Ticks * 365.2425))
-        //        .Y(dayModel => dayModel.CurrentValue);
+                }
+            }
 
-        //        var series = new ColumnSeries(dayConfig);
-        //        series.Title = e.Name;
-        //        series.Values = new ChartValues<BarChartColumn>();
-        //        ValueCollection.Add(series);
-        //        Formatter = value => new DateTime((long)(value * TimeSpan.FromDays(1).Ticks * 365.2425)).ToString("yyyy");//MM/yyyy
-        //    }
-        //    catch (Exception)
-        //    {
-        //    }
+            ReChart(new object(),EventArgs.Empty);
+        }
 
-        //    ReChart(new object(), new EventArgs());
-        //}
 
         //#endregion
 
@@ -125,6 +132,24 @@ namespace LifeCalculator.ViewModels
 
         #endregion
 
+        #region Event Handlers
+
+        private async void CurrentViewModel_AccountAdded(object sender, IAccount e)
+        {
+            IAccount acc = await accountService.Insert(e); 
+            AccountsList.Add(acc);
+
+            AddChartSeries(acc.Name);
+            ReChart(this,EventArgs.Empty);
+        }
+
+        private void AccountsList_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            //ReChart(new object(), new EventArgs());
+        }
+
+        #endregion
+
         #region Private Methods
 
         /// <summary>
@@ -135,89 +160,78 @@ namespace LifeCalculator.ViewModels
         /// to the Observable collection.
         /// </remarks>
         /// <param name = "lifeEvent" ></ param >
-        //private void addEventToList(ILifeEvent lifeEvent)
-        //{
-        //    lifeEvent.ValueChanged += ReChart;
-        //    if (typeof(InvestmentLifeEvent).Equals(lifeEvent.GetType()))
-        //        _lifeEvents.Add(new ModifyEventCompoundViewModel(lifeEvent));
-        //    else if (typeof(MortgageLifeEvent).Equals(lifeEvent.GetType()))
-        //        _lifeEvents.Add(new ModifyEventLoanViewModel(lifeEvent));
+        private void addEventToList(IAccountEvent lifeEvent)
+        {
+            lifeEvent.ValueChanged += ReChart;
+            if (typeof(AccountEvent).Equals(lifeEvent.GetType()))
+                _accountEvents.Add(new ModifyEventCompoundViewModel(lifeEvent));
 
-        //    LifeEvents.Clear();
+            LifeEvents.Clear();
 
-        //    foreach (var item in _lifeEvents.OrderBy(i => i.Date))
-        //    {
-        //        item.ValueChanged += ReChart;
-        //        LifeEvents.Add(item);
-        //    }
+            foreach (var item in _accountEvents.OrderBy(i => i.StartDate))
+            {
+                item.ValueChanged += ReChart;
+                LifeEvents.Add(item);
+            }
 
-        //    ReChart(new object(), new EventArgs());
-        //}
+            ReChart(new object(), new EventArgs());
+        }
 
-        /// <summary>
-        /// Navigate the Account Region to specified region
+
+        // Add Chart series
+        private void AddChartSeries(string seriesName)
+        {
+            try
+            {
+                var dayConfig = Mappers.Xy<BarChartColumn>()
+                .X(dayModel => dayModel.Date.Ticks / (TimeSpan.FromDays(1).Ticks * 365.2425))
+                .Y(dayModel => dayModel.CurrentValue);
+
+                var series = new ColumnSeries(dayConfig);
+                series.Title = seriesName;
+                series.Values = new ChartValues<BarChartColumn>();
+                ValueCollection.Add(series);
+                Formatter = value => new DateTime((long)(value * TimeSpan.FromDays(1).Ticks * 365.2425)).ToString("yyyy");//MM/yyyy
+            }
+            catch (Exception)
+            {
+            }
+
+        }
+
+        ///// <summary>
+        /// Method Recomputes the Chart
         /// </summary>
-        /// <param name = "viewName" ></ param >
-        //private void NavigateAddAccount(string viewName)
-        //{
-        //    var navigationParams = new NavigationParameters();
-        //    navigationParams.Add("accountManager", _accountManager);
+        /// <remarks>
+        /// Use Method to Re-Display the chart whenever modifications are made or Events
+        /// are added
+        /// </remarks>
+        private void ReChart(object sender, EventArgs e)
+        {
+            foreach (var acc in _accountStore.CurrentAccount.Accounts)
+                foreach (var collection in ValueCollection)
+                {
+                    if (collection.Title.Equals(acc.Name))
+                    {
+                        collection.Values.Clear();
 
-        //    _regionManager.RequestNavigate("AddAccountRegion", viewName.Replace(" ", ""), navigationParams);
-        //}
+                        var monthlyCalculation = acc.Calculation();
 
-        ///// <summary>
-        ///// Navigate the Event Region to specified region
-        ///// </summary>
-        ///// <param name="viewName"></param>
-        //private void NavigateAddEvent(string viewName)
-        //{
-        //    var navigationParams = new NavigationParameters();
-
-        //    var accountSelected = _accountManager.Accounts.Find(i => i.Name.Contains(AccountSelected));
-
-        //    navigationParams.Add("account", accountSelected);
-
-        //    if (typeof(LoanAccount).Equals(accountSelected.GetType()))
-        //        _regionManager.RequestNavigate("AddEventRegion", "AddEventLoan", navigationParams);
-        //    else if (typeof(CompoundAccount).Equals(accountSelected.GetType()))
-        //        _regionManager.RequestNavigate("AddEventRegion", "AddEventCompound", navigationParams);
-
-        //}
-
-        ///// <summary>
-        ///// Method Recomputes the Chart
-        ///// </summary>
-        ///// <remarks>
-        ///// Use Method to Re-Display the chart whenever modifications are made or Events
-        ///// are added
-        ///// </remarks>
-        //private void ReChart(object sender, EventArgs e)
-        //{
-        //    foreach (var acc in _accountManager.Accounts)
-        //        foreach (var collection in ValueCollection)
-        //        {
-        //            if (collection.Title.Equals(acc.Name))
-        //            {
-        //                collection.Values.Clear();
-
-        //                var monthlyCalculation = acc.Calculation();
-
-        //                for (int i = 0; i < monthlyCalculation.Count; i++)
-        //                {
-        //                    if (i % 12 == 0 && i != 0)
-        //                    {
-        //                        collection.Values.Add(new BarChartColumn()
-        //                        {
-        //                            Name = acc.Name,
-        //                            CurrentValue = monthlyCalculation[i].Gain,
-        //                            Date = monthlyCalculation[i].Date
-        //                        });
-        //                    }
-        //                }
-        //            }
-        //        }
-        //}
+                        for (int i = 0; i < monthlyCalculation.Count; i++)
+                        {
+                            if (i % 12 == 0 && i != 0)
+                            {
+                                collection.Values.Add(new BarChartColumn()
+                                {
+                                    Name = acc.Name,
+                                    CurrentValue = monthlyCalculation[i].Gain,
+                                    Date = monthlyCalculation[i].Date
+                                });
+                            }
+                        }
+                    }
+                }
+        }
 
         #endregion
     }

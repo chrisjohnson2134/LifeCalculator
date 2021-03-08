@@ -31,48 +31,48 @@ namespace LifeCalculator.FrameworkTest.Queries
             };
         }
 
-        [Test]
-        public void CRUDMethodsDatabaseTest()
-        {
-            //Save Data to Database
-            var createdAccount = CreateLoanAccount();
-            LoanQueries.Save(createdAccount);
+        //[Test]
+        //public void CRUDMethodsDatabaseTest()
+        //{
+        //    //Save Data to Database
+        //    var createdAccount = CreateLoanAccount();
+        //    LoanQueries.Save(createdAccount);
 
-            //Load Data From Database
-            var loadLoanAccounts = LoanQueries.LoadByName("Chris");
-            var accountCreatedLoaded = loadLoanAccounts.Find(x => x.Name.Equals(createdAccount.Name));
-            Assert.That(loadLoanAccounts.Find(x => x.Name.Equals("josh")) == null);
-            Assert.That(accountCreatedLoaded.Name.Equals(createdAccount.Name));
+        //    //Load Data From Database
+        //    var loadLoanAccounts = LoanQueries.LoadByName("Chris");
+        //    var accountCreatedLoaded = loadLoanAccounts.Find(x => x.Name.Equals(createdAccount.Name));
+        //    Assert.That(loadLoanAccounts.Find(x => x.Name.Equals("josh")) == null);
+        //    Assert.That(accountCreatedLoaded.Name.Equals(createdAccount.Name));
 
-            //UpdateData
-            accountCreatedLoaded.Name = "Josh";
-            accountCreatedLoaded.MonthlyPayment = 123.3;
-            accountCreatedLoaded.LoanAmount = 321.1;
-            accountCreatedLoaded.DownPayment = 213.2;
-            accountCreatedLoaded.InterestPaid = 111.1;
-            accountCreatedLoaded.InterestRate = 222.2;
-            accountCreatedLoaded.PrincipalPaid = 333.3;
-            accountCreatedLoaded.LoanLengthMonths = 64;
+        //    //UpdateData
+        //    accountCreatedLoaded.Name = "Josh";
+        //    accountCreatedLoaded.MonthlyPayment = 123.3;
+        //    accountCreatedLoaded.LoanAmount = 321.1;
+        //    accountCreatedLoaded.DownPayment = 213.2;
+        //    accountCreatedLoaded.InterestPaid = 111.1;
+        //    accountCreatedLoaded.InterestRate = 222.2;
+        //    accountCreatedLoaded.PrincipalPaid = 333.3;
+        //    accountCreatedLoaded.LoanLengthMonths = 64;
 
-            LoanQueries.Update(accountCreatedLoaded);
+        //    LoanQueries.Update(accountCreatedLoaded);
 
-            var loadUpdatedAccount = LoanQueries.Load(accountCreatedLoaded);
-            Assert.That(!loadUpdatedAccount.Name.Equals(accountNameExpected));
-            Assert.That(!loadUpdatedAccount.MonthlyPayment.Equals(DownPaymentExpected));
-            Assert.That(!loadUpdatedAccount.LoanAmount.Equals(LoanAmountExpeected));
-            Assert.That(!loadUpdatedAccount.DownPayment.Equals(DownPaymentExpected));
-            Assert.That(!loadUpdatedAccount.InterestPaid.Equals(InterestPaidExpected));
-            Assert.That(!loadUpdatedAccount.InterestRate.Equals(InterestRateExpected));
-            Assert.That(!loadUpdatedAccount.PrincipalPaid.Equals(PrincipalPaidExpected));
-            Assert.That(!loadUpdatedAccount.LoanLengthMonths.Equals(LoanLengthMonthsExpected));
+        //    var loadUpdatedAccount = LoanQueries.Load(accountCreatedLoaded);
+        //    Assert.That(!loadUpdatedAccount.Name.Equals(accountNameExpected));
+        //    Assert.That(!loadUpdatedAccount.MonthlyPayment.Equals(DownPaymentExpected));
+        //    Assert.That(!loadUpdatedAccount.LoanAmount.Equals(LoanAmountExpeected));
+        //    Assert.That(!loadUpdatedAccount.DownPayment.Equals(DownPaymentExpected));
+        //    Assert.That(!loadUpdatedAccount.InterestPaid.Equals(InterestPaidExpected));
+        //    Assert.That(!loadUpdatedAccount.InterestRate.Equals(InterestRateExpected));
+        //    Assert.That(!loadUpdatedAccount.PrincipalPaid.Equals(PrincipalPaidExpected));
+        //    Assert.That(!loadUpdatedAccount.LoanLengthMonths.Equals(LoanLengthMonthsExpected));
 
-            //Delete Account
+        //    //Delete Account
 
-            LoanQueries.Delete(loadUpdatedAccount);
+        //    LoanQueries.Delete(loadUpdatedAccount);
 
-            loadLoanAccounts = LoanQueries.LoadByName("Chris");
+        //    loadLoanAccounts = LoanQueries.LoadByName("Chris");
 
-            Assert.That(loadLoanAccounts.Find(x => x.Name.Equals("Chris")) == null);
-        }
+        //    Assert.That(loadLoanAccounts.Find(x => x.Name.Equals("Chris")) == null);
+        //}
     }
 }

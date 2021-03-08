@@ -2,6 +2,7 @@
 using LifeCalculator.Framework.Database;
 using LifeCalculator.Framework.Enums;
 using LifeCalculator.Framework.LifeEvents;
+using LifeCalculator.Framework.Services.DataService;
 using System;
 using System.Collections.Generic;
 
@@ -9,6 +10,8 @@ namespace LifeCalculator.Framework.Account
 {
     public class LoanAccount : IAccount, IDatabaseable
     {
+        private LoanAccount loanAccount;
+
         public int Id { get; }
         public int UserId { get; set; }
         public string Name { get; set; }
@@ -19,9 +22,8 @@ namespace LifeCalculator.Framework.Account
         public double InterestPaid { get; set; }
         public double PrincipalPaid { get; set; }
         public int LoanLengthMonths { get; set; }
+        [IgnoreDatabase]
         public List<IAccountEvent> AccountLifeEvents { get; set; }
-
-        
 
         public event EventHandler<IAccountEvent> LifeEventAdded;
 
@@ -45,6 +47,11 @@ namespace LifeCalculator.Framework.Account
 
             AddLifeEvent(new AccountEvent() { Name = "Start - " + Name, StartDate = date, LifeEventType = LifeEnum.StartLifeEvent });
             AddLifeEvent(new AccountEvent() { Name = "Stop - " + Name, StartDate = date.AddMonths(loanLengthMonths), LifeEventType = LifeEnum.EndLifeEvent });
+        }
+
+        public LoanAccount(LoanAccount loanAccount)
+        {
+            this.loanAccount = loanAccount;
         }
 
         public void AddLifeEvent(IAccountEvent lifeEvent)
@@ -114,6 +121,36 @@ namespace LifeCalculator.Framework.Account
                 Console.WriteLine(additonalAmount);
 
             return additonalAmount;
+        }
+
+        public override bool Equals(object obj)
+        {
+            var entity = obj as LoanAccount;
+
+            if (obj == null)
+                return false;
+
+            if (entity.Id == Id &&
+                entity.UserId == UserId &&
+                entity.Name.Equals(Name) &&
+                entity.MonthlyPayment == MonthlyPayment &&
+                entity.LoanAmount == LoanAmount &&
+                entity.DownPayment == DownPayment &&
+                entity.InterestRate == InterestRate &&
+                entity.InterestPaid == InterestPaid &&
+                entity.PrincipalPaid == PrincipalPaid &&
+                entity.LoanLengthMonths == LoanLengthMonths)
+            {
+                foreach (var item in AccountLifeEvents)
+                {
+                    var accEvent = entity.AccountLifeEvents.Find(t => t.Id == item.Id);
+                    if (!accEvent.Equals(item))
+                        return false;
+                }
+                return true;
+            }
+
+            return false;
         }
     }
 }

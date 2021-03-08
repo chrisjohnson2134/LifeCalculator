@@ -11,10 +11,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LifeCalculator.Framework.Services.AccountDataServices
+namespace LifeCalculator.Framework.Services
 {
-    public class CompoundAccountDataService : GenericDataService<CompoundAccount> , ICompoundAccountDataService
+    public class LoanAccountDataService : GenericDataService<LoanAccount>
     {
+
         #region Fields
 
         private string _tableName;
@@ -23,37 +24,38 @@ namespace LifeCalculator.Framework.Services.AccountDataServices
 
         #region Constructors
 
-        public CompoundAccountDataService()
-            : base("CompoundAccount")
+        public LoanAccountDataService()
+            : base("LoanAccount")
         {
-            _tableName = "CompoundAccount";
+            _tableName = "LoanAccount";
         }
 
         #endregion
 
         #region CRUD Methods
 
-        public override async Task<CompoundAccount> Insert(CompoundAccount entity)
+        public override async Task<LoanAccount> Insert(LoanAccount entity)
         {
-            CompoundAccountEventDataService dataService = new CompoundAccountEventDataService();
+            AccountEventDataService dataService = new AccountEventDataService();
 
-            CompoundAccount outputObj = await base.Insert(entity);
+            LoanAccount outputObj = await base.Insert(entity);
             outputObj.AccountLifeEvents = new List<IAccountEvent>();
 
             for (int i = 0; i < entity.AccountLifeEvents.Count; i++)
             {
                 entity.AccountLifeEvents[i].AccountId = outputObj.Id;
-                outputObj.AddLifeEvent( await dataService.Insert((AccountEvent)entity.AccountLifeEvents[i]));
+                outputObj.AddLifeEvent(await dataService.Insert((AccountEvent)entity.AccountLifeEvents[i]));
             }
 
             return outputObj;
         }
 
-        public override async Task<CompoundAccount> Load(int id)
+        public override async Task<LoanAccount> Load(int id)
         {
-            CompoundAccountEventDataService dataService = new CompoundAccountEventDataService();
+            AccountEventDataService dataService = new AccountEventDataService();
 
-            CompoundAccount outputObj = await base.Load(id);
+            LoanAccount outputObj = await base.Load(id);
+            outputObj.AccountLifeEvents = new List<IAccountEvent>();
 
             var eventList = await dataService.LoadFromAccountID(id);
 
@@ -65,9 +67,9 @@ namespace LifeCalculator.Framework.Services.AccountDataServices
             return outputObj;
         }
 
-        public override async Task Save(int id, CompoundAccount entity)
+        public override async Task Save(int id, LoanAccount entity)
         {
-            var dataService = new CompoundAccountEventDataService();
+            var dataService = new AccountEventDataService();
 
             foreach (var item in entity.AccountLifeEvents)
             {
@@ -79,20 +81,20 @@ namespace LifeCalculator.Framework.Services.AccountDataServices
 
         public virtual async Task Delete(int id)
         {
-            var dataService = new CompoundAccountEventDataService();
+            var dataService = new AccountEventDataService();
 
             base.Delete(id);
 
             dataService.DeleteByAccountID(id);
         }
 
-        public async Task<List<CompoundAccount>> LoadAccountsByUserId(int referenceAccountID)
+        public async Task<List<LoanAccount>> LoadAccountsByUserId(int referenceAccountID)
         {
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
-                var idList = await cnn.QueryAsync<CompoundAccount>($"SELECT * FROM {_tableName} WHERE UserId = @userId", new { userId = referenceAccountID });
-                var outputList = new List<CompoundAccount>();
-
+                var idList = await cnn.QueryAsync<LoanAccount>($"SELECT * FROM {_tableName} WHERE UserId = @userId", new { userId = referenceAccountID });
+                var outputList = new List<LoanAccount>();
+                
                 foreach (var item in idList)
                 {
                     outputList.Add(await Load(item.Id));

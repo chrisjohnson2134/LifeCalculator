@@ -152,6 +152,8 @@
                 Margin="0,10,0,0"
                 Background="{StaticResource SecondaryBrush5}"
                 BorderBrush="Transparent"              
+                Command="{Binding UpdateCurrentViewModelCommand}"
+                CommandParameter="{x:Static nav:ViewType.Home}"
                 Foreground="White">
                 <mt:PackIcon
                     Width="45"

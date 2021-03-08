@@ -59,7 +59,7 @@ namespace LifeCalcuator.FrameworkTest.Account
         [Test]
         public void AddMonthlyPriPaymentsCalculationTest()
         {
-            LoanAccount localLoanAccount = setupLoanAccount();
+            IAccount localLoanAccount = setupLoanAccount();
 
             IAccountEvent monthlyContribute = new AccountEvent()
             {

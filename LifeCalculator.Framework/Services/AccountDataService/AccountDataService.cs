@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using LifeCalculator.Framework.Account;
 using LifeCalculator.Framework.LifeEvents;
+using LifeCalculator.Framework.Services.AccountDataServices;
 using LifeCalculator.Framework.Services.DataService;
 using LifeCalculator.Framework.Services.EventsDataService;
 using System;
@@ -13,60 +14,78 @@ using System.Threading.Tasks;
 
 namespace LifeCalculator.Framework.Services.AccDataService
 {
-    public class AccountDataService : GenericDataService<ConcreteAccount>
+    public class AccountDataService
     {
-        private string _tableName = "ConcreteAccount";
-
-        public AccountDataService() :
-            base("ConcreteAccount")
+        public AccountDataService() 
         {
-            _tableName = "ConcreteAccount";
         }
 
         public async Task<IAccount> Insert(IAccount entity)
         {
-            AccountEventDataService dataService = new AccountEventDataService();
+            IAccount outputAccount = null;
+            if (entity is LoanAccount)
+            {
+                var dataService = new LoanAccountDataService();
+                outputAccount = await dataService.Insert( entity as LoanAccount );
+            }
+            else if(entity is CompoundAccount)
+            {
+                var dataService = new CompoundAccountDataService();
+                outputAccount = await dataService.Insert(entity as CompoundAccount);
+            }
 
-            ConcreteAccount outputObj = await base.Insert(new ConcreteAccount(entity));
-            outputObj.AccountLifeEvents = await dataService.InsertAccountEvents(outputObj.Id,entity.AccountLifeEvents);
-
-            return outputObj;
+            return outputAccount;
         }
 
-        public async Task<IAccount> Load(int entityId)
+        public async Task<IAccount> Load(IAccount entity)
         {
-            AccountEventDataService dataService = new AccountEventDataService();
-
-            ConcreteAccount outputObj = new ConcreteAccount();
-            try
-            {
-                outputObj = await base.Load(entityId);
-                outputObj.AccountLifeEvents = await dataService.LoadFromAccountID(outputObj.Id);
-            }
-            catch 
-            {
+            if (entity == null)
                 return null;
-            }
-            
 
-            return outputObj;
+            IAccount outputAccount = null;
+            if (entity is LoanAccount)
+            {
+                var dataService = new LoanAccountDataService();
+                outputAccount = await dataService.Load(entity.Id);
+            }
+            else if (entity is CompoundAccount)
+            {
+                var dataService = new CompoundAccountDataService();
+                outputAccount = await dataService.Load(entity.Id);
+            }
+
+            return outputAccount;
         }
 
         public async Task Save(IAccount entity)
         {
-            AccountEventDataService dataService = new AccountEventDataService();
-
-            await base.Save(entity.Id, new ConcreteAccount(entity));
-            dataService.SaveEventList(entity.AccountLifeEvents);
-
+            if (entity is LoanAccount)
+            {
+                var dataService = new LoanAccountDataService();
+                 await dataService.Save(entity.Id,entity as LoanAccount);
+            }
+            else if (entity is CompoundAccount)
+            {
+                var dataService = new CompoundAccountDataService();
+                await dataService.Save(entity.Id,entity as CompoundAccount);
+            }
         }
 
         public async Task Delete(IAccount entity)
         {
-            AccountEventDataService dataService = new AccountEventDataService();
+            if (entity == null)
+                return;
 
-            await base.Delete(entity.Id);
-            dataService.DeleteByAccountID(entity.Id);
+            if (entity is LoanAccount)
+            {
+                var dataService = new LoanAccountDataService();
+                await dataService.Delete(entity.Id);
+            }
+            else if (entity is CompoundAccount)
+            {
+                var dataService = new CompoundAccountDataService();
+                await dataService.Delete(entity.Id);
+            }
 
         }
 
@@ -75,7 +94,7 @@ namespace LifeCalculator.Framework.Services.AccDataService
             var outputList = new List<IAccount>();
             foreach (var item in accounts)
             {
-                outputList.Add( await Insert(new ConcreteAccount(item)));
+                outputList.Add(await Insert(item));
             }
 
             return outputList;
@@ -85,7 +104,7 @@ namespace LifeCalculator.Framework.Services.AccDataService
         {
             foreach (var item in accounts)
             {
-                Delete(item.Id);
+                Delete(item);
             }
         }
 
@@ -93,32 +112,28 @@ namespace LifeCalculator.Framework.Services.AccDataService
         {
             foreach (var item in accounts)
             {
-                Save(item.Id,new ConcreteAccount(item));
+                Save(item);
             }
         }
 
         public async Task<List<IAccount>> LoadAccountsByUserId(int userId)
         {
-            AccountEventDataService dataService = new AccountEventDataService();
+            var loanAccountDataSevice = new LoanAccountDataService();
+            var compoundAccountDataService = new CompoundAccountDataService();
 
-            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
+            var accountList = new List<IAccount>();
+
+            foreach (var item in await compoundAccountDataService.LoadAccountsByUserId(userId))
             {
-                var enumObject = await cnn.QueryAsync<ConcreteAccount>($"SELECT * FROM {_tableName} WHERE UserId = @UserId", new { UserId = userId });
-                List<IAccount> outputObject = new List<IAccount>();
-                foreach(var item in enumObject)
-                {
-                    outputObject.Add(new ConcreteAccount(item));
-                }
-
-                foreach(var item in outputObject)
-                {
-                    item.AccountLifeEvents = await dataService.LoadFromAccountID(item.Id);
-                }
-
-                return outputObject;
+                accountList.Add(item);
             }
 
-            return new List<IAccount>();
+            foreach (var item in await loanAccountDataSevice.LoadAccountsByUserId(userId))
+            {
+                accountList.Add(item);
+            }
+
+            return accountList;
         }
 
     }

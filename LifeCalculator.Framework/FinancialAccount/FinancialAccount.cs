@@ -2,16 +2,12 @@
 using LifeCalculator.Framework.Managers.Interfaces;
 using System.Collections.Generic;
 using LifeCalculator.Framework.Users;
+using LifeCalculator.Framework.Services.DataService;
 
 namespace LifeCalculator.Framework.FinancialAccount
 {
     public class FinancialAccount
     {
-        #region Fields
-
-        private readonly IAccountManager _accountManager;
-
-        #endregion
 
         #region Constructors
 
@@ -59,7 +55,8 @@ namespace LifeCalculator.Framework.FinancialAccount
 
         public double MiscellaneousPayments { get; set; }
 
-        //public List<IAccount> Accounts { get; set; }
+        [IgnoreDatabase]
+        public List<IAccount> Accounts { get; set; }
 
         #endregion
     }

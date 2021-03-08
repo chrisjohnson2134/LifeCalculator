@@ -15,10 +15,12 @@ namespace LifeCalculator.Framework.Services.AccDataService
         public string Name { get; set; }
         public int Id { get; }
         public int UserId { get; set; }
+        public double InitialAmount { get; set; }
+        public double InterestRate { get; set; }
 
         [IgnoreDatabase]
         public List<IAccountEvent> AccountLifeEvents { get; set; }
-
+        
         public ConcreteAccount()
         {
 
