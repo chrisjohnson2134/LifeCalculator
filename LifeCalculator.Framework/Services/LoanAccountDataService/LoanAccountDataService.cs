@@ -61,7 +61,8 @@ namespace LifeCalculator.Framework.Services
 
             foreach (var item in eventList)
             {
-                outputObj.AccountLifeEvents.Add(item);
+                if(item.AccountType == Enums.AccountTypes.LoanAccount)
+                    outputObj.AccountLifeEvents.Add(item);
             }
 
             return outputObj;

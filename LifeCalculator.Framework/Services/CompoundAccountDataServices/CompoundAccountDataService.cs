@@ -59,7 +59,8 @@ namespace LifeCalculator.Framework.Services.AccountDataServices
 
             foreach (var item in eventList)
             {
-                outputObj.AccountLifeEvents.Add(item);
+                if (item.AccountType == Enums.AccountTypes.CompoundInterest)
+                    outputObj.AccountLifeEvents.Add(item);
             }
 
             return outputObj;

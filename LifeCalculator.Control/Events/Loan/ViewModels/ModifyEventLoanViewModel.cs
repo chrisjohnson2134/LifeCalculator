@@ -27,6 +27,7 @@ namespace LifeCalculator.Control.Events.Loan.ViewModels
 
         public string Name { get; set; }
         public LifeEnum LifeEventType { get; set; }
+        public AccountTypes AccountType { get; set; }
         public DateTime StartDate { get; set; }
         public bool FinalEvent { get; set; }
         public double CurrentValue { get; set; }
@@ -37,7 +38,7 @@ namespace LifeCalculator.Control.Events.Loan.ViewModels
         public int Id { get; }
 
         public int AccountId { get; set; }
-
+        
         public event EventHandler ValueChanged;
 
         #endregion

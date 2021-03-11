@@ -72,12 +72,11 @@
             Grid.Row="5"
             Grid.Column="0"
             Margin="2"
-            Content="Loan Length:" />
-        <ComboBox
+            Content="Loan Length years:" />
+        <TextBox
             Grid.Row="5"
             Grid.Column="1"
             Margin="2"
-            ItemsSource="{Binding LoanLengths}"
             Text="{Binding LoanLength}" />
 
         <!--  row 6  -->

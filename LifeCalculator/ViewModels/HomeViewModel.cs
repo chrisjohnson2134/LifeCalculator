@@ -43,7 +43,7 @@ namespace LifeCalculator.ViewModels
             set
             {
                 _accountType = value;
-                //NavigateAddAccount(_accountType);
+                NavigateAddAccount(_accountType);
             }
         }
 
@@ -139,6 +139,11 @@ namespace LifeCalculator.ViewModels
             IAccount acc = await accountService.Insert(e); 
             AccountsList.Add(acc);
 
+            foreach (var item in e.AccountLifeEvents)
+            {
+                addEventToList(item);
+            }
+
             AddChartSeries(acc.Name);
             ReChart(this,EventArgs.Empty);
         }
@@ -151,6 +156,21 @@ namespace LifeCalculator.ViewModels
         #endregion
 
         #region Private Methods
+
+
+        private void NavigateAddAccount(string account)
+        {
+            if(account.Equals("Add Compound"))
+            {
+                CurrentViewModel = new AddCompoundViewModel(_accountStore);
+            }
+            else if(account.Equals("Add Loan"))
+            {
+                CurrentViewModel = new AddLoanViewModel(_accountStore);
+            }
+            CurrentViewModel.AccountAdded += CurrentViewModel_AccountAdded;
+        }
+
 
         /// <summary>
         /// Add LifeEvent to the LifeEvents List

@@ -10,6 +10,7 @@ namespace LifeCalculator.Framework.LifeEvents
         int Id { get; }
         int AccountId { get; set; }
         LifeEnum LifeEventType { get; set; }
+        AccountTypes AccountType { get; set; }
         DateTime StartDate { get; set; }
         DateTime EndDate { get; set; }
         double CurrentValue { get; set; }

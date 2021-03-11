@@ -42,6 +42,9 @@
             <DataTemplate DataType="{x:Type controlsViewModels:AddCompoundViewModel}">
                 <controlsView:AddCompound />
             </DataTemplate>
+            <DataTemplate DataType="{x:Type controlsViewModels:AddLoanViewModel}">
+                <controlsView:AddLoan />
+            </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

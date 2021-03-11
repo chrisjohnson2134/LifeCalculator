@@ -30,9 +30,9 @@ namespace LifeCalculator.ControlTest.ViewModels
 
         private void init()
         {
-            accountManager = new AccountManager();
+            //accountManager = new AccountManager();
 
-            addLoanviewModel = new AddLoanViewModel(accountManager);
+            //addLoanviewModel = new AddLoanViewModel(accountManager);
         }
 
     }

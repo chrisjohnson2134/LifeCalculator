@@ -22,8 +22,8 @@ namespace LifeCalculator.Framework.Enums
 
     public enum AccountTypes
     {
-        [Description("Compound Interest")]
-        CompoundInterest
+        CompoundInterest,
+        LoanAccount
     }
 
     public enum RegistrationResult

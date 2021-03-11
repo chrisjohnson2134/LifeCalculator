@@ -14,12 +14,13 @@ namespace LifeCalculator.Framework.Services.EventsDataService
         public int Id { get; }
         public int AccountId { get; set; }
         public LifeEnum LifeEventType { get; set; }
+        public AccountTypes AccountType { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public double CurrentValue { get; set; }
         public double Amount { get; set; }
         public double InterestRate { get; set; }
-
+        
         public event EventHandler ValueChanged;
 
         public EventConcrete()
@@ -31,6 +32,7 @@ namespace LifeCalculator.Framework.Services.EventsDataService
         {
             Name = entity.Name;
             AccountId = entity.Id;
+            AccountType = entity.AccountType;
             LifeEventType = entity.LifeEventType;
             StartDate = entity.StartDate;
             EndDate = entity.EndDate;

@@ -16,6 +16,7 @@ namespace LifeCalculator.Framework.LifeEvents
         public int Id { get; set; }
         public int AccountId { get; set; }
         public LifeEnum LifeEventType { get; set; }
+        public AccountTypes AccountType { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public double CurrentValue { get; set; }
@@ -32,6 +33,7 @@ namespace LifeCalculator.Framework.LifeEvents
             Id = entity.Id;
             AccountId = entity.AccountId;
             LifeEventType = entity.LifeEventType;
+            AccountType = entity.AccountType;
             StartDate = entity.StartDate;
             EndDate = entity.EndDate;
             CurrentValue = entity.CurrentValue;
@@ -49,6 +51,7 @@ namespace LifeCalculator.Framework.LifeEvents
                 AccountId == accountEvent.AccountId &&
                 Name.Equals(accountEvent.Name) &&
                 LifeEventType == accountEvent.LifeEventType &&
+                AccountType == accountEvent.AccountType &&
                 StartDate.Equals(accountEvent.StartDate) &&
                 EndDate.Equals(accountEvent.EndDate) &&
                 CurrentValue == accountEvent.CurrentValue &&

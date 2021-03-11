@@ -1,4 +1,5 @@
 ﻿using LifeCalculator.Framework.Account;
+using LifeCalculator.Framework.Enums;
 using LifeCalculator.Framework.LifeEvents;
 using LifeCalculator.Framework.Services.AccDataService;
 using NUnit.Framework;
@@ -14,8 +15,8 @@ namespace LifeCalculator.FrameworkTest.Services.AccountDataService
         {
             var eventsList = new List<IAccountEvent>();
 
-            eventsList.Add(new AccountEvent() { Name = name + "hi" });
-            eventsList.Add(new AccountEvent() { Name = name + "hey" });
+            eventsList.Add(new AccountEvent() { Name = name + "hi", AccountType = AccountTypes.CompoundInterest });
+            eventsList.Add(new AccountEvent() { Name = name + "hey", AccountType = AccountTypes.CompoundInterest });
 
             return new CompoundAccount()
             {
@@ -29,8 +30,8 @@ namespace LifeCalculator.FrameworkTest.Services.AccountDataService
         {
             var eventsList = new List<IAccountEvent>();
 
-            eventsList.Add(new AccountEvent() { Name = name + "hi" });
-            eventsList.Add(new AccountEvent() { Name = name + "hey" });
+            eventsList.Add(new AccountEvent() { Name = name + "hi", AccountType = AccountTypes.LoanAccount });
+            eventsList.Add(new AccountEvent() { Name = name + "hey", AccountType = AccountTypes.LoanAccount });
 
             return new LoanAccount()
             {

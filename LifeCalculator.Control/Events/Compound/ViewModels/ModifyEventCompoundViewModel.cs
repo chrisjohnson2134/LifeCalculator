@@ -41,14 +41,18 @@ namespace LifeCalculator.Control.ViewModels
 
         public LifeEnum LifeEventType { get; set; }
 
-        public DateTime StartDate
+        public DateTime Date
         {
-            get => _lifeEvent.StartDate;
+            get => _lifeEvent.LifeEventType == LifeEnum.StartLifeEvent ? _lifeEvent.StartDate : _lifeEvent.EndDate;
             set
             {
-                _lifeEvent.StartDate = value;
+                if (_lifeEvent.LifeEventType == LifeEnum.StartLifeEvent)
+                    _lifeEvent.StartDate = value;
+                else
+                    _lifeEvent.EndDate = value;
+
                 ValueChanged?.Invoke(this, new EventArgs());
-                OnPropertyChanged(nameof(StartDate));
+                OnPropertyChanged(nameof(Date));
             }
         }
 
@@ -89,6 +93,8 @@ namespace LifeCalculator.Control.ViewModels
 
         public int Id { get; }
         public int AccountId { get; set; }
+        public DateTime StartDate { get; set; }
+        public AccountTypes AccountType { get; set; }
 
         public event EventHandler ValueChanged;
 
