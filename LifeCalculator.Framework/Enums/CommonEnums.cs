@@ -7,6 +7,7 @@ namespace LifeCalculator.Framework.Enums
         Home,
         FinancialProfile,
         LoanProfile,
+        Budget,
         Login,
         Register,
         Welcome

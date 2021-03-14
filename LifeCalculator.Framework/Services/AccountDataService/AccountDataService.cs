@@ -1,15 +1,6 @@
-﻿using Dapper;
-using LifeCalculator.Framework.Account;
-using LifeCalculator.Framework.LifeEvents;
+﻿using LifeCalculator.Framework.Account;
 using LifeCalculator.Framework.Services.AccountDataServices;
-using LifeCalculator.Framework.Services.DataService;
-using LifeCalculator.Framework.Services.EventsDataService;
-using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.SQLite;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace LifeCalculator.Framework.Services.AccDataService
@@ -104,7 +95,7 @@ namespace LifeCalculator.Framework.Services.AccDataService
         {
             foreach (var item in accounts)
             {
-                Delete(item);
+                await Delete(item);
             }
         }
 
@@ -112,7 +103,7 @@ namespace LifeCalculator.Framework.Services.AccDataService
         {
             foreach (var item in accounts)
             {
-                Save(item);
+                await Save(item);
             }
         }
 
