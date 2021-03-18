@@ -127,7 +127,7 @@ namespace LifeCalculator.Framework.Account
         {
             var entity = obj as LoanAccount;
 
-            if (obj == null)
+            if (obj == null || entity == null)
                 return false;
 
             if (entity.Id == Id &&

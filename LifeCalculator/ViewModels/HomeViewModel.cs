@@ -14,6 +14,9 @@ using LifeCalculator.Control.ViewModels;
 using LifeCalculator.Framework.Services.AccDataService;
 using LifeCalculator.Control.Accounts;
 using System.Linq;
+using LifeCalculator.Control.Events;
+using LifeCalculator.Control.Events.Loan.ViewModels;
+using LifeCalculator.Framework.Services.EventsDataService;
 
 namespace LifeCalculator.ViewModels
 {
@@ -24,9 +27,10 @@ namespace LifeCalculator.ViewModels
         private IAccountStore _accountStore;
 
         private string _accountType;
-        private string _accountSelected;
+        private IAccount _accountSelected;
         private List<IAccountEvent> _accountEvents;
         AccountDataService accountService;
+        AccountEventDataService eventDataService;
         #endregion
 
         #region Properties
@@ -56,23 +60,35 @@ namespace LifeCalculator.ViewModels
         }
 
         //Add Event
-        public string AccountSelected
+        public IAccount AccountSelected
         {
             get => _accountSelected;
             set
             {
                 _accountSelected = value;
-                //NavigateAddEvent("AddEventCompound");
+                NavigateAddEvent(_accountSelected);
             }
         }
 
         private IControlAccount _currentViewModel;
-        public IControlAccount CurrentViewModel { 
+        public IControlAccount CurrentViewModel
+        { 
             get{ return _currentViewModel; }
             set
             {
                 _currentViewModel = value;
                 OnPropertyChanged("CurrentViewModel");
+            }
+        }
+
+        private IControlEvent _currentEventViewModel;
+        public IControlEvent CurrentEventViewModel
+        {
+            get { return _currentEventViewModel; }
+            set
+            {
+                _currentEventViewModel = value;
+                OnPropertyChanged("CurrentEventViewModel");
             }
         }
 
@@ -95,7 +111,7 @@ namespace LifeCalculator.ViewModels
             AccountsList = new ObservableCollection<IAccount>();
             AccountsList.CollectionChanged += AccountsList_CollectionChanged;
 
-
+            eventDataService = new AccountEventDataService();
             accountService = new AccountDataService();
 
             CurrentViewModel = new AddCompoundViewModel(accountStore);
@@ -117,19 +133,6 @@ namespace LifeCalculator.ViewModels
             ReChart(new object(),EventArgs.Empty);
         }
 
-
-        //#endregion
-
-        //#region Event Handlers
-
-        ///// <summary>
-        ///// Life Event Added to an Account 
-        ///// </summary>
-        //private void LifeEventAddedHandler(object sender, ILifeEvent e)
-        //{
-        //    addEventToList(e);
-        //}
-
         #endregion
 
         #region Event Handlers
@@ -146,6 +149,12 @@ namespace LifeCalculator.ViewModels
 
             AddChartSeries(acc.Name);
             ReChart(this,EventArgs.Empty);
+        }
+
+        public void _currentEventViewModel_EventAddedEvent(object sendere, IAccountEvent e)
+        {
+            var eventInserted = eventDataService.Insert(new AccountEvent(e));
+            addEventToList(e);
         }
 
         private void AccountsList_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -171,6 +180,16 @@ namespace LifeCalculator.ViewModels
             CurrentViewModel.AccountAdded += CurrentViewModel_AccountAdded;
         }
 
+
+        private void NavigateAddEvent(IAccount accountSelected)
+        {
+            if (accountSelected is LoanAccount loanAccount)
+            {
+                CurrentEventViewModel = new AddEventLoanViewModel(loanAccount);
+            }
+
+            CurrentEventViewModel.EventAdded += _currentEventViewModel_EventAddedEvent;
+        }
 
         /// <summary>
         /// Add LifeEvent to the LifeEvents List
