@@ -14,6 +14,7 @@ namespace LifeCalculator.ViewModels.Factory
         private readonly CreateViewModel<LoginViewModel> _createLoginViewModel;
         private readonly CreateViewModel<RegisterViewModel> _createRegisterViewModel;
         private readonly CreateViewModel<WelcomePageViewModel> _createWelcomePageViewModel;
+        private readonly CreateViewModel<BudgetViewModel> _createBudgetViewModel;
 
         #endregion
 
@@ -21,12 +22,14 @@ namespace LifeCalculator.ViewModels.Factory
 
         public ViewModelFactory(CreateViewModel<HomeViewModel> createHomeViewModel, CreateViewModel<FinancialProfileViewModel> createFinancialProfileViewModel,
             CreateViewModel<LoanProfileViewModel> createLoanProfileViewModel, CreateViewModel<LoginViewModel> createLoginViewModel,
-            CreateViewModel<RegisterViewModel> createRegisterViewModel, CreateViewModel<WelcomePageViewModel> createWelcomePageViewModel)
+            CreateViewModel<RegisterViewModel> createRegisterViewModel, CreateViewModel<WelcomePageViewModel> createWelcomePageViewModel,
+            CreateViewModel<BudgetViewModel> createBudgetViewModel)
         {
             _createHomeViewModel = createHomeViewModel;
             _createFinancialProfileViewModel = createFinancialProfileViewModel;
             _createLoanProfileViewModel = createLoanProfileViewModel;
             _createLoginViewModel = createLoginViewModel;
+            _createBudgetViewModel = createBudgetViewModel;
             _createRegisterViewModel = createRegisterViewModel;
             _createWelcomePageViewModel = createWelcomePageViewModel;
         }
@@ -45,6 +48,8 @@ namespace LifeCalculator.ViewModels.Factory
                     return _createFinancialProfileViewModel();
                 case ViewType.LoanProfile:
                     return _createLoanProfileViewModel();
+                case ViewType.Budget:
+                    return _createBudgetViewModel();
                 case ViewType.Login:
                     return _createLoginViewModel();
                 case ViewType.Register:

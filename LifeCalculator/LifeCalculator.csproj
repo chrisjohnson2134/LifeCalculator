@@ -60,9 +60,13 @@
     <Compile Include="Navigation\SideNavigationBar.xaml.cs">
       <DependentUpon>SideNavigationBar.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\BudgetViewModel.cs" />
     <Compile Include="ViewModels\LoanProfileViewModel.cs" />
     <Compile Include="ViewModels\RegisterViewModel.cs" />
     <Compile Include="ViewModels\WelcomePageViewModel.cs" />
+    <Compile Include="Views\BudgetView.xaml.cs">
+      <DependentUpon>BudgetView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\FinancialProfileView.xaml.cs">
       <DependentUpon>FinancialProfileView.xaml</DependentUpon>
     </Compile>
@@ -111,6 +115,10 @@
     <Compile Include="ViewModels\Factory\ViewModelFactory.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Page Include="Views\BudgetView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\FinancialProfileView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
