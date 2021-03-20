@@ -44,6 +44,9 @@
             <DataTemplate DataType="{x:Type controlsViewModels:AddLoanViewModel}">
                 <controlsView:AddLoan />
             </DataTemplate>
+            <DataTemplate DataType="{x:Type controlsViewModels:AddEventLoanViewModel}">
+                <controlsView:AddEventLoan />
+            </DataTemplate>
             <DataTemplate DataType="{x:Type viewModels:BudgetViewModel}">
                 <views:BudgetView />
             </DataTemplate>

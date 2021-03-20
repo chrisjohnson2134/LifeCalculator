@@ -50,6 +50,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Accounts\IControlAccount.cs" />
+    <Compile Include="Events\IControlEvent.cs" />
+    <Compile Include="Events\Loan\ViewModels\AddEventLoanViewModel.cs" />
     <Compile Include="FinancialProfileEdit\FinancialProfileEditView.xaml.cs">
       <DependentUpon>FinancialProfileEditView.xaml</DependentUpon>
     </Compile>
