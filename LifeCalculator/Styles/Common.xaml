@@ -28,26 +28,34 @@
     <SolidColorBrush x:Key="SecondaryBrush6" Color="{StaticResource SecondaryColor6}" />
     <SolidColorBrush x:Key="ButtonTextBrush" Color="{StaticResource ButtonTextColor}" />
 
-    <!--  Text Boxes  -->
-    <!--
-    <Style x:Key="TextBoxBase" TargetType="Control">
-        <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="Padding" Value="2" />
+
+    <!--  TabItem Styles  -->
+    <!--<Style TargetType="TabItem">
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="Control">
-                    <Border
-                        BorderBrush="Gray"
-                        BorderThickness="1"
-                        CornerRadius="3">
-                        <ScrollViewer x:Name="PART_ContentHost" />
-                    </Border>
+                <ControlTemplate TargetType="{x:Type TabItem}">
+                    <Grid>
+                        <Border
+                            Width="150"
+                            Height="40"
+                            BorderBrush="{StaticResource PrimaryBrush1}"
+                            BorderThickness="2"
+                            CornerRadius="3">
+                            <Button
+                                Width="300"
+                                Height="40"
+                                HorizontalAlignment="Center"
+                                FontSize="14"
+                                Foreground="White">
+                                <ContentPresenter Margin="5" ContentSource="Header" />
+                            </Button>
+                        </Border>
+                    </Grid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>-->
-    
-    
+
     <!--  Label Style  -->
 
     <Style TargetType="Label">

@@ -5,9 +5,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:LifeCalculator.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:pwBox="clr-namespace:LifeCalculator.Control.PasswordBoxControl;assembly=LifeCalculator.Control"
-    mc:Ignorable="d"
-    Background="{StaticResource SecondaryBrush5}">
+    xmlns:pwBox="clr-namespace:LifeCalculator.Control.PasswordBox;assembly=LifeCalculator.Control"
+    Background="{StaticResource SecondaryBrush5}"
+    mc:Ignorable="d">
 
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
@@ -19,7 +19,7 @@
         HorizontalAlignment="Center"
         VerticalAlignment="Center"
         Background="WhiteSmoke"
-        BorderBrush="{StaticResource SecondaryBrush1}"
+        BorderBrush="{StaticResource PrimaryBrush2}"
         BorderThickness="3"
         CornerRadius="10">
         <Border.Effect>
@@ -90,10 +90,10 @@
                         <ColumnDefinition Width="300" />
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Column="0" Text="Password:" />
-                    <TextBox
+                    <pwBox:BindablePasswordBox
                         Grid.Column="1"
                         Margin="20,0,0,0"
-                        Text="{Binding Password}" />
+                        Password="{Binding Password, Mode=TwoWay}" />
                 </Grid>
 
                 <Grid Grid.Row="3" Margin="0,10">
@@ -102,10 +102,10 @@
                         <ColumnDefinition Width="300" />
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Column="0" Text="Confirm Password:" />
-                    <TextBox
+                    <pwBox:BindablePasswordBox
                         Grid.Column="1"
                         Margin="20,0,0,0"
-                        Text="{Binding ConfirmPassword}" />
+                        Password="{Binding ConfirmPassword, Mode=TwoWay}" />
                 </Grid>
 
 

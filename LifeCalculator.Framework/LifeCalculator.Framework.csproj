@@ -136,6 +136,9 @@
   <ItemGroup>
     <Compile Include="Authenticator\Authenticator.cs" />
     <Compile Include="Authenticator\IAuthenticator.cs" />
+    <Compile Include="BudgetItems\BudgetItemManager.cs" />
+    <Compile Include="BudgetItems\BudgetItemModel.cs" />
+    <Compile Include="BudgetItems\IBudgetItemManager.cs" />
     <Compile Include="CurrentAccountStorage\AccountStore.cs" />
     <Compile Include="CurrentAccountStorage\IAccountStore.cs" />
     <Compile Include="CustomExceptions\EmailAlreadyExistsException.cs" />
@@ -151,8 +154,6 @@
     <Compile Include="Database\Queries\Accounts\CompoundQueries.cs" />
     <Compile Include="Database\Queries\Accounts\LoanQueries.cs" />
     <Compile Include="Events\Events\AccountEvent.cs" />
-    <Compile Include="Managers\AccountManager.cs" />
-    <Compile Include="Managers\Interfaces\IAccountManager.cs" />
     <Compile Include="Account\CompoundAccount.cs" />
     <Compile Include="Account\IAccount.cs" />
     <Compile Include="Account\LoanAccount.cs" />
@@ -160,8 +161,6 @@
     <Compile Include="Chart\BarChartColumn.cs" />
     <Compile Include="ColumnDefinitions\MonthlyColumn.cs" />
     <Compile Include="Enums\CommonEnums.cs" />
-    <Compile Include="NotNeeded\LifeEventManager\ILifeEventManager.cs" />
-    <Compile Include="NotNeeded\LifeEventManager\LifeEventManager.cs" />
     <Compile Include="Events\Events\IAccountEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="FinancialAccount\FinancialAccount.cs" />
@@ -195,7 +194,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Database\Queries\Events\" />
-    <Folder Include="Events\EventManager\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

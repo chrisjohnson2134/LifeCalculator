@@ -2,7 +2,6 @@
 using LifeCalculator.Framework.Account;
 using LifeCalculator.Framework.BaseVM;
 using LifeCalculator.Framework.CurrentAccountStorage;
-using LifeCalculator.Framework.Managers.Interfaces;
 using Microsoft.VisualStudio.PlatformUI;
 using System;
 using System.Collections.Generic;

@@ -1,8 +1,6 @@
 ﻿using LifeCalculator.Framework.Authenticator;
 using LifeCalculator.Framework.BaseVM;
 using LifeCalculator.Framework.CurrentAccountStorage;
-using LifeCalculator.Framework.Managers;
-using LifeCalculator.Framework.Managers.Interfaces;
 using LifeCalculator.Framework.Services.AuthenticationService;
 using LifeCalculator.Framework.Services.FinancialAccountService;
 using LifeCalculator.Framework.Services.UserService;
@@ -30,7 +28,6 @@ namespace LifeCalculator.Ninject
             Bind<BudgetViewModel>().ToSelf().InSingletonScope();
 
             Bind<INavigator>().To<Navigator>().InSingletonScope();
-            Bind<IAccountManager>().To<AccountManager>().InSingletonScope();
             Bind<IViewModelFactory>().To<ViewModelFactory>().InSingletonScope();
             Bind<IAccountStore>().To<AccountStore>().InSingletonScope();
             Bind<IAuthenticator>().To<Authenticator>().InSingletonScope();

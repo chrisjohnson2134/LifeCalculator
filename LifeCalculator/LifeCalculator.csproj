@@ -56,6 +56,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Commands\AddBudgetItemCommand.cs" />
+    <Compile Include="Commands\DeleteBudgetItemCommand.cs" />
     <Compile Include="Commands\RegisterCommand.cs" />
     <Compile Include="Navigation\SideNavigationBar.xaml.cs">
       <DependentUpon>SideNavigationBar.xaml</DependentUpon>

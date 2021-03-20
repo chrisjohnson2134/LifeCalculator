@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
-namespace LifeCalculator.Control.PasswordBoxControl
+namespace LifeCalculator.Control.PasswordBox
 {
     /// <summary>
     /// Interaction logic for BindablePasswordBox.xaml

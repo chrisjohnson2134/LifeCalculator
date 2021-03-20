@@ -2,7 +2,7 @@
     x:Class="LifeCalculator.Views.LoginView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:control="http://schemas.canself.com/wpf/xaml/toolkit"
+    xmlns:pwBox="clr-namespace:LifeCalculator.Control.PasswordBox;assembly=LifeCalculator.Control"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:LifeCalculator.Views"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
@@ -28,7 +28,7 @@
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             Background="White"
-            BorderBrush="{StaticResource SecondaryBrush1}"
+            BorderBrush="{StaticResource PrimaryBrush2}"
             BorderThickness="3"
             CornerRadius="10">
             <Border.Effect>
@@ -84,11 +84,11 @@
                             <ColumnDefinition Width="300" />
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0" Text="Password:" />
-                        <TextBox
+                        <pwBox:BindablePasswordBox
                             x:Name="pwBox"
                             Grid.Column="1"
                             Margin="20,0,0,0"
-                            Text="{Binding Password}" />
+                            Password="{Binding Password, Mode=TwoWay}" />
                     </Grid>
 
                     <Button

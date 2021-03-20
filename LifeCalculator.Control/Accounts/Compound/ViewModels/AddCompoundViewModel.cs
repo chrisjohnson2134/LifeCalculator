@@ -3,7 +3,6 @@ using System;
 using LifeCalculator.Framework.LifeEvents;
 using Microsoft.VisualStudio.PlatformUI;
 using LifeCalculator.Framework.BaseVM;
-using LifeCalculator.Framework.Managers.Interfaces;
 using LifeCalculator.Framework.CurrentAccountStorage;
 using LifeCalculator.Control.Accounts;
 
