@@ -10,15 +10,18 @@
     Height="700"
     MinWidth="1200"
     MinHeight="700"
-    AllowsTransparency="True"
+    AllowsTransparency="False"
     Background="Transparent"
     ResizeMode="CanResize"
     WindowStartupLocation="CenterScreen"
     WindowState="Normal"
-    WindowStyle="None"
+    WindowStyle="SingleBorderWindow"
     mc:Ignorable="d">
 
-    <Border BorderBrush="{StaticResource SecondaryBrush6}" BorderThickness="2" CornerRadius="20">
+    <Border
+        BorderBrush="{StaticResource SecondaryBrush6}"
+        BorderThickness="2"
+        CornerRadius="20">
         <Grid MouseDown="Grid_MouseDown">
 
             <Grid.ColumnDefinitions>

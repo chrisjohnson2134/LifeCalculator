@@ -1,5 +1,4 @@
 ﻿using LifeCalculator.Control.ViewModels;
-using LifeCalculator.Framework.Managers;
 using NUnit.Framework;
 using System;
 
@@ -9,7 +8,6 @@ namespace LifeCalculator.ControlTest.ViewModels
     class AddLoanViewModelTest
     {
         public AddLoanViewModel addLoanviewModel;
-        public AccountManager accountManager;
 
 
         //[Test]

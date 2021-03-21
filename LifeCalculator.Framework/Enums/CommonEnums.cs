@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-namespace LifeCalculator.Framework.Enums
+﻿namespace LifeCalculator.Framework.Enums
 {
     public enum ViewType
     {
@@ -33,5 +31,18 @@ namespace LifeCalculator.Framework.Enums
         PasswordsDoNotMatch,
         EmailAlreadyExists,
         UsernameAlreadyExists
+    }
+    
+    public enum BudgetItemSection
+    {
+        Income,
+        Housing,
+        Transportation,
+        Debt,
+        Health,
+        Food,
+        Savings,
+        Insurance,
+        Personal
     }
 }

@@ -73,7 +73,7 @@
     <Compile Include="FinancialProfileSummary\FinancialProfileSummaryView.xaml.cs">
       <DependentUpon>FinancialProfileSummaryView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PasswordBoxControl\BindablePasswordBox.xaml.cs">
+    <Compile Include="PasswordBox\BindablePasswordBox.xaml.cs">
       <DependentUpon>BindablePasswordBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -156,7 +156,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="PasswordBoxControl\BindablePasswordBox.xaml">
+    <Page Include="PasswordBox\BindablePasswordBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
