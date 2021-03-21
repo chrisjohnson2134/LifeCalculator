@@ -8,7 +8,8 @@
         Budget,
         Login,
         Register,
-        Welcome
+        Welcome,
+        Calculator
     }
 
     public enum LifeEnum

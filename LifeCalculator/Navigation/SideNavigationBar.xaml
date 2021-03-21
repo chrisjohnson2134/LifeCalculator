@@ -152,7 +152,7 @@
                 Background="{StaticResource SecondaryBrush5}"
                 BorderBrush="Transparent"              
                 Command="{Binding UpdateCurrentViewModelCommand}"
-                CommandParameter="{x:Static nav:ViewType.Home}"
+                CommandParameter="{x:Static nav:ViewType.Calculator}"
                 Foreground="White">
                 <mt:PackIcon
                     Width="45"

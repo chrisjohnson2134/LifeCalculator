@@ -15,6 +15,7 @@ namespace LifeCalculator.ViewModels.Factory
         private readonly CreateViewModel<RegisterViewModel> _createRegisterViewModel;
         private readonly CreateViewModel<WelcomePageViewModel> _createWelcomePageViewModel;
         private readonly CreateViewModel<BudgetViewModel> _createBudgetViewModel;
+        private readonly CreateViewModel<CalculatorViewModel> _createCalculatorPageViewModel;
 
         #endregion
 
@@ -23,7 +24,7 @@ namespace LifeCalculator.ViewModels.Factory
         public ViewModelFactory(CreateViewModel<HomeViewModel> createHomeViewModel, CreateViewModel<FinancialProfileViewModel> createFinancialProfileViewModel,
             CreateViewModel<LoanProfileViewModel> createLoanProfileViewModel, CreateViewModel<LoginViewModel> createLoginViewModel,
             CreateViewModel<RegisterViewModel> createRegisterViewModel, CreateViewModel<WelcomePageViewModel> createWelcomePageViewModel,
-            CreateViewModel<BudgetViewModel> createBudgetViewModel)
+            CreateViewModel<BudgetViewModel> createBudgetViewModel,CreateViewModel<CalculatorViewModel> calculatorViewModel)
         {
             _createHomeViewModel = createHomeViewModel;
             _createFinancialProfileViewModel = createFinancialProfileViewModel;
@@ -32,6 +33,7 @@ namespace LifeCalculator.ViewModels.Factory
             _createBudgetViewModel = createBudgetViewModel;
             _createRegisterViewModel = createRegisterViewModel;
             _createWelcomePageViewModel = createWelcomePageViewModel;
+            _createCalculatorPageViewModel = calculatorViewModel;
         }
 
         #endregion
@@ -56,6 +58,8 @@ namespace LifeCalculator.ViewModels.Factory
                     return _createRegisterViewModel();
                 case ViewType.Welcome:
                     return _createWelcomePageViewModel();
+                case ViewType.Calculator:
+                    return _createCalculatorPageViewModel();
                 default:
                     throw new ArgumentException("This view type does not have a view model.");
             }
