@@ -11,11 +11,14 @@ namespace LifeCalculator.Framework.Account
     public class LoanAccount : IAccount, IDatabaseable
     {
         private LoanAccount loanAccount;
+        public event EventHandler<IAccountEvent> LifeEventAdded;
+        public event EventHandler ValueChanged;
 
         public int Id { get; }
         public int UserId { get; set; }
         public string Name { get; set; }
         public double MonthlyPayment { get; set; }
+        public DateTime StartDate { get; set; }
         public double LoanAmount { get; set; }
         public double DownPayment { get; set; }
         public double InterestRate { get; set; }
@@ -25,7 +28,7 @@ namespace LifeCalculator.Framework.Account
         [IgnoreDatabase]
         public List<IAccountEvent> AccountLifeEvents { get; set; }
 
-        public event EventHandler<IAccountEvent> LifeEventAdded;
+        
 
         public LoanAccount()
         {
@@ -39,14 +42,15 @@ namespace LifeCalculator.Framework.Account
             LoanAmount = loanAmount - downPayment;
             DownPayment = downPayment;
             LoanLengthMonths = loanLengthMonths;
+            StartDate = date;
 
             MonthlyPayment = Math.Floor((loanAmount - downPayment) * (Math.Pow((1 + InterestRate / 12), 360) * InterestRate)
                 / (12 * (Math.Pow((1 + InterestRate / 12), loanLengthMonths) - 1)));
 
             AccountLifeEvents = new List<IAccountEvent>();
 
-            AddLifeEvent(new AccountEvent() { Name = "Start - " + Name, StartDate = date, LifeEventType = LifeEnum.StartLifeEvent,AccountType = AccountTypes.LoanAccount });
-            AddLifeEvent(new AccountEvent() { Name = "Stop - " + Name, StartDate = date.AddMonths(loanLengthMonths), LifeEventType = LifeEnum.EndLifeEvent, AccountType = AccountTypes.LoanAccount });
+            //AddLifeEvent(new AccountEvent() { Name = "Start - " + Name, StartDate = date, LifeEventType = LifeEnum.StartLifeEvent,AccountType = AccountTypes.LoanAccount });
+            //AddLifeEvent(new AccountEvent() { Name = "Stop - " + Name, StartDate = date.AddMonths(loanLengthMonths), LifeEventType = LifeEnum.EndLifeEvent, AccountType = AccountTypes.LoanAccount });
         }
 
         public LoanAccount(LoanAccount loanAccount)
@@ -75,10 +79,10 @@ namespace LifeCalculator.Framework.Account
 
             AccountLifeEvents.Sort((x, y) => x.StartDate.CompareTo(y.StartDate));
 
-            IAccountEvent startLifeEvent = AccountLifeEvents.Find(i => i.LifeEventType == LifeEnum.StartLifeEvent);
-            IAccountEvent stopLifeEvent = AccountLifeEvents.Find(i => i.LifeEventType == LifeEnum.EndLifeEvent);
-            monthDiff = Math.Abs(startLifeEvent.StartDate.Year * 12 + (startLifeEvent.StartDate.Month - 1)
-                    - (stopLifeEvent.StartDate.Year * 12 + (stopLifeEvent.StartDate.Month - 1)));
+            DateTime stopDate = StartDate.AddMonths(LoanLengthMonths);
+
+            monthDiff = Math.Abs(StartDate.Year * 12 + (StartDate.Month - 1)
+                    - (stopDate.Year * 12 + (stopDate.Month - 1)));
 
 
             for (int j = 0; j < monthDiff; j++)
@@ -86,7 +90,7 @@ namespace LifeCalculator.Framework.Account
                 interestPay = currValue * InterestRate / 12;
 
                 if (MonthlyPayment < currValue)
-                    principalPay = MonthlyPayment - interestPay + additionalPriPaymentCalculation(startLifeEvent.StartDate.AddMonths(1 + j));
+                    principalPay = MonthlyPayment - interestPay + additionalPriPaymentCalculation(StartDate.AddMonths(1 + j));
                 else if (currValue > 0)
                     principalPay = currValue;
                 else
@@ -97,9 +101,9 @@ namespace LifeCalculator.Framework.Account
                 currValue = currValue - principalPay;
                 monthlies.Add(new MonthlyColumn()
                 {
-                    Name = startLifeEvent.Name,
+                    Name = Name,
                     Gain = LoanAmount - PrincipalPaid,
-                    Date = startLifeEvent.StartDate.AddMonths(1 + j)
+                    Date = StartDate.AddMonths(1 + j)
                 });
             }
 

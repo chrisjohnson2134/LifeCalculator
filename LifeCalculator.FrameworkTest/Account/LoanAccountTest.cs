@@ -25,9 +25,6 @@ namespace LifeCalcuator.FrameworkTest.Account
         {
             LoanAccount.MonthlyPayment.ShouldEqual(1067);
 
-            LoanAccount.AccountLifeEvents[0].Name.ShouldEqual("Start - "+ LoanAccount.Name);
-            LoanAccount.AccountLifeEvents[1].Name.ShouldEqual("Stop - " + LoanAccount.Name);
-
         }
 
         [Test]
@@ -59,7 +56,7 @@ namespace LifeCalcuator.FrameworkTest.Account
         [Test]
         public void AddMonthlyPriPaymentsCalculationTest()
         {
-            IAccount localLoanAccount = setupLoanAccount();
+            var localLoanAccount = setupLoanAccount();
 
             IAccountEvent monthlyContribute = new AccountEvent()
             {
@@ -73,7 +70,7 @@ namespace LifeCalcuator.FrameworkTest.Account
 
             var calcs = localLoanAccount.Calculation();
 
-            calcs[11].Gain.ShouldBeInRange(9652.59, 9652.60);
+            calcs[230-11].Gain.ShouldBeInRange(9652.59, 9652.60);
             calcs[23].Gain.ShouldBeInRange(20463.63, 20463.64);
             calcs[35].Gain.ShouldBeInRange(31575.74, 31575.75);
             calcs[179].Gain.ShouldBeInRange(191704.72, 191704.73);
@@ -99,7 +96,7 @@ namespace LifeCalcuator.FrameworkTest.Account
 
             var calcs = localLoanAccount.Calculation();
 
-            calcs[11].Gain.ShouldBeInRange(5201.83, 5201.84);
+            calcs[11].Gain.ShouldBeInRange(261600-5201.83, 5201.84);
             calcs[12].Gain.ShouldBeInRange(105681.25, 105681.26);
             calcs[23].Gain.ShouldBeInRange(113577.86, 113577.87);
             calcs[35].Gain.ShouldBeInRange(122422.18, 122422.19);

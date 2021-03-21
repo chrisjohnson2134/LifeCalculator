@@ -12,6 +12,8 @@ namespace LifeCalculator.Framework.Services.AccDataService
 {
     public class ConcreteAccount : IAccount
     {
+        public event EventHandler ValueChanged;
+
         public string Name { get; set; }
         public int Id { get; }
         public int UserId { get; set; }
@@ -35,6 +37,7 @@ namespace LifeCalculator.Framework.Services.AccDataService
         }
 
         public event EventHandler<IAccountEvent> LifeEventAdded;
+        public event EventHandler valueChanged;
 
         public void AddLifeEvent(IAccountEvent lifeEvent)
         {

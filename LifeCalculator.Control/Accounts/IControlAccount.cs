@@ -10,5 +10,6 @@ namespace LifeCalculator.Control.Accounts
     public interface IControlAccount
     {
         event EventHandler<IAccount> AccountAdded;
+        event EventHandler<IAccount> AccountModified;
     }
 }

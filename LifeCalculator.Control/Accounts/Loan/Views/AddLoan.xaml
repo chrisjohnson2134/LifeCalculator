@@ -50,9 +50,8 @@
             Margin="2"
             Content="Initial Loan Amount:" />
         <TextBox
-            Grid.Row="3"
-            Grid.Column="1"
-            Margin="2"
+            Grid.Row="3" Grid.Column="1"
+            Margin="2" GotFocus="TextBox_GotFocus"
             Text="{Binding InitialLoanAmount, StringFormat=C}" />
 
         <!--  row 4  -->
@@ -62,9 +61,8 @@
             Margin="2"
             Content="Interest Rate:" />
         <TextBox
-            Grid.Row="4"
-            Grid.Column="1"
-            Margin="2"
+            Grid.Row="4" Grid.Column="1"
+            Margin="2" GotFocus="TextBox_GotFocus"
             Text="{Binding InterestRate, StringFormat={}{0}%}" />
 
         <!--  row 5  -->
@@ -76,7 +74,7 @@
         <TextBox
             Grid.Row="5"
             Grid.Column="1"
-            Margin="2"
+            Margin="2" GotFocus="TextBox_GotFocus"
             Text="{Binding LoanLength}" />
 
         <!--  row 6  -->
@@ -88,7 +86,7 @@
         <TextBox
             Grid.Row="6"
             Grid.Column="1"
-            Margin="2"
+            Margin="2" GotFocus="TextBox_GotFocus"
             Text="{Binding DownPayment, StringFormat=C}" />
 
         <!--  row 7  -->

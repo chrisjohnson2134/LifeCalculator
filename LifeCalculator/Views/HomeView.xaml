@@ -3,9 +3,10 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controlViewModels="clr-namespace:LifeCalculator.Control.ViewModels;assembly=LifeCalculator.Control"
-    xmlns:controlViews="clr-namespace:LifeCalculator.Control.Views.Events;assembly=LifeCalculator.Control"
+    xmlns:controlViews="clr-namespace:LifeCalculator.Control.Views;assembly=LifeCalculator.Control"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:LifeCalculator.Views"
+    xmlns:framework="clr-namespace:LifeCalculator.Framework.Account;assembly=LifeCalculator.Framework"
     xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
@@ -122,11 +123,16 @@
             Width="600"
             Height="400"
             Margin="5">
-            <ItemsControl ItemsSource="{Binding LifeEvents}">
+            <ItemsControl ItemsSource="{Binding AccountsList}">
                 <ItemsControl.Resources>
-                    <DataTemplate DataType="{x:Type controlViewModels:ModifyEventCompoundViewModel}">
+                    <DataTemplate DataType="{x:Type controlViewModels:ModifyLoanViewModel}">
                         <Expander Header="{Binding Name}">
-                            <controlViews:ModifyEventCompound />
+                            <controlViews:ModifyLoan />
+                        </Expander>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type controlViewModels:ModifyCompoundViewModel}">
+                        <Expander Header="{Binding Name}">
+                            <controlViews:ModifyCompound />
                         </Expander>
                     </DataTemplate>
                 </ItemsControl.Resources>

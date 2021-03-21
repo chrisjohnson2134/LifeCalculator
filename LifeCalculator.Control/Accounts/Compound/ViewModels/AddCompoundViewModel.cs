@@ -15,6 +15,7 @@ namespace LifeCalculator.Control.ViewModels
         #region Events
 
         public event EventHandler<IAccount> AccountAdded;
+        public event EventHandler<IAccount> AccountModified;
 
         #endregion
 
@@ -61,24 +62,7 @@ namespace LifeCalculator.Control.ViewModels
                 UserId = _accountStore.CurrentAccount.Id
             };
 
-            AccountEvent startEvent = new AccountEvent()
-            {
-                Name = "Start - " + AccountName,
-                StartDate = StartDate,
-                InterestRate = Interest,
-                Amount = Contribute
-            };
-
-            AccountEvent stopEvent = new AccountEvent()
-            {
-                Name = "Stop - " + AccountName,
-                StartDate = StopDate,
-                InterestRate = 0,
-                Amount = 0
-            };
-
-            investmentAccount.AddLifeEvent(startEvent);
-            investmentAccount.AddLifeEvent(stopEvent);
+            investmentAccount.SetupBasicCalculation(StartDate, StopDate, Interest, InitialValue, Contribute);
 
             _accountStore.CurrentAccount.Accounts.Add(investmentAccount);
 

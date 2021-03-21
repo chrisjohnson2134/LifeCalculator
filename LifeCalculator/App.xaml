@@ -48,6 +48,12 @@
             <DataTemplate DataType="{x:Type controlsViewModels:AddEventLoanViewModel}">
                 <controlsView:AddEventLoan />
             </DataTemplate>
+            <DataTemplate DataType="{x:Type controlsViewModels:ModifyLoanViewModel}">
+                <controlsView:ModifyLoan />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type controlsViewModels:ModifyCompoundViewModel}">
+                <controlsView:ModifyCompound />
+            </DataTemplate>
             <DataTemplate DataType="{x:Type viewModels:BudgetViewModel}">
                 <views:BudgetView/>
             </DataTemplate>

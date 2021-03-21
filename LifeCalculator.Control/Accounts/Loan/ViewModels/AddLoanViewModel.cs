@@ -12,8 +12,13 @@ namespace LifeCalculator.Control.ViewModels
     public class AddLoanViewModel : ViewModelBase, IControlAccount
     {
 
+        #region Fields
+
         private IAccountStore _accountStore;
         public event EventHandler<IAccount> AccountAdded;
+        public event EventHandler<IAccount> AccountModified;
+
+        #endregion
 
         #region Constructor
 

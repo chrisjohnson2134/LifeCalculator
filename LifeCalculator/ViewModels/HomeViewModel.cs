@@ -120,14 +120,7 @@ namespace LifeCalculator.ViewModels
 
             foreach (var account in _accountStore.CurrentAccount.Accounts)
             {
-                AccountsList.Add(account);
-                AddChartSeries(account.Name);
-                foreach (var item in account.AccountLifeEvents)
-                {
-                    //LifeEvents.Add(item);
-                    addEventToList(item);
-
-                }
+                 addAccountToList(account);
             }
 
             ReChart(new object(),EventArgs.Empty);
@@ -139,15 +132,10 @@ namespace LifeCalculator.ViewModels
 
         private async void CurrentViewModel_AccountAdded(object sender, IAccount e)
         {
-            IAccount acc = await accountService.Insert(e); 
-            AccountsList.Add(acc);
+            IAccount acc = await accountService.Insert(e);
 
-            foreach (var item in e.AccountLifeEvents)
-            {
-                addEventToList(item);
-            }
+            addAccountToList(acc);
 
-            AddChartSeries(acc.Name);
             ReChart(this,EventArgs.Empty);
         }
 
@@ -159,7 +147,7 @@ namespace LifeCalculator.ViewModels
 
         private void AccountsList_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            //ReChart(new object(), new EventArgs());
+            ReChart(new object(), new EventArgs());
         }
 
         #endregion
@@ -214,6 +202,32 @@ namespace LifeCalculator.ViewModels
             }
 
             ReChart(new object(), new EventArgs());
+        }
+
+        private void addAccountToList(IAccount account)
+        {
+            if (account is LoanAccount loanAccount)
+            {
+                var vm = new ModifyLoanViewModel(loanAccount);
+                vm.ValueChanged += ReChart;
+                AccountsList.Add(vm);
+            }
+
+            if (account is CompoundAccount compoundAccount)
+            {
+                var vm = new ModifyCompoundViewModel(compoundAccount);
+                vm.ValueChanged += ReChart;
+                AccountsList.Add(vm);
+            }
+
+
+            AddChartSeries(account.Name);
+            account.ValueChanged += ReChart;
+            foreach (var item in account.AccountLifeEvents)
+            {
+                //LifeEvents.Add(item);
+                addEventToList(item);
+            }
         }
 
 

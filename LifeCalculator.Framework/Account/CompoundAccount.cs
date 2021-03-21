@@ -1,4 +1,5 @@
-﻿using LifeCalculator.Framework.ColumnDefinitions;
+﻿using LifeCalculator.Framework.BaseVM;
+using LifeCalculator.Framework.ColumnDefinitions;
 using LifeCalculator.Framework.Database;
 using LifeCalculator.Framework.Database.Queries;
 using LifeCalculator.Framework.LifeEvents;
@@ -10,12 +11,13 @@ using System.Linq;
 
 namespace LifeCalculator.Framework.Account
 {
-    public class CompoundAccount :  IAccount
+    public class CompoundAccount : ViewModelBase, IAccount
     {
 
         #region Events
 
         public event EventHandler<IAccountEvent> LifeEventAdded;
+        public event EventHandler ValueChanged;
 
         #endregion
 
@@ -46,8 +48,11 @@ namespace LifeCalculator.Framework.Account
         public int UserId { get; set; }
         public string Name { get; set; }
         public double InitialAmount { get; set; }
+        public double MonthlyContribute { get; set; }
         public double InterestRate { get; set; }
         public double FinalAmount { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
         [IgnoreDatabase]
         public List<IAccountEvent> AccountLifeEvents { get; set; }
         
@@ -60,6 +65,11 @@ namespace LifeCalculator.Framework.Account
         {
 
             InitialAmount = initialAmount;
+            InterestRate = interestRate;
+            MonthlyContribute = additionalAmount;
+            StartDate = startDate;
+            EndDate = startDate;
+
 
             AccountEvent lifeEventStart = new AccountEvent()
             {
