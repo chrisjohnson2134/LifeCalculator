@@ -216,6 +216,8 @@ namespace LifeCalculator.ViewModels
                 var vm = new ModifyLoanViewModel(loanAccount);
                 vm.ValueChanged += ReChart;
                 AccountsList.Add(vm);
+                if(_accountStore.CurrentAccount.Accounts.FindLast(t => t.Id == vm.Id) == null)
+                    _accountStore.CurrentAccount.Accounts.Add(loanAccount);
             }
 
             if (account is CompoundAccount compoundAccount)
@@ -223,6 +225,8 @@ namespace LifeCalculator.ViewModels
                 var vm = new ModifyCompoundViewModel(compoundAccount);
                 vm.ValueChanged += ReChart;
                 AccountsList.Add(vm);
+                if (_accountStore.CurrentAccount.Accounts.FindLast(t => t.Id == vm.Id) == null)
+                    _accountStore.CurrentAccount.Accounts.Add(compoundAccount);
             }
 
 
@@ -230,7 +234,6 @@ namespace LifeCalculator.ViewModels
             account.ValueChanged += ReChart;
             foreach (var item in account.AccountLifeEvents)
             {
-                //LifeEvents.Add(item);
                 addEventToList(item);
             }
         }

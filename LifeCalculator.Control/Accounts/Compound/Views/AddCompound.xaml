@@ -31,7 +31,7 @@
             x:Name="AccountNameTextbox"
             Grid.Row="1"
             Grid.Column="1"
-            Margin="2"
+            Margin="2" GotFocus="TextBox_GotFocus"
             Text="{Binding AccountName}" />
 
         <!--  row 2  -->
@@ -45,7 +45,7 @@
             x:Name="InitialValueTextbox"
             Grid.Row="2"
             Grid.Column="1"
-            Margin="2"
+            Margin="2" GotFocus="TextBox_GotFocus"
             Text="{Binding InitialValue, StringFormat=C}" />
 
         <!--  row 3  -->
@@ -59,7 +59,7 @@
             x:Name="InterestTextbox"
             Grid.Row="3"
             Grid.Column="1"
-            Margin="2"
+            Margin="2" GotFocus="TextBox_GotFocus"
             Text="{Binding Interest, StringFormat={}{0}%}" />
 
         <!--  row 4  -->
@@ -73,7 +73,7 @@
             x:Name="ContributeTextbox"
             Grid.Row="4"
             Grid.Column="1"
-            Margin="2"
+            Margin="2" GotFocus="TextBox_GotFocus"
             Text="{Binding Contribute, StringFormat=C}" />
 
         <!--  row 5  -->

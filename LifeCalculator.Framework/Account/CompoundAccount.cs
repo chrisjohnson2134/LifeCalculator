@@ -68,27 +68,7 @@ namespace LifeCalculator.Framework.Account
             InterestRate = interestRate;
             MonthlyContribute = additionalAmount;
             StartDate = startDate;
-            EndDate = startDate;
-
-
-            AccountEvent lifeEventStart = new AccountEvent()
-            {
-                StartDate = startDate,
-                InterestRate = interestRate,
-                Amount = additionalAmount,
-                Name = this.Name,
-                CurrentValue = initialAmount
-            };
-
-            AccountEvent lifeEventEnd = new AccountEvent()
-            {
-                StartDate = endDate,
-                Name = this.Name,
-                CurrentValue = FinalAmount
-            };
-
-            AddLifeEvent(lifeEventStart);
-            AddLifeEvent(lifeEventEnd);
+            EndDate = endDate;
 
             Calculation();
         }
@@ -104,20 +84,22 @@ namespace LifeCalculator.Framework.Account
 
             monthlies.Add(new MonthlyColumn());
 
-            for (int i = 0; i < AccountLifeEvents.Count - 1; i++)
-            {
-                monthDiff = Math.Abs((AccountLifeEvents[i].StartDate.Year * 12 + (AccountLifeEvents[i].StartDate.Month - 1))
-                    - (AccountLifeEvents[(i + 1)].StartDate.Year * 12 + (AccountLifeEvents[(i + 1)].StartDate.Month - 1)));
-                AccountLifeEvents[(i + 1)].CurrentValue = 0;
+            //for (int i = 0; i < AccountLifeEvents.Count - 1; i++)
+            //{
+            monthDiff = Math.Abs((StartDate.Year * 12 + (StartDate.Month - 1))
+                - (EndDate.Year * 12 + (EndDate.Month - 1)));
+            
 
-                for (int j = 0; j < monthDiff; j++)
+            for (int j = 0; j < monthDiff; j++)
                 {
-                    currValue = (currValue + AccountLifeEvents[i].Amount) * (1 + (AccountLifeEvents[i].InterestRate / 100) / 12);
-                    monthlies.Add(new MonthlyColumn() { Name = AccountLifeEvents[i].Name, Gain = currValue, Date = AccountLifeEvents[i].StartDate.AddMonths(j) });
-                }
-
-                AccountLifeEvents[(i + 1)].CurrentValue = currValue;
+                currValue = (currValue + MonthlyContribute) * (1 + (InterestRate / 100) / 12);
+                monthlies.Add(new MonthlyColumn() { Name = Name, Gain = currValue, Date = StartDate.AddMonths(j) });
+                //currValue = (currValue + AccountLifeEvents[i].Amount) * (1 + (AccountLifeEvents[i].InterestRate / 100) / 12);
+                //monthlies.Add(new MonthlyColumn() { Name = AccountLifeEvents[i].Name, Gain = currValue, Date = AccountLifeEvents[i].StartDate.AddMonths(j) });
             }
+
+                //CurrentValue = currValue;
+            //}
 
             if (monthDiff != 0)
                 FinalAmount = monthlies[monthlies.Count - 1].Gain;
