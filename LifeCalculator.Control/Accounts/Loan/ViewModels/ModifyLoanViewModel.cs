@@ -4,6 +4,7 @@ using LifeCalculator.Framework.ColumnDefinitions;
 using LifeCalculator.Framework.LifeEvents;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace LifeCalculator.Control.ViewModels
 {
@@ -26,6 +27,19 @@ namespace LifeCalculator.Control.ViewModels
         public ModifyLoanViewModel(LoanAccount account)
         {
             _account = account;
+
+            AccountLifeEventsVMs = new BindingList<ModifyEventLoanViewModel>();
+            foreach (var item in _account.AccountLifeEvents)
+            {
+                if (item is AccountEvent accEvent)
+                {
+                    var accVM = new ModifyEventLoanViewModel(accEvent);
+                    accVM.ValueChanged += ValueChangedHandler;
+                    AccountLifeEventsVMs.Add(accVM);
+                }
+            }
+
+            _account.ValueChanged += ValueChangedHandler;
         }
 
         #endregion
@@ -174,9 +188,40 @@ namespace LifeCalculator.Control.ViewModels
             }
         }
 
-        public List<IAccountEvent> AccountLifeEvents { get; set; }
+        public BindingList<ModifyEventLoanViewModel> AccountLifeEventsVMs { get; set; }
+
+        public LoanAccount Account => _account;
+
+        public List<IAccountEvent> AccountLifeEvents
+        {
+            get
+            {
+                return _account.AccountLifeEvents;
+            }
+            set
+            {
+                _account.AccountLifeEvents = value;
+                ValueChanged?.Invoke(this, new EventArgs());
+                OnPropertyChanged("AccountLifeEvents");
+            }
+        }
 
         #endregion
+
+        private void ValueChangedHandler(object sender, EventArgs e)
+        {
+            AccountLifeEventsVMs.Clear();
+            foreach (var item in _account.AccountLifeEvents)
+            {
+                if (item is AccountEvent accEvent)
+                {
+                    var modifyLoanVM = new ModifyEventLoanViewModel(accEvent);
+                    modifyLoanVM.ValueChanged += ValueChangedHandler;
+                    AccountLifeEventsVMs.Add(modifyLoanVM);
+                }
+            }
+            ValueChanged?.Invoke(this, new EventArgs());
+        }
 
         public void AddLifeEvent(IAccountEvent lifeEvent)
         {

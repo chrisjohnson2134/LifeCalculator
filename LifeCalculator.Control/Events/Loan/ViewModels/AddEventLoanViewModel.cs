@@ -14,7 +14,7 @@ namespace LifeCalculator.Control.ViewModels
 
         public event EventHandler<IAccountEvent> EventAdded;
 
-        private LoanAccount _loanAccount;
+        private IAccount _loanAccount;
 
         public AddEventLoanViewModel(LoanAccount loanAccount)
         {

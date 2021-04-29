@@ -49,8 +49,6 @@ namespace LifeCalculator.Framework.Account
 
             AccountLifeEvents = new List<IAccountEvent>();
 
-            //AddLifeEvent(new AccountEvent() { Name = "Start - " + Name, StartDate = date, LifeEventType = LifeEnum.StartLifeEvent,AccountType = AccountTypes.LoanAccount });
-            //AddLifeEvent(new AccountEvent() { Name = "Stop - " + Name, StartDate = date.AddMonths(loanLengthMonths), LifeEventType = LifeEnum.EndLifeEvent, AccountType = AccountTypes.LoanAccount });
         }
 
         public LoanAccount(LoanAccount loanAccount)
@@ -60,9 +58,9 @@ namespace LifeCalculator.Framework.Account
 
         public void AddLifeEvent(IAccountEvent lifeEvent)
         {
-            lifeEvent.AccountType = AccountTypes.LoanAccount;
             AccountLifeEvents.Add(lifeEvent);
             LifeEventAdded?.Invoke(this, lifeEvent);
+            ValueChanged?.Invoke(this, EventArgs.Empty);
         }
 
         public List<MonthlyColumn> Calculation()

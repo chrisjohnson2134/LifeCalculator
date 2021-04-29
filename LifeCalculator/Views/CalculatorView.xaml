@@ -120,8 +120,8 @@
         <ScrollViewer
             Grid.Row="1"
             Grid.Column="0"
-            Width="600"
-            Height="400"
+            Width="620"
+            Height="300"
             Margin="5">
             <ItemsControl ItemsSource="{Binding AccountsList}">
                 <ItemsControl.Resources>

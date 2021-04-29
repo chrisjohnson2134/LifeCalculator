@@ -44,6 +44,9 @@
             <DataTemplate DataType="{x:Type controlsViewModels:AddCompoundViewModel}">
                 <controlsView:AddCompound />
             </DataTemplate>
+            <DataTemplate DataType="{x:Type controlsViewModels:AddEventCompoundViewModel}">
+                <controlsView:AddEventCompound />
+            </DataTemplate>
             <DataTemplate DataType="{x:Type controlsViewModels:AddLoanViewModel}">
                 <controlsView:AddLoan />
             </DataTemplate>
@@ -58,6 +61,9 @@
             </DataTemplate>
             <DataTemplate DataType="{x:Type viewModels:BudgetViewModel}">
                 <views:BudgetView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type controlsViewModels:ModifyEventLoanViewModel}">
+                <controlsView:ModifyEventLoan />
             </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>

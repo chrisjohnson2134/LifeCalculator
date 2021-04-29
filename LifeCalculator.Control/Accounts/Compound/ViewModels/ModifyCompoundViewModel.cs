@@ -4,6 +4,7 @@ using LifeCalculator.Framework.ColumnDefinitions;
 using LifeCalculator.Framework.LifeEvents;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace LifeCalculator.Control.ViewModels
 {
@@ -28,6 +29,19 @@ namespace LifeCalculator.Control.ViewModels
         public ModifyCompoundViewModel(CompoundAccount account)
         {
             _account = account;
+            _account.ValueChanged += ValueChanged;
+            AccountLifeEventsVMs = new BindingList<ModifyEventCompoundViewModel>();
+            foreach (var item in _account.AccountLifeEvents)
+            {
+                if (item is AccountEvent accEvent)
+                {
+                    var accVM = new ModifyEventCompoundViewModel(accEvent);
+                    accVM.ValueChanged += ValueChangedHandler;
+                    AccountLifeEventsVMs.Add(accVM);
+                }
+            }
+
+            _account.ValueChanged += ValueChangedHandler;
         }
 
         #endregion
@@ -121,8 +135,10 @@ namespace LifeCalculator.Control.ViewModels
         }
 
         public List<IAccountEvent> AccountLifeEvents { get; set; }
+        public BindingList<ModifyEventCompoundViewModel> AccountLifeEventsVMs { get; set; }
+        public CompoundAccount Account => _account;
 
-        
+
         public void AddLifeEvent(IAccountEvent lifeEvent)
         {
             throw new NotImplementedException();
@@ -131,6 +147,26 @@ namespace LifeCalculator.Control.ViewModels
         public List<MonthlyColumn> Calculation()
         {
             throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region Event Handler
+
+        private void ValueChangedHandler(object sender, EventArgs e)
+        {
+            AccountLifeEventsVMs.Clear();
+            foreach (var item in _account.AccountLifeEvents)
+            {
+                if (item is AccountEvent accEvent)
+                {
+                    var compoundModifyVM = new ModifyEventCompoundViewModel(accEvent);
+                    compoundModifyVM.ValueChanged += ValueChangedHandler;
+                    AccountLifeEventsVMs.Add(compoundModifyVM);
+                }
+
+            }
+            ValueChanged?.Invoke(this, new EventArgs());
         }
 
         #endregion

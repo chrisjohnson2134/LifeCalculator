@@ -1,4 +1,5 @@
-﻿using LifeCalculator.Framework.Account;
+﻿using LifeCalculator.Control.Events;
+using LifeCalculator.Framework.Account;
 using LifeCalculator.Framework.BaseVM;
 using LifeCalculator.Framework.LifeEvents;
 using Microsoft.VisualStudio.PlatformUI;
@@ -6,7 +7,7 @@ using System;
 
 namespace LifeCalculator.Control.ViewModels
 {
-    public class AddEventCompoundViewModel : ViewModelBase
+    public class AddEventCompoundViewModel : ViewModelBase, IControlEvent
     {
         #region Fields
 
@@ -22,6 +23,16 @@ namespace LifeCalculator.Control.ViewModels
             EventDate = DateTime.Now;
         }
 
+        public AddEventCompoundViewModel(CompoundAccount compoundAccount)
+        {
+            _account = compoundAccount;
+
+            EventDate = DateTime.Now;
+
+            AddEventCommand = new DelegateCommand(AddLifeEventCommandHandler);
+
+        }
+
         #endregion
 
         #region Properties
@@ -34,6 +45,8 @@ namespace LifeCalculator.Control.ViewModels
         public double InterestValue { get; set; }
         public DelegateCommand AddEventCommand { get; set; }
 
+        public event EventHandler<IAccountEvent> EventAdded;
+
         #endregion
 
         #region Command Handlers
@@ -41,15 +54,19 @@ namespace LifeCalculator.Control.ViewModels
         private void AddLifeEventCommandHandler()
         {
 
-            _account.AddLifeEvent(new AccountEvent()
+            var accountEvent = new AccountEvent()
             {
                 Name = EventName,
                 Amount = AmountToContribute,
                 StartDate = EventDate,
                 InterestRate = InterestValue * .01
-            });
+            };
+
+            _account.AddLifeEvent(accountEvent);
 
             _account.Calculation();
+
+            EventAdded?.Invoke(this, accountEvent);
         }
 
         #endregion

@@ -1,7 +1,6 @@
 ﻿using LifeCalculator.Framework.Account;
 using LifeCalculator.Framework.LifeEvents;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using LiveCharts;
 using LiveCharts.Configurations;
@@ -13,9 +12,7 @@ using System.Collections.Specialized;
 using LifeCalculator.Control.ViewModels;
 using LifeCalculator.Framework.Services.AccDataService;
 using LifeCalculator.Control.Accounts;
-using System.Linq;
 using LifeCalculator.Control.Events;
-using LifeCalculator.Control.Events.Loan.ViewModels;
 using LifeCalculator.Framework.Services.EventsDataService;
 
 namespace LifeCalculator.ViewModels
@@ -28,7 +25,6 @@ namespace LifeCalculator.ViewModels
 
         private string _accountType;
         private IAccount _accountSelected;
-        private List<IAccountEvent> _accountEvents;
         AccountDataService accountService;
         AccountEventDataService eventDataService;
         #endregion
@@ -94,7 +90,6 @@ namespace LifeCalculator.ViewModels
 
         //Everything Else
         public ObservableCollection<IAccount> AccountsList { get; set; }
-        public ObservableCollection<IAccountEvent> LifeEvents { get; set; }
 
         #endregion
 
@@ -106,8 +101,6 @@ namespace LifeCalculator.ViewModels
 
             ValueCollection = new SeriesCollection();
 
-            _accountEvents = new List<IAccountEvent>();
-            LifeEvents = new ObservableCollection<IAccountEvent>();
             AccountsList = new ObservableCollection<IAccount>();
             AccountsList.CollectionChanged += AccountsList_CollectionChanged;
 
@@ -116,7 +109,6 @@ namespace LifeCalculator.ViewModels
 
             CurrentViewModel = new AddCompoundViewModel(accountStore);
             CurrentViewModel.AccountAdded += CurrentViewModel_AccountAdded;
-            //_accountEvents = new List<IAccountEvent>();
 
             foreach (var account in _accountStore.CurrentAccount.Accounts)
             {
@@ -137,9 +129,16 @@ namespace LifeCalculator.ViewModels
 
         private async void CurrentViewModel_AccountAdded(object sender, IAccount e)
         {
-            IAccount acc = await accountService.Insert(e);
+            try
+            {
+                IAccount acc = await accountService.Insert(e);
 
-            addAccountToList(acc);
+                addAccountToList(acc);
+            }
+            catch
+            {
+                addAccountToList(e);
+            }
 
             ReChart(this,EventArgs.Empty);
         }
@@ -147,7 +146,7 @@ namespace LifeCalculator.ViewModels
         public void _currentEventViewModel_EventAddedEvent(object sendere, IAccountEvent e)
         {
             var eventInserted = eventDataService.Insert(new AccountEvent(e));
-            addEventToList(e);
+            //_accountStore.CurrentAccount.Accounts.FindLast(t => t.Id == _accountSelected.Id).AddLifeEvent(e);
         }
 
         private void AccountsList_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -176,38 +175,18 @@ namespace LifeCalculator.ViewModels
 
         private void NavigateAddEvent(IAccount accountSelected)
         {
-            if (accountSelected is LoanAccount loanAccount)
+            if (accountSelected is ModifyLoanViewModel loanAccount)
             {
-                CurrentEventViewModel = new AddEventLoanViewModel(loanAccount);
+                CurrentEventViewModel = new AddEventLoanViewModel(loanAccount.Account);
+            }
+            else if (accountSelected is ModifyCompoundViewModel compoundAccount)
+            {
+                CurrentEventViewModel = new AddEventCompoundViewModel(compoundAccount.Account);
             }
 
             CurrentEventViewModel.EventAdded += _currentEventViewModel_EventAddedEvent;
         }
 
-        /// <summary>
-        /// Add LifeEvent to the LifeEvents List
-        /// </summary>
-        /// <remarks>
-        /// Uses the _lifeEvents List<> to sort the events and then add it 
-        /// to the Observable collection.
-        /// </remarks>
-        /// <param name = "lifeEvent" ></ param >
-        private void addEventToList(IAccountEvent lifeEvent)
-        {
-            lifeEvent.ValueChanged += ReChart;
-            if (typeof(AccountEvent).Equals(lifeEvent.GetType()))
-                _accountEvents.Add(new ModifyEventCompoundViewModel(lifeEvent));
-
-            LifeEvents.Clear();
-
-            foreach (var item in _accountEvents.OrderBy(i => i.StartDate))
-            {
-                item.ValueChanged += ReChart;
-                LifeEvents.Add(item);
-            }
-
-            ReChart(new object(), new EventArgs());
-        }
 
         private void addAccountToList(IAccount account)
         {
@@ -220,7 +199,7 @@ namespace LifeCalculator.ViewModels
                     _accountStore.CurrentAccount.Accounts.Add(loanAccount);
             }
 
-            if (account is CompoundAccount compoundAccount)
+            else if (account is CompoundAccount compoundAccount)
             {
                 var vm = new ModifyCompoundViewModel(compoundAccount);
                 vm.ValueChanged += ReChart;
@@ -232,10 +211,6 @@ namespace LifeCalculator.ViewModels
 
             AddChartSeries(account.Name);
             account.ValueChanged += ReChart;
-            foreach (var item in account.AccountLifeEvents)
-            {
-                addEventToList(item);
-            }
         }
 
 

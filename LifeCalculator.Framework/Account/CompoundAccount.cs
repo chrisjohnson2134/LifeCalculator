@@ -66,9 +66,11 @@ namespace LifeCalculator.Framework.Account
 
             InitialAmount = initialAmount;
             InterestRate = interestRate;
-            MonthlyContribute = additionalAmount;
+            //MonthlyContribute = additionalAmount;
             StartDate = startDate;
             EndDate = endDate;
+
+            AccountLifeEvents.Add(new AccountEvent() { Name = "Additional Monthly Contribute", StartDate = startDate, EndDate = endDate, Amount = additionalAmount });
 
             Calculation();
         }
@@ -84,12 +86,13 @@ namespace LifeCalculator.Framework.Account
 
             monthlies.Add(new MonthlyColumn());
 
+            MonthlyContribute = AccountLifeEvents[0].Amount;
+
             //for (int i = 0; i < AccountLifeEvents.Count - 1; i++)
             //{
             monthDiff = Math.Abs((StartDate.Year * 12 + (StartDate.Month - 1))
                 - (EndDate.Year * 12 + (EndDate.Month - 1)));
             
-
             for (int j = 0; j < monthDiff; j++)
                 {
                 currValue = (currValue + MonthlyContribute) * (1 + (InterestRate / 100) / 12);
@@ -111,6 +114,7 @@ namespace LifeCalculator.Framework.Account
         {
             AccountLifeEvents.Add(lifeEvent);
             LifeEventAdded?.Invoke(this, lifeEvent);
+            ValueChanged?.Invoke(this,EventArgs.Empty);
         }
 
         #endregion
