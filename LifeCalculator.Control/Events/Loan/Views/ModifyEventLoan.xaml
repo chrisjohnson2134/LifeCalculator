@@ -6,56 +6,29 @@
     xmlns:local="clr-namespace:LifeCalculator.Control.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
 
-        <!--  Column 0  -->
-        <Label
-            x:Name="InvestmentNameLabel"
-            Grid.Row="0"
-            Grid.Column="0"
-            Content="Name:" />
-        <Label
-            x:Name="StartDateLabel"
-            Grid.Row="1"
-            Grid.Column="0"
-            Content="Date:" />
+        <StackPanel Orientation="Horizontal">
+            <StackPanel>
+                <Label x:Name="InvestmentNameLabel" Content="Name:" />
+                <Label x:Name="StartDateLabel" Content="Date:" />
+            </StackPanel>
 
-        <!--  Column 1  -->
-        <TextBox
-            x:Name="InvestmentNameTextBox"
-            Grid.Row="0"
-            Grid.Column="1"
-            Width="100"
-            Text="{Binding Name}" />
-        <DatePicker
-            x:Name="StartDateTextBox"
-            Grid.Row="1"
-            Grid.Column="1"
-            Width="100"
-            SelectedDate="{Binding StartDate}" />
+            <StackPanel>
+                <TextBox x:Name="InvestmentNameTextBox" Width="100" Text="{Binding Name}" />
+                <DatePicker x:Name="StartDateTextBox" Width="100" SelectedDate="{Binding StartDate}" />
+            </StackPanel>
 
-        <!--  Column 4  -->
-        <Label
-            x:Name="AdditionalContributionLabel"
-            Grid.Row="0"
-            Grid.Column="4"
-            Content="Additional Contribution :" />
-        <TextBox
-            x:Name="AdditionalContributionTextBox"
-            Grid.Row="0"
-            Grid.Column="5"
-            Text="{Binding Amount, StringFormat=C}" />
+            <StackPanel>
+                <Label x:Name="AdditionalContributionLabel" Content="Additional Contribution :" />
+                <Label x:Name="LoanLengthLabel" Content="Stop Contributing :" />
+            </StackPanel>
+
+            <StackPanel>
+                <TextBox x:Name="AdditionalContributionTextBox" Text="{Binding Amount, StringFormat=C}" />
+                <DatePicker x:Name="EndDateTextBox" Width="100" SelectedDate="{Binding EndDate}" />
+            </StackPanel>
+        </StackPanel>
+
+        
     </Grid>
 </UserControl>

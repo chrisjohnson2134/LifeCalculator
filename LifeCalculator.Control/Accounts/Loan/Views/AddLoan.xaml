@@ -2,100 +2,42 @@
     x:Class="LifeCalculator.Control.Views.AddLoan"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <Grid>
+    <Grid MinWidth="200">
+        <StackPanel Width="AUTO">
+            <DockPanel LastChildFill="True">
+                <Label Margin="2" Content="Account Name:" Width="115"/>
+                <TextBox  Margin="2" Text="{Binding AccountName}" Width="auto"/>
+            </DockPanel>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
+            <DockPanel LastChildFill="True">
+                <Label Margin="2" Content="Start Date:" Width="115"/>
+                <DatePicker  Margin="2" Text="{Binding StartDate}" Width="auto" />
+            </DockPanel>
 
-        <!--  row 1  -->
-        <Label
-            Grid.Row="1"
-            Grid.Column="0"
-            Margin="2"
-            Content="Account Name:" />
-        <TextBox
-            Grid.Row="1"
-            Grid.Column="1"
-            Margin="2"
-            Text="{Binding AccountName}" />
+            <DockPanel LastChildFill="True">
+                <Label  Margin="2" Content="Initial Loan Amount:" Width="115"/>
+                <TextBox  Margin="2" GotFocus="TextBox_GotFocus" Text="{Binding InitialLoanAmount, StringFormat=C}" Width="auto" />
+            </DockPanel>
 
-        <!--  row 2  -->
-        <Label
-            Grid.Row="2"
-            Grid.Column="0"
-            Margin="2"
-            Content="Start Date:" />
-        <DatePicker
-            Grid.Row="2"
-            Grid.Column="1"
-            Margin="2"
-            Text="{Binding StartDate}" />
+            <DockPanel LastChildFill="True">
+                <Label  Margin="2" Content="Interest Rate:" Width="115"/>
+                <TextBox  Margin="2" GotFocus="TextBox_GotFocus" Text="{Binding InterestRate, StringFormat={}{0}%}" Width="auto" />
+            </DockPanel>
 
-        <!--  row 3  -->
-        <Label
-            Grid.Row="3"
-            Grid.Column="0"
-            Margin="2"
-            Content="Initial Loan Amount:" />
-        <TextBox
-            Grid.Row="3" Grid.Column="1"
-            Margin="2" GotFocus="TextBox_GotFocus"
-            Text="{Binding InitialLoanAmount, StringFormat=C}" />
+            <DockPanel LastChildFill="True">
+                <Label Margin="2" Content="Loan Length years:" Width="115"/>
+                <TextBox Margin="2" GotFocus="TextBox_GotFocus" Text="{Binding LoanLength}" Width="auto" />
+            </DockPanel>
 
-        <!--  row 4  -->
-        <Label
-            Grid.Row="4"
-            Grid.Column="0"
-            Margin="2"
-            Content="Interest Rate:" />
-        <TextBox
-            Grid.Row="4" Grid.Column="1"
-            Margin="2" GotFocus="TextBox_GotFocus"
-            Text="{Binding InterestRate, StringFormat={}{0}%}" />
+            <DockPanel LastChildFill="True">
+                <Label Margin="2" Content="Down Payment" Width="115"/>
+                <TextBox Margin="2" GotFocus="TextBox_GotFocus" Text="{Binding DownPayment, StringFormat=C}" Width="auto" />
+            </DockPanel>
 
-        <!--  row 5  -->
-        <Label
-            Grid.Row="5"
-            Grid.Column="0"
-            Margin="2"
-            Content="Loan Length years:" />
-        <TextBox
-            Grid.Row="5"
-            Grid.Column="1"
-            Margin="2" GotFocus="TextBox_GotFocus"
-            Text="{Binding LoanLength}" />
-
-        <!--  row 6  -->
-        <Label
-            Grid.Row="6"
-            Grid.Column="0"
-            Margin="2"
-            Content="Down Payment" />
-        <TextBox
-            Grid.Row="6"
-            Grid.Column="1"
-            Margin="2" GotFocus="TextBox_GotFocus"
-            Text="{Binding DownPayment, StringFormat=C}" />
-
-        <!--  row 7  -->
-        <Button
-            Grid.Row="7"
-            Grid.Column="1"
-            Margin="2"
-            Command="{Binding AddAccountCommand}"
-            Content="Add Loan" />
+            <DockPanel>
+                <Button Margin="2" Command="{Binding AddAccountCommand}" Content="Add Loan" />
+            </DockPanel>
+        </StackPanel>
 
     </Grid>
 </UserControl>
