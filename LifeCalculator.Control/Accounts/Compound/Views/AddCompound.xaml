@@ -3,115 +3,54 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:LifeCalculator.Control.ViewModels">
-    
+
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
+        <StackPanel Width="200">
+            <!--  row 1  -->
+            <DockPanel LastChildFill="True">
+                <Label x:Name="AccountNameLabel" Width="100"   Margin="2" Content="Account Name:" />
+                <TextBox x:Name="AccountNameTextbox" Margin="2" GotFocus="TextBox_GotFocus" Text="{Binding AccountName}" />
+            </DockPanel>
 
-        <!--  row 1  -->
-        <Label
-            x:Name="AccountNameLabel"
-            Grid.Row="1"
-            Grid.Column="0"
-            Margin="2"
-            Content="Account Name:" />
-        <TextBox
-            x:Name="AccountNameTextbox"
-            Grid.Row="1"
-            Grid.Column="1"
-            Margin="2" GotFocus="TextBox_GotFocus"
-            Text="{Binding AccountName}" />
 
-        <!--  row 2  -->
-        <Label
-            x:Name="InitialValueLabel"
-            Grid.Row="2"
-            Grid.Column="0"
-            Margin="2"
-            Content="Initial Amount:" />
-        <TextBox
-            x:Name="InitialValueTextbox"
-            Grid.Row="2"
-            Grid.Column="1"
-            Margin="2" GotFocus="TextBox_GotFocus"
-            Text="{Binding InitialValue, StringFormat=C}" />
+            <!--  row 2  -->
+            <DockPanel LastChildFill="True">
+                <Label x:Name="InitialValueLabel" Width="100"  Content="Initial Amount:" />
+                <TextBox x:Name="InitialValueTextbox" Margin="2" GotFocus="TextBox_GotFocus" Text="{Binding InitialValue, StringFormat=C}" />
+            </DockPanel>
 
-        <!--  row 3  -->
-        <Label
-            x:Name="InterestLabel"
-            Grid.Row="3"
-            Grid.Column="0"
-            Margin="2"
-            Content="Interest :" />
-        <TextBox
-            x:Name="InterestTextbox"
-            Grid.Row="3"
-            Grid.Column="1"
-            Margin="2" GotFocus="TextBox_GotFocus"
-            Text="{Binding Interest, StringFormat={}{0}%}" />
 
-        <!--  row 4  -->
-        <Label
-            x:Name="ContributeLabel"
-            Grid.Row="4"
-            Grid.Column="0"
-            Margin="2"
-            Content="Contribute :" />
-        <TextBox
-            x:Name="ContributeTextbox"
-            Grid.Row="4"
-            Grid.Column="1"
-            Margin="2" GotFocus="TextBox_GotFocus"
-            Text="{Binding Contribute, StringFormat=C}" />
+            <!--  row 3  -->
+            <DockPanel LastChildFill="True">
+                <Label x:Name="InterestLabel" Margin="2" Width="100"  Content="Interest :" />
+                <TextBox x:Name="InterestTextbox" Margin="2" GotFocus="TextBox_GotFocus" Text="{Binding Interest, StringFormat={}{0}%}" />
+            </DockPanel>
 
-        <!--  row 5  -->
-        <Label
-            x:Name="StartDataLabel"
-            Grid.Row="5"
-            Grid.Column="0"
-            Margin="2"
-            Content="Start Date:" />
-        <DatePicker
-            x:Name="StartDateTextbox"
-            Grid.Row="5"
-            Grid.Column="1"
-            Margin="2"
-            SelectedDate="{Binding StartDate}" />
 
-        <!--  row 6  -->
-        <Label
-            x:Name="StopDataLabel"
-            Grid.Row="6"
-            Grid.Column="0"
-            Margin="2"
-            Content="Stop Date:" />
-        <DatePicker
-            x:Name="StopDateTextbox"
-            Grid.Row="6"
-            Grid.Column="1"
-            Margin="2"
-            SelectedDate="{Binding StopDate}" />
+            <!--  row 4  -->
+            <DockPanel LastChildFill="True">
+                <Label x:Name="ContributeLabel"  Margin="2" Width="100"  Content="Contribute :" />
+                <TextBox x:Name="ContributeTextbox" Margin="2" GotFocus="TextBox_GotFocus" Text="{Binding Contribute, StringFormat=C}" />
+            </DockPanel>
 
-        <!--  row 7  -->
-        <Button
-            x:Name="AddAccountBTN"
-            Grid.Row="7"
-            Grid.Column="1"
-            Margin="2"
-            Command="{Binding AddAccountCommand}"
-            Content="Add Account" />
 
+            <!--  row 5  -->
+            <DockPanel LastChildFill="True">
+                <Label x:Name="StartDataLabel" Margin="2" Width="100" Content="Start Date:" />
+                <DatePicker x:Name="StartDateTextbox" Margin="2" SelectedDate="{Binding StartDate}" />
+            </DockPanel>
+
+
+            <!--  row 6  -->
+            <DockPanel LastChildFill="True">
+                <Label x:Name="StopDataLabel" Margin="2" Width="100" Content="Stop Date:" />
+                <DatePicker x:Name="StopDateTextbox" Margin="2" SelectedDate="{Binding StopDate}" />
+            </DockPanel>
+
+            <!--  row 7  -->
+            <DockPanel LastChildFill="True">
+                <Button x:Name="AddAccountBTN" Margin="2" Command="{Binding AddAccountCommand}" Content="Add Account" />
+            </DockPanel>
+        </StackPanel>
     </Grid>
 </UserControl>
