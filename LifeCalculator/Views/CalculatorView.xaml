@@ -10,7 +10,10 @@
     xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
-    
+
+    <UserControl.Resources>
+        <ResourceDictionary Source="..\Styles\Expander.xaml"/>
+    </UserControl.Resources>
     <Grid Background="White">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -36,11 +39,8 @@
 
         <!--  Account Grid  -->
         <Grid
-            Grid.Row="0"
-            Grid.Column="1"
-            Width="225"
-            Height="300"
-            Margin="5">
+            Grid.Row="0" Grid.Column="1"
+            Width="225" Height="300" Margin="5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
@@ -48,30 +48,18 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <!--  row 0  -->
-            <Label
-                x:Name="AccountTypes"
-                Grid.Row="0"
-                Grid.Column="0"
-                Margin="2"
-                Content="Account Types:"
-                Foreground="Black" />
-            <ComboBox
-                x:Name="AccountTypeSelection"
-                Grid.Row="0"
-                Grid.Column="1"
-                Margin="2"
-                BorderBrush="Black"
-                Foreground="Black"
-                ItemsSource="{Binding AccountTypesList}"
-                Text="{Binding AccountType}" />
+            <Label x:Name="AccountInstructionsLbl" Grid.Row="0" Grid.Column="0" Content="Select an Account to add : " />
 
-            <ContentControl 
-                Grid.Row="1"
-                Grid.Column="0"
-                Grid.ColumnSpan="2"  
+            <Label x:Name="AccountTypes" Grid.Row="1" Grid.Column="0" Margin="2" Content="Account Type:" Foreground="Black" />
+            <ComboBox x:Name="AccountTypeSelection" Grid.Row="1" Grid.Column="1" Margin="2"
+                      BorderBrush="Black" Foreground="Black"
+                      ItemsSource="{Binding AccountTypesList}"
+                      Text="{Binding AccountType}" />
+
+            <ContentControl Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"  
                 Content="{Binding CurrentViewModel}" />
 
 
@@ -79,11 +67,8 @@
 
         <!--  Events Grid  -->
         <Grid
-            Grid.Row="1"
-            Grid.Column="1"
-            Width="225"
-            Height="300"
-            Margin="5">
+            Grid.Row="1" Grid.Column="1"
+            Width="225" Height="300" Margin="5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
@@ -95,44 +80,41 @@
 
             <Label
                 x:Name="EvemtNameLabel"
-                Grid.Row="0"
-                Grid.Column="0"
-                Margin="2"
-                Content="Events:"
+                Grid.Row="0" Grid.Column="0" Margin="2"
+                Content="Events:" 
                 Foreground="Black" />
-            <ComboBox
-                x:Name="EventNameTextbox"
-                Grid.Row="0"
-                Grid.Column="1"
-                Margin="2"
-                BorderBrush="Black"
-                DisplayMemberPath="Name"
+            <ComboBox x:Name="EventNameTextbox"
+                Grid.Row="0" Grid.Column="1"
+                Margin="2" BorderBrush="Black" DisplayMemberPath="Name"
                 ItemsSource="{Binding AccountsList}"
                 SelectedItem="{Binding AccountSelected}"/>
 
             <ContentControl
-                Grid.Row="1"
-                Grid.Column="0"
-                Grid.ColumnSpan="2" 
+                Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" 
                 Content="{Binding CurrentEventViewModel}"/>
         </Grid>
 
         <ScrollViewer
-            Grid.Row="1"
-            Grid.Column="0"
-            Width="620"
-            Height="300"
-            Margin="5">
+            Grid.Row="1" Grid.Column="0"
+            Width="620" Height="300" Margin="5">
+            
             <ItemsControl ItemsSource="{Binding AccountsList}">
                 <ItemsControl.Resources>
                     <DataTemplate DataType="{x:Type controlViewModels:ModifyLoanViewModel}">
-                        <Expander Header="{Binding Name}">
+                        <Expander Header="{Binding Name}" Margin="4">
                             <controlViews:ModifyLoan />
                         </Expander>
                     </DataTemplate>
                     <DataTemplate DataType="{x:Type controlViewModels:ModifyCompoundViewModel}">
-                        <Expander Header="{Binding Name}">
-                            <controlViews:ModifyCompound />
+                        <Expander Header="{Binding Name}" Margin="4">
+                            <!--<Expander.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="{Binding Name}" FontSize="14"/>
+                                    <CheckBox Content="Hide"/>
+                                    <Button Content="Delete" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Expander.Header> -->
+                            <controlViews:ModifyCompound/>
                         </Expander>
                     </DataTemplate>
                 </ItemsControl.Resources>

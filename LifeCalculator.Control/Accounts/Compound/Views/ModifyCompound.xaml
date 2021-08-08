@@ -50,7 +50,7 @@
             </StackPanel>
 
             <StackPanel Orientation="Horizontal">
-                <Label Content="Start Date : " Width="100" Height="24"/>
+                <Label Content="Stop Date : " Width="100" Height="24"/>
                 <DatePicker SelectedDate="{Binding EndDate}" Width="100" Height="24"/>
             </StackPanel>
             

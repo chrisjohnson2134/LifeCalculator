@@ -107,8 +107,8 @@ namespace LifeCalculator.ViewModels
             eventDataService = new AccountEventDataService();
             accountService = new AccountDataService();
 
-            CurrentViewModel = new AddCompoundViewModel(accountStore);
-            CurrentViewModel.AccountAdded += CurrentViewModel_AccountAdded;
+            //CurrentViewModel = new AddCompoundViewModel(accountStore);
+            //CurrentViewModel.AccountAdded += CurrentViewModel_AccountAdded;
 
             foreach (var account in _accountStore.CurrentAccount.Accounts)
             {
