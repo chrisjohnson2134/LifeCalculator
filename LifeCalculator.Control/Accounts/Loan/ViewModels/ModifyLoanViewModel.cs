@@ -2,6 +2,7 @@
 using LifeCalculator.Framework.BaseVM;
 using LifeCalculator.Framework.ColumnDefinitions;
 using LifeCalculator.Framework.LifeEvents;
+using Microsoft.VisualStudio.PlatformUI;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -22,6 +23,7 @@ namespace LifeCalculator.Control.ViewModels
 
         public ModifyLoanViewModel()
         {
+            DeleteAccountCommand = new DelegateCommand(DeleteAccount);
         }
 
         public ModifyLoanViewModel(LoanAccount account)
@@ -40,6 +42,8 @@ namespace LifeCalculator.Control.ViewModels
             }
 
             _account.ValueChanged += ValueChangedHandler;
+            DeleteAccountCommand = new DelegateCommand(DeleteAccount);
+
         }
 
         #endregion
@@ -47,6 +51,8 @@ namespace LifeCalculator.Control.ViewModels
         #region Properties
 
         public int Id => _account.Id;
+
+        public DelegateCommand DeleteAccountCommand { get; set; }
 
         public int UserId
         {
@@ -207,6 +213,11 @@ namespace LifeCalculator.Control.ViewModels
         }
 
         #endregion
+
+        private void DeleteAccount()
+        {
+            ValueChanged?.Invoke(this, new EventArgs());
+        }
 
         private void ValueChangedHandler(object sender, EventArgs e)
         {

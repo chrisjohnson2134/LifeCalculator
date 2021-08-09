@@ -245,6 +245,7 @@ namespace LifeCalculator.ViewModels
         private void ReChart(object sender, EventArgs e)
         {
             foreach (var acc in _accountStore.CurrentAccount.Accounts)
+                //delete account here ish...
                 foreach (var collection in ValueCollection)
                 {
                     if (collection.Title.Equals(acc.Name))
@@ -267,6 +268,7 @@ namespace LifeCalculator.ViewModels
                         }
                     }
                 }
+            
         }
 
         #endregion

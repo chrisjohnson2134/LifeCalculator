@@ -28,7 +28,7 @@ namespace LifeCalculator.Framework.Account
         [IgnoreDatabase]
         public List<IAccountEvent> AccountLifeEvents { get; set; }
 
-        
+
 
         public LoanAccount()
         {

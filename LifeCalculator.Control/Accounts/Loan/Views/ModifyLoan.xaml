@@ -59,6 +59,10 @@
                 <Label Content="Loan Length months : " Width="100" Height="24"/>
                 <TextBox Text="{Binding LoanLengthMonths}" Width="100" Height="24"/>
             </StackPanel>
+
+            <StackPanel>
+                <Button x:Name="DeleteAccount" Content="Delete" Command="{Binding DeleteAccountCommand}" Width="100"/>
+            </StackPanel>
         </StackPanel>
 
         <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3">
