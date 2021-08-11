@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using LifeCalculator.Framework.Users;
 using LifeCalculator.Framework.Services.DataService;
+using LifeCalculator.Framework.Account.Manager;
 
 namespace LifeCalculator.Framework.FinancialAccount
 {
@@ -54,6 +55,8 @@ namespace LifeCalculator.Framework.FinancialAccount
 
         public double MiscellaneousPayments { get; set; }
 
+        [IgnoreDatabase]
+        public AccountManager AccountManager { get; set; }
         [IgnoreDatabase]
         public List<IAccount> Accounts { get; set; }
 

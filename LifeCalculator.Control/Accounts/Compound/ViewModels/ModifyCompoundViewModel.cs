@@ -36,12 +36,12 @@ namespace LifeCalculator.Control.ViewModels
                 if (item is AccountEvent accEvent)
                 {
                     var accVM = new ModifyEventCompoundViewModel(accEvent);
-                    accVM.ValueChanged += ValueChangedHandler;
+                    accVM.ValueChanged += EventValueChangedHandler;
                     AccountLifeEventsVMs.Add(accVM);
                 }
             }
 
-            _account.ValueChanged += ValueChangedHandler;
+            _account.ValueChanged += EventValueChangedHandler;
         }
 
         #endregion
@@ -153,7 +153,7 @@ namespace LifeCalculator.Control.ViewModels
 
         #region Event Handler
 
-        private void ValueChangedHandler(object sender, EventArgs e)
+        private void EventValueChangedHandler(object sender, EventArgs e)
         {
             AccountLifeEventsVMs.Clear();
             foreach (var item in _account.AccountLifeEvents)
@@ -161,7 +161,7 @@ namespace LifeCalculator.Control.ViewModels
                 if (item is AccountEvent accEvent)
                 {
                     var compoundModifyVM = new ModifyEventCompoundViewModel(accEvent);
-                    compoundModifyVM.ValueChanged += ValueChangedHandler;
+                    compoundModifyVM.ValueChanged += EventValueChangedHandler;
                     AccountLifeEventsVMs.Add(compoundModifyVM);
                 }
 

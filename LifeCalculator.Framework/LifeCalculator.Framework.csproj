@@ -134,6 +134,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Account\Manager\AccountManager.cs" />
     <Compile Include="Authenticator\Authenticator.cs" />
     <Compile Include="Authenticator\IAuthenticator.cs" />
     <Compile Include="BudgetItems\BudgetItemManager.cs" />
@@ -187,6 +188,7 @@
     <None Include="app.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="ClassDiagram1.cd" />
     <None Include="LifeCalculatorDB.db">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
