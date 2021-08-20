@@ -1,12 +1,8 @@
-This Project is designed for people who want to visibly see how different modes of investment can pay out.
+This Project is designed for people who want to visibly see how different modes of investment can pay out. Because life needs to be flexible this calculator allows users to add events to them that indicate a one time or extra monthly range of contributing, the monthly contibuting is not limited the length of the loan and many sporadic types can be added. Many sporadic one time events can also be specified. 
 
-This project is not complete but is being added to on a regular basis.
+Users will be able to keep track of the progress that they are having on their loans and savings accounts and the events and all changed values will be updated in real time. The local db is updated when a value changes, accounts are added or deleted. 
 
-Current you can add Compound Interest Accounts and Loan Accounts.
-
-Loan Accounts are easy to showcase the use of the chart; However Compound accounts are a bit trickier, In order to display a Compound you must add two events on at the start and one at the end.
-
-Users are able to login and make a account
+Users are able to login and make a account.
 
 ![Title](https://user-images.githubusercontent.com/25907313/129240211-95c09236-914a-466a-be89-6cfbe29db083.PNG)
 
