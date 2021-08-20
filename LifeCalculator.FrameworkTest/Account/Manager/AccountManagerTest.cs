@@ -115,7 +115,7 @@ namespace LifeCalculator.FrameworkTest.Account.Manager
             account.AccountLifeEvents[0].Amount = 150;
             account.AccountLifeEvents[0].InterestRate = .04;
 
-            Assert.AreEqual(16, valueChangedCount);
+            Assert.AreEqual(14, valueChangedCount);
         }
 
 

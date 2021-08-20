@@ -26,7 +26,7 @@ namespace LifeCalcuator.FrameworkTest.Account
         }
 
         [Test]
-        public void BasicCalculation()
+        public void MontlyPaymentCalculated()
         {
             var testLoanAccount = setupLoanAccount();
 
@@ -62,7 +62,7 @@ namespace LifeCalcuator.FrameworkTest.Account
             IAccountEvent monthlyContribute = new AccountEvent()
             {
                 StartDate = DateTime.Now,
-                EndDate = DateTime.Now.AddYears(30),
+                EndDate = DateTime.Now.AddYears(10),
                 Amount = 400,
                 LifeEventType = LifeEnum.MonthlyContribute
             };
@@ -71,11 +71,12 @@ namespace LifeCalcuator.FrameworkTest.Account
 
             var calcs = localLoanAccount.Calculation();
 
-            calcs[230-11].Gain.ShouldBeInRange(9652.59, 9652.60);
-            calcs[23].Gain.ShouldBeInRange(20463.63, 20463.64);
-            calcs[35].Gain.ShouldBeInRange(31575.74, 31575.75);
-            calcs[179].Gain.ShouldBeInRange(191704.72, 191704.73);
-            calcs[230].Gain.ShouldBeInRange(261600,261600.01);
+            calcs[11].Gain.ShouldEqual(27725.99);
+            calcs[23].Gain.ShouldEqual(19578.99);
+            calcs[35].Gain.ShouldEqual(11205.11);
+            calcs[46].Gain.ShouldEqual(3324.35);
+            calcs[50].Gain.ShouldEqual(409.06);
+            calcs[51].Gain.ShouldEqual(-323.94);
         }
 
         /// <summary>
@@ -89,21 +90,27 @@ namespace LifeCalcuator.FrameworkTest.Account
             IAccountEvent oneTimeContribute = new AccountEvent()
             {
                 StartDate = DateTime.Now.AddYears(1),
-                Amount = 100000,
+                Amount = 10000,
                 LifeEventType = LifeEnum.OneTime
             };
 
             localLoanAccount.AddLifeEvent(oneTimeContribute);
 
             var calcs = localLoanAccount.Calculation();
+            calcs[11].Gain.ShouldEqual(32176.75);
+            calcs[23].Gain.ShouldEqual(18759.68);
+            calcs[35].Gain.ShouldEqual(15223.95);
+            calcs[46].Gain.ShouldEqual(11896.43);
+            calcs[83].Gain.ShouldEqual(68.54);
+            calcs[84].Gain.ShouldEqual(0);
+            calcs[119].Gain.ShouldEqual(0);
+            calcs = LoanAccount.Calculation();
 
-            calcs[11].Gain.ShouldBeInRange(261600-5201.83, 5201.84);
-            calcs[12].Gain.ShouldBeInRange(105681.25, 105681.26);
-            calcs[23].Gain.ShouldBeInRange(113577.86, 113577.87);
-            calcs[35].Gain.ShouldBeInRange(122422.18, 122422.19);
-            calcs[47].Gain.ShouldBeInRange(131512.80, 131512.81);
-            (calcs[191].Gain).ShouldBeInRange(261599.99,
-                261600.01);
+            calcs[11].Gain.ShouldEqual(32176.75);
+            calcs[23].Gain.ShouldEqual(29014.67);
+            calcs[35].Gain.ShouldEqual(25764.53);
+            calcs[46].Gain.ShouldEqual(22705.79);
+            calcs[119].Gain.ShouldEqual(332.98);
         }
 
         
