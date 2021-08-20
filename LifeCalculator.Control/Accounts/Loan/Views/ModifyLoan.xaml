@@ -35,7 +35,7 @@
         <StackPanel Grid.Row="0" Grid.Column="1">
             <StackPanel Orientation="Horizontal">
                 <Label Content="Monthly Payment : " Width="100" Height="24"/>
-                <TextBox Text="{Binding MonthlyPayment,Mode=OneWay}" Width="100" Height="24"/>
+                <TextBox Text="{Binding MonthlyPayment,Mode=OneWay}" Width="100" Height="24" IsEnabled="False"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal">
