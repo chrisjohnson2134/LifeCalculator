@@ -154,7 +154,7 @@
     <Compile Include="Database\Interfaces\IDatabaseManager.cs" />
     <Compile Include="Database\Queries\Accounts\CompoundQueries.cs" />
     <Compile Include="Database\Queries\Accounts\LoanQueries.cs" />
-    <Compile Include="Events\Events\AccountEvent.cs" />
+    <Compile Include="Account\LifeEvents\Events\AccountEvent.cs" />
     <Compile Include="Account\CompoundAccount.cs" />
     <Compile Include="Account\IAccount.cs" />
     <Compile Include="Account\LoanAccount.cs" />
@@ -162,11 +162,11 @@
     <Compile Include="Chart\BarChartColumn.cs" />
     <Compile Include="ColumnDefinitions\MonthlyColumn.cs" />
     <Compile Include="Enums\CommonEnums.cs" />
-    <Compile Include="Events\Events\IAccountEvent.cs" />
+    <Compile Include="Account\LifeEvents\Events\IAccountEvent.cs" />
+    <Compile Include="Events\AccountValueChangedEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="FinancialAccount\FinancialAccount.cs" />
     <Compile Include="Services\AccountDataService\AccountDataService.cs" />
-    <Compile Include="Services\AccountDataService\ConcreteAccount.cs" />
     <Compile Include="Services\CompoundAccountDataServices\CompoundAccountDataService.cs" />
     <Compile Include="Services\CompoundAccountDataServices\ICompoundAccountDataService.cs" />
     <Compile Include="Services\AuthenticationService\AuthenticationService.cs" />

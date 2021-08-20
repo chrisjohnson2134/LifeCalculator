@@ -3,6 +3,7 @@ using System;
 
 namespace LifeCalculator.Framework.LifeEvents
 {
+    //Rename the Folder or I will Barf!!
     public interface IAccountEvent
     {
         event EventHandler ValueChanged;

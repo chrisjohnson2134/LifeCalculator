@@ -10,66 +10,202 @@ namespace LifeCalculator.Framework.Account
 {
     public class LoanAccount : IAccount, IDatabaseable
     {
-        private LoanAccount loanAccount;
         public event EventHandler<IAccountEvent> LifeEventAdded;
-        public event EventHandler ValueChanged;
+        public event EventHandler<IAccount> ValueChanged;
 
         public int Id { get; }
-        public int UserId { get; set; }
-        public string Name { get; set; }
-        public double MonthlyPayment { get; set; }
-        public DateTime StartDate { get; set; }
-        public double LoanAmount { get; set; }
-        public double DownPayment { get; set; }
-        public double InterestRate { get; set; }
-        public double InterestPaid { get; set; }
-        public double PrincipalPaid { get; set; }
-        public int LoanLengthMonths { get; set; }
+
+        private int _userId;
+        public int UserId
+        {
+            get
+            {
+                return _userId;
+            }
+            set
+            {
+                _userId = value;
+                ValueChanged?.Invoke(this, this);
+            }
+        }
+
+        private string _name;
+        public string Name
+        {
+            get
+            {
+                return _name;
+            }
+            set
+            {
+                _name = value;
+                ValueChanged?.Invoke(this, this);
+            }
+        }
+
+        private double _monthlyPayment;
+        public double MonthlyPayment
+        {
+            get
+            {
+                return _monthlyPayment;
+            }
+            private set
+            {
+                _monthlyPayment = value;
+            }
+        }
+
+        private double _loanAmount;
+        public double LoanAmount
+        {
+            get
+            {
+                return _loanAmount;
+            }
+            set
+            {
+                _loanAmount = value;
+                updateMonthlyPayment();
+                ValueChanged?.Invoke(this, this);
+            }
+        }
+
+        private double _downPayment;
+        public double DownPayment
+        {
+            get
+            {
+                return _downPayment;
+            }
+            set
+            {
+                _downPayment = value;
+                updateMonthlyPayment();
+                ValueChanged?.Invoke(this, this);
+            }
+        }
+
+        private double _interestRate;
+        public double InterestRate
+        {
+            get
+            {
+                return _interestRate;
+            }
+            set
+            {
+                _interestRate = value;
+                updateMonthlyPayment();
+                ValueChanged?.Invoke(this, this);
+            }
+        }
+
+        private double _interestPaid;
+        public double InterestPaid
+        {
+            get
+            {
+                return _interestPaid;
+            }
+            private set
+            {
+                _interestPaid = value;
+                ValueChanged?.Invoke(this, this);
+            }
+        }
+
+        private double _principalPaid;
+        public double PrincipalPaid
+        {
+            get
+            {
+                return _principalPaid;
+            }
+            private set
+            {
+                _principalPaid = value;
+                ValueChanged?.Invoke(this, this);
+            }
+        }
+
+        private int _loanLengthMonths;
+        public int LoanLengthMonths
+        {
+            get
+            {
+                return _loanLengthMonths;
+            }
+            set
+            {
+                _loanLengthMonths = value;
+                updateMonthlyPayment();
+                ValueChanged?.Invoke(this, this);
+            }
+        }
+
+        private DateTime _startDate;
+        public DateTime StartDate
+        {
+            get
+            {
+                return _startDate;
+            }
+            set
+            {
+                _startDate = value;
+                ValueChanged?.Invoke(this, this);
+            }
+        }
+
         [IgnoreDatabase]
         public List<IAccountEvent> AccountLifeEvents { get; set; }
 
-
-
         public LoanAccount()
         {
-
+            AccountLifeEvents = new List<IAccountEvent>();
         }
 
         public LoanAccount(string name, DateTime date, int loanLengthMonths, double interestRate, double loanAmount, double downPayment)
         {
-            Name = name;
-            InterestRate = interestRate / 100;
-            LoanAmount = loanAmount - downPayment;
-            DownPayment = downPayment;
-            LoanLengthMonths = loanLengthMonths;
-            StartDate = date;
+            _name = name;
+            _interestRate = interestRate / 100;
+            _loanAmount = loanAmount - downPayment;
+            _downPayment = downPayment;
+            _loanLengthMonths = loanLengthMonths;
+            _startDate = date;
 
-            MonthlyPayment = Math.Floor((loanAmount - downPayment) * (Math.Pow((1 + InterestRate / 12), 360) * InterestRate)
-                / (12 * (Math.Pow((1 + InterestRate / 12), loanLengthMonths) - 1)));
 
+            updateMonthlyPayment();
             AccountLifeEvents = new List<IAccountEvent>();
 
         }
 
-        public LoanAccount(LoanAccount loanAccount)
-        {
-            this.loanAccount = loanAccount;
-        }
-
         public void AddLifeEvent(IAccountEvent lifeEvent)
         {
+            lifeEvent.ValueChanged += LifeEvent_ValueChanged;
             AccountLifeEvents.Add(lifeEvent);
-            LifeEventAdded?.Invoke(this, lifeEvent);
-            ValueChanged?.Invoke(this, EventArgs.Empty);
+            ValueChanged?.Invoke(this, this);
+        }
+
+        private void LifeEvent_ValueChanged(object sender, EventArgs e)
+        {
+            ValueChanged?.Invoke(this, this);
+        }
+
+        private void updateMonthlyPayment()
+        {
+            _monthlyPayment = Math.Floor((_loanAmount - _downPayment) * (Math.Pow((1 + InterestRate / 12), 360) * InterestRate)
+                / (12 * (Math.Pow((1 + InterestRate / 12), _loanLengthMonths) - 1)));
         }
 
         public List<MonthlyColumn> Calculation()
         {
-            double currValue = LoanAmount;
+            double currValue = _loanAmount;
             double interestPay;
             double principalPay;
-            InterestPaid = 0;
-            PrincipalPaid = 0;
+            _interestPaid = 0;
+            _principalPaid = 0;
             List<MonthlyColumn> monthlies = new List<MonthlyColumn>();
 
             monthlies.Add(new MonthlyColumn());
@@ -77,33 +213,37 @@ namespace LifeCalculator.Framework.Account
 
             AccountLifeEvents.Sort((x, y) => x.StartDate.CompareTo(y.StartDate));
 
-            DateTime stopDate = StartDate.AddMonths(LoanLengthMonths);
+            DateTime stopDate = _startDate.AddMonths(LoanLengthMonths);
 
-            monthDiff = Math.Abs(StartDate.Year * 12 + (StartDate.Month - 1)
+            monthDiff = Math.Abs(_startDate.Year * 12 + (_startDate.Month - 1)
                     - (stopDate.Year * 12 + (stopDate.Month - 1)));
 
 
             for (int j = 0; j < monthDiff; j++)
             {
-                interestPay = currValue * InterestRate / 12;
+                interestPay = currValue * _interestRate / 12;
 
-                if (MonthlyPayment < currValue)
-                    principalPay = MonthlyPayment - interestPay + additionalPriPaymentCalculation(StartDate.AddMonths(1 + j));
+                if (_monthlyPayment < currValue)
+                    principalPay = _monthlyPayment - interestPay + additionalPriPaymentCalculation(StartDate.AddMonths(1 + j));
                 else if (currValue > 0)
                     principalPay = currValue;
                 else
                     principalPay = 0;
 
-                InterestPaid += interestPay;
-                PrincipalPaid += principalPay;
+                _interestPaid += interestPay;
+                _principalPaid += principalPay;
                 currValue = currValue - principalPay;
                 monthlies.Add(new MonthlyColumn()
                 {
-                    Name = Name,
-                    Gain = LoanAmount - PrincipalPaid,
-                    Date = StartDate.AddMonths(1 + j)
+                    Name = _name,
+                    Gain = _loanAmount - _principalPaid,
+                    Date = _startDate.AddMonths(1 + j)
                 });
+
             }
+
+            PrincipalPaid = _principalPaid;
+            InterestPaid = _interestPaid;
 
             monthlies[monthlies.Count - 1].Gain = monthlies[monthlies.Count - 1].Gain + currValue;
             return monthlies;
@@ -119,9 +259,6 @@ namespace LifeCalculator.Framework.Account
             AccountLifeEvents.FindAll(i => i.StartDate.Year == dateTime.Year && dateTime.Month == i.StartDate.Month && i.LifeEventType == LifeEnum.OneTime)
                 .ForEach(i => additonalAmount += i.Amount);
 
-            if(additonalAmount > 0)
-                Console.WriteLine(additonalAmount);
-
             return additonalAmount;
         }
 
@@ -132,16 +269,7 @@ namespace LifeCalculator.Framework.Account
             if (obj == null || entity == null)
                 return false;
 
-            if (entity.Id == Id &&
-                entity.UserId == UserId &&
-                entity.Name.Equals(Name) &&
-                entity.MonthlyPayment == MonthlyPayment &&
-                entity.LoanAmount == LoanAmount &&
-                entity.DownPayment == DownPayment &&
-                entity.InterestRate == InterestRate &&
-                entity.InterestPaid == InterestPaid &&
-                entity.PrincipalPaid == PrincipalPaid &&
-                entity.LoanLengthMonths == LoanLengthMonths)
+            if (entity.Id == Id)
             {
                 foreach (var item in AccountLifeEvents)
                 {

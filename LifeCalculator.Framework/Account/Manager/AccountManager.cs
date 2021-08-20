@@ -11,6 +11,7 @@ namespace LifeCalculator.Framework.Account.Manager
     {
 
         public event EventHandler<IAccount> AccountAdded;
+        public event EventHandler<IAccount> AccountChanged;
         public event EventHandler<IAccount> AccountDeleted;
 
         public AccountManager()
@@ -18,13 +19,19 @@ namespace LifeCalculator.Framework.Account.Manager
             Accounts = new List<IAccount>();
         }
 
-        List<IAccount> Accounts { get; set; }
+        public List<IAccount> Accounts { get; set; }
 
         public void AddAccount(IAccount account)
         {
             Accounts.Add(account);
+            account.ValueChanged += Account_ValueChanged;
 
             AccountAdded?.Invoke(this, account);
+        }
+
+        private void Account_ValueChanged(object sender, IAccount e)
+        {
+            AccountChanged?.Invoke(this, e);
         }
 
         public IAccount GetAccount(int id)
@@ -39,7 +46,7 @@ namespace LifeCalculator.Framework.Account.Manager
 
         public void DeleteAccount(IAccount account)
         {
-            Accounts.Remove(account);
+            Accounts.RemoveAll(t => t.Id == account.Id);
 
             AccountDeleted?.Invoke(this, account);
         }

@@ -13,6 +13,7 @@ namespace LifeCalculator.Framework.FinancialAccount
 
         public FinancialAccount()
         {
+            AccountManager = new AccountManager();
         }
 
         #endregion
@@ -57,8 +58,6 @@ namespace LifeCalculator.Framework.FinancialAccount
 
         [IgnoreDatabase]
         public AccountManager AccountManager { get; set; }
-        [IgnoreDatabase]
-        public List<IAccount> Accounts { get; set; }
 
         #endregion
     }

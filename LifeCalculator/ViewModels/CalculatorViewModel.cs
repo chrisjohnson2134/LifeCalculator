@@ -24,9 +24,10 @@ namespace LifeCalculator.ViewModels
         private IAccountStore _accountStore;
 
         private string _accountType;
-        private IAccount _accountSelected;
+        private IModifyAccount _accountSelected;
         AccountDataService accountService;
         AccountEventDataService eventDataService;
+
         #endregion
 
         #region Properties
@@ -56,7 +57,7 @@ namespace LifeCalculator.ViewModels
         }
 
         //Add Event
-        public IAccount AccountSelected
+        public IModifyAccount AccountSelected
         {
             get => _accountSelected;
             set
@@ -89,7 +90,7 @@ namespace LifeCalculator.ViewModels
         }
 
         //Everything Else
-        public ObservableCollection<IAccount> AccountsList { get; set; }
+        public ObservableCollection<IModifyAccount> AccountsList { get; set; }
 
         #endregion
 
@@ -101,16 +102,16 @@ namespace LifeCalculator.ViewModels
 
             ValueCollection = new SeriesCollection();
 
-            AccountsList = new ObservableCollection<IAccount>();
-            AccountsList.CollectionChanged += AccountsList_CollectionChanged;
+            AccountsList = new ObservableCollection<IModifyAccount>();
 
             eventDataService = new AccountEventDataService();
             accountService = new AccountDataService();
 
-            //CurrentViewModel = new AddCompoundViewModel(accountStore);
-            //CurrentViewModel.AccountAdded += CurrentViewModel_AccountAdded;
+            _accountStore.CurrentAccount.AccountManager.AccountAdded += AccountManager_AccountAdded;
+            _accountStore.CurrentAccount.AccountManager.AccountChanged += AccountManager_AccountChanged;
+            _accountStore.CurrentAccount.AccountManager.AccountDeleted += AccountManager_AccountDeleted;
 
-            foreach (var account in _accountStore.CurrentAccount.Accounts)
+            foreach (var account in _accountStore.CurrentAccount.AccountManager.Accounts)
             {
                  addAccountToList(account);
             }
@@ -127,7 +128,7 @@ namespace LifeCalculator.ViewModels
 
         #region Event Handlers
 
-        private async void CurrentViewModel_AccountAdded(object sender, IAccount e)
+        private async void AccountManager_AccountAdded(object sender, IAccount e)
         {
             try
             {
@@ -143,37 +144,54 @@ namespace LifeCalculator.ViewModels
             ReChart(this,EventArgs.Empty);
         }
 
+        private async void AccountManager_AccountChanged(object sender, IAccount e)
+        {
+            try
+            {
+                await accountService.Save(e);
+            }
+            catch { }
+            ReChart(new object(), EventArgs.Empty);
+        }
+
+        private async void AccountManager_AccountDeleted(object sender, IAccount e)
+        {
+            try
+            {
+                await accountService.Delete(e);
+            }
+            catch
+            {
+            }
+
+            ReChart(this, EventArgs.Empty);
+        }
+
         public void _currentEventViewModel_EventAddedEvent(object sendere, IAccountEvent e)
         {
             var eventInserted = eventDataService.Insert(new AccountEvent(e));
-            //_accountStore.CurrentAccount.Accounts.FindLast(t => t.Id == _accountSelected.Id).AddLifeEvent(e);
-        }
-
-        private void AccountsList_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            ReChart(new object(), new EventArgs());
         }
 
         #endregion
 
         #region Private Methods
 
+        #region UI Command Handlers
 
         private void NavigateAddAccount(string account)
         {
-            if(account.Equals("Add Compound"))
+            if (account.Equals("Add Compound"))
             {
                 CurrentViewModel = new AddCompoundViewModel(_accountStore);
             }
-            else if(account.Equals("Add Loan"))
+            else if (account.Equals("Add Loan"))
             {
                 CurrentViewModel = new AddLoanViewModel(_accountStore);
             }
-            CurrentViewModel.AccountAdded += CurrentViewModel_AccountAdded;
         }
 
 
-        private void NavigateAddEvent(IAccount accountSelected)
+        private void NavigateAddEvent(IModifyAccount accountSelected)
         {
             if (accountSelected is ModifyLoanViewModel loanAccount)
             {
@@ -183,34 +201,25 @@ namespace LifeCalculator.ViewModels
             {
                 CurrentEventViewModel = new AddEventCompoundViewModel(compoundAccount.Account);
             }
-
-            CurrentEventViewModel.EventAdded += _currentEventViewModel_EventAddedEvent;
         }
 
+        #endregion
 
         private void addAccountToList(IAccount account)
         {
             if (account is LoanAccount loanAccount)
             {
-                var vm = new ModifyLoanViewModel(loanAccount);
-                vm.ValueChanged += ReChart;
+                var vm = new ModifyLoanViewModel(loanAccount,_accountStore.CurrentAccount.AccountManager);
                 AccountsList.Add(vm);
-                if(_accountStore.CurrentAccount.Accounts.FindLast(t => t.Id == vm.Id) == null)
-                    _accountStore.CurrentAccount.Accounts.Add(loanAccount);
             }
 
             else if (account is CompoundAccount compoundAccount)
             {
-                var vm = new ModifyCompoundViewModel(compoundAccount);
-                vm.ValueChanged += ReChart;
+                var vm = new ModifyCompoundViewModel(compoundAccount, _accountStore.CurrentAccount.AccountManager);
                 AccountsList.Add(vm);
-                if (_accountStore.CurrentAccount.Accounts.FindLast(t => t.Id == vm.Id) == null)
-                    _accountStore.CurrentAccount.Accounts.Add(compoundAccount);
             }
 
-
             AddChartSeries(account.Name);
-            account.ValueChanged += ReChart;
         }
 
 
@@ -244,7 +253,7 @@ namespace LifeCalculator.ViewModels
         /// </remarks>
         private void ReChart(object sender, EventArgs e)
         {
-            foreach (var acc in _accountStore.CurrentAccount.Accounts)
+            foreach (var acc in _accountStore.CurrentAccount.AccountManager.Accounts)
                 //delete account here ish...
                 foreach (var collection in ValueCollection)
                 {

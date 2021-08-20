@@ -1,4 +1,6 @@
-﻿using LifeCalculator.Framework.Account;
+﻿using LifeCalculator.Control.Accounts;
+using LifeCalculator.Framework.Account;
+using LifeCalculator.Framework.Account.Manager;
 using LifeCalculator.Framework.BaseVM;
 using LifeCalculator.Framework.ColumnDefinitions;
 using LifeCalculator.Framework.LifeEvents;
@@ -9,13 +11,13 @@ using System.ComponentModel;
 
 namespace LifeCalculator.Control.ViewModels
 {
-    public class ModifyLoanViewModel : ViewModelBase, IAccount
+    public class ModifyLoanViewModel : ViewModelBase, IModifyAccount
     {
         #region Fields
 
         private LoanAccount _account;
+        private AccountManager _accountManager;
         public event EventHandler ValueChanged;
-        public event EventHandler<IAccountEvent> LifeEventAdded;
 
         #endregion
 
@@ -26,9 +28,10 @@ namespace LifeCalculator.Control.ViewModels
             DeleteAccountCommand = new DelegateCommand(DeleteAccount);
         }
 
-        public ModifyLoanViewModel(LoanAccount account)
+        public ModifyLoanViewModel(LoanAccount account, AccountManager accountManager)
         {
             _account = account;
+            _accountManager = accountManager;
 
             AccountLifeEventsVMs = new BindingList<ModifyEventLoanViewModel>();
             foreach (var item in _account.AccountLifeEvents)
@@ -36,7 +39,6 @@ namespace LifeCalculator.Control.ViewModels
                 if (item is AccountEvent accEvent)
                 {
                     var accVM = new ModifyEventLoanViewModel(accEvent);
-                    accVM.ValueChanged += ValueChangedHandler;
                     AccountLifeEventsVMs.Add(accVM);
                 }
             }
@@ -63,7 +65,6 @@ namespace LifeCalculator.Control.ViewModels
             set
             {
                 _account.UserId = value;
-                ValueChanged?.Invoke(this, new EventArgs());
                 OnPropertyChanged("UserId");
             }
         }
@@ -77,7 +78,6 @@ namespace LifeCalculator.Control.ViewModels
             set
             {
                 _account.Name = value;
-                ValueChanged?.Invoke(this, new EventArgs());
                 OnPropertyChanged("Name");
             }
         }
@@ -87,12 +87,6 @@ namespace LifeCalculator.Control.ViewModels
             get
             {
                 return _account.MonthlyPayment;
-            }
-            set
-            {
-                _account.MonthlyPayment = value;
-                ValueChanged?.Invoke(this, new EventArgs());
-                OnPropertyChanged("MonthlyPayment");
             }
         }
 
@@ -105,7 +99,6 @@ namespace LifeCalculator.Control.ViewModels
             set
             {
                 _account.LoanAmount = value;
-                ValueChanged?.Invoke(this, new EventArgs());
                 OnPropertyChanged("LoanAmount");
             }
         }
@@ -119,7 +112,6 @@ namespace LifeCalculator.Control.ViewModels
             set
             {
                 _account.DownPayment = value;
-                ValueChanged?.Invoke(this, new EventArgs());
                 OnPropertyChanged("DownPayment");
             }
         }
@@ -133,7 +125,6 @@ namespace LifeCalculator.Control.ViewModels
             set
             {
                 _account.InterestRate = value;
-                ValueChanged?.Invoke(this, new EventArgs());
                 OnPropertyChanged("InterestRate");
             }
         }
@@ -144,12 +135,6 @@ namespace LifeCalculator.Control.ViewModels
             {
                 return _account.InterestPaid;
             }
-            set
-            {
-                _account.InterestPaid = value;
-                ValueChanged?.Invoke(this, new EventArgs());
-                OnPropertyChanged("InterestPaid");
-            }
         }
 
         public double PrincipalPaid
@@ -157,12 +142,6 @@ namespace LifeCalculator.Control.ViewModels
             get
             {
                 return _account.PrincipalPaid;
-            }
-            set
-            {
-                _account.PrincipalPaid = value;
-                ValueChanged?.Invoke(this, new EventArgs());
-                OnPropertyChanged("PrincipalPaid");
             }
         }
 
@@ -175,7 +154,6 @@ namespace LifeCalculator.Control.ViewModels
             set
             {
                 _account.LoanLengthMonths = value;
-                ValueChanged?.Invoke(this, new EventArgs());
                 OnPropertyChanged("LoanLengthMonths");
             }
         }
@@ -189,7 +167,6 @@ namespace LifeCalculator.Control.ViewModels
             set
             {
                 _account.StartDate = value;
-                ValueChanged?.Invoke(this, new EventArgs());
                 OnPropertyChanged("StartDate");
             }
         }
@@ -207,19 +184,24 @@ namespace LifeCalculator.Control.ViewModels
             set
             {
                 _account.AccountLifeEvents = value;
-                ValueChanged?.Invoke(this, new EventArgs());
                 OnPropertyChanged("AccountLifeEvents");
             }
         }
 
         #endregion
 
-        private void DeleteAccount()
+        #region Commands
+
+        public void DeleteAccount()
         {
-            ValueChanged?.Invoke(this, new EventArgs());
+            _accountManager.DeleteAccount(_account);
         }
 
-        private void ValueChangedHandler(object sender, EventArgs e)
+        #endregion
+
+        #region Event Handlers
+
+        private void ValueChangedHandler(object sender, IAccount e)
         {
             AccountLifeEventsVMs.Clear();
             foreach (var item in _account.AccountLifeEvents)
@@ -227,22 +209,13 @@ namespace LifeCalculator.Control.ViewModels
                 if (item is AccountEvent accEvent)
                 {
                     var modifyLoanVM = new ModifyEventLoanViewModel(accEvent);
-                    modifyLoanVM.ValueChanged += ValueChangedHandler;
                     AccountLifeEventsVMs.Add(modifyLoanVM);
                 }
             }
             ValueChanged?.Invoke(this, new EventArgs());
         }
 
-        public void AddLifeEvent(IAccountEvent lifeEvent)
-        {
-            //throw new NotImplementedException();
-        }
+        #endregion
 
-        public List<MonthlyColumn> Calculation()
-        {
-            //throw new NotImplementedException();
-            return null;
-        }
     }
 }
