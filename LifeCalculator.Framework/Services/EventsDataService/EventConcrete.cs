@@ -11,7 +11,7 @@ namespace LifeCalculator.Framework.Services.EventsDataService
     public class EventConcrete : IAccountEvent
     {
         public string Name { get; set; }
-        public int Id { get; }
+        public int Id { get; set; }
         public int AccountId { get; set; }
         public LifeEnum LifeEventType { get; set; }
         public AccountTypes AccountType { get; set; }

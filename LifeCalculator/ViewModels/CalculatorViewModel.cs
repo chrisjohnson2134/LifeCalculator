@@ -179,6 +179,7 @@ namespace LifeCalculator.ViewModels
         public async void _currentEventViewModel_EventAddedEvent(object sendere, IAccountEvent e)
         {
             var eventInserted = await eventDataService.Insert(new AccountEvent(e));
+            e.Id = e.Id;
         }
 
         #endregion

@@ -8,7 +8,7 @@ namespace LifeCalculator.Framework.LifeEvents
     {
         event EventHandler ValueChanged;
         string Name { get; set; }
-        int Id { get; }
+        int Id { get; set; }
         int AccountId { get; set; }
         LifeEnum LifeEventType { get; set; }
         AccountTypes AccountType { get; set; }
