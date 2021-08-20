@@ -206,8 +206,10 @@ namespace LifeCalculator.Framework.Account
 
         private void updateMonthlyPayment()
         {
-            _monthlyPayment = Math.Floor((_loanAmount - _downPayment) * (Math.Pow((1 + InterestRate / 12), 360) * InterestRate)
-                / (12 * (Math.Pow((1 + InterestRate / 12), _loanLengthMonths) - 1)));
+            _monthlyPayment = (_loanAmount) * (Math.Pow((1 + (_interestRate / 12)), _loanLengthMonths) * _interestRate)
+                / (12 * (Math.Pow((1 + (_interestRate / 12)), _loanLengthMonths) - 1));
+
+            _monthlyPayment = Math.Round(_monthlyPayment,2);
         }
 
         public List<MonthlyColumn> Calculation()
@@ -247,13 +249,13 @@ namespace LifeCalculator.Framework.Account
                 monthlies.Add(new MonthlyColumn()
                 {
                     Name = _name,
-                    Gain = _loanAmount - _principalPaid,
+                    Gain = Math.Round(_loanAmount - _principalPaid,2),
                     Date = _startDate.AddMonths(1 + j)
                 });
 
             }
 
-            monthlies[monthlies.Count - 1].Gain = monthlies[monthlies.Count - 1].Gain + currValue;
+            monthlies[monthlies.Count - 1].Gain = Math.Round(monthlies[monthlies.Count - 1].Gain + currValue,2);
             return monthlies;
         }
 
