@@ -8,5 +8,6 @@ namespace LifeCalculator.Control.Accounts
 {
     public interface IModifyAccount
     {
+        string Name { get; set; }
     }
 }

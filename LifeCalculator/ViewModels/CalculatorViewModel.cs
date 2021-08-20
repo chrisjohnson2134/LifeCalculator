@@ -8,12 +8,12 @@ using LiveCharts.Wpf;
 using LifeCalculator.Framework.Chart;
 using LifeCalculator.Framework.BaseVM;
 using LifeCalculator.Framework.CurrentAccountStorage;
-using System.Collections.Specialized;
 using LifeCalculator.Control.ViewModels;
 using LifeCalculator.Framework.Services.AccDataService;
 using LifeCalculator.Control.Accounts;
 using LifeCalculator.Control.Events;
 using LifeCalculator.Framework.Services.EventsDataService;
+
 
 namespace LifeCalculator.ViewModels
 {
@@ -133,8 +133,9 @@ namespace LifeCalculator.ViewModels
             try
             {
                 IAccount acc = await accountService.Insert(e);
+                e.Id = acc.Id;
 
-                addAccountToList(acc);
+                addAccountToList(e);
             }
             catch
             {
@@ -159,6 +160,14 @@ namespace LifeCalculator.ViewModels
             try
             {
                 await accountService.Delete(e);
+
+                foreach (var item in ValueCollection)
+                    if(item.Title.Equals(e.Name))
+                        ValueCollection.Remove(item);
+
+                foreach (var item in AccountsList)
+                    if (item.Name.Equals(e.Name))
+                        AccountsList.Remove(item);
             }
             catch
             {
@@ -167,9 +176,9 @@ namespace LifeCalculator.ViewModels
             ReChart(this, EventArgs.Empty);
         }
 
-        public void _currentEventViewModel_EventAddedEvent(object sendere, IAccountEvent e)
+        public async void _currentEventViewModel_EventAddedEvent(object sendere, IAccountEvent e)
         {
-            var eventInserted = eventDataService.Insert(new AccountEvent(e));
+            var eventInserted = await eventDataService.Insert(new AccountEvent(e));
         }
 
         #endregion
@@ -256,7 +265,6 @@ namespace LifeCalculator.ViewModels
         private void ReChart(object sender, EventArgs e)
         {
             foreach (var acc in _accountStore.CurrentAccount.AccountManager.Accounts)
-                //delete account here ish...
                 foreach (var collection in ValueCollection)
                 {
                     if (collection.Title.Equals(acc.Name))

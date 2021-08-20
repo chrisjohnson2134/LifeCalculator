@@ -45,7 +45,18 @@ namespace LifeCalculator.Framework.Account
 
         #region Properties
 
-        public int Id { get; }
+        private int _id = -1;
+        public int Id 
+        {
+            get => _id;
+            set
+            {
+                if(_id == -1)
+                {
+                    _id = value;
+                }
+            }
+        }
         private int _userId;
         public int UserId
         {
