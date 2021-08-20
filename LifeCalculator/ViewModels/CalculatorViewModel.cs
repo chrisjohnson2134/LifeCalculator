@@ -196,10 +196,12 @@ namespace LifeCalculator.ViewModels
             if (accountSelected is ModifyLoanViewModel loanAccount)
             {
                 CurrentEventViewModel = new AddEventLoanViewModel(loanAccount.Account);
+                CurrentEventViewModel.EventAdded += _currentEventViewModel_EventAddedEvent;
             }
             else if (accountSelected is ModifyCompoundViewModel compoundAccount)
             {
                 CurrentEventViewModel = new AddEventCompoundViewModel(compoundAccount.Account);
+                CurrentEventViewModel.EventAdded += _currentEventViewModel_EventAddedEvent;
             }
         }
 
