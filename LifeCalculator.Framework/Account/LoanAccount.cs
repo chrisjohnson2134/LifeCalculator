@@ -253,9 +253,6 @@ namespace LifeCalculator.Framework.Account
 
             }
 
-            PrincipalPaid = _principalPaid;
-            InterestPaid = _interestPaid;
-
             monthlies[monthlies.Count - 1].Gain = monthlies[monthlies.Count - 1].Gain + currValue;
             return monthlies;
         }

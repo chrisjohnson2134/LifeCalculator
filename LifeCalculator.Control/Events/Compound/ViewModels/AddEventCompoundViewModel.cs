@@ -72,7 +72,7 @@ namespace LifeCalculator.Control.ViewModels
                 EndDate = EndDate,
                 Amount = Contribute,
                 AccountId = _compoundAccount.Id,
-                AccountType = AccountTypes.LoanAccount
+                AccountType = AccountTypes.CompoundInterest
             };
 
             _compoundAccount.AddLifeEvent(accountEvent);
