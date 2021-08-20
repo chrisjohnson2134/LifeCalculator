@@ -184,6 +184,8 @@ namespace LifeCalculator.Control.ViewModels
                 }
 
             }
+
+            OnPropertyChanged(string.Empty);
         }
 
         #endregion

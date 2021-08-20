@@ -212,6 +212,9 @@ namespace LifeCalculator.Control.ViewModels
                     AccountLifeEventsVMs.Add(modifyLoanVM);
                 }
             }
+
+            OnPropertyChanged(String.Empty);
+
             ValueChanged?.Invoke(this, new EventArgs());
         }
 
