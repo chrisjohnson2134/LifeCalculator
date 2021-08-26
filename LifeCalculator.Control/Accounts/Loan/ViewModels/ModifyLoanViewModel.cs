@@ -203,19 +203,20 @@ namespace LifeCalculator.Control.ViewModels
 
         private void ValueChangedHandler(object sender, IAccount e)
         {
-            AccountLifeEventsVMs.Clear();
-            foreach (var item in _account.AccountLifeEvents)
+            if (AccountLifeEventsVMs.Count != Account.AccountLifeEvents.Count)
             {
-                if (item is AccountEvent accEvent)
+                AccountLifeEventsVMs.Clear();
+                foreach (var item in _account.AccountLifeEvents)
                 {
-                    var modifyLoanVM = new ModifyEventLoanViewModel(accEvent);
-                    AccountLifeEventsVMs.Add(modifyLoanVM);
+                    if (item is AccountEvent accEvent)
+                    {
+                        var modifyLoanVM = new ModifyEventLoanViewModel(accEvent);
+                        AccountLifeEventsVMs.Add(modifyLoanVM);
+                    }
                 }
             }
 
             OnPropertyChanged(String.Empty);
-
-            ValueChanged?.Invoke(this, new EventArgs());
         }
 
         #endregion

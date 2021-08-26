@@ -173,19 +173,25 @@ namespace LifeCalculator.Control.ViewModels
 
         private void EventValueChangedHandler(object sender, EventArgs e)
         {
-            AccountLifeEventsVMs.Clear();
-            foreach (var item in _account.AccountLifeEvents)
+            if(AccountLifeEventsVMs.Count != Account.AccountLifeEvents.Count)
             {
-                if (item is AccountEvent accEvent)
+                AccountLifeEventsVMs.Clear();
+                foreach (var item in _account.AccountLifeEvents)
                 {
-                    var compoundModifyVM = new ModifyEventCompoundViewModel(accEvent);
-                    compoundModifyVM.ValueChanged += EventValueChangedHandler;
-                    AccountLifeEventsVMs.Add(compoundModifyVM);
+                    if (item is AccountEvent accEvent)
+                    {
+                        var compoundModifyVM = new ModifyEventCompoundViewModel(accEvent);
+                        compoundModifyVM.ValueChanged += EventValueChangedHandler;
+                        AccountLifeEventsVMs.Add(compoundModifyVM);
+                    }
+
                 }
 
             }
 
             OnPropertyChanged(string.Empty);
+
+
         }
 
         #endregion
