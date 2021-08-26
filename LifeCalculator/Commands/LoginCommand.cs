@@ -37,7 +37,6 @@ namespace LifeCalculator.Commands
 
         #endregion
 
-
         #region Methods
 
         public bool CanExecute(object parameter)

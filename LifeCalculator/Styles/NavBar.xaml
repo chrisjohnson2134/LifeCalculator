@@ -3,11 +3,12 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:LifeCalculator.Styles">
 
+    <!--  Radio Button Navigation Bar  -->
     <Style x:Key="NavButton" TargetType="RadioButton">
         <Setter Property="Foreground" Value="White" />
         <Setter Property="Padding" Value="10,5" />
         <Setter Property="FontSize" Value="18" />
-        <Setter Property="Background" Value="{StaticResource SecondaryBrush2}" />
+        <Setter Property="Background" Value="{StaticResource SecondaryBrush5}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="RadioButton">
@@ -15,11 +16,12 @@
                         <TextBlock
                             Padding="{TemplateBinding Padding}"
                             HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            FontSize="{TemplateBinding FontSize}"
                             Text="{TemplateBinding Content}" />
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="True">
-                            <Setter TargetName="mainGrid" Property="Background" Value="{StaticResource SecondaryBrush1}" />
+                            <Setter TargetName="mainGrid" Property="Background" Value="{StaticResource SecondaryBrush6}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -32,7 +34,7 @@
                     <Storyboard>
                         <ColorAnimation
                             Storyboard.TargetProperty="Background.Color"
-                            To="{StaticResource SecondaryColor1}"
+                            To="{StaticResource SecondaryColor6}"
                             Duration="0:0:0.1" />
                     </Storyboard>
                 </BeginStoryboard>
@@ -42,7 +44,7 @@
                     <Storyboard>
                         <ColorAnimation
                             Storyboard.TargetProperty="Background.Color"
-                            To="{StaticResource SecondaryColor2}"
+                            To="{StaticResource SecondaryColor5}"
                             Duration="0:0:0.1" />
                     </Storyboard>
                 </BeginStoryboard>

@@ -6,11 +6,16 @@
     xmlns:pwbox="clr-namespace:LifeCalculator.Control.PasswordBoxControl;assembly=LifeCalculator.Control">
 
     <!--  Colors  -->
-    <Color x:Key="PrimaryColor1">#86c232</Color>
-    <Color x:Key="PrimaryColor2">#61892f</Color>
-    <Color x:Key="SecondaryColor1">#222629</Color>
-    <Color x:Key="SecondaryColor2">#474b4f</Color>
-    <Color x:Key="SecondaryColor3">#6b6e70</Color>
+    <Color x:Key="PrimaryColor1">#333232</Color>
+    <Color x:Key="PrimaryColor2">#113537</Color>
+    <Color x:Key="SecondaryColor1">#1982C4</Color>
+    <Color x:Key="SecondaryColor2">#FFCA3A</Color>
+    <Color x:Key="SecondaryColor3">#FF595E</Color>
+    <Color x:Key="SecondaryColor4">#a4161a</Color>
+    <Color x:Key="SecondaryColor5">#161a1d</Color>
+    <Color x:Key="SecondaryColor6">#121517</Color>
+    <Color x:Key="ButtonTextColor">White</Color>
+
 
     <!--  Brushes  -->
     <SolidColorBrush x:Key="PrimaryBrush1" Color="{StaticResource PrimaryColor1}" />
@@ -18,60 +23,45 @@
     <SolidColorBrush x:Key="SecondaryBrush1" Color="{StaticResource SecondaryColor1}" />
     <SolidColorBrush x:Key="SecondaryBrush2" Color="{StaticResource SecondaryColor2}" />
     <SolidColorBrush x:Key="SecondaryBrush3" Color="{StaticResource SecondaryColor3}" />
+    <SolidColorBrush x:Key="SecondaryBrush4" Color="{StaticResource SecondaryColor4}" />
+    <SolidColorBrush x:Key="SecondaryBrush5" Color="{StaticResource SecondaryColor5}" />
+    <SolidColorBrush x:Key="SecondaryBrush6" Color="{StaticResource SecondaryColor6}" />
+    <SolidColorBrush x:Key="ButtonTextBrush" Color="{StaticResource ButtonTextColor}" />
 
 
-    <!--  Text Boxes  -->
-    <Style x:Key="TextBoxBase" TargetType="Control">
-        <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="Padding" Value="2" />
-        <Setter Property="Height" Value="25" />
+    <!--  TabItem Styles  -->
+    <!--<Style TargetType="TabItem">
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="Control">
-                    <Border
-                        BorderBrush="Gray"
-                        BorderThickness="1"
-                        CornerRadius="3">
-                        <ScrollViewer x:Name="PART_ContentHost" />
-                    </Border>
+                <ControlTemplate TargetType="{x:Type TabItem}">
+                    <Grid>
+                        <Border
+                            Width="150"
+                            Height="40"
+                            BorderBrush="{StaticResource PrimaryBrush1}"
+                            BorderThickness="2"
+                            CornerRadius="3">
+                            <Button
+                                Width="300"
+                                Height="40"
+                                HorizontalAlignment="Center"
+                                FontSize="14"
+                                Foreground="White">
+                                <ContentPresenter Margin="5" ContentSource="Header" />
+                            </Button>
+                        </Border>
+                    </Grid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+    </Style>-->
+
+    <!--  Label Style  -->
+
+    <Style TargetType="Label">
+        <Setter Property="FontFamily" Value="/Fonts/#Amatic" />
     </Style>
 
-
-    <Style BasedOn="{StaticResource TextBoxBase}" TargetType="TextBox" />
-
-    <!--  Password Box  -->
-
-
-    <!--<Style BasedOn="{StaticResource pwBoxBase}" TargetType="pwbox:BindablePasswordBox" />-->
-
-    <!--  Button Style  -->
-    <Style TargetType="Button">
-        <Setter Property="Background" Value="{StaticResource SecondaryBrush1}" />
-        <Setter Property="Foreground" Value="WhiteSmoke" />
-        <Setter Property="Padding" Value="10,5" />
-        <Setter Property="HorizontalContentAlignment" Value="Center" />
-        <Setter Property="Cursor" Value="Hand" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="Button">
-                    <Border
-                        Margin="{TemplateBinding Margin}"
-                        Padding="{TemplateBinding Padding}"
-                        Background="{TemplateBinding Background}"
-                        CornerRadius="3">
-                        <ContentPresenter HorizontalAlignment="Center" />
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="{StaticResource SecondaryBrush2}" />
-            </Trigger>
-        </Style.Triggers>
-    </Style>
+    <!--<Style BasedOn="{StaticResource TextBoxBase}" TargetType="TextBox" />-->
 
 </ResourceDictionary>

@@ -19,35 +19,38 @@
             Padding="10"
             HorizontalAlignment="Center"
             Content="Edit Your Profile"
-            FontSize="20" />
-        <Grid Grid.Row="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width=".25*" />
-                <ColumnDefinition Width=".25*" />
-                <ColumnDefinition Width=".25*" />
-                <ColumnDefinition Width=".25*" />
-            </Grid.ColumnDefinitions>
+            FontSize="20"
+            Foreground="White" />
 
-            <!--  1st Column  -->
+        <Border Background="White" CornerRadius="8" Grid.Row="1" Width="550" Margin="5" Padding="10" BorderBrush="White" BorderThickness="2">
+            <Grid Width="500">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width=".25*" />
+                    <ColumnDefinition Width=".25*" />
+                    <ColumnDefinition Width=".25*" />
+                    <ColumnDefinition Width=".25*" />
+                </Grid.ColumnDefinitions>
 
-            <Label
+                <!--  1st Column  -->
+
+                <Label
                 Grid.Row="0"
                 Grid.Column="0"
                 Margin="5,0,0,0"
                 Padding="2"
                 Content="Salary: "
                 FontSize="12" />
-            <TextBox
+                <TextBox
                 Grid.Row="0"
                 Grid.Column="1"
                 Width="100"
@@ -55,14 +58,14 @@
                 VerticalContentAlignment="Center"
                 Text="{Binding Salary, UpdateSourceTrigger=PropertyChanged, StringFormat=C}" />
 
-            <Label
+                <Label
                 Grid.Row="1"
                 Grid.Column="0"
                 Margin="5,0,0,0"
                 Padding="2"
                 Content="Net Monthly Income: "
                 FontSize="12" />
-            <TextBox
+                <TextBox
                 Grid.Row="1"
                 Grid.Column="1"
                 Width="100"
@@ -70,14 +73,14 @@
                 VerticalContentAlignment="Center"
                 Text="{Binding NetMonthlyIncome, UpdateSourceTrigger=PropertyChanged, StringFormat=C}" />
 
-            <Label
+                <Label
                 Grid.Row="2"
                 Grid.Column="0"
                 Margin="5,0,0,0"
                 Padding="2"
                 Content="Rent: "
                 FontSize="12" />
-            <TextBox
+                <TextBox
                 Grid.Row="2"
                 Grid.Column="1"
                 Width="100"
@@ -85,14 +88,14 @@
                 VerticalContentAlignment="Center"
                 Text="{Binding Rent, UpdateSourceTrigger=PropertyChanged, StringFormat=C}" />
 
-            <Label
+                <Label
                 Grid.Row="3"
                 Grid.Column="0"
                 Margin="5,0,0,0"
                 Padding="2"
                 Content="Water Bill: "
                 FontSize="12" />
-            <TextBox
+                <TextBox
                 Grid.Row="3"
                 Grid.Column="1"
                 Width="100"
@@ -100,14 +103,14 @@
                 VerticalContentAlignment="Center"
                 Text="{Binding WaterBill, UpdateSourceTrigger=PropertyChanged, StringFormat=C}" />
 
-            <Label
+                <Label
                 Grid.Row="4"
                 Grid.Column="0"
                 Margin="5,0,0,0"
                 Padding="2"
                 Content="Electric Bill: "
                 FontSize="12" />
-            <TextBox
+                <TextBox
                 Grid.Row="4"
                 Grid.Column="1"
                 Width="100"
@@ -115,14 +118,14 @@
                 VerticalContentAlignment="Center"
                 Text="{Binding ElectricBill, UpdateSourceTrigger=PropertyChanged, StringFormat=C}" />
 
-            <Label
+                <Label
                 Grid.Row="5"
                 Grid.Column="0"
                 Margin="5,0,0,0"
                 Padding="2"
                 Content="Internet Bill: "
                 FontSize="12" />
-            <TextBox
+                <TextBox
                 Grid.Row="5"
                 Grid.Column="1"
                 Width="100"
@@ -130,14 +133,14 @@
                 VerticalContentAlignment="Center"
                 Text="{Binding InternetBill, UpdateSourceTrigger=PropertyChanged, StringFormat=C}" />
 
-            <Label
+                <Label
                 Grid.Row="6"
                 Grid.Column="0"
                 Margin="5,0,0,0"
                 Padding="2"
                 Content="Cable Bill: "
                 FontSize="12" />
-            <TextBox
+                <TextBox
                 Grid.Row="6"
                 Grid.Column="1"
                 Width="100"
@@ -145,14 +148,14 @@
                 VerticalContentAlignment="Center"
                 Text="{Binding CableBill, UpdateSourceTrigger=PropertyChanged, StringFormat=C}" />
 
-            <Label
+                <Label
                 Grid.Row="7"
                 Grid.Column="0"
                 Margin="5,0,0,0"
                 Padding="2"
                 Content="Other Debt: "
                 FontSize="12" />
-            <TextBox
+                <TextBox
                 Grid.Row="7"
                 Grid.Column="1"
                 Width="100"
@@ -160,15 +163,15 @@
                 VerticalContentAlignment="Center"
                 Text="{Binding OtherDebts, UpdateSourceTrigger=PropertyChanged, StringFormat=C}" />
 
-            <!--  2nd Column  -->
+                <!--  2nd Column  -->
 
-            <Label
+                <Label
                 Grid.Row="0"
                 Grid.Column="2"
                 Padding="2"
                 Content="Subscriptions: "
                 FontSize="12" />
-            <TextBox
+                <TextBox
                 Grid.Row="0"
                 Grid.Column="3"
                 Width="100"
@@ -176,13 +179,13 @@
                 VerticalContentAlignment="Center"
                 Text="{Binding Subscriptions, UpdateSourceTrigger=PropertyChanged, StringFormat=C}" />
 
-            <Label
+                <Label
                 Grid.Row="1"
                 Grid.Column="2"
                 Padding="2"
                 Content="Groceries: "
                 FontSize="12" />
-            <TextBox
+                <TextBox
                 Grid.Row="1"
                 Grid.Column="3"
                 Width="100"
@@ -190,13 +193,13 @@
                 VerticalContentAlignment="Center"
                 Text="{Binding Groceries, UpdateSourceTrigger=PropertyChanged, StringFormat=C}" />
 
-            <Label
+                <Label
                 Grid.Row="2"
                 Grid.Column="2"
                 Padding="2"
                 Content="Emergency Fund (Monthly): "
                 FontSize="12" />
-            <TextBox
+                <TextBox
                 Grid.Row="2"
                 Grid.Column="3"
                 Width="100"
@@ -204,13 +207,13 @@
                 VerticalContentAlignment="Center"
                 Text="{Binding EmergencyFundContributions, UpdateSourceTrigger=PropertyChanged, StringFormat=C}" />
 
-            <Label
+                <Label
                 Grid.Row="3"
                 Grid.Column="2"
                 Padding="2"
                 Content="Gas: "
                 FontSize="12" />
-            <TextBox
+                <TextBox
                 Grid.Row="3"
                 Grid.Column="3"
                 Width="100"
@@ -218,13 +221,13 @@
                 VerticalContentAlignment="Center"
                 Text="{Binding Gas, UpdateSourceTrigger=PropertyChanged, StringFormat=C}" />
 
-            <Label
+                <Label
                 Grid.Row="4"
                 Grid.Column="2"
                 Padding="2"
                 Content="Car Insurance: "
                 FontSize="12" />
-            <TextBox
+                <TextBox
                 Grid.Row="4"
                 Grid.Column="3"
                 Width="100"
@@ -232,13 +235,13 @@
                 VerticalContentAlignment="Center"
                 Text="{Binding CarInsurance, UpdateSourceTrigger=PropertyChanged, StringFormat=C}" />
 
-            <Label
+                <Label
                 Grid.Row="5"
                 Grid.Column="2"
                 Padding="2"
                 Content="Home Insurance "
                 FontSize="12" />
-            <TextBox
+                <TextBox
                 Grid.Row="5"
                 Grid.Column="3"
                 Width="100"
@@ -246,13 +249,13 @@
                 VerticalContentAlignment="Center"
                 Text="{Binding HomeInsurance, UpdateSourceTrigger=PropertyChanged, StringFormat=C}" />
 
-            <Label
+                <Label
                 Grid.Row="6"
                 Grid.Column="2"
                 Padding="2"
                 Content="Car Payments "
                 FontSize="12" />
-            <TextBox
+                <TextBox
                 Grid.Row="6"
                 Grid.Column="3"
                 Width="100"
@@ -260,20 +263,20 @@
                 VerticalContentAlignment="Center"
                 Text="{Binding CarPayments, UpdateSourceTrigger=PropertyChanged, StringFormat=C}" />
 
-            <Label
+                <Label
                 Grid.Row="7"
                 Grid.Column="2"
                 Padding="2"
                 Content="Miscellaneous "
                 FontSize="12" />
-            <TextBox
+                <TextBox
                 Grid.Row="7"
                 Grid.Column="3"
                 Width="100"
                 Margin="5"
                 VerticalContentAlignment="Center"
                 Text="{Binding MiscellaneousPayments, UpdateSourceTrigger=PropertyChanged, StringFormat=C}" />
-
-        </Grid>
+            </Grid>
+        </Border> 
     </Grid>
 </UserControl>

@@ -3,18 +3,27 @@ using System;
 using LifeCalculator.Framework.LifeEvents;
 using Microsoft.VisualStudio.PlatformUI;
 using LifeCalculator.Framework.BaseVM;
-using LifeCalculator.Framework.Managers.Interfaces;
+using LifeCalculator.Framework.CurrentAccountStorage;
+using LifeCalculator.Control.Accounts;
 
 namespace LifeCalculator.Control.ViewModels
 {
     //Compound Interest View Model
-    public class AddCompoundViewModel : ViewModelBase
+    public class AddCompoundViewModel : ViewModelBase , IControlAccount
     {
+        #region Events
+
+        public event EventHandler<IAccount> AccountAdded;
+        public event EventHandler<IAccount> AccountModified;
+
+        #endregion
 
         #region Constructors
 
-        public AddCompoundViewModel()
+        public AddCompoundViewModel(IAccountStore accountStore)
         {
+            _accountStore = accountStore;
+
             AddAccountCommand = new DelegateCommand(AddAccountCommandHandler);
 
             StartDate = DateTime.Now;
@@ -34,7 +43,7 @@ namespace LifeCalculator.Control.ViewModels
         public DateTime StopDate { get; set; }
         public DelegateCommand AddAccountCommand { get; set; }
 
-        private IAccountManager _accountManager;
+        private IAccountStore _accountStore;
 
         #endregion
 
@@ -48,29 +57,13 @@ namespace LifeCalculator.Control.ViewModels
 
             var investmentAccount = new CompoundAccount(AccountName)
             {
-                InitialAmount = InitialValue
+                InitialAmount = InitialValue,
+                UserId = _accountStore.CurrentAccount.Id
             };
 
-            InvestmentAccountEvent startEvent = new InvestmentAccountEvent()
-            {
-                Name = "Start - " + AccountName,
-                StartDate = StartDate,
-                InterestRate = Interest,
-                Amount = Contribute
-            };
+            investmentAccount.SetupBasicCalculation(StartDate, StopDate, Interest, InitialValue, Contribute);
 
-            InvestmentAccountEvent stopEvent = new InvestmentAccountEvent()
-            {
-                Name = "Stop - " + AccountName,
-                StartDate = StopDate,
-                InterestRate = 0,
-                Amount = 0
-            };
-
-            investmentAccount.AddLifeEvent(startEvent);
-            investmentAccount.AddLifeEvent(stopEvent);
-
-            _accountManager.AddAccount(investmentAccount);
+            _accountStore.CurrentAccount.AccountManager.AddAccount(investmentAccount);
         }
 
         #endregion

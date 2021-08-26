@@ -11,5 +11,10 @@ namespace LifeCalculator.Control.Views
         {
             InitializeComponent();
         }
+
+        private void TextBox_GotFocus(object sender, System.Windows.RoutedEventArgs e)
+        {
+            ((TextBox)sender).SelectAll();
+        }
     }
 }
