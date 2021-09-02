@@ -3,11 +3,12 @@ using System;
 
 namespace LifeCalculator.Framework.LifeEvents
 {
+    //Rename the Folder or I will Barf!!
     public interface IAccountEvent
     {
         event EventHandler ValueChanged;
         string Name { get; set; }
-        int Id { get; }
+        int Id { get; set; }
         int AccountId { get; set; }
         LifeEnum LifeEventType { get; set; }
         AccountTypes AccountType { get; set; }

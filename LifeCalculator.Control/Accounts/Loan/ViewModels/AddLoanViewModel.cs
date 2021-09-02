@@ -68,7 +68,7 @@ namespace LifeCalculator.Control.ViewModels
             DownPayment);
             acc.UserId = _accountStore.CurrentAccount.Id;
 
-            _accountStore.CurrentAccount.Accounts.Add(acc);
+            _accountStore.CurrentAccount.AccountManager.AddAccount(acc);
 
             AccountAdded?.Invoke(this, acc);
         }

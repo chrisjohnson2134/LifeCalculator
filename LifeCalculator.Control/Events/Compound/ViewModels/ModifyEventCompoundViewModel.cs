@@ -91,7 +91,7 @@ namespace LifeCalculator.Control.ViewModels
             }
         }
 
-        public int Id { get; }
+        public int Id { get; set; }
         public int AccountId { get; set; }
         public DateTime StartDate { get; set; }
         public AccountTypes AccountType { get; set; }

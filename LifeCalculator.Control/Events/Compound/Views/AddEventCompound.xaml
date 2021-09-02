@@ -4,44 +4,37 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Grid>
         <StackPanel Orientation="Vertical">
-            
+
             <StackPanel Orientation="Horizontal">
-                <Label x:Name="EventTypeLabel"  Margin="2" Content="Event Type:" Width="100"/>
-                <ComboBox Name="EventTypeSelected" Margin="2" Width="100" Text="{Binding EventSelected}" ItemsSource="{Binding EventTypes}" />
+                <Label x:Name="EventTypeLabel" Margin="2" Width="75" Content="Event Type:" />
+                <ComboBox Name="EventTypeSelected" Margin="2" Width="100" Text="{Binding EventSelected}" ItemsSource="{Binding EventTypes}"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal">
-                <Label x:Name="EventDescriptionLabel" Margin="2" Content="Name:" Width="100"/>
-                <TextBox x:Name="EventDescriptionTextBox" Margin="2" Text="{Binding EventName}" />
+                <Label x:Name="EventDescriptionLabel" Margin="2" Width="75" Content="Name :" />
+                <TextBox x:Name="EventDescriptionTextBox" Margin="2" Width="100" Text="{Binding EventName}" />
             </StackPanel>
 
             <StackPanel Orientation="Horizontal">
-                <Label x:Name="EventDateLabel" Margin="2" Content="Start Date:" Width="100"/>
-                <DatePicker x:Name="EventDateTextBox" Margin="2" SelectedDate="{Binding EventDate}" />
+                <Label x:Name="EventDateLabel"  Margin="2" Width="75"  Content="Event Date:" />
+                <DatePicker x:Name="EventDateTextBox" Margin="2" Width="100" SelectedDate="{Binding StartDate}" />
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" >
+                <Label Margin="2" Content="End Date:" Width="75"  />
+                <DatePicker Margin="2" Width="100" SelectedDate="{Binding EndDate}" IsEnabled="{Binding NeedsEndDate}"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal">
-                <Label x:Name="EndDateLabel" Margin="2" Content="End Date:" Width="100"/>
-                <DatePicker x:Name="EndDateTextBox" Margin="2" SelectedDate="{Binding EndDate}" />
+                <Label  x:Name="EventAmountLabel" Margin="2" Width="75"  Content="Contribute:" />
+                <TextBox x:Name="EventAmountTextBox" Margin="2" Width="100" Text="{Binding Contribute, StringFormat=C}" />
             </StackPanel>
 
             <StackPanel Orientation="Horizontal">
-                <Label x:Name="EventAmountLabel" Margin="2" Content="Contribute:" />
-                <TextBox x:Name="EventAmountTextBox" Margin="2" Text="{Binding AmountToContribute, StringFormat=C}" />
+                <Button x:Name="AddAEventBTN" Margin="2" Width="100" Content="Add Event" Command="{Binding AddEventCommand}" />
             </StackPanel>
-
-            <StackPanel Orientation="Horizontal">
-                <Label x:Name="InterestLabel" Margin="2" Content="Interest:" />
-                <TextBox x:Name="InterestTextBox" Margin="2" Text="{Binding InterestValue}" />
-            </StackPanel>
-
-            <Button x:Name="AddAEventBTN" Margin="2" Command="{Binding AddEventCommand}" Content="Add Event" />
 
         </StackPanel>
-
-        
-       
-        
 
     </Grid>
 </UserControl>

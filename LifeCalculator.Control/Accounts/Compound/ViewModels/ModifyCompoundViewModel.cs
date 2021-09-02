@@ -1,21 +1,24 @@
-﻿using LifeCalculator.Framework.Account;
+﻿using LifeCalculator.Control.Accounts;
+using LifeCalculator.Framework.Account;
+using LifeCalculator.Framework.Account.Manager;
 using LifeCalculator.Framework.BaseVM;
 using LifeCalculator.Framework.ColumnDefinitions;
 using LifeCalculator.Framework.LifeEvents;
+using Microsoft.VisualStudio.PlatformUI;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace LifeCalculator.Control.ViewModels
 {
-    public class ModifyCompoundViewModel : ViewModelBase, IAccount
+    public class ModifyCompoundViewModel : ViewModelBase, IModifyAccount
     {
         #region Fields
 
-        public event EventHandler ValueChanged;
         public event EventHandler<IAccountEvent> LifeEventAdded;
 
         private CompoundAccount _account;
+        private AccountManager _accountManager;
 
         #endregion
 
@@ -26,22 +29,23 @@ namespace LifeCalculator.Control.ViewModels
 
         }
 
-        public ModifyCompoundViewModel(CompoundAccount account)
+        public ModifyCompoundViewModel(CompoundAccount account, AccountManager accountManager)
         {
             _account = account;
-            _account.ValueChanged += ValueChanged;
+            _accountManager = accountManager;
+            _account.ValueChanged += Account_ValueChanged;
             AccountLifeEventsVMs = new BindingList<ModifyEventCompoundViewModel>();
+            DeleteAccountCommand = new DelegateCommand(DeleteAccount);
+
             foreach (var item in _account.AccountLifeEvents)
             {
                 if (item is AccountEvent accEvent)
                 {
                     var accVM = new ModifyEventCompoundViewModel(accEvent);
-                    accVM.ValueChanged += ValueChangedHandler;
+                    accVM.ValueChanged += EventValueChangedHandler;
                     AccountLifeEventsVMs.Add(accVM);
                 }
             }
-
-            _account.ValueChanged += ValueChangedHandler;
         }
 
         #endregion
@@ -59,7 +63,6 @@ namespace LifeCalculator.Control.ViewModels
             set
             {
                 _account.UserId = value;
-                ValueChanged?.Invoke(this, new EventArgs());
                 OnPropertyChanged("UserId");
             }
         }
@@ -73,7 +76,6 @@ namespace LifeCalculator.Control.ViewModels
             set
             {
                 _account.Name = value;
-                ValueChanged?.Invoke(this, new EventArgs());
                 OnPropertyChanged("Name");
             }
         }
@@ -87,7 +89,6 @@ namespace LifeCalculator.Control.ViewModels
             set
             {
                 _account.InitialAmount = value;
-                ValueChanged?.Invoke(this, new EventArgs());
                 OnPropertyChanged("InitialAmount");
             }
         }
@@ -101,7 +102,6 @@ namespace LifeCalculator.Control.ViewModels
             set
             {
                 _account.InterestRate = value;
-                ValueChanged?.Invoke(this, new EventArgs());
                 OnPropertyChanged("InterestRate");
             }
         }
@@ -115,7 +115,6 @@ namespace LifeCalculator.Control.ViewModels
             set
             {
                 _account.StartDate = value;
-                ValueChanged?.Invoke(this, new EventArgs());
                 OnPropertyChanged("StartDate");
             }
         }
@@ -129,7 +128,6 @@ namespace LifeCalculator.Control.ViewModels
             set
             {
                 _account.EndDate = value;
-                ValueChanged?.Invoke(this, new EventArgs());
                 OnPropertyChanged("EndDate");
             }
         }
@@ -137,23 +135,28 @@ namespace LifeCalculator.Control.ViewModels
         public List<IAccountEvent> AccountLifeEvents { get; set; }
         public BindingList<ModifyEventCompoundViewModel> AccountLifeEventsVMs { get; set; }
         public CompoundAccount Account => _account;
+        public DelegateCommand DeleteAccountCommand { get; set; }
 
-
-        public void AddLifeEvent(IAccountEvent lifeEvent)
-        {
-            throw new NotImplementedException();
-        }
 
         public List<MonthlyColumn> Calculation()
         {
-            throw new NotImplementedException();
+            return _account.Calculation();
+        }
+
+        #endregion
+
+        #region Commands
+
+        public void DeleteAccount()
+        {
+            _accountManager.DeleteAccount(_account);
         }
 
         #endregion
 
         #region Event Handler
 
-        private void ValueChangedHandler(object sender, EventArgs e)
+        private void Account_ValueChanged(object sender, IAccount e)
         {
             AccountLifeEventsVMs.Clear();
             foreach (var item in _account.AccountLifeEvents)
@@ -161,12 +164,34 @@ namespace LifeCalculator.Control.ViewModels
                 if (item is AccountEvent accEvent)
                 {
                     var compoundModifyVM = new ModifyEventCompoundViewModel(accEvent);
-                    compoundModifyVM.ValueChanged += ValueChangedHandler;
+                    compoundModifyVM.ValueChanged += EventValueChangedHandler;
                     AccountLifeEventsVMs.Add(compoundModifyVM);
                 }
 
             }
-            ValueChanged?.Invoke(this, new EventArgs());
+        }
+
+        private void EventValueChangedHandler(object sender, EventArgs e)
+        {
+            if(AccountLifeEventsVMs.Count != Account.AccountLifeEvents.Count)
+            {
+                AccountLifeEventsVMs.Clear();
+                foreach (var item in _account.AccountLifeEvents)
+                {
+                    if (item is AccountEvent accEvent)
+                    {
+                        var compoundModifyVM = new ModifyEventCompoundViewModel(accEvent);
+                        compoundModifyVM.ValueChanged += EventValueChangedHandler;
+                        AccountLifeEventsVMs.Add(compoundModifyVM);
+                    }
+
+                }
+
+            }
+
+            OnPropertyChanged(string.Empty);
+
+
         }
 
         #endregion

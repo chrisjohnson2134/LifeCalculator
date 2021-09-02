@@ -7,10 +7,10 @@ namespace LifeCalculator.Framework.Account
 {
     public interface IAccount
     {
-        event EventHandler ValueChanged;
+        event EventHandler<IAccount> ValueChanged;
 
         string Name { get; set; }
-        int Id { get; }
+        int Id { get; set; }
         int UserId { get; set; }
         List<IAccountEvent> AccountLifeEvents { get; set; }
 

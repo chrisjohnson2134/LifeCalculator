@@ -80,9 +80,8 @@
   <ItemGroup>
     <Compile Include="Account\InvestmentAccountTest.cs" />
     <Compile Include="Account\LoanAccountTest.cs" />
+    <Compile Include="Account\Manager\AccountManagerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Queries\CompoundQueriesTest.cs" />
-    <Compile Include="Queries\LoanAccountQueriesTest.cs" />
     <Compile Include="Services\AccountDataService\AccountDataServiceTest.cs" />
     <Compile Include="Services\CompoundAccountDataServices\CompoundAccountDataServiceTest.cs" />
     <Compile Include="Services\EventsDataService\CompoundAccountEventDataServiceTest.cs" />

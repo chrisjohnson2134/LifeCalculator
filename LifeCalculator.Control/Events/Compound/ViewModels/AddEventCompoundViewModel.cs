@@ -11,68 +11,71 @@ namespace LifeCalculator.Control.ViewModels
 {
     public class AddEventCompoundViewModel : ViewModelBase, IControlEvent
     {
-        #region Fields
+        public event EventHandler<IAccountEvent> EventAdded;
 
-        private IAccount _account;
+        private IAccount _compoundAccount;
 
-        #endregion
-
-        #region Constructors
-
-        public AddEventCompoundViewModel()
+        public AddEventCompoundViewModel(CompoundAccount loanAccount)
         {
-            AddEventCommand = new DelegateCommand(AddLifeEventCommandHandler);
-            EventDate = DateTime.Now;
-        }
+            _compoundAccount = loanAccount;
 
-        public AddEventCompoundViewModel(CompoundAccount compoundAccount)
-        {
-            _account = compoundAccount;
+            EventTypes = new List<string> { "One-Time", "Monthly" };
 
-            EventDate = DateTime.Now;
+            StartDate = DateTime.Now;
+            EndDate = DateTime.Now.AddYears(1);
 
-            AddEventCommand = new DelegateCommand(AddLifeEventCommandHandler);
+            AddEventCommand = new DelegateCommand(AddEventCommandHandler);
 
         }
-
-        #endregion
 
         #region Properties
 
-        public string EventName { get; set; }
-        public DateTime EventDate { get; set; }
-        public DateTime EndDate { get; set; }
-        public bool StartEvent { get; set; }
-        public bool StopEvent { get; set; }
-        public double AmountToContribute { get; set; }
-        public double InterestValue { get; set; }
-        public DelegateCommand AddEventCommand { get; set; }
-
-        public event EventHandler<IAccountEvent> EventAdded;
         public List<string> EventTypes { get; set; }
-        public string EventSelected { get; set; }
+        private string _eventSelected;
+        public string EventSelected
+        {
+            get
+            {
+                return _eventSelected;
+            }
+            set
+            {
+                _eventSelected = value;
+                if (_eventSelected.Equals("One-Time"))
+                    NeedsEndDate = false;
+                else
+                    NeedsEndDate = true;
+
+                OnPropertyChanged("NeedsEndDate");
+            }
+        }
+        public string EventName { get; set; }
+        public DateTime StartDate { get; set; }
+        public bool NeedsEndDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public double Contribute { get; set; }
+
+        public DelegateCommand AddEventCommand { get; set; }
 
 
         #endregion
 
         #region Command Handlers
 
-        private void AddLifeEventCommandHandler()
+        private void AddEventCommandHandler()
         {
-
             var accountEvent = new AccountEvent()
             {
+                LifeEventType = EventSelectedToLifeEnum(EventSelected),
                 Name = EventName,
-                Amount = AmountToContribute,
-                StartDate = EventDate,
-                InterestRate = InterestValue * .01
+                StartDate = StartDate,
+                EndDate = EndDate,
+                Amount = Contribute,
+                AccountId = _compoundAccount.Id,
+                AccountType = AccountTypes.CompoundInterest
             };
 
-            EventTypes = new List<string> { "One-Time", "Monthly" };
-
-            _account.AddLifeEvent(accountEvent);
-
-            _account.Calculation();
+            _compoundAccount.AddLifeEvent(accountEvent);
 
             EventAdded?.Invoke(this, accountEvent);
         }
