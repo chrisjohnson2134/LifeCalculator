@@ -10,4 +10,4 @@ Example of using the calculator
 
 ![Calculator](https://user-images.githubusercontent.com/25907313/130258735-bc3d52b3-59ea-4591-a5f1-d3aa487a3a8e.PNG)
 
-
+*MIT License
