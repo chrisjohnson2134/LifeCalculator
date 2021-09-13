@@ -2,7 +2,7 @@
 using NUnit.Framework;
 using LifeCalculator.Framework.Enums;
 
-namespace LifeCalculator.FrameworkTest.Services.PlaidService
+namespace LifeCalculator.FrameworkTest.Settings
 {
     [TestFixture]
     public class AppSettingsTest

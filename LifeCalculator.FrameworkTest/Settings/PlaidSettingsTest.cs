@@ -2,7 +2,7 @@
 using LifeCalculator.Framework.Enums;
 using NUnit.Framework;
 
-namespace LifeCalculator.FrameworkTest.Services.PlaidService
+namespace LifeCalculator.FrameworkTest.Settings
 {
     [TestFixture]
     public class PlaidSettingsTest

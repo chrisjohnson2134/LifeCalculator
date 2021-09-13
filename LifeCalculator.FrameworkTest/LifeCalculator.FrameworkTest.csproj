@@ -86,8 +86,8 @@
     <Compile Include="Services\CompoundAccountDataServices\CompoundAccountDataServiceTest.cs" />
     <Compile Include="Services\EventsDataService\CompoundAccountEventDataServiceTest.cs" />
     <Compile Include="Services\LoanAccountDataService\LoanAccountDataServiceTest.cs" />
-    <Compile Include="Services\PlaidService\AppSettingsTest.cs" />
-    <Compile Include="Services\PlaidService\PlaidSettingsTest.cs" />
+    <Compile Include="Settings\AppSettingsTest.cs" />
+    <Compile Include="Settings\PlaidSettingsTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -100,7 +100,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Settings\" />
+    <Folder Include="Services\PlaidService\" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
