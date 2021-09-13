@@ -1,6 +1,6 @@
 ﻿using LifeCalculator.Control.Accounts;
-using LifeCalculator.Framework.Account;
-using LifeCalculator.Framework.Account.Manager;
+using LifeCalculator.Framework.SimulatedAccount;
+using LifeCalculator.Framework.SimulatedAccount.Manager;
 using LifeCalculator.Framework.BaseVM;
 using LifeCalculator.Framework.ColumnDefinitions;
 using LifeCalculator.Framework.LifeEvents;
@@ -201,7 +201,7 @@ namespace LifeCalculator.Control.ViewModels
 
         #region Event Handlers
 
-        private void ValueChangedHandler(object sender, IAccount e)
+        private void ValueChangedHandler(object sender, ISimulatedAccount e)
         {
             if (AccountLifeEventsVMs.Count != Account.AccountLifeEvents.Count)
             {

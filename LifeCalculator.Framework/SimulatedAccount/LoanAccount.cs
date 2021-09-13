@@ -6,12 +6,12 @@ using LifeCalculator.Framework.Services.DataService;
 using System;
 using System.Collections.Generic;
 
-namespace LifeCalculator.Framework.Account
+namespace LifeCalculator.Framework.SimulatedAccount
 {
-    public class LoanAccount : IAccount, IDatabaseable
+    public class LoanAccount : ISimulatedAccount, IDatabaseable
     {
         public event EventHandler<IAccountEvent> LifeEventAdded;
-        public event EventHandler<IAccount> ValueChanged;
+        public event EventHandler<ISimulatedAccount> ValueChanged;
 
         private int _id = -1;
         public int Id

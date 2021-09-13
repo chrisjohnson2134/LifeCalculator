@@ -1,4 +1,4 @@
-﻿using LifeCalculator.Framework.Account;
+﻿using LifeCalculator.Framework.SimulatedAccount;
 using LifeCalculator.Framework.LifeEvents;
 using NUnit.Framework;
 using Should;

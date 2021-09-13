@@ -5,23 +5,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LifeCalculator.Framework.Account.Manager
+namespace LifeCalculator.Framework.SimulatedAccount.Manager
 {
     public class AccountManager
     {
 
-        public event EventHandler<IAccount> AccountAdded;
-        public event EventHandler<IAccount> AccountChanged;
-        public event EventHandler<IAccount> AccountDeleted;
+        public event EventHandler<ISimulatedAccount> AccountAdded;
+        public event EventHandler<ISimulatedAccount> AccountChanged;
+        public event EventHandler<ISimulatedAccount> AccountDeleted;
 
         public AccountManager()
         {
-            Accounts = new List<IAccount>();
+            Accounts = new List<ISimulatedAccount>();
         }
 
-        public List<IAccount> Accounts { get; set; }
+        public List<ISimulatedAccount> Accounts { get; set; }
 
-        public void AddAccount(IAccount account)
+        public void AddAccount(ISimulatedAccount account)
         {
             Accounts.Add(account);
             account.ValueChanged += Account_ValueChanged;
@@ -29,22 +29,22 @@ namespace LifeCalculator.Framework.Account.Manager
             AccountAdded?.Invoke(this, account);
         }
 
-        private void Account_ValueChanged(object sender, IAccount e)
+        private void Account_ValueChanged(object sender, ISimulatedAccount e)
         {
             AccountChanged?.Invoke(this, e);
         }
 
-        public IAccount GetAccount(int id)
+        public ISimulatedAccount GetAccount(int id)
         {
             return Accounts.FirstOrDefault(t => t.Id == id);
         }
 
-        public IAccount GetAccount(string name)
+        public ISimulatedAccount GetAccount(string name)
         {
             return Accounts.FirstOrDefault(t => t.Name.Equals(name));
         }
 
-        public void DeleteAccount(IAccount account)
+        public void DeleteAccount(ISimulatedAccount account)
         {
             Accounts.RemoveAll(t => t.Id == account.Id);
 

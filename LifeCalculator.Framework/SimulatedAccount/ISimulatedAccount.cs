@@ -3,11 +3,11 @@ using LifeCalculator.Framework.LifeEvents;
 using System;
 using System.Collections.Generic;
 
-namespace LifeCalculator.Framework.Account
+namespace LifeCalculator.Framework.SimulatedAccount
 {
-    public interface IAccount
+    public interface ISimulatedAccount
     {
-        event EventHandler<IAccount> ValueChanged;
+        event EventHandler<ISimulatedAccount> ValueChanged;
 
         string Name { get; set; }
         int Id { get; set; }

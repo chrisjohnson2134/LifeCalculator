@@ -6,7 +6,7 @@
     xmlns:controlViews="clr-namespace:LifeCalculator.Control.Views;assembly=LifeCalculator.Control"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:LifeCalculator.Views"
-    xmlns:framework="clr-namespace:LifeCalculator.Framework.Account;assembly=LifeCalculator.Framework"
+    xmlns:framework="clr-namespace:LifeCalculator.Framework.SimulatedAccount;assembly=LifeCalculator.Framework"
     xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">

@@ -10,15 +10,15 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 
-namespace LifeCalculator.Framework.Account
+namespace LifeCalculator.Framework.SimulatedAccount
 {
-    public class CompoundAccount : IAccount
+    public class CompoundAccount : ISimulatedAccount
     {
 
         #region Events
 
         public event EventHandler<IAccountEvent> LifeEventAdded;
-        public event EventHandler<IAccount> ValueChanged;
+        public event EventHandler<ISimulatedAccount> ValueChanged;
 
         #endregion
 

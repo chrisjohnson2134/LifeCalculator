@@ -1,5 +1,5 @@
 ﻿using LifeCalculator.Control.Accounts;
-using LifeCalculator.Framework.Account;
+using LifeCalculator.Framework.SimulatedAccount;
 using LifeCalculator.Framework.BaseVM;
 using LifeCalculator.Framework.CurrentAccountStorage;
 using Microsoft.VisualStudio.PlatformUI;
@@ -14,8 +14,8 @@ namespace LifeCalculator.Control.ViewModels
         #region Fields
 
         private IAccountStore _accountStore;
-        public event EventHandler<IAccount> AccountAdded;
-        public event EventHandler<IAccount> AccountModified;
+        public event EventHandler<ISimulatedAccount> AccountAdded;
+        public event EventHandler<ISimulatedAccount> AccountModified;
 
         #endregion
 
@@ -68,7 +68,7 @@ namespace LifeCalculator.Control.ViewModels
             DownPayment);
             acc.UserId = _accountStore.CurrentAccount.Id;
 
-            _accountStore.CurrentAccount.AccountManager.AddAccount(acc);
+            _accountStore.CurrentAccount.SimulatedAccountsManager.AddAccount(acc);
 
             AccountAdded?.Invoke(this, acc);
         }

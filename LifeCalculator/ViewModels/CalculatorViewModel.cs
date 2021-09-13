@@ -1,4 +1,4 @@
-﻿using LifeCalculator.Framework.Account;
+﻿using LifeCalculator.Framework.SimulatedAccount;
 using LifeCalculator.Framework.LifeEvents;
 using System;
 using System.Collections.ObjectModel;
@@ -107,11 +107,11 @@ namespace LifeCalculator.ViewModels
             eventDataService = new AccountEventDataService();
             accountService = new AccountDataService();
 
-            _accountStore.CurrentAccount.AccountManager.AccountAdded += AccountManager_AccountAdded;
-            _accountStore.CurrentAccount.AccountManager.AccountChanged += AccountManager_AccountChanged;
-            _accountStore.CurrentAccount.AccountManager.AccountDeleted += AccountManager_AccountDeleted;
+            _accountStore.CurrentAccount.SimulatedAccountsManager.AccountAdded += AccountManager_AccountAdded;
+            _accountStore.CurrentAccount.SimulatedAccountsManager.AccountChanged += AccountManager_AccountChanged;
+            _accountStore.CurrentAccount.SimulatedAccountsManager.AccountDeleted += AccountManager_AccountDeleted;
 
-            foreach (var account in _accountStore.CurrentAccount.AccountManager.Accounts)
+            foreach (var account in _accountStore.CurrentAccount.SimulatedAccountsManager.Accounts)
             {
                  addAccountToList(account);
             }
@@ -128,11 +128,11 @@ namespace LifeCalculator.ViewModels
 
         #region Event Handlers
 
-        private async void AccountManager_AccountAdded(object sender, IAccount e)
+        private async void AccountManager_AccountAdded(object sender, ISimulatedAccount e)
         {
             try
             {
-                IAccount acc = await accountService.Insert(e);
+                ISimulatedAccount acc = await accountService.Insert(e);
                 e.Id = acc.Id;
 
                 addAccountToList(e);
@@ -145,7 +145,7 @@ namespace LifeCalculator.ViewModels
             ReChart(this,EventArgs.Empty);
         }
 
-        private async void AccountManager_AccountChanged(object sender, IAccount e)
+        private async void AccountManager_AccountChanged(object sender, ISimulatedAccount e)
         {
             try
             {
@@ -155,7 +155,7 @@ namespace LifeCalculator.ViewModels
             ReChart(new object(), EventArgs.Empty);
         }
 
-        private async void AccountManager_AccountDeleted(object sender, IAccount e)
+        private async void AccountManager_AccountDeleted(object sender, ISimulatedAccount e)
         {
             try
             {
@@ -217,17 +217,17 @@ namespace LifeCalculator.ViewModels
 
         #endregion
 
-        private void addAccountToList(IAccount account)
+        private void addAccountToList(ISimulatedAccount account)
         {
             if (account is LoanAccount loanAccount)
             {
-                var vm = new ModifyLoanViewModel(loanAccount,_accountStore.CurrentAccount.AccountManager);
+                var vm = new ModifyLoanViewModel(loanAccount,_accountStore.CurrentAccount.SimulatedAccountsManager);
                 AccountsList.Add(vm);
             }
 
             else if (account is CompoundAccount compoundAccount)
             {
-                var vm = new ModifyCompoundViewModel(compoundAccount, _accountStore.CurrentAccount.AccountManager);
+                var vm = new ModifyCompoundViewModel(compoundAccount, _accountStore.CurrentAccount.SimulatedAccountsManager);
                 AccountsList.Add(vm);
             }
 
@@ -265,7 +265,7 @@ namespace LifeCalculator.ViewModels
         /// </remarks>
         private void ReChart(object sender, EventArgs e)
         {
-            foreach (var acc in _accountStore.CurrentAccount.AccountManager.Accounts)
+            foreach (var acc in _accountStore.CurrentAccount.SimulatedAccountsManager.Accounts)
                 foreach (var collection in ValueCollection)
                 {
                     if (collection.Title.Equals(acc.Name))

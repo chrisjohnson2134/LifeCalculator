@@ -1,5 +1,5 @@
 ﻿using LifeCalculator.Control.Events;
-using LifeCalculator.Framework.Account;
+using LifeCalculator.Framework.SimulatedAccount;
 using LifeCalculator.Framework.BaseVM;
 using LifeCalculator.Framework.Enums;
 using LifeCalculator.Framework.LifeEvents;
@@ -13,7 +13,7 @@ namespace LifeCalculator.Control.ViewModels
     {
         public event EventHandler<IAccountEvent> EventAdded;
 
-        private IAccount _compoundAccount;
+        private ISimulatedAccount _compoundAccount;
 
         public AddEventCompoundViewModel(CompoundAccount loanAccount)
         {

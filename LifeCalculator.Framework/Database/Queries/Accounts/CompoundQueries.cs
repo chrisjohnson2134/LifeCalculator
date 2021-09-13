@@ -1,5 +1,5 @@
 ﻿using Dapper;
-using LifeCalculator.Framework.Account;
+using LifeCalculator.Framework.SimulatedAccount;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;

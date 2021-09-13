@@ -1,5 +1,5 @@
 ﻿using Dapper;
-using LifeCalculator.Framework.Account;
+using LifeCalculator.Framework.SimulatedAccount;
 using LifeCalculator.Framework.LifeEvents;
 using LifeCalculator.Framework.Services.DataService;
 using LifeCalculator.Framework.Services.EventsDataService;

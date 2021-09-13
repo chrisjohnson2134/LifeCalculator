@@ -1,4 +1,4 @@
-﻿using LifeCalculator.Framework.Account;
+﻿using LifeCalculator.Framework.SimulatedAccount;
 using LifeCalculator.Framework.Enums;
 using LifeCalculator.Framework.LifeEvents;
 using LifeCalculator.Framework.Services.AccDataService;
@@ -49,7 +49,7 @@ namespace LifeCalculator.FrameworkTest.Services.AccountDataService
             var compound1Account = CreateCompoundAccount("comp1");
             var compound2Account = CreateLoanAccount("comp2");
 
-            List<IAccount> accountList = new List<IAccount>();
+            List<ISimulatedAccount> accountList = new List<ISimulatedAccount>();
             accountList.Add(compound1Account);
             accountList.Add(compound2Account);
 

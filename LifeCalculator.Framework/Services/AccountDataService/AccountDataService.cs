@@ -1,4 +1,4 @@
-﻿using LifeCalculator.Framework.Account;
+﻿using LifeCalculator.Framework.SimulatedAccount;
 using LifeCalculator.Framework.Services.AccountDataServices;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -11,9 +11,9 @@ namespace LifeCalculator.Framework.Services.AccDataService
         {
         }
 
-        public async Task<IAccount> Insert(IAccount entity)
+        public async Task<ISimulatedAccount> Insert(ISimulatedAccount entity)
         {
-            IAccount outputAccount = null;
+            ISimulatedAccount outputAccount = null;
             if (entity is LoanAccount)
             {
                 var dataService = new LoanAccountDataService();
@@ -28,12 +28,12 @@ namespace LifeCalculator.Framework.Services.AccDataService
             return outputAccount;
         }
 
-        public async Task<IAccount> Load(IAccount entity)
+        public async Task<ISimulatedAccount> Load(ISimulatedAccount entity)
         {
             if (entity == null)
                 return null;
 
-            IAccount outputAccount = null;
+            ISimulatedAccount outputAccount = null;
             if (entity is LoanAccount)
             {
                 var dataService = new LoanAccountDataService();
@@ -48,7 +48,7 @@ namespace LifeCalculator.Framework.Services.AccDataService
             return outputAccount;
         }
 
-        public async Task Save(IAccount entity)
+        public async Task Save(ISimulatedAccount entity)
         {
             if (entity is LoanAccount)
             {
@@ -62,7 +62,7 @@ namespace LifeCalculator.Framework.Services.AccDataService
             }
         }
 
-        public async Task Delete(IAccount entity)
+        public async Task Delete(ISimulatedAccount entity)
         {
             if (entity == null)
                 return;
@@ -80,9 +80,9 @@ namespace LifeCalculator.Framework.Services.AccDataService
 
         }
 
-        public async Task<List<IAccount>> InsertAccountsList(List<IAccount> accounts)
+        public async Task<List<ISimulatedAccount>> InsertAccountsList(List<ISimulatedAccount> accounts)
         {
-            var outputList = new List<IAccount>();
+            var outputList = new List<ISimulatedAccount>();
             foreach (var item in accounts)
             {
                 outputList.Add(await Insert(item));
@@ -91,7 +91,7 @@ namespace LifeCalculator.Framework.Services.AccDataService
             return outputList;
         }
 
-        public async Task DeleteAccountList(List<IAccount> accounts)
+        public async Task DeleteAccountList(List<ISimulatedAccount> accounts)
         {
             foreach (var item in accounts)
             {
@@ -99,7 +99,7 @@ namespace LifeCalculator.Framework.Services.AccDataService
             }
         }
 
-        public async Task UpdateAccountList(List<IAccount> accounts)
+        public async Task UpdateAccountList(List<ISimulatedAccount> accounts)
         {
             foreach (var item in accounts)
             {
@@ -107,12 +107,12 @@ namespace LifeCalculator.Framework.Services.AccDataService
             }
         }
 
-        public async Task<List<IAccount>> LoadAccountsByUserId(int userId)
+        public async Task<List<ISimulatedAccount>> LoadAccountsByUserId(int userId)
         {
             var loanAccountDataSevice = new LoanAccountDataService();
             var compoundAccountDataService = new CompoundAccountDataService();
 
-            var accountList = new List<IAccount>();
+            var accountList = new List<ISimulatedAccount>();
 
             foreach (var item in await compoundAccountDataService.LoadAccountsByUserId(userId))
             {

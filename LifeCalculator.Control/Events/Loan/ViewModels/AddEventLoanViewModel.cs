@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.PlatformUI;
-using LifeCalculator.Framework.Account;
+using LifeCalculator.Framework.SimulatedAccount;
 using LifeCalculator.Framework.LifeEvents;
 using LifeCalculator.Framework.Enums;
 using LifeCalculator.Framework.BaseVM;
@@ -14,7 +14,7 @@ namespace LifeCalculator.Control.ViewModels
 
         public event EventHandler<IAccountEvent> EventAdded;
 
-        private IAccount _loanAccount;
+        private ISimulatedAccount _loanAccount;
 
         public AddEventLoanViewModel(LoanAccount loanAccount)
         {

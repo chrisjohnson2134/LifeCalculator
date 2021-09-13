@@ -1,4 +1,4 @@
-﻿using LifeCalculator.Framework.Account;
+﻿using LifeCalculator.Framework.SimulatedAccount;
 using System;
 using LifeCalculator.Framework.LifeEvents;
 using Microsoft.VisualStudio.PlatformUI;
@@ -13,8 +13,8 @@ namespace LifeCalculator.Control.ViewModels
     {
         #region Events
 
-        public event EventHandler<IAccount> AccountAdded;
-        public event EventHandler<IAccount> AccountModified;
+        public event EventHandler<ISimulatedAccount> AccountAdded;
+        public event EventHandler<ISimulatedAccount> AccountModified;
 
         #endregion
 
@@ -63,7 +63,7 @@ namespace LifeCalculator.Control.ViewModels
 
             investmentAccount.SetupBasicCalculation(StartDate, StopDate, Interest, InitialValue, Contribute);
 
-            _accountStore.CurrentAccount.AccountManager.AddAccount(investmentAccount);
+            _accountStore.CurrentAccount.SimulatedAccountsManager.AddAccount(investmentAccount);
         }
 
         #endregion

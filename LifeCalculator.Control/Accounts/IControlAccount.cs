@@ -1,4 +1,4 @@
-﻿using LifeCalculator.Framework.Account;
+﻿using LifeCalculator.Framework.SimulatedAccount;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ namespace LifeCalculator.Control.Accounts
 {
     public interface IControlAccount
     {
-        event EventHandler<IAccount> AccountAdded;
-        event EventHandler<IAccount> AccountModified;
+        event EventHandler<ISimulatedAccount> AccountAdded;
+        event EventHandler<ISimulatedAccount> AccountModified;
     }
 }

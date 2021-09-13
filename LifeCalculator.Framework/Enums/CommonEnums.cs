@@ -46,4 +46,18 @@
         Insurance,
         Personal
     }
+
+    public enum Environment
+    {
+        Sandbox,
+        Development
+    }
+
+    public enum PlaidAccountType
+    {
+        Other,
+        Checking,
+        Savings,
+        CreditCard
+    }
 }
