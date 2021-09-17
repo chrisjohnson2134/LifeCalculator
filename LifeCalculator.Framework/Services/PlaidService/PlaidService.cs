@@ -77,6 +77,16 @@ namespace LifeCalculator.Framework.Services.PlaidService
             Process.Start(tempPath);
         }
 
+        public static Credentials AuthorizeInstitution(Institution institution, string public_token)
+        {
+            JObject json = JObject.FromObject(new { client_id = AppSettings.Instance.PlaidSettings.Client_Id, secret = GetSecret(), public_token });
+            JObject result = HttpRequestToPlaid("item/public_token/exchange", json);
+            string access_token = result["access_token"].ToString();
+            string item_id = result["item_id"].ToString();
+
+            return new Credentials() { AccessToken = access_token, Item = item_id };
+        }
+
         public static void RefreshToken(string currentToken)
         {
             JObject json = JObject.FromObject(new
@@ -237,15 +247,7 @@ namespace LifeCalculator.Framework.Services.PlaidService
             return accounts;
         }
 
-        public static Credentials AuthorizeInstitution(Institution institution, string public_token)
-        {
-            JObject json = JObject.FromObject(new { client_id = AppSettings.Instance.PlaidSettings.Client_Id, secret = GetSecret(), public_token });
-            JObject result = HttpRequestToPlaid("item/public_token/exchange", json);
-            string access_token = result["access_token"].ToString();
-            string item_id = result["item_id"].ToString();
-
-            return new Credentials() { AccessToken = access_token, Item = item_id };
-        }
+        
 
         public static void DeauthorizeInstitution(Institution institution)
         {

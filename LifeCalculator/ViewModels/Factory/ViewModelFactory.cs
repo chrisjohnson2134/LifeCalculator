@@ -16,6 +16,7 @@ namespace LifeCalculator.ViewModels.Factory
         private readonly CreateViewModel<WelcomePageViewModel> _createWelcomePageViewModel;
         private readonly CreateViewModel<BudgetViewModel> _createBudgetViewModel;
         private readonly CreateViewModel<CalculatorViewModel> _createCalculatorPageViewModel;
+        private readonly CreateViewModel<SettingsViewModel> _createSettingsViewModel;
 
         #endregion
 
@@ -24,7 +25,8 @@ namespace LifeCalculator.ViewModels.Factory
         public ViewModelFactory(CreateViewModel<HomeViewModel> createHomeViewModel, CreateViewModel<FinancialProfileViewModel> createFinancialProfileViewModel,
             CreateViewModel<LoanProfileViewModel> createLoanProfileViewModel, CreateViewModel<LoginViewModel> createLoginViewModel,
             CreateViewModel<RegisterViewModel> createRegisterViewModel, CreateViewModel<WelcomePageViewModel> createWelcomePageViewModel,
-            CreateViewModel<BudgetViewModel> createBudgetViewModel,CreateViewModel<CalculatorViewModel> calculatorViewModel)
+            CreateViewModel<BudgetViewModel> createBudgetViewModel,CreateViewModel<CalculatorViewModel> calculatorViewModel,
+            CreateViewModel<SettingsViewModel> settingsViewModel)
         {
             _createHomeViewModel = createHomeViewModel;
             _createFinancialProfileViewModel = createFinancialProfileViewModel;
@@ -34,6 +36,7 @@ namespace LifeCalculator.ViewModels.Factory
             _createRegisterViewModel = createRegisterViewModel;
             _createWelcomePageViewModel = createWelcomePageViewModel;
             _createCalculatorPageViewModel = calculatorViewModel;
+            _createSettingsViewModel = settingsViewModel;
         }
 
         #endregion
@@ -60,6 +63,8 @@ namespace LifeCalculator.ViewModels.Factory
                     return _createWelcomePageViewModel();
                 case ViewType.Calculator:
                     return _createCalculatorPageViewModel();
+                case ViewType.Settings:
+                    return _createSettingsViewModel();
                 default:
                     throw new ArgumentException("This view type does not have a view model.");
             }

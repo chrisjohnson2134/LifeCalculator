@@ -9,7 +9,8 @@
         Login,
         Register,
         Welcome,
-        Calculator
+        Calculator,
+        Settings
     }
 
     public enum LifeEnum

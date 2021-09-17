@@ -29,7 +29,7 @@ namespace LifeCalculator.Framework.Settings
             defaultSettings.SandboxInstitutions = new List<Institution>();
             defaultSettings.DevelopmentInstitutions = new List<Institution>();
 
-            defaultSettings.PlaidSettings = PlaidSettings.Instance;
+            defaultSettings.PlaidSettings = new PlaidSettings();
 
             return defaultSettings;
         }

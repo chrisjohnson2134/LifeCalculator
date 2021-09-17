@@ -34,6 +34,8 @@ namespace LifeCalculator.ViewModels
             UpdateCurrentViewModelCommand = new UpdateCurrentViewModelCommand(navigator, viewModelFactory);
             LogoutCommand = new DelegateCommand(LogoutCommand_Execute, LogoutCommand_CanExecute);
             UpdateCurrentViewModelCommand.Execute(ViewType.Welcome);
+
+            Framework.Settings.AppSettings.ReadSettings();
         }
 
         #endregion
@@ -62,7 +64,7 @@ namespace LifeCalculator.ViewModels
             _accountStore.CurrentAccount = null;
             UpdateCurrentViewModelCommand.Execute(ViewType.Welcome);
         }
-
+        
         #endregion
 
         #region Event Handlers

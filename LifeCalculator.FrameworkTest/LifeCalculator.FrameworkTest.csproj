@@ -87,7 +87,6 @@
     <Compile Include="Services\EventsDataService\CompoundAccountEventDataServiceTest.cs" />
     <Compile Include="Services\LoanAccountDataService\LoanAccountDataServiceTest.cs" />
     <Compile Include="Settings\AppSettingsTest.cs" />
-    <Compile Include="Settings\PlaidSettingsTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
