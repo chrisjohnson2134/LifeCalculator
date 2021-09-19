@@ -17,15 +17,17 @@ namespace LifeCalculator.ViewModels
     {
         public SettingsViewModel()
         {
-            sandboxInstitutions = new ObservableCollection<Institution>(AppSettings.Instance.DevelopmentInstitutions);
+            if (Framework.Enums.Environment.Development == AppSettings.Instance.PlaidSettings.Environment)
+                Institutions = new ObservableCollection<Institution>(AppSettings.Instance.DevelopmentInstitutions);
+            else
+                Institutions = new ObservableCollection<Institution>(AppSettings.Instance.SandboxInstitutions);
+
             Transactions = new ObservableCollection<Transaction>();
 
             AddNewAccountCommand = new DelegateCommand(AddNewAccountCommandHandler);
             AddAccountCommand = new DelegateCommand(AddAccountCommandHandler);
             SaveSettingsCommand = new DelegateCommand(SaveSettingsCommandHandler);
             LoadTransactionsCommand = new DelegateCommand(LoadTransactionsCommandHandler);
-
-            AppSettings.Instance.PlaidSettings.Environment = Framework.Enums.Environment.Development;
 
             StartDate = DateTime.Now.AddMonths(-1);
             EndDate = DateTime.Now;
@@ -60,8 +62,14 @@ namespace LifeCalculator.ViewModels
         public string SelectedEnvironment
         {
             get { return AppSettings.Instance.PlaidSettings.Environment.ToString(); }
-            set { AppSettings.Instance.PlaidSettings.Environment = (Framework.Enums.Environment)Enum.Parse(typeof(Framework.Enums.Environment), value); }
+            set 
+            { 
+                AppSettings.Instance.PlaidSettings.Environment = (Framework.Enums.Environment)Enum.Parse(typeof(Framework.Enums.Environment), value);
+                EnvironmentChanged();
+            }
         }
+
+        
 
         private string _institutionID;
         public string InstitutionID
@@ -113,7 +121,7 @@ namespace LifeCalculator.ViewModels
             }
         }
 
-        public ObservableCollection<Institution> sandboxInstitutions { get; set; }
+        public ObservableCollection<Institution> Institutions { get; set; }
         public ObservableCollection<Transaction> Transactions { get; set; }
         public List<string> EnvironmentOptions => new List<string> { "Sandbox", "Development" };
 
@@ -141,8 +149,15 @@ namespace LifeCalculator.ViewModels
             if (AppSettings.Instance.PlaidSettings.Environment == Framework.Enums.Environment.Development)
             {
                 AppSettings.Instance.DevelopmentInstitutions.Add(bank);
-                sandboxInstitutions.Add(bank);
+                Institutions.Add(bank);
             }
+            else 
+            {
+                AppSettings.Instance.SandboxInstitutions.Add(bank);
+                Institutions.Add(bank);
+            }
+
+            AppSettings.SaveSettings();
 
             //InstitutionID = string.Empty;
             //PublicToken = string.Empty;
@@ -155,10 +170,45 @@ namespace LifeCalculator.ViewModels
 
         private void LoadTransactionsCommandHandler(object obj)
         {
-            foreach (var item in PlaidService.GetTransactions(AppSettings.Instance.DevelopmentInstitutions[0],StartDate,EndDate))
+            Transactions.Clear();
+            if (Framework.Enums.Environment.Development == AppSettings.Instance.PlaidSettings.Environment && AppSettings.Instance.DevelopmentInstitutions[0] != null)
+                foreach (var item in PlaidService.GetTransactions(AppSettings.Instance.DevelopmentInstitutions[0],StartDate,EndDate))
+                {
+                    Transactions.Add(item);
+                }
+            else if (Framework.Enums.Environment.Sandbox == AppSettings.Instance.PlaidSettings.Environment && AppSettings.Instance.SandboxInstitutions[0] != null)
+                foreach (var item in PlaidService.GetTransactions(AppSettings.Instance.SandboxInstitutions[0], StartDate, EndDate))
+                {
+                    Transactions.Add(item);
+                }
+        }
+
+        #endregion
+
+        #region HelperMethod
+
+        private void EnvironmentChanged()
+        {
+            Institutions.Clear();
+
+            if (Framework.Enums.Environment.Development == AppSettings.Instance.PlaidSettings.Environment)
             {
-                Transactions.Add(item);
+                foreach (var bank in AppSettings.Instance.DevelopmentInstitutions)
+                {
+                    Institutions.Add(bank);
+                }
             }
+            else
+            {
+                foreach (var bank in AppSettings.Instance.SandboxInstitutions)
+                {
+                    Institutions.Add(bank);
+                }
+            }
+
+            AppSettings.SaveSettings();
+
+
         }
 
         #endregion

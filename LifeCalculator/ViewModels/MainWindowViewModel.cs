@@ -35,7 +35,6 @@ namespace LifeCalculator.ViewModels
             LogoutCommand = new DelegateCommand(LogoutCommand_Execute, LogoutCommand_CanExecute);
             UpdateCurrentViewModelCommand.Execute(ViewType.Welcome);
 
-            Framework.Settings.AppSettings.ReadSettings();
         }
 
         #endregion

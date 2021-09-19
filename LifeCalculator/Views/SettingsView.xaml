@@ -56,7 +56,7 @@
 
         <StackPanel Grid.Row="0" Grid.Column="1" Margin="10">
             <Label Content="Banks"/>
-            <DataGrid ItemsSource="{Binding sandboxInstitutions}"  AutoGenerateColumns="False">
+            <DataGrid ItemsSource="{Binding Institutions}"  AutoGenerateColumns="False">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Bank Name" Binding="{Binding Name}"/>
                 </DataGrid.Columns>
