@@ -4,8 +4,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controlsView="clr-namespace:LifeCalculator.Control.Views;assembly=LifeCalculator.Control"
     xmlns:controlsViewModels="clr-namespace:LifeCalculator.Control.ViewModels;assembly=LifeCalculator.Control"
-    xmlns:controlsSettingsView="clr-namespace:LifeCalculator.Control.SettingsTabs.Views;assembly=LifeCalculator.Control"
-    xmlns:controlsSettingsViewModels="clr-namespace:LifeCalculator.Control.SettingsTabs.ViewModels;assembly=LifeCalculator.Control"
     xmlns:local="clr-namespace:LifeCalculator"
     xmlns:viewModels="clr-namespace:LifeCalculator.ViewModels"
     xmlns:views="clr-namespace:LifeCalculator.Views">
@@ -69,9 +67,6 @@
             </DataTemplate>
             <DataTemplate DataType="{x:Type viewModels:SettingsViewModel}">
                 <views:SettingsView />
-            </DataTemplate>
-            <DataTemplate DataType="{x:Type controlsSettingsViewModels:PlaidSettingsViewModel}">
-                <controlsSettingsView:PlaidSettings/>
             </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>
