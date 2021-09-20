@@ -13,7 +13,7 @@ namespace LifeCalculator.Framework.FinancialAccount
 
         public FinancialAccount()
         {
-            AccountManager = new AccountManager();
+            SimulatedAccountManager = new AccountManager();
         }
 
         #endregion
@@ -57,7 +57,7 @@ namespace LifeCalculator.Framework.FinancialAccount
         public double MiscellaneousPayments { get; set; }
 
         [IgnoreDatabase]
-        public AccountManager AccountManager { get; set; }
+        public AccountManager SimulatedAccountManager { get; set; }
 
         #endregion
     }

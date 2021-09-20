@@ -63,7 +63,7 @@ namespace LifeCalculator.Control.ViewModels
 
             investmentAccount.SetupBasicCalculation(StartDate, StopDate, Interest, InitialValue, Contribute);
 
-            _accountStore.CurrentAccount.AccountManager.AddAccount(investmentAccount);
+            _accountStore.CurrentAccount.SimulatedAccountManager.AddAccount(investmentAccount);
         }
 
         #endregion

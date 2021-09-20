@@ -107,11 +107,11 @@ namespace LifeCalculator.ViewModels
             eventDataService = new AccountEventDataService();
             accountService = new AccountDataService();
 
-            _accountStore.CurrentAccount.AccountManager.AccountAdded += AccountManager_AccountAdded;
-            _accountStore.CurrentAccount.AccountManager.AccountChanged += AccountManager_AccountChanged;
-            _accountStore.CurrentAccount.AccountManager.AccountDeleted += AccountManager_AccountDeleted;
+            _accountStore.CurrentAccount.SimulatedAccountManager.AccountAdded += AccountManager_AccountAdded;
+            _accountStore.CurrentAccount.SimulatedAccountManager.AccountChanged += AccountManager_AccountChanged;
+            _accountStore.CurrentAccount.SimulatedAccountManager.AccountDeleted += AccountManager_AccountDeleted;
 
-            foreach (var account in _accountStore.CurrentAccount.AccountManager.Accounts)
+            foreach (var account in _accountStore.CurrentAccount.SimulatedAccountManager.Accounts)
             {
                  addAccountToList(account);
             }
@@ -221,13 +221,13 @@ namespace LifeCalculator.ViewModels
         {
             if (account is LoanAccount loanAccount)
             {
-                var vm = new ModifyLoanViewModel(loanAccount,_accountStore.CurrentAccount.AccountManager);
+                var vm = new ModifyLoanViewModel(loanAccount,_accountStore.CurrentAccount.SimulatedAccountManager);
                 AccountsList.Add(vm);
             }
 
             else if (account is CompoundAccount compoundAccount)
             {
-                var vm = new ModifyCompoundViewModel(compoundAccount, _accountStore.CurrentAccount.AccountManager);
+                var vm = new ModifyCompoundViewModel(compoundAccount, _accountStore.CurrentAccount.SimulatedAccountManager);
                 AccountsList.Add(vm);
             }
 
@@ -265,7 +265,7 @@ namespace LifeCalculator.ViewModels
         /// </remarks>
         private void ReChart(object sender, EventArgs e)
         {
-            foreach (var acc in _accountStore.CurrentAccount.AccountManager.Accounts)
+            foreach (var acc in _accountStore.CurrentAccount.SimulatedAccountManager.Accounts)
                 foreach (var collection in ValueCollection)
                 {
                     if (collection.Title.Equals(acc.Name))
