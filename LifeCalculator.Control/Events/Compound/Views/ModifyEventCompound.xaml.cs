@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace LifeCalculator.Control.Views.Events
+namespace LifeCalculator.Control.Views
 {
     /// <summary>
     /// Interaction logic for ModifyEventCompound

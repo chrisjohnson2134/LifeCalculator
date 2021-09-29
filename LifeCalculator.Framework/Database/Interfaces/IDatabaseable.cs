@@ -8,6 +8,6 @@ namespace LifeCalculator.Framework.Database
 {
     public interface IDatabaseable
     {
-        int id { get; }
+        int Id { get; }
     }
 }

@@ -3,103 +3,38 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
+        <StackPanel Orientation="Vertical">
 
-        <!--  row 1  -->
-        <Label
-            x:Name="EventTypeLabel"
-            Grid.Row="1"
-            Grid.Column="0"
-            Margin="2"
-            Content="Event Name:" />
-        <TextBox
-            Name="EventTypeSelected"
-            Grid.Row="1"
-            Grid.Column="1"
-            Margin="2"
-            Text="{Binding EventName}" />
+            <StackPanel Orientation="Horizontal">
+                <Label x:Name="EventTypeLabel" Margin="2" Width="75" Content="Event Type:" />
+                <ComboBox Name="EventTypeSelected" Margin="2" Width="100" Text="{Binding EventSelected}" ItemsSource="{Binding EventTypes}"/>
+            </StackPanel>
 
+            <StackPanel Orientation="Horizontal">
+                <Label x:Name="EventDescriptionLabel" Margin="2" Width="75" Content="Name :" />
+                <TextBox x:Name="EventDescriptionTextBox" Margin="2" Width="100" Text="{Binding EventName}" />
+            </StackPanel>
 
-        <!--  row 2  -->
-        <Label
-            x:Name="EventDateLabel"
-            Grid.Row="2"
-            Grid.Column="0"
-            Margin="2"
-            Content="Event Date:" />
-        <DatePicker
-            x:Name="EventDateTextBox"
-            Grid.Row="2"
-            Grid.Column="1"
-            Margin="2"
-            SelectedDate="{Binding EventDate}" />
+            <StackPanel Orientation="Horizontal">
+                <Label x:Name="EventDateLabel"  Margin="2" Width="75"  Content="Event Date:" />
+                <DatePicker x:Name="EventDateTextBox" Margin="2" Width="100" SelectedDate="{Binding StartDate}" />
+            </StackPanel>
 
+            <StackPanel Orientation="Horizontal" >
+                <Label Margin="2" Content="End Date:" Width="75"  />
+                <DatePicker Margin="2" Width="100" SelectedDate="{Binding EndDate}" IsEnabled="{Binding NeedsEndDate}"/>
+            </StackPanel>
 
-        <!--  row 3  -->
-        <Label
-            x:Name="EventDescriptionLabel"
-            Grid.Row="3"
-            Grid.Column="0"
-            Margin="2"
-            Content="Description:" />
-        <TextBox
-            x:Name="EventDescriptionTextBox"
-            Grid.Row="3"
-            Grid.Column="1"
-            Margin="2"
-            Text="{Binding EventDescription}" />
+            <StackPanel Orientation="Horizontal">
+                <Label  x:Name="EventAmountLabel" Margin="2" Width="75"  Content="Contribute:" />
+                <TextBox x:Name="EventAmountTextBox" Margin="2" Width="100" Text="{Binding Contribute, StringFormat=C}" />
+            </StackPanel>
 
+            <StackPanel Orientation="Horizontal">
+                <Button x:Name="AddAEventBTN" Margin="2" Width="100" Content="Add Event" Command="{Binding AddEventCommand}" />
+            </StackPanel>
 
-        <!--  row 4  -->
-        <Label
-            x:Name="EventAmountLabel"
-            Grid.Row="4"
-            Grid.Column="0"
-            Margin="2"
-            Content="Contribute:" />
-        <TextBox
-            x:Name="EventAmountTextBox"
-            Grid.Row="4"
-            Grid.Column="1"
-            Margin="2"
-            Text="{Binding AmountToContribute, StringFormat=C}" />
-
-
-        <!--  row 5  -->
-        <Label
-            x:Name="InterestLabel"
-            Grid.Row="5"
-            Grid.Column="0"
-            Margin="2"
-            Content="Interest:" />
-        <TextBox
-            x:Name="InterestTextBox"
-            Grid.Row="5"
-            Grid.Column="1"
-            Margin="2"
-            Text="{Binding InterestValue}" />
-
-
-        <!--  row 6  -->
-        <Button
-            x:Name="AddAEventBTN"
-            Grid.Row="6"
-            Grid.Column="1"
-            Margin="2"
-            Command="{Binding AddEventCommand}"
-            Content="Add Event" />
+        </StackPanel>
 
     </Grid>
 </UserControl>

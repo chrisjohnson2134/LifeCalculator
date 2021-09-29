@@ -43,7 +43,7 @@ namespace LifeCalculator.Framework.Services.AuthenticationService
                 throw new InvalidPasswordException("Username or password is incorrect.");
             }
 
-            FinancialAccount.FinancialAccount storedAccount = _financialAccountService.LoadByUsername(username).Result;         
+            FinancialAccount.FinancialAccount storedAccount = await _financialAccountService.LoadByUsername(username);         
 
             return storedAccount;
             

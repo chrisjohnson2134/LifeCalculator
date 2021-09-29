@@ -34,7 +34,7 @@ namespace LifeCalculator.Framework.Services.UserService
             {
                 var result = await cnn.QuerySingleOrDefaultAsync<User>($"SELECT * FROM {_tableName} WHERE Username=@Username", new { Username = username });
                 if (result == null)
-                    throw new UserNotFoundException($"username [{username}] could not be found.");
+                    throw new UserNotFoundException($"username could not be found.");
 
                 return result;
             }

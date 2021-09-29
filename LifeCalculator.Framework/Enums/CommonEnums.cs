@@ -1,14 +1,15 @@
-﻿using System.ComponentModel;
-
-namespace LifeCalculator.Framework.Enums
+﻿namespace LifeCalculator.Framework.Enums
 {
     public enum ViewType
     {
         Home,
         FinancialProfile,
         LoanProfile,
+        Budget,
         Login,
-        Register
+        Register,
+        Welcome,
+        Calculator
     }
 
     public enum LifeEnum
@@ -21,8 +22,8 @@ namespace LifeCalculator.Framework.Enums
 
     public enum AccountTypes
     {
-        [Description("Compound Interest")]
-        CompoundInterest
+        CompoundInterest,
+        LoanAccount
     }
 
     public enum RegistrationResult
@@ -31,5 +32,18 @@ namespace LifeCalculator.Framework.Enums
         PasswordsDoNotMatch,
         EmailAlreadyExists,
         UsernameAlreadyExists
+    }
+    
+    public enum BudgetItemSection
+    {
+        Income,
+        Housing,
+        Transportation,
+        Debt,
+        Health,
+        Food,
+        Savings,
+        Insurance,
+        Personal
     }
 }

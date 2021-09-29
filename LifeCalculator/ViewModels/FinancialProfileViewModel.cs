@@ -257,7 +257,6 @@ namespace LifeCalculator.ViewModels
         {
            return EditViewVisible == true;
         }
-
         #endregion
     }
 }

@@ -49,6 +49,18 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Accounts\Compound\ViewModels\ModifyCompoundViewModel.cs" />
+    <Compile Include="Accounts\Compound\Views\ModifyCompound.xaml.cs">
+      <DependentUpon>ModifyCompound.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Accounts\IControlAccount.cs" />
+    <Compile Include="Accounts\IModifyAccount.cs" />
+    <Compile Include="Accounts\Loan\ViewModels\ModifyLoanViewModel.cs" />
+    <Compile Include="Accounts\Loan\Views\ModifyLoan.xaml.cs">
+      <DependentUpon>ModifyLoan.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Events\IControlEvent.cs" />
+    <Compile Include="Events\Loan\ViewModels\AddEventLoanViewModel.cs" />
     <Compile Include="FinancialProfileEdit\FinancialProfileEditView.xaml.cs">
       <DependentUpon>FinancialProfileEditView.xaml</DependentUpon>
     </Compile>
@@ -62,7 +74,7 @@
     <Compile Include="FinancialProfileSummary\FinancialProfileSummaryView.xaml.cs">
       <DependentUpon>FinancialProfileSummaryView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PasswordBoxControl\BindablePasswordBox.xaml.cs">
+    <Compile Include="PasswordBox\BindablePasswordBox.xaml.cs">
       <DependentUpon>BindablePasswordBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -105,6 +117,14 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Accounts\Compound\Views\ModifyCompound.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Accounts\Loan\Views\ModifyLoan.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="FinancialProfileEdit\FinancialProfileEditView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -137,7 +157,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="PasswordBoxControl\BindablePasswordBox.xaml">
+    <Page Include="PasswordBox\BindablePasswordBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

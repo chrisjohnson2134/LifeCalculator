@@ -11,3 +11,4 @@ artifacts/
 *.sln.ide
 *.testlog
 *.testlog
+/.vs/LifeCalculator/v16/TestStore/2/testlog.manifest

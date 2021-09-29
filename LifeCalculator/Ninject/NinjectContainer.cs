@@ -1,8 +1,6 @@
 ﻿using LifeCalculator.Framework.Authenticator;
 using LifeCalculator.Framework.BaseVM;
 using LifeCalculator.Framework.CurrentAccountStorage;
-using LifeCalculator.Framework.Managers;
-using LifeCalculator.Framework.Managers.Interfaces;
 using LifeCalculator.Framework.Services.AuthenticationService;
 using LifeCalculator.Framework.Services.FinancialAccountService;
 using LifeCalculator.Framework.Services.UserService;
@@ -26,9 +24,11 @@ namespace LifeCalculator.Ninject
             Bind<FinancialProfileViewModel>().ToSelf().InSingletonScope();
             Bind<LoginViewModel>().ToSelf().InSingletonScope();
             Bind<RegisterViewModel>().ToSelf().InSingletonScope();
+            Bind<WelcomePageViewModel>().ToSelf().InSingletonScope();
+            Bind<BudgetViewModel>().ToSelf().InSingletonScope();
+            Bind<CalculatorViewModel>().ToSelf().InSingletonScope();
 
             Bind<INavigator>().To<Navigator>().InSingletonScope();
-            Bind<IAccountManager>().To<AccountManager>().InSingletonScope();
             Bind<IViewModelFactory>().To<ViewModelFactory>().InSingletonScope();
             Bind<IAccountStore>().To<AccountStore>().InSingletonScope();
             Bind<IAuthenticator>().To<Authenticator>().InSingletonScope();
@@ -49,6 +49,10 @@ namespace LifeCalculator.Ninject
             {
                 return () => kernel.Get<LoanProfileViewModel>();
             });
+            Bind<CreateViewModel<BudgetViewModel>>().ToMethod((Kernel) =>
+            {
+                return () => kernel.Get<BudgetViewModel>();
+            });
             Bind<CreateViewModel<LoginViewModel>>().ToMethod((Kernel) =>
             {
                 return () => kernel.Get<LoginViewModel>();
@@ -56,6 +60,14 @@ namespace LifeCalculator.Ninject
             Bind<CreateViewModel<RegisterViewModel>>().ToMethod((Kernel) =>
             {
                 return () => kernel.Get<RegisterViewModel>();
+            });
+            Bind<CreateViewModel<WelcomePageViewModel>>().ToMethod((Kernel) =>
+            {
+                return () => kernel.Get<WelcomePageViewModel>();
+            });
+            Bind<CreateViewModel<CalculatorViewModel>>().ToMethod((Kernel) =>
+            {
+                return () => kernel.Get<CalculatorViewModel>();
             });
 
         }
