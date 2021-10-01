@@ -10,7 +10,8 @@
         Register,
         Welcome,
         Calculator,
-        Settings
+        Settings,
+        PlaidDevSettings
     }
 
     public enum LifeEnum

@@ -68,6 +68,9 @@
             <DataTemplate DataType="{x:Type viewModels:SettingsViewModel}">
                 <views:SettingsView />
             </DataTemplate>
+            <DataTemplate DataType="{x:Type controlsViewModels:PlaidDevSettingsViewModel}">
+                <controlsView:PlaidDevSettings/>
+            </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

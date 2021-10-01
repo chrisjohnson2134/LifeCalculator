@@ -1,4 +1,5 @@
-﻿using LifeCalculator.Framework.BaseVM;
+﻿using LifeCalculator.Control.ViewModels;
+using LifeCalculator.Framework.BaseVM;
 using LifeCalculator.Framework.Enums;
 using System;
 
@@ -17,6 +18,7 @@ namespace LifeCalculator.ViewModels.Factory
         private readonly CreateViewModel<BudgetViewModel> _createBudgetViewModel;
         private readonly CreateViewModel<CalculatorViewModel> _createCalculatorPageViewModel;
         private readonly CreateViewModel<SettingsViewModel> _createSettingsViewModel;
+        private readonly CreateViewModel<PlaidDevSettingsViewModel> _createPlaidDevSettingsViewModel;
 
         #endregion
 
@@ -26,7 +28,7 @@ namespace LifeCalculator.ViewModels.Factory
             CreateViewModel<LoanProfileViewModel> createLoanProfileViewModel, CreateViewModel<LoginViewModel> createLoginViewModel,
             CreateViewModel<RegisterViewModel> createRegisterViewModel, CreateViewModel<WelcomePageViewModel> createWelcomePageViewModel,
             CreateViewModel<BudgetViewModel> createBudgetViewModel,CreateViewModel<CalculatorViewModel> calculatorViewModel,
-            CreateViewModel<SettingsViewModel> settingsViewModel)
+            CreateViewModel<SettingsViewModel> settingsViewModel,CreateViewModel<PlaidDevSettingsViewModel> plaidDevSettingsViewModel)
         {
             _createHomeViewModel = createHomeViewModel;
             _createFinancialProfileViewModel = createFinancialProfileViewModel;
@@ -37,6 +39,7 @@ namespace LifeCalculator.ViewModels.Factory
             _createWelcomePageViewModel = createWelcomePageViewModel;
             _createCalculatorPageViewModel = calculatorViewModel;
             _createSettingsViewModel = settingsViewModel;
+            _createPlaidDevSettingsViewModel = plaidDevSettingsViewModel;
         }
 
         #endregion
@@ -65,6 +68,8 @@ namespace LifeCalculator.ViewModels.Factory
                     return _createCalculatorPageViewModel();
                 case ViewType.Settings:
                     return _createSettingsViewModel();
+                case ViewType.PlaidDevSettings:
+                    return _createPlaidDevSettingsViewModel();
                 default:
                     throw new ArgumentException("This view type does not have a view model.");
             }
