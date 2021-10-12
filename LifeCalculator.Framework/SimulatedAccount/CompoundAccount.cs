@@ -193,7 +193,7 @@ namespace LifeCalculator.Framework.SimulatedAccount
             for (int j = 0; j < monthDiff; j++)
                 {
                 currValue = (currValue + monthlyContribute) * (1 + (InterestRate / 100) / 12) + additionalPriPaymentCalculation(_startDate.AddMonths(j));
-                monthlies.Add(new MonthlyColumn() { Name = Name, Gain = currValue, Date = _startDate.AddMonths(j) });
+                monthlies.Add(new MonthlyColumn() { Name = Name, Gain = Math.Round(currValue,2), Date = _startDate.AddMonths(j) });
             }
 
             if (monthDiff != 0)

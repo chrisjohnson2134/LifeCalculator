@@ -43,7 +43,7 @@ namespace LifeCalcuator.FrameworkTest.Account
         {
             CompoundAccount investmentAccount = new CompoundAccount();
 
-            investmentAccount.SetupBasicCalculation(DateTime.Now, DateTime.Now.AddYears(1),
+            investmentAccount.SetupBasicCalculation(DateTime.Now, DateTime.Now.AddYears(2),
             10, 100, 10);
 
             investmentAccount.AddLifeEvent(new AccountEvent
@@ -51,25 +51,13 @@ namespace LifeCalcuator.FrameworkTest.Account
                 Name = "addition",
                 Amount = 1000,
                 StartDate = DateTime.Now.AddYears(1),
-                InterestRate = 10
-            });
+                LifeEventType = LifeCalculator.Framework.Enums.LifeEnum.OneTime
+            }); 
 
             var midCalculationCheck = investmentAccount.Calculation();
-            midCalculationCheck[12].Gain.ShouldBeInRange(126.70, 126.71);
-            investmentAccount.FinalAmount.ShouldBeInRange(126.70, 126.71);
+            midCalculationCheck[13].Gain.ShouldEqual(1249.23);
+            investmentAccount.FinalAmount.ShouldEqual(1484.3);
 
-            investmentAccount.AddLifeEvent(new AccountEvent
-            {
-                Name = "addition",
-                Amount = 0,
-                StartDate = DateTime.Now.AddYears(2),
-                InterestRate = 10
-            });
-
-            var a = investmentAccount.Calculation();
-            a[12].Gain.ShouldBeInRange(126.70, 126.71);
-            a[24].Gain.ShouldBeInRange(12810.25, 12810.26);
-            investmentAccount.FinalAmount.ShouldBeInRange(12810.25, 12810.26);
         }
     }
 }

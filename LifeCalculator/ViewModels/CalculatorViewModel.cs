@@ -107,11 +107,11 @@ namespace LifeCalculator.ViewModels
             eventDataService = new AccountEventDataService();
             accountService = new AccountDataService();
 
-            _accountStore.CurrentAccount.SimulatedAccountsManager.AccountAdded += AccountManager_AccountAdded;
-            _accountStore.CurrentAccount.SimulatedAccountsManager.AccountChanged += AccountManager_AccountChanged;
-            _accountStore.CurrentAccount.SimulatedAccountsManager.AccountDeleted += AccountManager_AccountDeleted;
+            _accountStore.CurrentAccount.SimulatedAccountManager.AccountAdded += AccountManager_AccountAdded;
+            _accountStore.CurrentAccount.SimulatedAccountManager.AccountChanged += AccountManager_AccountChanged;
+            _accountStore.CurrentAccount.SimulatedAccountManager.AccountDeleted += AccountManager_AccountDeleted;
 
-            foreach (var account in _accountStore.CurrentAccount.SimulatedAccountsManager.Accounts)
+            foreach (var account in _accountStore.CurrentAccount.SimulatedAccountManager.Accounts)
             {
                  addAccountToList(account);
             }
