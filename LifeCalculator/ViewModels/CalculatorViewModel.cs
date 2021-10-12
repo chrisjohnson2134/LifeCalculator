@@ -247,6 +247,7 @@ namespace LifeCalculator.ViewModels
                 var series = new ColumnSeries(dayConfig);
                 series.Title = seriesName;
                 series.Values = new ChartValues<BarChartColumn>();
+                series.LabelPoint = point => String.Format("{0:C}", Convert.ToInt32(point.Y));
                 ValueCollection.Add(series);
                 Formatter = value => new DateTime((long)(value * TimeSpan.FromDays(1).Ticks * 365.2425)).ToString("yyyy");//MM/yyyy
             }
