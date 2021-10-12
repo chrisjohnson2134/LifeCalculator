@@ -35,7 +35,7 @@ namespace LifeCalculator.Framework.Services.FinancialAccountService
                 
                 foreach(ISimulatedAccount account in await accountsDataService.LoadAccountsByUserId(result.Id))
                 {
-                    result.SimulatedAccountsManager.AddAccount(account);
+                    result.SimulatedAccountManager.AddAccount(account);
                 }
 
                 if (result == null)

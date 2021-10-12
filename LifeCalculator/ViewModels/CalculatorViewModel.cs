@@ -221,13 +221,13 @@ namespace LifeCalculator.ViewModels
         {
             if (account is LoanAccount loanAccount)
             {
-                var vm = new ModifyLoanViewModel(loanAccount,_accountStore.CurrentAccount.SimulatedAccountsManager);
+                var vm = new ModifyLoanViewModel(loanAccount,_accountStore.CurrentAccount.SimulatedAccountManager);
                 AccountsList.Add(vm);
             }
 
             else if (account is CompoundAccount compoundAccount)
             {
-                var vm = new ModifyCompoundViewModel(compoundAccount, _accountStore.CurrentAccount.SimulatedAccountsManager);
+                var vm = new ModifyCompoundViewModel(compoundAccount, _accountStore.CurrentAccount.SimulatedAccountManager);
                 AccountsList.Add(vm);
             }
 
@@ -247,6 +247,7 @@ namespace LifeCalculator.ViewModels
                 var series = new ColumnSeries(dayConfig);
                 series.Title = seriesName;
                 series.Values = new ChartValues<BarChartColumn>();
+                series.LabelPoint = point => String.Format("{0:C}", Convert.ToInt32(point.Y));
                 ValueCollection.Add(series);
                 Formatter = value => new DateTime((long)(value * TimeSpan.FromDays(1).Ticks * 365.2425)).ToString("yyyy");//MM/yyyy
             }
@@ -265,7 +266,7 @@ namespace LifeCalculator.ViewModels
         /// </remarks>
         private void ReChart(object sender, EventArgs e)
         {
-            foreach (var acc in _accountStore.CurrentAccount.SimulatedAccountsManager.Accounts)
+            foreach (var acc in _accountStore.CurrentAccount.SimulatedAccountManager.Accounts)
                 foreach (var collection in ValueCollection)
                 {
                     if (collection.Title.Equals(acc.Name))
