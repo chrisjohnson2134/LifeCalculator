@@ -6,7 +6,7 @@
         <StackPanel Orientation="Horizontal">
             <StackPanel>
                 <Label x:Name="InvestmentNameLabel"  Content="Name:" />
-                <Label x:Name="StartDateLabel" Content="Date:" />
+                <Label x:Name="StartDateLabel" Content="Start Date:" />
             </StackPanel>
 
             <StackPanel>
@@ -16,10 +16,12 @@
 
             <StackPanel>
                 <Label x:Name="AdditionalContributionLabel" Content="Additional Contribution :" />
+                <Label x:Name="EndDateLabel" Content="Stop Date :" />
             </StackPanel>
 
             <StackPanel>
                 <TextBox x:Name="AdditionalContributionTextBox" Text="{Binding Amount, StringFormat=C}" MinWidth="100"/>
+                <DatePicker x:Name="EndDateTextBox" Width="100" SelectedDate="{Binding EndDate}" IsEnabled="{Binding EndDateEnabled}"/>
             </StackPanel>
         </StackPanel>
 
