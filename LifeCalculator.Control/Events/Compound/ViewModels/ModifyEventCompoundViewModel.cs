@@ -43,21 +43,29 @@ namespace LifeCalculator.Control.ViewModels
 
         public DateTime Date
         {
-            get => _lifeEvent.LifeEventType == LifeEnum.StartLifeEvent ? _lifeEvent.StartDate : _lifeEvent.EndDate;
+            get => _lifeEvent.StartDate;
             set
             {
-                if (_lifeEvent.LifeEventType == LifeEnum.StartLifeEvent)
-                    _lifeEvent.StartDate = value;
-                else
-                    _lifeEvent.EndDate = value;
+                _lifeEvent.StartDate = value;
 
                 ValueChanged?.Invoke(this, new EventArgs());
                 OnPropertyChanged(nameof(Date));
             }
         }
 
-        public bool EndDateEnabled => _lifeEvent.LifeEventType == LifeEnum.OneTime ? false : true;
-        public DateTime EndDate { get; set; }
+        public bool EndDateEnabled => _lifeEvent.LifeEventType == LifeEnum.MonthlyContribute ? false : true;
+
+        public DateTime EndDate
+        {
+            get => _lifeEvent.EndDate;
+            set
+            {
+                _lifeEvent.EndDate = value;
+
+                ValueChanged?.Invoke(this, new EventArgs());
+                OnPropertyChanged(nameof(EndDate));
+            }
+        }
 
         public double Amount
         {

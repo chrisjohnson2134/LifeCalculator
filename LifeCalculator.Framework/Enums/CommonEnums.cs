@@ -16,10 +16,8 @@
 
     public enum LifeEnum
     {
-        StartLifeEvent,
         OneTime,
-        MonthlyContribute,
-        EndLifeEvent
+        MonthlyContribute
     }
 
     public enum AccountTypes
