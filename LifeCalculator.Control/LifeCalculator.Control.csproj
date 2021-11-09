@@ -59,6 +59,8 @@
     <Compile Include="Accounts\Loan\Views\ModifyLoan.xaml.cs">
       <DependentUpon>ModifyLoan.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Budget\ViewModels\BudgetItemsControlViewModel.cs" />
+    <Compile Include="Budget\ViewModels\BudgetItemTileViewModel.cs" />
     <Compile Include="Events\IControlEvent.cs" />
     <Compile Include="Events\Loan\ViewModels\AddEventLoanViewModel.cs" />
     <Compile Include="FinancialProfileEdit\FinancialProfileEditView.xaml.cs">
@@ -110,6 +112,21 @@
     <Compile Include="Settings\ViewModels\PlaidDevSettingsViewModel.cs" />
     <Compile Include="Settings\Views\PlaidDevSettings.xaml.cs">
       <DependentUpon>PlaidDevSettings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TransactionSorter\ViewModels\TransactionSorterViewModel.cs" />
+    <Compile Include="TransactionSorter\Views\TransactionSorterView.xaml.cs">
+      <DependentUpon>TransactionSorterView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Transaction\ViewModels\TransactionItemViewModel.cs" />
+    <Compile Include="Transaction\ViewModels\TransactionListViewModel.cs" />
+    <Compile Include="Budget\Views\BudgetItemsControl.xaml.cs">
+      <DependentUpon>BudgetItemsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Budget\Views\BudgetItemTile.xaml.cs">
+      <DependentUpon>BudgetItemTile.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Transaction\Views\TransactionListView.xaml.cs">
+      <DependentUpon>TransactionListView.xaml</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -167,6 +184,22 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Settings\Views\PlaidDevSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Budget\Views\BudgetItemsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Budget\Views\BudgetItemTile.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TransactionSorter\Views\TransactionSorterView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Transaction\Views\TransactionListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

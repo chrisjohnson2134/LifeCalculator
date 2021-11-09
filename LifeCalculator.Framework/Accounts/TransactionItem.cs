@@ -2,7 +2,7 @@
 
 namespace LifeCalculator.Framework.Accounts
 {
-    public class Transaction
+    public class TransactionItem
     {
         public string Name { get; set; }
         public string Id { get; set; }

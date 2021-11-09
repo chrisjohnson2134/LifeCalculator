@@ -26,7 +26,7 @@ namespace LifeCalculator.Control.ViewModels
             else
                 Institutions = new ObservableCollection<Institution>(AppSettings.Instance.SandboxInstitutions);
 
-            Transactions = new ObservableCollection<Transaction>();
+            Transactions = new ObservableCollection<TransactionItem>();
 
             AddNewAccountCommand = new DelegateCommand(AddNewAccountCommandHandler);
             AddAccountCommand = new DelegateCommand(AddAccountCommandHandler);
@@ -130,7 +130,7 @@ namespace LifeCalculator.Control.ViewModels
         }
 
         public ObservableCollection<Institution> Institutions { get; set; }
-        public ObservableCollection<Transaction> Transactions { get; set; }
+        public ObservableCollection<TransactionItem> Transactions { get; set; }
         public List<string> EnvironmentOptions => new List<string> { "Sandbox", "Development" };
 
 

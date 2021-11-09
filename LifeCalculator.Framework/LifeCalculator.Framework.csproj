@@ -140,7 +140,7 @@
     <Compile Include="Accounts\Account.cs" />
     <Compile Include="Accounts\Credentials.cs" />
     <Compile Include="Accounts\Institution.cs" />
-    <Compile Include="Accounts\Transaction.cs" />
+    <Compile Include="Accounts\TransactionItem.cs" />
     <Compile Include="Services\PlaidService\PlaidService.cs" />
     <Compile Include="Settings\PlaidSettings.cs" />
     <Compile Include="Settings\AppSettings.cs" />

@@ -4,6 +4,8 @@ using System.Collections.ObjectModel;
 using System.Windows.Input;
 using LifeCalculator.Commands;
 using LifeCalculator.Framework.Enums;
+using LifeCalculator.Control.ViewModels;
+using LifeCalculator.Framework.Accounts;
 
 namespace LifeCalculator.ViewModels
 {
@@ -27,29 +29,35 @@ namespace LifeCalculator.ViewModels
 
         public BudgetViewModel()
         {
-            _incomeBudgetItems = new ObservableCollection<BudgetItemModel>();
-            _savingsBudgetItems = new ObservableCollection<BudgetItemModel>();
-            _housingBudgetItems = new ObservableCollection<BudgetItemModel>();
-            _foodBudgetItems = new ObservableCollection<BudgetItemModel>();
-            _transportationBudgetItems = new ObservableCollection<BudgetItemModel>();
-            _personalBudgetItems = new ObservableCollection<BudgetItemModel>();
-            _debtBudgetItems = new ObservableCollection<BudgetItemModel>();
-            _insuranceBudgetItems = new ObservableCollection<BudgetItemModel>();
-            _healthBudgetItems = new ObservableCollection<BudgetItemModel>();
+            var incomingTransactions = new TransactionListViewModel();
+            TransactionSorterControl = new TransactionSorterViewModel(incomingTransactions, new TransactionListViewModel(),new BudgetItemsControlViewModel()) ;
 
-            AddBudgetItemCommand = new AddBudgetItemCommand(this);
-            DeleteBudgetItemCommand = new DeleteBudgetItemCommand(this);
+            incomingTransactions.AddTransactionItem(new TransactionItemViewModel() { Transaction = new TransactionItem { Name = "Grocery", Amount = 50 } } );
+            incomingTransactions.AddTransactionItem(new TransactionItemViewModel() { Transaction = new TransactionItem { Name = "Best Buy", Amount = 20 } } );
+
+            //_incomeBudgetItems = new ObservableCollection<BudgetItemModel>();
+            //_savingsBudgetItems = new ObservableCollection<BudgetItemModel>();
+            //_housingBudgetItems = new ObservableCollection<BudgetItemModel>();
+            //_foodBudgetItems = new ObservableCollection<BudgetItemModel>();
+            //_transportationBudgetItems = new ObservableCollection<BudgetItemModel>();
+            //_personalBudgetItems = new ObservableCollection<BudgetItemModel>();
+            //_debtBudgetItems = new ObservableCollection<BudgetItemModel>();
+            //_insuranceBudgetItems = new ObservableCollection<BudgetItemModel>();
+            //_healthBudgetItems = new ObservableCollection<BudgetItemModel>();
+
+            //AddBudgetItemCommand = new AddBudgetItemCommand(this);
+            //DeleteBudgetItemCommand = new DeleteBudgetItemCommand(this);
 
 
-            InitializeIncomeBudgetDefaults();
-            InitializeSavingsBudgetDefaults();
-            InitializeHousingBudgetDefaults();
-            InitializeFoodBudgetDefaults();
-            InitializeTransportationBudgetDefaults();
-            InitializePersonalBudgetDefaults();
-            InitializeInsuranceBudgetDefaults();
-            InitializeHealthBudgetDefaults();
-            InitializeDebtBudgetDefaults();
+            //InitializeIncomeBudgetDefaults();
+            //InitializeSavingsBudgetDefaults();
+            //InitializeHousingBudgetDefaults();
+            //InitializeFoodBudgetDefaults();
+            //InitializeTransportationBudgetDefaults();
+            //InitializePersonalBudgetDefaults();
+            //InitializeInsuranceBudgetDefaults();
+            //InitializeHealthBudgetDefaults();
+            //InitializeDebtBudgetDefaults();
         }
 
         #endregion
@@ -57,6 +65,8 @@ namespace LifeCalculator.ViewModels
         #region Properties
 
         #region Budget Item Collections
+
+        public TransactionSorterViewModel TransactionSorterControl { get; set; }
 
         public ObservableCollection<BudgetItemModel> IncomeBudgetItems
         {

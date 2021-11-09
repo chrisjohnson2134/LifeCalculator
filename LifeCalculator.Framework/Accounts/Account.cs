@@ -7,14 +7,14 @@ namespace LifeCalculator.Framework.Accounts
     {
         public Account()
         {
-            RecentTransactions = new List<Transaction>();
+            RecentTransactions = new List<TransactionItem>();
         }
 
         public string Name { get; set; }
         public string Id { get; set; }
         public Enums.PlaidAccountType Type { get; set; }
         public double AvailableBalance { get; set; }
-        public List<Transaction> RecentTransactions { get; set; }
+        public List<TransactionItem> RecentTransactions { get; set; }
         public string FormattedBalance
         {
             get

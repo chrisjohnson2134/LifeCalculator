@@ -71,6 +71,18 @@
             <DataTemplate DataType="{x:Type controlsViewModels:PlaidDevSettingsViewModel}">
                 <controlsView:PlaidDevSettings/>
             </DataTemplate>
+            <DataTemplate DataType="{x:Type controlsViewModels:TransactionSorterViewModel}">
+                <controlsView:TransactionSorterView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type controlsViewModels:BudgetItemsControlViewModel}">
+                <controlsView:BudgetItemsControl/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type controlsViewModels:BudgetItemTileViewModel}">
+                <controlsView:BudgetItemTile/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type controlsViewModels:TransactionListViewModel}">
+                <controlsView:TransactionListView/>
+            </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

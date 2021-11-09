@@ -56,6 +56,7 @@ namespace LifeCalculator.Control.ViewModels
             }
         }
 
+        public bool EndDateEnabled => _lifeEvent.LifeEventType == LifeEnum.OneTime ? false : true;
         public DateTime EndDate { get; set; }
 
         public double Amount

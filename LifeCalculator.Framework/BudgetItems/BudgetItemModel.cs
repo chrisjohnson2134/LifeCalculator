@@ -13,10 +13,11 @@ namespace LifeCalculator.Framework.BudgetItems
 
         #endregion
 
-
         #region Properties
 
         public string Name { get; set; }
+
+        public string Description { get; set; }
 
         public double PlannedAmount { get; set; }
 

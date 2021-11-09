@@ -1,0 +1,14 @@
+﻿<UserControl x:Class="LifeCalculator.Control.Views.BudgetItemTile"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:LifeCalculator.Control.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid Width="100" Height="100" AllowDrop="True" Background="Transparent" Drop="Grid_Drop">
+        <Label Content="{Binding BudgetAmount}" ContentStringFormat="Budget : {0}" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+        <Label Content="{Binding Name}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <Label Content="{Binding Amount}" ContentStringFormat="Spent :" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
+    </Grid>
+</UserControl>

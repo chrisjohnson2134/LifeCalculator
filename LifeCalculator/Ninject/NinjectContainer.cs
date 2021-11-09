@@ -30,6 +30,11 @@ namespace LifeCalculator.Ninject
             Bind<CalculatorViewModel>().ToSelf().InSingletonScope();
             Bind<SettingsViewModel>().ToSelf().InSingletonScope();
             Bind<PlaidDevSettingsViewModel>().ToSelf().InSingletonScope();
+            Bind<TransactionSorterViewModel>().ToSelf().InSingletonScope();
+            Bind<BudgetItemsControlViewModel>().ToSelf().InSingletonScope();
+            Bind<BudgetItemTileViewModel>().ToSelf().InSingletonScope();
+            Bind<TransactionListViewModel>().ToSelf().InSingletonScope();
+            Bind<TransactionItemViewModel>().ToSelf().InSingletonScope();
 
             Bind<INavigator>().To<Navigator>().InSingletonScope();
             Bind<IViewModelFactory>().To<ViewModelFactory>().InSingletonScope();

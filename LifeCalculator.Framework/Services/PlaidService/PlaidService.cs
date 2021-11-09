@@ -180,9 +180,9 @@ namespace LifeCalculator.Framework.Services.PlaidService
             return result;
         }
 
-        private static Transaction ConvertToTransaction(JToken jsonTransaction)
+        private static TransactionItem ConvertToTransaction(JToken jsonTransaction)
         {
-            Transaction result = new Transaction();
+            TransactionItem result = new TransactionItem();
             result.Name = jsonTransaction["name"].ToString();
             result.Id = jsonTransaction["transaction_id"].ToString();
 
@@ -211,9 +211,9 @@ namespace LifeCalculator.Framework.Services.PlaidService
             return accounts;
         }
 
-        public static List<Transaction> GetTransactions(Institution institution, DateTime startDate, DateTime endDate)
+        public static List<TransactionItem> GetTransactions(Institution institution, DateTime startDate, DateTime endDate)
         {
-            List<Transaction> transactions = new List<Transaction>();
+            List<TransactionItem> transactions = new List<TransactionItem>();
 
             string start_date = startDate.ToString("yyyy-MM-dd");
             string end_date = endDate.ToString("yyyy-MM-dd");
@@ -233,9 +233,9 @@ namespace LifeCalculator.Framework.Services.PlaidService
             return transactions;
         }
 
-        public static List<Account> AddTransactionsToAccounts(List<Account> accounts, List<Transaction> transactions)
+        public static List<Account> AddTransactionsToAccounts(List<Account> accounts, List<TransactionItem> transactions)
         {
-            foreach (Transaction transaction in transactions)
+            foreach (TransactionItem transaction in transactions)
             {
                 Account matchingAccount = accounts.Find(p => p.Id == transaction.AccountId);
                 if (matchingAccount != null && matchingAccount.RecentTransactions.Find(p => p.Id == transaction.Id) == null)

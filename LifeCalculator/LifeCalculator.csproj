@@ -282,5 +282,8 @@
   <ItemGroup>
     <Resource Include="Resources\SettingsOutline_16x.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Views\BudgetViewOld.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
