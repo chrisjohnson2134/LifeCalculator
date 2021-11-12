@@ -1,7 +1,8 @@
 ﻿using LifeCalculator.Framework.Accounts;
 using LifeCalculator.Framework.BaseVM;
-using LifeCalculator.Framework.BudgetItems;
+using LifeCalculator.Framework.Budget;
 using Microsoft.VisualStudio.PlatformUI;
+using System.Collections.Generic;
 using System.Windows.Input;
 
 namespace LifeCalculator.Control.ViewModels
@@ -14,6 +15,14 @@ namespace LifeCalculator.Control.ViewModels
         {
             _budgetItem = budgetItem;
             TransactionAddCommand = new DelegateCommand(TransactionAddCommandHandler);
+
+            TransactionListViewModel = new TransactionListViewModel();
+
+            if(budgetItem.Transactions != null)
+            foreach (var item in budgetItem.Transactions)
+            {
+                TransactionListViewModel.AddTransactionItem(new TransactionItemViewModel(item));
+            }
 
         }
 
@@ -57,7 +66,11 @@ namespace LifeCalculator.Control.ViewModels
             }
         }
 
+        public List<TransactionItem> Transactions => _budgetItem.Transactions;
+
         public ICommand TransactionAddCommand { get; }
+
+        public TransactionListViewModel TransactionListViewModel { get; set; }
 
         public TransactionItem AddTransactionItem { get; set; }
 

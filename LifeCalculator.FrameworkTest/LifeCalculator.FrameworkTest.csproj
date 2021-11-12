@@ -81,6 +81,8 @@
     <Compile Include="Account\InvestmentAccountTest.cs" />
     <Compile Include="Account\LoanAccountTest.cs" />
     <Compile Include="Account\Manager\AccountManagerTest.cs" />
+    <Compile Include="Budget\BudgetManagerTest.cs" />
+    <Compile Include="Budget\BudgetManagerTestContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AccountDataService\AccountDataServiceTest.cs" />
     <Compile Include="Services\CompoundAccountDataServices\CompoundAccountDataServiceTest.cs" />

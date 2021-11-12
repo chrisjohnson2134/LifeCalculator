@@ -1,5 +1,5 @@
 ﻿using LifeCalculator.Framework.BaseVM;
-using LifeCalculator.Framework.BudgetItems;
+using LifeCalculator.Framework.Budget;
 using System.Collections.ObjectModel;
 
 namespace LifeCalculator.Control.ViewModels
@@ -8,34 +8,16 @@ namespace LifeCalculator.Control.ViewModels
     {
         public ObservableCollection<BudgetItemTileViewModel> BudgetItemsList { get; set; }
 
-        public BudgetItemsControlViewModel()
+
+        public BudgetItemsControlViewModel(IBudgetManager budgetManager)
         {
             BudgetItemsList = new ObservableCollection<BudgetItemTileViewModel>();
-            BudgetItemsList.Add(new BudgetItemTileViewModel(new BudgetItemModel { Name = "Income", PlannedAmount = 100 }));
-            BudgetItemsList.Add(new BudgetItemTileViewModel(new BudgetItemModel { Name = "Food", PlannedAmount = 100 }));
-            BudgetItemsList.Add(new BudgetItemTileViewModel(new BudgetItemModel { Name = "Housing", PlannedAmount = 100 }));
-            BudgetItemsList.Add(new BudgetItemTileViewModel(new BudgetItemModel { Name = "Utitlies", PlannedAmount = 100 }));
-            BudgetItemsList.Add(new BudgetItemTileViewModel(new BudgetItemModel { Name = "Fun", PlannedAmount = 50 }));
-            BudgetItemsList.Add(new BudgetItemTileViewModel(new BudgetItemModel { Name = "Food", PlannedAmount = 100 }));
-            BudgetItemsList.Add(new BudgetItemTileViewModel(new BudgetItemModel { Name = "Housing", PlannedAmount = 100 }));
-            BudgetItemsList.Add(new BudgetItemTileViewModel(new BudgetItemModel { Name = "Utitlies", PlannedAmount = 100 }));
-            //    BudgetItemsList.Add(new BudgetItem { Name = "Fun", BudgetAmount = 50 });
-            //    BudgetItemsList.Add(new BudgetItem { Name = "Food", BudgetAmount = 100 });
-            //    BudgetItemsList.Add(new BudgetItem { Name = "Housing", BudgetAmount = 100 });
-            //    BudgetItemsList.Add(new BudgetItem { Name = "Utitlies", BudgetAmount = 100 });
-            //    BudgetItemsList.Add(new BudgetItem { Name = "Fun", BudgetAmount = 50 });
-            //    BudgetItemsList.Add(new BudgetItem { Name = "Food", BudgetAmount = 100 });
-            //    BudgetItemsList.Add(new BudgetItem { Name = "Housing", BudgetAmount = 100 });
-            //    BudgetItemsList.Add(new BudgetItem { Name = "Utitlies", BudgetAmount = 100 });
-            //    BudgetItemsList.Add(new BudgetItem { Name = "Fun", BudgetAmount = 50 });
-            //    BudgetItemsList.Add(new BudgetItem { Name = "Food", BudgetAmount = 100 });
-            //    BudgetItemsList.Add(new BudgetItem { Name = "Housing", BudgetAmount = 100 });
-            //    BudgetItemsList.Add(new BudgetItem { Name = "Utitlies", BudgetAmount = 100 });
-            //    BudgetItemsList.Add(new BudgetItem { Name = "Fun", BudgetAmount = 50 });
-            //    BudgetItemsList.Add(new BudgetItem { Name = "Food", BudgetAmount = 100 });
-            //    BudgetItemsList.Add(new BudgetItem { Name = "Housing", BudgetAmount = 100 });
-            //    BudgetItemsList.Add(new BudgetItem { Name = "Utitlies", BudgetAmount = 100 });
-            //    BudgetItemsList.Add(new BudgetItem { Name = "Fun", BudgetAmount = 50 });
+            foreach (var budgetItem in budgetManager.BudgetItems)
+            {
+                BudgetItemsList.Add(new BudgetItemTileViewModel(budgetItem));
+                
+            }
+
         }
     }
 }

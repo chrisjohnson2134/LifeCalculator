@@ -1,18 +1,22 @@
 ﻿using LifeCalculator.Framework.BaseVM;
+using LifeCalculator.Framework.Budget;
+using System.Collections.ObjectModel;
 
 namespace LifeCalculator.Control.ViewModels
 {
     public class TransactionSorterViewModel : ViewModelBase
     {
-        public TransactionListViewModel InProgressTransactionItemListingViewModel { get; }
-        public TransactionListViewModel CompletedTransactionItemListingViewModel { get; }
-        public BudgetItemsControlViewModel primaryBudgetItemsControlViewModel { get; }
+        public IBudgetManager _budgetManager;
 
-        public TransactionSorterViewModel(TransactionListViewModel inProgressTransactionItemListingViewModel, TransactionListViewModel completedTransactionItemListingViewModel, BudgetItemsControlViewModel budgetItemsControlViewModel)
+        public TransactionSorterViewModel(IBudgetManager budgetManager)
         {
-            InProgressTransactionItemListingViewModel = inProgressTransactionItemListingViewModel;
-            CompletedTransactionItemListingViewModel = completedTransactionItemListingViewModel;
-            primaryBudgetItemsControlViewModel = budgetItemsControlViewModel;
+            _budgetManager = budgetManager;
+
+            primaryBudgetItemsControlViewModel = new BudgetItemsControlViewModel(_budgetManager);
         }
+
+        public BudgetItemsControlViewModel primaryBudgetItemsControlViewModel { get; }
+        public IBudgetManager budgetManager => _budgetManager;
+
     }
 }

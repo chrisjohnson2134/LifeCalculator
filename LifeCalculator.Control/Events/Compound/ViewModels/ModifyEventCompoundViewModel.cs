@@ -53,7 +53,7 @@ namespace LifeCalculator.Control.ViewModels
             }
         }
 
-        public bool EndDateEnabled => _lifeEvent.LifeEventType == LifeEnum.MonthlyContribute ? false : true;
+        public bool EndDateEnabled => _lifeEvent.LifeEventType == LifeEnum.MonthlyContribute ? true : false;
 
         public DateTime EndDate
         {

@@ -9,6 +9,8 @@ namespace LifeCalculator.Framework.Accounts
         public string AccountId { get; set; }
         public DateTime Date { get; set; }
         public double Amount { get; set; }
+        public string BudgetCategory { get; set; }
+        public string BudgetCategoryPlaidDefault { get; set; }
         public string FormattedAmount
         {
             get
