@@ -7,6 +7,7 @@ using LifeCalculator.Framework.Enums;
 using LifeCalculator.Control.ViewModels;
 using LifeCalculator.Framework.Accounts;
 using LifeCalculator.Framework.CurrentAccountStorage;
+using System.Collections.Generic;
 
 namespace LifeCalculator.ViewModels
 {
@@ -23,6 +24,25 @@ namespace LifeCalculator.ViewModels
         public BudgetViewModel(IAccountStore accountStore)
         {
             _budgetManager = accountStore.CurrentAccount.BudgetManager;
+
+            List<TransactionItem> transactionItemsMocked = new List<TransactionItem>()
+            {
+                new TransactionItem{Name = "Hamburger" ,BudgetCategory="Food"},
+                new TransactionItem{Name = "HotDog" ,BudgetCategory="Food"},
+                new TransactionItem{Name = "Blue Cheese" ,BudgetCategory="Food"},
+
+                new TransactionItem{Name = "Gas" ,BudgetCategory="Car"},
+                new TransactionItem{Name = "Maintenance" ,BudgetCategory="Car"},
+                new TransactionItem{Name = "Wiper Blades" ,BudgetCategory="Car"},
+
+                new TransactionItem{Name = "Paint" ,BudgetCategory="House"},
+                new TransactionItem{Name = "Plants" ,BudgetCategory="House"},
+                new TransactionItem{Name = "Chairs" ,BudgetCategory="House"},
+            };
+
+            _budgetManager.AutoSort = true;
+            _budgetManager.AddTransactions(transactionItemsMocked);
+
             TransactionSorterControl = new TransactionSorterViewModel(_budgetManager);
 
         }

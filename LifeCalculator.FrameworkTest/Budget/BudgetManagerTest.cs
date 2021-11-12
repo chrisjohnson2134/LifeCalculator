@@ -28,23 +28,13 @@ namespace LifeCalculator.FrameworkTest.Budget
 
             budgetManager.AddTransaction(newTransactionItem);
 
-            var entertainmentCategory = budgetManager.BudgetItems.Find(t => t.Name.Equals("Entertainment"));
-            Assert.AreEqual(2, entertainmentCategory.Transactions.Count);
-            Assert.AreEqual(entertainmentCategory.Transactions.Find(t => t.Id.Equals("1")), transactionItem1);
-            Assert.AreEqual(entertainmentCategory.Transactions.Find(t => t.Id.Equals("4")), transactionItem4);
+            var uncategorizedCategory = budgetManager.BudgetItems.Find(t => t.Name.Equals("Uncategorized"));
+            Assert.AreEqual(4, uncategorizedCategory.Transactions.Count);
 
             var foodCategory = budgetManager.BudgetItems.Find(t => t.Name.Equals("Food"));
-            Assert.AreEqual(2, foodCategory.Transactions.Count);
-            Assert.AreEqual(foodCategory.Transactions.Find(t => t.Id.Equals("2")), transactionItem2);
+            Assert.AreEqual(1, foodCategory.Transactions.Count);
             Assert.AreEqual(foodCategory.Transactions.Find(t => t.Id.Equals("5")), newTransactionItem);
 
-            var HousingCategory = budgetManager.BudgetItems.Find(t => t.Name.Equals("Housing"));
-            Assert.AreEqual(1, HousingCategory.Transactions.Count);
-            Assert.AreEqual(HousingCategory.Transactions.Find(t => t.Id.Equals("3")), transactionItem3);
-
-            budgetManager.RemoveTransactionById("5");
-            Assert.AreEqual(1, foodCategory.Transactions.Count);
-            Assert.IsNull(foodCategory.Transactions.Find(t => t.Id.Equals("5")));
 
         }
 

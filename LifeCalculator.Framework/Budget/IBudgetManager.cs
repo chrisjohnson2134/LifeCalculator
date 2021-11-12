@@ -5,6 +5,8 @@ namespace LifeCalculator.Framework.Budget
 {
     public interface IBudgetManager
     {
+        bool AutoSort { get; set; }
+
         List<BudgetItemModel> BudgetItems { get; set; }
         List<TransactionItem> Transactions { get; }
 
