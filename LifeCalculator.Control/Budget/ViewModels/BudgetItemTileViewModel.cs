@@ -10,15 +10,20 @@ namespace LifeCalculator.Control.ViewModels
     public class BudgetItemTileViewModel : ViewModelBase
     {
         BudgetItemModel _budgetItem;
+        IBudgetManager _budgetManager;
 
-        public BudgetItemTileViewModel(BudgetItemModel budgetItem)
+        public BudgetItemTileViewModel(BudgetItemModel budgetItem,IBudgetManager budgetManager)
         {
             _budgetItem = budgetItem;
+
+            _budgetManager = budgetManager;
+            _budgetManager.BudgetsSorted += _budgetManager_BudgetsSorted;
+
             TransactionAddCommand = new DelegateCommand(TransactionAddCommandHandler);
 
             TransactionListViewModel = new TransactionListViewModel();
 
-            if(budgetItem.Transactions != null)
+            if (budgetItem.Transactions != null)
             foreach (var item in budgetItem.Transactions)
             {
                 TransactionListViewModel.AddTransactionItem(new TransactionItemViewModel(item));
@@ -78,9 +83,22 @@ namespace LifeCalculator.Control.ViewModels
 
         private void TransactionAddCommandHandler(object obj)
         {
+            var transaction = (TransactionItemViewModel)obj;
+            transaction.Transaction.BudgetCategory = Name;
+            _budgetManager.SortByBudgetCategory();
         }
 
         #endregion
+
+        private void _budgetManager_BudgetsSorted(object sender, System.EventArgs e)
+        {
+            TransactionListViewModel.ClearItems();
+            if (_budgetItem.Transactions != null)
+            foreach (var item in _budgetItem.Transactions)
+            {
+                    TransactionListViewModel.AddTransactionItem(new TransactionItemViewModel(item));
+            }
+        }
 
     }
 }

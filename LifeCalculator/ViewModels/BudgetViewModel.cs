@@ -1,13 +1,11 @@
 ﻿using LifeCalculator.Framework.Budget;
 using LifeCalculator.Framework.BaseVM;
-using System.Collections.ObjectModel;
 using System.Windows.Input;
-using LifeCalculator.Commands;
-using LifeCalculator.Framework.Enums;
 using LifeCalculator.Control.ViewModels;
 using LifeCalculator.Framework.Accounts;
 using LifeCalculator.Framework.CurrentAccountStorage;
 using System.Collections.Generic;
+using Microsoft.VisualStudio.PlatformUI;
 
 namespace LifeCalculator.ViewModels
 {
@@ -43,8 +41,20 @@ namespace LifeCalculator.ViewModels
             _budgetManager.AutoSort = true;
             _budgetManager.AddTransactions(transactionItemsMocked);
 
+            AddBudgetItemCommand = new DelegateCommand(AddBudgetItemcommandHandler);
+
             TransactionSorterControl = new TransactionSorterViewModel(_budgetManager);
 
+        }
+
+        private void AddBudgetItemcommandHandler(object obj)
+        {
+            if (string.IsNullOrEmpty(AddBudgetITemName))
+                return;
+
+            _budgetManager.AddBudgetItem(AddBudgetITemName);
+
+            AddBudgetITemName = string.Empty;
         }
 
         #endregion
@@ -57,6 +67,10 @@ namespace LifeCalculator.ViewModels
 
 
         #endregion
+
+        public string AddBudgetITemName { get; set; }
+
+        public ICommand AddBudgetItemCommand { get; set; }
 
         public double MonthlyIncome
         {

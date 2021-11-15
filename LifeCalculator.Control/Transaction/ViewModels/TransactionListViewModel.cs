@@ -81,6 +81,11 @@ namespace LifeCalculator.Control.ViewModels
             TransactionItemInsertedCommand = new DelegateCommand(TransactionItemInsertedCommandHandler);
         }
 
+        public  void ClearItems()
+        {
+            _transactionViewModels.Clear();
+        }
+
         public void AddTransactionItem(TransactionItemViewModel item)
         {
             if (!_transactionViewModels.Contains(item))

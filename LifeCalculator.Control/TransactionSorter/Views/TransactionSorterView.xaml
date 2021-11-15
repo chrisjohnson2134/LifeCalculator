@@ -8,6 +8,7 @@
              d:DataContext="{d:DesignInstance Type=viewmodels:TransactionSorterViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
@@ -17,17 +18,19 @@
         <ItemsControl ItemsSource="{Binding primaryBudgetItemsControlViewModel.BudgetItemsList}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Expander Header="{Binding Name}">
-                        <local:TransactionListView
-                    Height="200" Grid.Column="0"
-                    DataContext="{Binding TransactionListViewModel}"
-                    IncomingTransactionItem="{Binding IncomingTransactionItemViewModel}"
-                    InsertedTransactionItem="{Binding InsertedTransactionItemViewModel}"
-                    RemovedTransactionItem="{Binding RemovedTransactionItemViewModel}"
-                    TargetTransactionItem="{Binding TargetTransactionItemViewModel}"
-                    TransactionItemDropCommand="{Binding TransactionItemReceivedCommand}"
-                    TransactionItemInsertedCommand="{Binding TransactionItemInsertedCommand}"
-                    TransactionItemRemovedCommand="{Binding TransactionItemRemovedCommand}" />
+                    <Expander Header="{Binding Name}" Margin="5" Background="LightBlue" MaxHeight="200">
+                        <Border BorderBrush="Black" BorderThickness="2">
+                            <local:TransactionListView
+                        Grid.Column="0"
+                        DataContext="{Binding TransactionListViewModel}"
+                        IncomingTransactionItem="{Binding IncomingTransactionItemViewModel}"
+                        InsertedTransactionItem="{Binding InsertedTransactionItemViewModel}"
+                        RemovedTransactionItem="{Binding RemovedTransactionItemViewModel}"
+                        TargetTransactionItem="{Binding TargetTransactionItemViewModel}"
+                        TransactionItemDropCommand="{Binding TransactionItemReceivedCommand}"
+                        TransactionItemInsertedCommand="{Binding TransactionItemInsertedCommand}"
+                        TransactionItemRemovedCommand="{Binding TransactionItemRemovedCommand}" />
+                        </Border>
                     </Expander>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>

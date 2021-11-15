@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:LifeCalculator.Control.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
+    <Grid Background="lightgray" >
         <ListView
             x:Name="lvItems" AllowDrop="True" DragLeave="TransactionItemList_DragLeave"
             DragOver="TransactionItemList_DragOver" d:ItemsSource="{d:SampleData}"

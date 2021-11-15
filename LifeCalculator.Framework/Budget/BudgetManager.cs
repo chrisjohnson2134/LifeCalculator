@@ -1,4 +1,5 @@
 ﻿using LifeCalculator.Framework.Accounts;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,6 +7,12 @@ namespace LifeCalculator.Framework.Budget
 {
     public class BudgetManager: IBudgetManager
     {
+        #region Events
+
+        public event EventHandler BudgetsSorted;
+
+        #endregion
+
         #region Fields
 
         #endregion
@@ -15,21 +22,7 @@ namespace LifeCalculator.Framework.Budget
         public BudgetManager()
         {
             BudgetItems = new List<BudgetItemModel>();
-            //BudgetItems.Add(new BudgetItemModel
-            //{
-            //    Name = "Food",
-            //    Transactions = new List<TransactionItem>
-            //    {
-            //        new TransactionItem{Name = "Hamburger" ,BudgetCategory="Food"},
-            //        new TransactionItem{Name = "HotDog" ,BudgetCategory="Food"},
-            //        new TransactionItem{Name = "Blue Cheese" ,BudgetCategory="Food"},
-            //    }
-            //});
-            //BudgetItems.Add(new BudgetItemModel { Name = "Housing" });
-            //BudgetItems.Add(new BudgetItemModel { Name = "Entertainment" });
-            //BudgetItems.Add(new BudgetItemModel { Name = "Car" });
             Transactions = new List<TransactionItem>();
-            //SortByBudgetCategory();
         }
 
         #endregion
@@ -86,6 +79,8 @@ namespace LifeCalculator.Framework.Budget
                     budgetCategory.Transactions = transactionItems.ToList();
 
             }
+
+            BudgetsSorted?.Invoke(this, new EventArgs());
         }
 
         #region Private Methods
@@ -106,6 +101,11 @@ namespace LifeCalculator.Framework.Budget
                 budgetItem.Transactions.Add(transactionItem);
                 BudgetItems.Add(budgetItem);
             }
+        }
+
+        public void AddBudgetItem(string itemName)
+        {
+            BudgetItems.Add(new BudgetItemModel() { Name=itemName });
         }
 
         #endregion

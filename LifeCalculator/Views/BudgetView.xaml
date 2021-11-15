@@ -13,6 +13,20 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
     <Grid Background="White">
-        <controlsViews:TransactionSorterView DataContext="{Binding TransactionSorterControl}"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!--<StackPanel Orientation="Horizontal" Grid.Row="0">
+            <Label Content="Budget Sorting"/>
+            <Button x:Name="AddBudgetItemBtn" Command="{Binding AddBudgetItemCommand}" Content="Add Budget Item" HorizontalAlignment="Right"/>
+            <TextBox x:Name="BudgetItemNameTB" Text="{Binding AddBudgetITemName}" Width="100" BorderBrush="Black" BorderThickness="2"/>
+        </StackPanel>-->
+        
+        <controlsViews:TransactionSorterView Grid.Row="1" DataContext="{Binding TransactionSorterControl}"/>
     </Grid>
 </UserControl>

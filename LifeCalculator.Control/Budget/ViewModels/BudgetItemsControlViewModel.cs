@@ -14,8 +14,7 @@ namespace LifeCalculator.Control.ViewModels
             BudgetItemsList = new ObservableCollection<BudgetItemTileViewModel>();
             foreach (var budgetItem in budgetManager.BudgetItems)
             {
-                BudgetItemsList.Add(new BudgetItemTileViewModel(budgetItem));
-                
+                BudgetItemsList.Add(new BudgetItemTileViewModel(budgetItem,budgetManager));
             }
 
         }
