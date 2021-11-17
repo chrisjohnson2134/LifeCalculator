@@ -15,7 +15,7 @@
             </ListBox.ItemsPanel>
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel Orientation="Vertical" Background="LightBlue">
+                    <StackPanel Orientation="Vertical" Background="#bbdefb">
                         <local:BudgetItemTile DataContext="{Binding}" TransactionInsertedCommand="{Binding TransactionAddCommand}" TransactionInserted="{Binding AddTransactionItem}"/>
                     </StackPanel>
                 </DataTemplate>

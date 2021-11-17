@@ -68,6 +68,18 @@ namespace LifeCalculator.Framework.Budget
             return ID == null ? null : Transactions.FirstOrDefault(t => t.Id.Equals(ID));
         }
 
+        public void ChangeTransactionCategory(string transactionName,string newCategoryName,bool changeForAll = false)
+        {
+            if (changeForAll)
+            {
+                var transactionList = Transactions.Where(t => t.Name.Equals(transactionName));
+                foreach (var transaction in transactionList)
+                {
+                    transaction.BudgetCategory = newCategoryName;
+                }
+            }
+        }
+
         public void SortByBudgetCategory()
         {
             foreach (var transactionItems in Transactions.GroupBy(t => t.BudgetCategory))
@@ -106,6 +118,7 @@ namespace LifeCalculator.Framework.Budget
         public void AddBudgetItem(string itemName)
         {
             BudgetItems.Add(new BudgetItemModel() { Name=itemName });
+            SortByBudgetCategory();
         }
 
         #endregion

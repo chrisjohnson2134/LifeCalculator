@@ -21,11 +21,11 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <!--<StackPanel Orientation="Horizontal" Grid.Row="0">
+        <StackPanel Orientation="Horizontal" Grid.Row="0">
             <Label Content="Budget Sorting"/>
             <Button x:Name="AddBudgetItemBtn" Command="{Binding AddBudgetItemCommand}" Content="Add Budget Item" HorizontalAlignment="Right"/>
             <TextBox x:Name="BudgetItemNameTB" Text="{Binding AddBudgetITemName}" Width="100" BorderBrush="Black" BorderThickness="2"/>
-        </StackPanel>-->
+        </StackPanel>
         
         <controlsViews:TransactionSorterView Grid.Row="1" DataContext="{Binding TransactionSorterControl}"/>
     </Grid>

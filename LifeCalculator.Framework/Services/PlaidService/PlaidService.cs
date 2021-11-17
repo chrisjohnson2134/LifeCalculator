@@ -190,6 +190,8 @@ namespace LifeCalculator.Framework.Services.PlaidService
 
             result.Date = DateTime.Parse(jsonTransaction["date"].ToString());
             result.AccountId = jsonTransaction["account_id"].ToString();
+            result.BudgetCategory = jsonTransaction["category"].ToString();
+            result.BudgetCategoryPlaidDefault = jsonTransaction["category"].ToString();
 
             return result;
         }

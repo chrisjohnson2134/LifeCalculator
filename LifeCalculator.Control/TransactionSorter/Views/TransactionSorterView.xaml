@@ -18,7 +18,7 @@
         <ItemsControl ItemsSource="{Binding primaryBudgetItemsControlViewModel.BudgetItemsList}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Expander Header="{Binding Name}" Margin="5" Background="LightBlue" MaxHeight="200">
+                    <Expander Header="{Binding Name}" Margin="5" Background="#bbdefb" MaxHeight="200">
                         <Border BorderBrush="Black" BorderThickness="2">
                             <local:TransactionListView
                         Grid.Column="0"

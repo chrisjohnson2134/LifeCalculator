@@ -18,6 +18,7 @@ namespace LifeCalculator.Framework.Budget
         void AddTransaction(TransactionItem transactionItem);
         void AddTransactions(List<TransactionItem> transactionItems);
         void RemoveTransactionById(string v);
+        void ChangeTransactionCategory(string transactionName, string newCategoryName, bool changeForAll = false);
 
         void AddBudgetItem(string itemName);
 

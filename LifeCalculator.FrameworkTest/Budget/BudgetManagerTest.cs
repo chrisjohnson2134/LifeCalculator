@@ -68,6 +68,17 @@ namespace LifeCalculator.FrameworkTest.Budget
 
         }
 
+        [Test]
+        public void AddBudgetItemTest()
+        {
+            var budgetManager = CreateBudgetManager();
+            budgetManager.AddBudgetItem("Snake Oil");
+
+            Assert.That(budgetManager.BudgetItems.Count, Is.EqualTo(1));
+
+            Assert.IsNotNull(budgetManager.BudgetItems.Find(t => t.Name.Equals("Snake Oil")));
+        }
+
         #endregion
     }
 }

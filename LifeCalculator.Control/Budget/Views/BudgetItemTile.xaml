@@ -6,8 +6,7 @@
              xmlns:local="clr-namespace:LifeCalculator.Control.Views" 
              xmlns:viewmodels="clr-namespace:LifeCalculator.Control.ViewModels" 
              d:DataContext="{d:DesignInstance Type=viewmodels:BudgetItemTileViewModel}"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             mc:Ignorable="d" >
     <Grid Width="100" Height="100" AllowDrop="True" Background="Transparent" Drop="Grid_Drop">
         <Label Content="{Binding BudgetAmount}" ContentStringFormat="Budget : {0}" VerticalAlignment="Top" HorizontalAlignment="Left"/>
         <Label Content="{Binding Name}" VerticalAlignment="Center" HorizontalAlignment="Center"/>

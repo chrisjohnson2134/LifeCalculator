@@ -85,6 +85,7 @@ namespace LifeCalculator.Control.ViewModels
         {
             var transaction = (TransactionItemViewModel)obj;
             transaction.Transaction.BudgetCategory = Name;
+            _budgetManager.ChangeTransactionCategory(transaction.Transaction.Name, Name, true);
             _budgetManager.SortByBudgetCategory();
         }
 

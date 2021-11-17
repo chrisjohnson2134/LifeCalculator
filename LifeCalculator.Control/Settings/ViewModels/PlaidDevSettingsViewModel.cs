@@ -1,6 +1,8 @@
 ﻿using LifeCalculator.Control.Settings.Interfaces;
 using LifeCalculator.Framework.Accounts;
 using LifeCalculator.Framework.BaseVM;
+using LifeCalculator.Framework.Budget;
+using LifeCalculator.Framework.CurrentAccountStorage;
 using LifeCalculator.Framework.Services.PlaidService;
 using LifeCalculator.Framework.Settings;
 using Microsoft.VisualStudio.PlatformUI;
@@ -15,10 +17,19 @@ namespace LifeCalculator.Control.ViewModels
 {
     public class PlaidDevSettingsViewModel : ViewModelBase, ISettingsViewModel
     {
+
+        #region Fields
+
+        IBudgetManager _budgetManager;
+
+        #endregion
+
         #region Constructors
 
-        public PlaidDevSettingsViewModel()
+        public PlaidDevSettingsViewModel(IAccountStore accountStore)
         {
+            _budgetManager = accountStore.CurrentAccount.BudgetManager;
+            //_budgetManager.AutoSort = true;
             Name = "Plaid Dev Settings";
 
             if (Framework.Enums.Environment.Development == AppSettings.Instance.PlaidSettings.Environment)
@@ -182,6 +193,7 @@ namespace LifeCalculator.Control.ViewModels
                 foreach (var item in PlaidService.GetTransactions(AppSettings.Instance.DevelopmentInstitutions[0], StartDate, EndDate))
                 {
                     Transactions.Add(item);
+                    _budgetManager.AddTransaction(item);
                 }
             else if (Framework.Enums.Environment.Sandbox == AppSettings.Instance.PlaidSettings.Environment && AppSettings.Instance.SandboxInstitutions[0] != null)
                 foreach (var item in PlaidService.GetTransactions(AppSettings.Instance.SandboxInstitutions[0], StartDate, EndDate))
