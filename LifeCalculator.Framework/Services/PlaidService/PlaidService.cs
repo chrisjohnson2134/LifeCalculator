@@ -16,7 +16,7 @@ namespace LifeCalculator.Framework.Services.PlaidService
     {
         public static void StartPlaidLink(string initToken = null)
         {
-            if (AppSettings.Instance.PlaidSettings.Environment == Enums.Environment.Sandbox)
+            if (AppSettings.Instance.PlaidApiSettings.Environment == Enums.Environment.Sandbox)
             {
                 string message = "You are running Plaid in the Sandbox environment. Credentials for all institutions are as follows:\n\n" +
                                  "username: user_good\n" +
@@ -52,8 +52,8 @@ namespace LifeCalculator.Framework.Services.PlaidService
                            "function myFunction() {" +
                                "var handler = Plaid.create({" +
                                    "clientName: 'Plaid Demo'," +
-                                   "env: '" + AppSettings.Instance.PlaidSettings.Environment.ToString().ToLower() + "'," +
-                                   "key: '" + AppSettings.Instance.PlaidSettings.Public_Key + "'," +
+                                   "env: '" + AppSettings.Instance.PlaidApiSettings.Environment.ToString().ToLower() + "'," +
+                                   "key: '" + AppSettings.Instance.PlaidApiSettings.PublicKey + "'," +
                                    "product: ['transactions']," +
                                    "onLoad: function() {}," +
                                    "onSuccess: function(public_token, metadata) {" +
@@ -79,7 +79,7 @@ namespace LifeCalculator.Framework.Services.PlaidService
 
         public static Credentials AuthorizeInstitution(Institution institution, string public_token)
         {
-            JObject json = JObject.FromObject(new { client_id = AppSettings.Instance.PlaidSettings.Client_Id, secret = GetSecret(), public_token });
+            JObject json = JObject.FromObject(new { client_id = AppSettings.Instance.PlaidApiSettings.ClientId, secret = GetSecret(), public_token });
             JObject result = HttpRequestToPlaid("item/public_token/exchange", json);
             string access_token = result["access_token"].ToString();
             string item_id = result["item_id"].ToString();
@@ -95,7 +95,7 @@ namespace LifeCalculator.Framework.Services.PlaidService
                 {
                     client_user_id = Guid.NewGuid(),
                 },
-                client_id = AppSettings.Instance.PlaidSettings.Client_Id,
+                client_id = AppSettings.Instance.PlaidApiSettings.ClientId,
                 client_name = "Plaid Demo",
                 country_codes = new[] { "US" },
                 language = "en",
@@ -128,13 +128,13 @@ namespace LifeCalculator.Framework.Services.PlaidService
 
         public static JObject GetInstitutions(int count, int offset)
         {
-            JObject json = JObject.FromObject(new { client_id = AppSettings.Instance.PlaidSettings.Client_Id, secret = GetSecret(), count, offset });
+            JObject json = JObject.FromObject(new { client_id = AppSettings.Instance.PlaidApiSettings.ClientId, secret = GetSecret(), count, offset });
             return HttpRequestToPlaid("institutions/get", json);
         }
 
         public static Institution GetInstitutionById(string institution_id)
         {
-            JObject json = JObject.FromObject(new { public_key = AppSettings.Instance.PlaidSettings.Public_Key, institution_id });
+            JObject json = JObject.FromObject(new { public_key = AppSettings.Instance.PlaidApiSettings.PublicKey, institution_id });
             JObject result = HttpRequestToPlaid("institutions/get_by_id", json);
             JToken jsonInstitution = result["institution"];
 
@@ -145,7 +145,7 @@ namespace LifeCalculator.Framework.Services.PlaidService
         {
             List<Institution> institutions = new List<Institution>();
 
-            JObject json = JObject.FromObject(new { public_key = AppSettings.Instance.PlaidSettings.Public_Key, query, products });
+            JObject json = JObject.FromObject(new { public_key = AppSettings.Instance.PlaidApiSettings.PublicKey, query, products });
             JObject result = HttpRequestToPlaid("institutions/search", json);
             List<JToken> jsonInstitutions = result["institutions"].ToList();
             institutions.AddRange(jsonInstitutions.Select(p => ConvertToInstitution(p)));
@@ -202,7 +202,7 @@ namespace LifeCalculator.Framework.Services.PlaidService
 
             JObject json = JObject.FromObject(new
             {
-                client_id = AppSettings.Instance.PlaidSettings.Client_Id,
+                client_id = AppSettings.Instance.PlaidApiSettings.ClientId,
                 secret = GetSecret(),
                 access_token = institution.Credentials.AccessToken
             });
@@ -222,7 +222,7 @@ namespace LifeCalculator.Framework.Services.PlaidService
 
             JObject json = JObject.FromObject(new
             {
-                client_id = AppSettings.Instance.PlaidSettings.Client_Id,
+                client_id = AppSettings.Instance.PlaidApiSettings.ClientId,
                 secret = GetSecret(),
                 access_token = institution.Credentials.AccessToken,
                 start_date,
@@ -255,7 +255,7 @@ namespace LifeCalculator.Framework.Services.PlaidService
         {
             JObject json = JObject.FromObject(new
             {
-                client_id = AppSettings.Instance.PlaidSettings.Client_Id,
+                client_id = AppSettings.Instance.PlaidApiSettings.ClientId,
                 secret = GetSecret(),
                 access_token = institution.Credentials.AccessToken
             });
@@ -264,7 +264,7 @@ namespace LifeCalculator.Framework.Services.PlaidService
 
         private static string GetBaseUrl()
         {
-            switch (AppSettings.Instance.PlaidSettings.Environment)
+            switch (AppSettings.Instance.PlaidApiSettings.Environment)
             {
                 case Enums.Environment.Development:
                     return "https://development.plaid.com/";
@@ -276,13 +276,13 @@ namespace LifeCalculator.Framework.Services.PlaidService
 
         private static string GetSecret()
         {
-            switch (AppSettings.Instance.PlaidSettings.Environment)
+            switch (AppSettings.Instance.PlaidApiSettings.Environment)
             {
                 case Enums.Environment.Development:
-                    return AppSettings.Instance.PlaidSettings.Development_Secret;
+                    return AppSettings.Instance.PlaidApiSettings.SecretKey;
                 case Enums.Environment.Sandbox:
                 default:
-                    return AppSettings.Instance.PlaidSettings.Sandbox_Secret;
+                    return AppSettings.Instance.PlaidApiSettings.SandboxSecret;
             }
         }
 

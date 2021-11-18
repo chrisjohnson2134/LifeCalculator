@@ -19,11 +19,11 @@ namespace LifeCalculator.FrameworkTest.Settings
         {
             AppSettings.ReadSettings();
 
-            AppSettings.Instance.PlaidSettings.Client_Id = _clientIDExpected;
-            AppSettings.Instance.PlaidSettings.Public_Key = _publicKeyExpected;
-            AppSettings.Instance.PlaidSettings.Sandbox_Secret = _sandboxSecretExpected;
-            AppSettings.Instance.PlaidSettings.Development_Secret = _developmentSecretExpected;
-            AppSettings.Instance.PlaidSettings.Environment = _environmentExpected;
+            AppSettings.Instance.PlaidApiSettings.ClientId = _clientIDExpected;
+            AppSettings.Instance.PlaidApiSettings.PublicKey = _publicKeyExpected;
+            AppSettings.Instance.PlaidApiSettings.SandboxSecret = _sandboxSecretExpected;
+            AppSettings.Instance.PlaidApiSettings.SecretKey = _developmentSecretExpected;
+            AppSettings.Instance.PlaidApiSettings.Environment = _environmentExpected;
         }
 
         [Test]
@@ -31,23 +31,23 @@ namespace LifeCalculator.FrameworkTest.Settings
         {
             AppSettings.SaveSettings();
 
-            AppSettings.Instance.PlaidSettings.Client_Id = string.Empty;
-            AppSettings.Instance.PlaidSettings.Public_Key = string.Empty;
-            AppSettings.Instance.PlaidSettings.Sandbox_Secret = string.Empty;
-            AppSettings.Instance.PlaidSettings.Development_Secret = string.Empty;
+            AppSettings.Instance.PlaidApiSettings.ClientId = string.Empty;
+            AppSettings.Instance.PlaidApiSettings.PublicKey = string.Empty;
+            AppSettings.Instance.PlaidApiSettings.SandboxSecret = string.Empty;
+            AppSettings.Instance.PlaidApiSettings.SecretKey = string.Empty;
 
-            Assert.AreEqual(AppSettings.Instance.PlaidSettings.Client_Id, string.Empty);
-            Assert.AreEqual(AppSettings.Instance.PlaidSettings.Public_Key, string.Empty);
-            Assert.AreEqual(AppSettings.Instance.PlaidSettings.Sandbox_Secret, string.Empty);
-            Assert.AreEqual(AppSettings.Instance.PlaidSettings.Development_Secret, string.Empty);
+            Assert.AreEqual(AppSettings.Instance.PlaidApiSettings.ClientId, string.Empty);
+            Assert.AreEqual(AppSettings.Instance.PlaidApiSettings.PublicKey, string.Empty);
+            Assert.AreEqual(AppSettings.Instance.PlaidApiSettings.SandboxSecret, string.Empty);
+            Assert.AreEqual(AppSettings.Instance.PlaidApiSettings.SecretKey, string.Empty);
 
             AppSettings.ReadSettings();
 
-            Assert.AreEqual(AppSettings.Instance.PlaidSettings.Client_Id, _clientIDExpected);
-            Assert.AreEqual(AppSettings.Instance.PlaidSettings.Public_Key, _publicKeyExpected);
-            Assert.AreEqual(AppSettings.Instance.PlaidSettings.Sandbox_Secret, _sandboxSecretExpected);
-            Assert.AreEqual(AppSettings.Instance.PlaidSettings.Development_Secret, _developmentSecretExpected);
-            Assert.AreEqual(AppSettings.Instance.PlaidSettings.Environment, _environmentExpected);
+            Assert.AreEqual(AppSettings.Instance.PlaidApiSettings.ClientId, _clientIDExpected);
+            Assert.AreEqual(AppSettings.Instance.PlaidApiSettings.PublicKey, _publicKeyExpected);
+            Assert.AreEqual(AppSettings.Instance.PlaidApiSettings.SandboxSecret, _sandboxSecretExpected);
+            Assert.AreEqual(AppSettings.Instance.PlaidApiSettings.SecretKey, _developmentSecretExpected);
+            Assert.AreEqual(AppSettings.Instance.PlaidApiSettings.Environment, _environmentExpected);
 
         }
     }

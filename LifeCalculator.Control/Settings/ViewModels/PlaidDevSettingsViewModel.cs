@@ -32,10 +32,10 @@ namespace LifeCalculator.Control.ViewModels
             //_budgetManager.AutoSort = true;
             Name = "Plaid Dev Settings";
 
-            if (Framework.Enums.Environment.Development == AppSettings.Instance.PlaidSettings.Environment)
-                Institutions = new ObservableCollection<Institution>(AppSettings.Instance.DevelopmentInstitutions);
+            if (Framework.Enums.Environment.Development == AppSettings.Instance.PlaidApiSettings.Environment)
+                Institutions = new ObservableCollection<Institution>();
             else
-                Institutions = new ObservableCollection<Institution>(AppSettings.Instance.SandboxInstitutions);
+                Institutions = new ObservableCollection<Institution>();
 
             Transactions = new ObservableCollection<TransactionItem>();
 
@@ -54,39 +54,39 @@ namespace LifeCalculator.Control.ViewModels
 
         public string Name { get; set; }
 
-        public string CLientId
-        {
-            get { return AppSettings.Instance.PlaidSettings.Client_Id; }
-            set { AppSettings.Instance.PlaidSettings.Client_Id = value; }
-        }
+        //public string ClientId
+        //{
+        //    get { return AppSettings.Instance.PlaidApiSettings.ClientId; }
+        //    set { AppSettings.Instance.PlaidApiSettings.ClientId = value; }
+        //}
 
-        public string PublicKey
-        {
-            get { return AppSettings.Instance.PlaidSettings.Public_Key; }
-            set { AppSettings.Instance.PlaidSettings.Public_Key = value; }
-        }
+        //public string PublicKey
+        //{
+        //    get { return AppSettings.Instance.PlaidApiSettings.PublicKey; }
+        //    set { AppSettings.Instance.PlaidApiSettings.PublicKey = value; }
+        //}
 
-        public string SandboxSecret
-        {
-            get { return AppSettings.Instance.PlaidSettings.Sandbox_Secret; }
-            set { AppSettings.Instance.PlaidSettings.Sandbox_Secret = value; }
-        }
+        //public string SandboxSecret
+        //{
+        //    get { return AppSettings.Instance.PlaidApiSettings.SandboxSecret; }
+        //    set { AppSettings.Instance.PlaidApiSettings.SandboxSecret = value; }
+        //}
 
-        public string DevelopmentSecret
-        {
-            get { return AppSettings.Instance.PlaidSettings.Development_Secret; }
-            set { AppSettings.Instance.PlaidSettings.Development_Secret = value; }
-        }
+        //public string DevelopmentSecret
+        //{
+        //    get { return AppSettings.Instance.PlaidApiSettings.SecretKey; }
+        //    set { AppSettings.Instance.PlaidApiSettings.SecretKey = value; }
+        //}
 
-        public string SelectedEnvironment
-        {
-            get { return AppSettings.Instance.PlaidSettings.Environment.ToString(); }
-            set
-            {
-                AppSettings.Instance.PlaidSettings.Environment = (Framework.Enums.Environment)Enum.Parse(typeof(Framework.Enums.Environment), value);
-                EnvironmentChanged();
-            }
-        }
+        //public string SelectedEnvironment
+        //{
+        //    get { return AppSettings.Instance.PlaidApiSettings.Environment.ToString(); }
+        //    set
+        //    {
+        //        AppSettings.Instance.PlaidApiSettings.Environment = (Framework.Enums.Environment)Enum.Parse(typeof(Framework.Enums.Environment), value);
+        //        EnvironmentChanged();
+        //    }
+        //}
 
 
 
@@ -164,7 +164,7 @@ namespace LifeCalculator.Control.ViewModels
             Institution bank = PlaidService.GetInstitutionById(InstitutionID);
             bank.Credentials = PlaidService.AuthorizeInstitution(bank, PublicToken);
 
-            if (AppSettings.Instance.PlaidSettings.Environment == Framework.Enums.Environment.Development)
+            if (AppSettings.Instance.PlaidApiSettings.Environment == Framework.Enums.Environment.Development)
             {
                 AppSettings.Instance.DevelopmentInstitutions.Add(bank);
                 Institutions.Add(bank);
@@ -175,7 +175,7 @@ namespace LifeCalculator.Control.ViewModels
                 Institutions.Add(bank);
             }
 
-            AppSettings.SaveSettings();
+            //AppSettings.SaveSettings();
 
             //InstitutionID = string.Empty;
             //PublicToken = string.Empty;
@@ -183,19 +183,19 @@ namespace LifeCalculator.Control.ViewModels
 
         public void SaveSettingsCommandHandler()
         {
-            AppSettings.SaveSettings();
+            //AppSettings.SaveSettings();
         }
 
         private void LoadTransactionsCommandHandler(object obj)
         {
             Transactions.Clear();
-            if (Framework.Enums.Environment.Development == AppSettings.Instance.PlaidSettings.Environment && AppSettings.Instance.DevelopmentInstitutions[0] != null)
+            if (Framework.Enums.Environment.Development == AppSettings.Instance.PlaidApiSettings.Environment && AppSettings.Instance.DevelopmentInstitutions[0] != null)
                 foreach (var item in PlaidService.GetTransactions(AppSettings.Instance.DevelopmentInstitutions[0], StartDate, EndDate))
                 {
                     Transactions.Add(item);
                     _budgetManager.AddTransaction(item);
                 }
-            else if (Framework.Enums.Environment.Sandbox == AppSettings.Instance.PlaidSettings.Environment && AppSettings.Instance.SandboxInstitutions[0] != null)
+            else if (Framework.Enums.Environment.Sandbox == AppSettings.Instance.PlaidApiSettings.Environment && AppSettings.Instance.SandboxInstitutions[0] != null)
                 foreach (var item in PlaidService.GetTransactions(AppSettings.Instance.SandboxInstitutions[0], StartDate, EndDate))
                 {
                     Transactions.Add(item);
@@ -210,7 +210,7 @@ namespace LifeCalculator.Control.ViewModels
         {
             Institutions.Clear();
 
-            if (Framework.Enums.Environment.Development == AppSettings.Instance.PlaidSettings.Environment)
+            if (Framework.Enums.Environment.Development == AppSettings.Instance.PlaidApiSettings.Environment)
             {
                 foreach (var bank in AppSettings.Instance.DevelopmentInstitutions)
                 {
@@ -225,7 +225,7 @@ namespace LifeCalculator.Control.ViewModels
                 }
             }
 
-            AppSettings.SaveSettings();
+            //AppSettings.SaveSettings();
 
 
         }
