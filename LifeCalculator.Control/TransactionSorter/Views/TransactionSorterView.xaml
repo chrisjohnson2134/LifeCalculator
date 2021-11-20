@@ -18,7 +18,21 @@
         <ItemsControl ItemsSource="{Binding primaryBudgetItemsControlViewModel.BudgetItemsList}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Expander Header="{Binding Name}" Margin="5" Background="#bbdefb" MaxHeight="200">
+                    <Expander Margin="5" Background="#bbdefb" MaxHeight="200">
+                        <Expander.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBox Margin="10,0,0,0">
+                                    <TextBox.Text>
+                                        <MultiBinding StringFormat = "{}{0} Spent/Planned : {1}/{2}">
+                                            <Binding Path="Name"/>
+                                            <Binding Path="SpentAmount"/>
+                                            <Binding Path="PlannedAmount"/>
+                                        </MultiBinding>
+                                    </TextBox.Text>
+                                </TextBox>
+                                <ProgressBar Width="200" Value="{Binding SpentAmount}" Maximum="{Binding PlannedAmount}" Margin="10,0,0,0"/>
+                            </StackPanel>
+                        </Expander.Header>
                         <Border BorderBrush="Black" BorderThickness="2">
                             <local:TransactionListView
                         Grid.Column="0"

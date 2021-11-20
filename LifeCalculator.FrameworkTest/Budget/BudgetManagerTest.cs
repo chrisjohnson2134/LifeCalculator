@@ -72,11 +72,13 @@ namespace LifeCalculator.FrameworkTest.Budget
         public void AddBudgetItemTest()
         {
             var budgetManager = CreateBudgetManager();
-            budgetManager.AddBudgetItem("Snake Oil");
+            budgetManager.AddBudgetItem("Snake Oil",100);
 
             Assert.That(budgetManager.BudgetItems.Count, Is.EqualTo(1));
 
-            Assert.IsNotNull(budgetManager.BudgetItems.Find(t => t.Name.Equals("Snake Oil")));
+            var item = budgetManager.BudgetItems.Find(t => t.Name.Equals("Snake Oil"));
+            Assert.IsNotNull(item);
+            Assert.AreEqual(item.PlannedAmount, 100);
         }
 
         #endregion

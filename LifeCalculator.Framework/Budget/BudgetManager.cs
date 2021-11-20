@@ -111,13 +111,21 @@ namespace LifeCalculator.Framework.Budget
             {
                 budgetItem = new BudgetItemModel() { Name = transactionItem.BudgetCategory };
                 budgetItem.Transactions.Add(transactionItem);
-                BudgetItems.Add(budgetItem);
+                AddBudgetItem(budgetItem);
             }
         }
 
-        public void AddBudgetItem(string itemName)
+        public void AddBudgetItem(string itemName,double budgetAmount)
         {
-            BudgetItems.Add(new BudgetItemModel() { Name=itemName });
+            BudgetItems.Add(new BudgetItemModel() { Name=itemName , PlannedAmount = budgetAmount });
+            SortByBudgetCategory();
+        }
+
+        public void AddBudgetItem(BudgetItemModel budgetItem)
+        {
+            budgetItem.SpentAmount = 0;
+            budgetItem.PlannedAmount = 100;
+            BudgetItems.Add(budgetItem);
             SortByBudgetCategory();
         }
 

@@ -17,7 +17,7 @@ namespace LifeCalculator.FrameworkTest.Settings
         [OneTimeSetUp]
         public void Setup()
         {
-            AppSettings.ReadSettings();
+            //AppSettings.ReadSettings();
 
             AppSettings.Instance.PlaidApiSettings.ClientId = _clientIDExpected;
             AppSettings.Instance.PlaidApiSettings.PublicKey = _publicKeyExpected;
@@ -29,7 +29,7 @@ namespace LifeCalculator.FrameworkTest.Settings
         [Test]
         public void SaveAndLoadSettings()
         {
-            AppSettings.SaveSettings();
+            //AppSettings.SaveSettings();
 
             AppSettings.Instance.PlaidApiSettings.ClientId = string.Empty;
             AppSettings.Instance.PlaidApiSettings.PublicKey = string.Empty;
@@ -41,7 +41,7 @@ namespace LifeCalculator.FrameworkTest.Settings
             Assert.AreEqual(AppSettings.Instance.PlaidApiSettings.SandboxSecret, string.Empty);
             Assert.AreEqual(AppSettings.Instance.PlaidApiSettings.SecretKey, string.Empty);
 
-            AppSettings.ReadSettings();
+            //AppSettings.ReadSettings();
 
             Assert.AreEqual(AppSettings.Instance.PlaidApiSettings.ClientId, _clientIDExpected);
             Assert.AreEqual(AppSettings.Instance.PlaidApiSettings.PublicKey, _publicKeyExpected);

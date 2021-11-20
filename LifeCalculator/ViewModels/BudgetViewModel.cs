@@ -6,6 +6,7 @@ using LifeCalculator.Framework.Accounts;
 using LifeCalculator.Framework.CurrentAccountStorage;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.PlatformUI;
+using System;
 
 namespace LifeCalculator.ViewModels
 {
@@ -47,15 +48,7 @@ namespace LifeCalculator.ViewModels
 
         }
 
-        private void AddBudgetItemcommandHandler(object obj)
-        {
-            if (string.IsNullOrEmpty(AddBudgetITemName))
-                return;
-
-            _budgetManager.AddBudgetItem(AddBudgetITemName);
-
-            AddBudgetITemName = string.Empty;
-        }
+        
 
         #endregion
 
@@ -69,6 +62,7 @@ namespace LifeCalculator.ViewModels
         #endregion
 
         public string AddBudgetITemName { get; set; }
+        public double AddBudgetITemPlannedAmount { get; set; }
 
         public ICommand AddBudgetItemCommand { get; set; }
 
@@ -86,8 +80,19 @@ namespace LifeCalculator.ViewModels
 
         #endregion
 
-        #region Initialize Methods
+        #region Command Handlers
+
+        private void AddBudgetItemcommandHandler(object obj)
+        {
+            if (string.IsNullOrEmpty(AddBudgetITemName))
+                return;
+
+            _budgetManager.AddBudgetItem(AddBudgetITemName, AddBudgetITemPlannedAmount);
+
+            AddBudgetITemName = string.Empty;
+        }
 
         #endregion
+
     }
 }

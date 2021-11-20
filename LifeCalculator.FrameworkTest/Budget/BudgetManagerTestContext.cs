@@ -9,12 +9,12 @@ namespace LifeCalculator.FrameworkTest.Budget
         #region Setup
 
 
-        public List<TransactionItem> transactionItems = new List<TransactionItem>();
+        public readonly List<TransactionItem> transactionItems = new List<TransactionItem>();
 
-        public TransactionItem transactionItem1 = new TransactionItem() { Id = "1", Name = "Item1", BudgetCategory = "Entertainment" };
-        public TransactionItem transactionItem2 = new TransactionItem() { Id = "2", Name = "Item2", BudgetCategory = "Food" };
-        public TransactionItem transactionItem3 = new TransactionItem() { Id = "3", Name = "Item3", BudgetCategory = "Housing" };
-        public TransactionItem transactionItem4 = new TransactionItem() { Id = "4", Name = "Item4", BudgetCategory = "Entertainment" };
+        public readonly TransactionItem transactionItem1 = new TransactionItem() { Id = "1", Name = "Item1", BudgetCategory = "Entertainment" };
+        public readonly TransactionItem transactionItem2 = new TransactionItem() { Id = "2", Name = "Item2", BudgetCategory = "Food" };
+        public readonly TransactionItem transactionItem3 = new TransactionItem() { Id = "3", Name = "Item3", BudgetCategory = "Housing" };
+        public readonly TransactionItem transactionItem4 = new TransactionItem() { Id = "4", Name = "Item4", BudgetCategory = "Entertainment" };
 
         public BudgetManagerTestContext()
         {
@@ -24,9 +24,11 @@ namespace LifeCalculator.FrameworkTest.Budget
             };
         }
 
-        public BudgetManager CreateBudgetManager()
+        public BudgetManager CreateBudgetManager(bool autoSort = true)
         {
-            return new BudgetManager();
+            BudgetManager budgetManager = new BudgetManager();
+            budgetManager.AutoSort = autoSort;
+            return budgetManager;
         }
 
         public BudgetManager CreateBudgetManagerWithData(bool autoSort = true)

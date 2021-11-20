@@ -94,9 +94,11 @@ namespace LifeCalculator.Control.ViewModels
         private void _budgetManager_BudgetsSorted(object sender, System.EventArgs e)
         {
             TransactionListViewModel.ClearItems();
+            SpentAmount = 0;
             if (_budgetItem.Transactions != null)
             foreach (var item in _budgetItem.Transactions)
             {
+                    SpentAmount += item.Amount; 
                     TransactionListViewModel.AddTransactionItem(new TransactionItemViewModel(item));
             }
         }
