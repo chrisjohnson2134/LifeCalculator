@@ -24,7 +24,7 @@ namespace LifeCalculator.FrameworkTest.Budget
         {
             IBudgetManager budgetManager = CreateBudgetManagerWithData();
 
-            TransactionItem newTransactionItem = new TransactionItem() { Id = "5", Name = "New item", BudgetCategory = "Food" };
+            TransactionItem newTransactionItem = new TransactionItem() { TransactionId = "5", Name = "New item", BudgetCategory = "Food" };
 
             budgetManager.AddTransaction(newTransactionItem);
 
@@ -33,7 +33,7 @@ namespace LifeCalculator.FrameworkTest.Budget
 
             var foodCategory = budgetManager.BudgetItems.Find(t => t.Name.Equals("Food"));
             Assert.AreEqual(1, foodCategory.Transactions.Count);
-            Assert.AreEqual(foodCategory.Transactions.Find(t => t.Id.Equals("5")), newTransactionItem);
+            Assert.AreEqual(foodCategory.Transactions.Find(t => t.TransactionId.Equals("5")), newTransactionItem);
 
 
         }
@@ -42,7 +42,7 @@ namespace LifeCalculator.FrameworkTest.Budget
         public void AddAndGetByIdAndName()
         {
             IBudgetManager budgetManager = CreateBudgetManager();
-            string testID = transactionItem1.Id;
+            string testID = transactionItem1.TransactionId;
             string testName = transactionItem1.Name;
 
             budgetManager.AddTransaction(transactionItem1);

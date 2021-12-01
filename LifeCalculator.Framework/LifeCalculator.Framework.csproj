@@ -149,7 +149,9 @@
     <Compile Include="Accounts\TransactionItem.cs" />
     <Compile Include="Budget\BudgetManager.cs" />
     <Compile Include="Budget\IBudgetManager.cs" />
+    <Compile Include="Services\BudgetService\BudgetDataService.cs" />
     <Compile Include="Services\PlaidService\PlaidService.cs" />
+    <Compile Include="Services\TransactionService\TransactionDataService.cs" />
     <Compile Include="Settings\PlaidSettings.cs" />
     <Compile Include="Settings\AppSettings.cs" />
     <Compile Include="SimulatedAccount\Manager\AccountManager.cs" />

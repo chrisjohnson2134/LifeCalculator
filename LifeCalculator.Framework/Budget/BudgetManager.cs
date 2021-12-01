@@ -36,6 +36,8 @@ namespace LifeCalculator.Framework.Budget
 
         #endregion
 
+        #region Public Methods
+
         public void AddTransaction(TransactionItem transactionItem)
         {
             Transactions.Add(transactionItem);
@@ -44,11 +46,11 @@ namespace LifeCalculator.Framework.Budget
 
         public void AddTransactions(List<TransactionItem> transactionItems)
         {
-            Transactions.AddRange(transactionItems);
             foreach (TransactionItem transactionItem in transactionItems)
             {
                 AddTransactionToBudgetItem(transactionItem);
             }
+            Transactions.AddRange(transactionItems);
         }
 
         public void RemoveTransactionById(string id)
@@ -65,10 +67,10 @@ namespace LifeCalculator.Framework.Budget
 
         public TransactionItem GetTransactionById(string ID)
         {
-            return ID == null ? null : Transactions.FirstOrDefault(t => t.Id.Equals(ID));
+            return ID == null ? null : Transactions.FirstOrDefault(t => t.TransactionId.Equals(ID));
         }
 
-        public void ChangeTransactionCategory(string transactionName,string newCategoryName,bool changeForAll = false)
+        public void ChangeTransactionCategory(string transactionName, string newCategoryName, bool changeForAll = false)
         {
             if (changeForAll)
             {
@@ -95,6 +97,22 @@ namespace LifeCalculator.Framework.Budget
             BudgetsSorted?.Invoke(this, new EventArgs());
         }
 
+        public void AddBudgetItem(string itemName, double budgetAmount)
+        {
+            BudgetItems.Add(new BudgetItemModel() { Name = itemName, PlannedAmount = budgetAmount });
+            SortByBudgetCategory();
+        }
+
+        public void AddBudgetItem(BudgetItemModel budgetItem)
+        {
+            budgetItem.SpentAmount = 0;
+            budgetItem.PlannedAmount = 100;
+            BudgetItems.Add(budgetItem);
+            SortByBudgetCategory();
+        }
+
+        #endregion
+
         #region Private Methods
 
         private void AddTransactionToBudgetItem(TransactionItem transactionItem)
@@ -113,20 +131,6 @@ namespace LifeCalculator.Framework.Budget
                 budgetItem.Transactions.Add(transactionItem);
                 AddBudgetItem(budgetItem);
             }
-        }
-
-        public void AddBudgetItem(string itemName,double budgetAmount)
-        {
-            BudgetItems.Add(new BudgetItemModel() { Name=itemName , PlannedAmount = budgetAmount });
-            SortByBudgetCategory();
-        }
-
-        public void AddBudgetItem(BudgetItemModel budgetItem)
-        {
-            budgetItem.SpentAmount = 0;
-            budgetItem.PlannedAmount = 100;
-            BudgetItems.Add(budgetItem);
-            SortByBudgetCategory();
         }
 
         #endregion

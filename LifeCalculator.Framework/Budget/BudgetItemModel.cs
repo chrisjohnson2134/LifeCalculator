@@ -1,5 +1,6 @@
 ﻿using LifeCalculator.Framework.Accounts;
 using LifeCalculator.Framework.Enums;
+using LifeCalculator.Framework.Services.DataService;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -36,6 +37,7 @@ namespace LifeCalculator.Framework.Budget
 
         public BudgetItemSection Type { get; set; }
 
+        [IgnoreDatabase]
         public List<TransactionItem> Transactions { get; set; }
 
         #endregion

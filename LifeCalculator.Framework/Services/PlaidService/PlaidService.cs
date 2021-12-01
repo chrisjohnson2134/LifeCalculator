@@ -184,7 +184,7 @@ namespace LifeCalculator.Framework.Services.PlaidService
         {
             TransactionItem result = new TransactionItem();
             result.Name = jsonTransaction["name"].ToString();
-            result.Id = jsonTransaction["transaction_id"].ToString();
+            result.TransactionId = jsonTransaction["transaction_id"].ToString();
 
             result.Amount = (double)jsonTransaction["amount"];
 
@@ -240,7 +240,7 @@ namespace LifeCalculator.Framework.Services.PlaidService
             foreach (TransactionItem transaction in transactions)
             {
                 Account matchingAccount = accounts.Find(p => p.Id == transaction.AccountId);
-                if (matchingAccount != null && matchingAccount.RecentTransactions.Find(p => p.Id == transaction.Id) == null)
+                if (matchingAccount != null && matchingAccount.RecentTransactions.Find(p => p.TransactionId == transaction.TransactionId) == null)
                     matchingAccount.RecentTransactions.Add(transaction);
                 else
                     Console.WriteLine("Account not found or transaction already exists in list");

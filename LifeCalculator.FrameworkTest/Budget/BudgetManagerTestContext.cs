@@ -11,10 +11,10 @@ namespace LifeCalculator.FrameworkTest.Budget
 
         public readonly List<TransactionItem> transactionItems = new List<TransactionItem>();
 
-        public readonly TransactionItem transactionItem1 = new TransactionItem() { Id = "1", Name = "Item1", BudgetCategory = "Entertainment" };
-        public readonly TransactionItem transactionItem2 = new TransactionItem() { Id = "2", Name = "Item2", BudgetCategory = "Food" };
-        public readonly TransactionItem transactionItem3 = new TransactionItem() { Id = "3", Name = "Item3", BudgetCategory = "Housing" };
-        public readonly TransactionItem transactionItem4 = new TransactionItem() { Id = "4", Name = "Item4", BudgetCategory = "Entertainment" };
+        public readonly TransactionItem transactionItem1 = new TransactionItem() { TransactionId = "1", Name = "Item1", BudgetCategory = "Entertainment" };
+        public readonly TransactionItem transactionItem2 = new TransactionItem() { TransactionId = "2", Name = "Item2", BudgetCategory = "Food" };
+        public readonly TransactionItem transactionItem3 = new TransactionItem() { TransactionId = "3", Name = "Item3", BudgetCategory = "Housing" };
+        public readonly TransactionItem transactionItem4 = new TransactionItem() { TransactionId = "4", Name = "Item4", BudgetCategory = "Entertainment" };
 
         public BudgetManagerTestContext()
         {
