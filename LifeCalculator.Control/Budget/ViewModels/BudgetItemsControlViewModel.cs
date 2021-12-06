@@ -8,9 +8,9 @@ namespace LifeCalculator.Control.ViewModels
 {
     public class BudgetItemsControlViewModel : ViewModelBase
     {
-        private IBudgetManager _budgetManager;
+        private BudgetManager _budgetManager;
 
-        public BudgetItemsControlViewModel(IBudgetManager budgetManager)
+        public BudgetItemsControlViewModel(BudgetManager budgetManager)
         {
             BudgetItemsList = new ObservableCollection<BudgetItemTileViewModel>();
             _budgetManager = budgetManager;

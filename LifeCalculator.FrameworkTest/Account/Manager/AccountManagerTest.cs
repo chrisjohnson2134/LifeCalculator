@@ -1,5 +1,5 @@
 ﻿using LifeCalculator.Framework.SimulatedAccount;
-using LifeCalculator.Framework.SimulatedAccount.Manager;
+using LifeCalculator.Framework.Managers;
 using LifeCalculator.Framework.LifeEvents;
 using NUnit.Framework;
 using System;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LifeCalculator.FrameworkTest.Account.Manager
+namespace LifeCalculator.FrameworkTest.SimulatedAccount.Manager
 {
     [TestFixture]
     public class AccountManagerTest
@@ -25,18 +25,18 @@ namespace LifeCalculator.FrameworkTest.Account.Manager
         [Test]
         public void AddGetDeleteAccount()
         {
-            ISimulatedAccount account = new CompoundAccount("Chris");
+            IAccount account = new CompoundAccount("Chris");
 
             int addedEventFired = 0;
             int deleteEventFired = 0;
             var testObject = createAccountManager();
 
-            testObject.AccountAdded += (object obj, ISimulatedAccount e) => { Assert.That(e.Equals(account)); addedEventFired++; };
-            testObject.AccountAdded += (object obj, ISimulatedAccount e) => { Assert.That(e.Equals(account)); deleteEventFired++; };
+            testObject.AccountAdded += (object obj, IAccount e) => { Assert.That(e.Equals(account)); addedEventFired++; };
+            testObject.AccountAdded += (object obj, IAccount e) => { Assert.That(e.Equals(account)); deleteEventFired++; };
 
             testObject.AddAccount(account);
 
-            ISimulatedAccount getAccount = testObject.GetAccount(account.Id);
+            IAccount getAccount = testObject.GetAccount(account.Id);
             Assert.That(getAccount.Equals(account));
 
             getAccount = testObject.GetAccount(account.Name);
@@ -55,7 +55,7 @@ namespace LifeCalculator.FrameworkTest.Account.Manager
             int valueChangedCount = 0;
 
             var testObject = createAccountManager();
-            testObject.AccountChanged += (object obj, ISimulatedAccount e) => { Assert.That(e.Equals(account)); valueChangedCount++; };
+            testObject.AccountChanged += (object obj, IAccount e) => { Assert.That(e.Equals(account)); valueChangedCount++; };
 
             testObject.AddAccount(account);
 
@@ -89,7 +89,7 @@ namespace LifeCalculator.FrameworkTest.Account.Manager
             int valueChangedCount = 0;
 
             var testObject = createAccountManager();
-            testObject.AccountChanged += (object obj, ISimulatedAccount e) => { Assert.That(e.Equals(account)); valueChangedCount++; };
+            testObject.AccountChanged += (object obj, IAccount e) => { Assert.That(e.Equals(account)); valueChangedCount++; };
 
             testObject.AddAccount(account);
 

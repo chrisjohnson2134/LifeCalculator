@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using LifeCalculator.Framework.Users;
 using LifeCalculator.Framework.Services.DataService;
-using LifeCalculator.Framework.SimulatedAccount.Manager;
+using LifeCalculator.Framework.Managers;
 using LifeCalculator.Framework.Budget;
 
 namespace LifeCalculator.Framework.FinancialAccount
@@ -61,7 +61,9 @@ namespace LifeCalculator.Framework.FinancialAccount
         [IgnoreDatabase]
         public AccountManager SimulatedAccountManager { get; set; }
         [IgnoreDatabase]
-        public IBudgetManager BudgetManager { get; set; }
+        public AccountManager UserAccountManager { get; set; }
+        [IgnoreDatabase]
+        public BudgetManager BudgetManager { get; set; }
 
         #endregion
     }

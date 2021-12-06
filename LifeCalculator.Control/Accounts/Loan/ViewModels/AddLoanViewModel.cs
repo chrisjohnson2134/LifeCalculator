@@ -14,8 +14,8 @@ namespace LifeCalculator.Control.ViewModels
         #region Fields
 
         private IAccountStore _accountStore;
-        public event EventHandler<ISimulatedAccount> AccountAdded;
-        public event EventHandler<ISimulatedAccount> AccountModified;
+        public event EventHandler<IAccount> AccountAdded;
+        public event EventHandler<IAccount> AccountModified;
 
         #endregion
 

@@ -19,28 +19,6 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-
-        <StackPanel Grid.Row="0" Grid.Column="2" Margin="10">
-            <Label Name="plaidSettingsLbl" Content="Plaid Settings ; Hidden in regular use"/>
-
-            <Label Name="clientIdLBL" Content="Cliend ID"/>
-            <TextBox x:Name="clientIdTB" Text="{Binding CLientId}"/>
-
-            <Label Name="publicKeyLBL" Content="Public Key"/>
-            <TextBox x:Name="publicKeyTB" Text="{Binding PublicKey}"/>
-
-            <Label Name="SandboxSecretLBL" Content="SandboxSecret"/>
-            <TextBox x:Name="SandboxSecretTB" Text="{Binding SandboxSecret}"/>
-
-            <Label Name="DevSecretLBL" Content="Development Secret"/>
-            <TextBox x:Name="DevSecretTB" Text="{Binding DevelopmentSecret}"/>
-
-            <Label Name="EnvironmentSB" Content="Environment"/>
-            <ComboBox x:Name="EvironmentCombo" IsEnabled="True" ItemsSource="{Binding EnvironmentOptions}" Text="{Binding SelectedEnvironment}"/>
-
-            <Button x:Name="SaveSettings" Content ="Save Settings" Command="{Binding SaveSettingsCommand}" Width="120" HorizontalAlignment="Left" Margin="10"/>
-        </StackPanel>
-
         <StackPanel Grid.Row="0" Grid.Column="0" Margin="10">
             <Label Content="Add new Bank Account"/>
             <Button x:Name="AddViaPlaidBtn" Content ="Add New" Command="{Binding AddNewAccountCommand}" Width="140" HorizontalAlignment="Left" Margin="10"/>

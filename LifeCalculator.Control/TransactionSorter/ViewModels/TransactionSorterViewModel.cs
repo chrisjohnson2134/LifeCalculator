@@ -6,9 +6,9 @@ namespace LifeCalculator.Control.ViewModels
 {
     public class TransactionSorterViewModel : ViewModelBase
     {
-        public IBudgetManager _budgetManager;
+        public BudgetManager _budgetManager;
 
-        public TransactionSorterViewModel(IBudgetManager budgetManager)
+        public TransactionSorterViewModel(BudgetManager budgetManager)
         {
             _budgetManager = budgetManager;
 
@@ -16,7 +16,7 @@ namespace LifeCalculator.Control.ViewModels
         }
 
         public BudgetItemsControlViewModel primaryBudgetItemsControlViewModel { get; }
-        public IBudgetManager budgetManager => _budgetManager;
+        public BudgetManager budgetManager => _budgetManager;
 
     }
 }

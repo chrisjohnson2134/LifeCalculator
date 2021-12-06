@@ -33,9 +33,9 @@ namespace LifeCalculator.Framework.Services.FinancialAccountService
 
                 var result = await cnn.QuerySingleOrDefaultAsync<FinancialAccount.FinancialAccount>($"SELECT * FROM {_tableName} WHERE AccountHolder=@AccountHolder", new { AccountHolder = username });
                 
-                foreach(ISimulatedAccount account in await accountsDataService.LoadAccountsByUserId(result.Id))
+                foreach(IAccount account in await accountsDataService.LoadAccountsByUserId(result.Id))
                 {
-                    result.SimulatedAccountManager.AddAccount(account);
+                    result.SimulatedAccountManager.AddAccount(account,true);
                 }
 
                 if (result == null)

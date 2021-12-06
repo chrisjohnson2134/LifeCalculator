@@ -1,6 +1,6 @@
 ﻿using LifeCalculator.Control.Accounts;
 using LifeCalculator.Framework.SimulatedAccount;
-using LifeCalculator.Framework.SimulatedAccount.Manager;
+using LifeCalculator.Framework.Managers;
 using LifeCalculator.Framework.BaseVM;
 using LifeCalculator.Framework.ColumnDefinitions;
 using LifeCalculator.Framework.LifeEvents;
@@ -156,7 +156,7 @@ namespace LifeCalculator.Control.ViewModels
 
         #region Event Handler
 
-        private void Account_ValueChanged(object sender, ISimulatedAccount e)
+        private void Account_ValueChanged(object sender, IAccount e)
         {
             AccountLifeEventsVMs.Clear();
             foreach (var item in _account.AccountLifeEvents)

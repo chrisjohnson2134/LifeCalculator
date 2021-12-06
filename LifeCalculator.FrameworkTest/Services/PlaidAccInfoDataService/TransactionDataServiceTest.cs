@@ -1,10 +1,10 @@
 ﻿using LifeCalculator.Framework.Accounts;
-using LifeCalculator.Framework.Services.TransactionDataService;
+using LifeCalculator.Framework.Services.PlaidAccInfoDataService;
 using NUnit.Framework;
 using System;
 using System.Threading.Tasks;
 
-namespace LifeCalculator.FrameworkTest.Services.TransactionService
+namespace LifeCalculator.FrameworkTest.Services.PlaidAccInfoDataService
 {
     [TestFixture]
     public class TransactionDataServiceTest
@@ -42,21 +42,13 @@ namespace LifeCalculator.FrameworkTest.Services.TransactionService
 
             var updatedOutput = await transactionDataService.Load(output.Id);
 
-            Assert.AreEqual(100.0, updatedOutput.Amount);
+            Assert.AreEqual(output.Amount, updatedOutput.Amount);
 
-            await transactionDataService.Delete(output.Id);
+            await transactionDataService.Delete(updatedOutput.Id);
 
-            try
-            {
-                updatedOutput = await transactionDataService.Load(output.Id);
-            }
-            catch
-            {
-                updatedOutput = null;
-            }
+            var loadAll = await transactionDataService.LoadAll();
 
-            Assert.IsNull(updatedOutput);
-
+            Assert.IsEmpty(loadAll);
         }
 
         #endregion

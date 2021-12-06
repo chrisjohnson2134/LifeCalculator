@@ -13,7 +13,7 @@ namespace LifeCalculator.Control.ViewModels
     {
         public event EventHandler<IAccountEvent> EventAdded;
 
-        private ISimulatedAccount _compoundAccount;
+        private CompoundAccount _compoundAccount;
 
         public AddEventCompoundViewModel(CompoundAccount loanAccount)
         {

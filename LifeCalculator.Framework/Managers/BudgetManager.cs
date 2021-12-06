@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace LifeCalculator.Framework.Budget
 {
-    public class BudgetManager: IBudgetManager
+    public class BudgetManager
     {
         #region Events
 

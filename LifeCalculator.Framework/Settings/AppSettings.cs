@@ -2,6 +2,7 @@
 using Amazon.SecretsManager;
 using Amazon.SecretsManager.Model;
 using LifeCalculator.Framework.Accounts;
+using LifeCalculator.Framework.Services.PlaidAccInfoDataService;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,7 @@ namespace LifeCalculator.Framework.Settings
     {
         private static string userSettings = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Plaid Demo");
         private static string settingsPath = Path.Combine(userSettings, "Settings.xml");
-
+        private static InstitutionDataService institutionDataService;
         #region Singleton
         public static AppSettings Instance = new AppSettings();
         #endregion Singleton
@@ -25,6 +26,7 @@ namespace LifeCalculator.Framework.Settings
         {
             SandboxInstitutions = new List<Institution>();
             DevelopmentInstitutions = new List<Institution>();
+            institutionDataService = new InstitutionDataService();
         }
 
         #region Settings
@@ -94,12 +96,18 @@ namespace LifeCalculator.Framework.Settings
         public static void LoadCredentials()
         {
             GetSecret();
+            LoadInstitutions();
+        }
+
+        public static async void LoadInstitutions()
+        {
+            Instance.DevelopmentInstitutions.AddRange(await institutionDataService.LoadAll());
         }
 
         private static void GetSecret()
         {
             string secretName = "PlaidApiKeys";
-            string region = "us-east-1";
+            string region = "us-east-2";
             string secret = "";
 
             MemoryStream memoryStream = new MemoryStream();

@@ -4,7 +4,7 @@ using NUnit.Framework;
 using Should;
 using System;
 
-namespace LifeCalcuator.FrameworkTest.Account
+namespace LifeCalcuator.FrameworkTest.SimulatedAccount
 {
     //calculator I trust to prove calculations
     //https://www.bankrate.com/calculators/savings/compound-savings-calculator-tool.aspx

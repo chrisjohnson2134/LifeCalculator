@@ -14,7 +14,7 @@ namespace LifeCalculator.ViewModels
     {
         #region Fields
 
-        private IBudgetManager _budgetManager;
+        private BudgetManager _budgetManager;
 
         #endregion
 
@@ -26,17 +26,17 @@ namespace LifeCalculator.ViewModels
 
             //List<TransactionItem> transactionItemsMocked = new List<TransactionItem>()
             //{
-            //    new TransactionItem{Name = "Hamburger" ,BudgetCategory="Food"},
-            //    new TransactionItem{Name = "HotDog" ,BudgetCategory="Food"},
-            //    new TransactionItem{Name = "Blue Cheese" ,BudgetCategory="Food"},
+            //    //new TransactionItem{Name = "Hamburger" ,BudgetCategory="Food",Amount=50},
+            //    //new TransactionItem{Name = "HotDog" ,BudgetCategory="Food",Amount=50},
+            //    //new TransactionItem{Name = "Blue Cheese" ,BudgetCategory="Food",Amount=50},
 
-            //    new TransactionItem{Name = "Gas" ,BudgetCategory="Car"},
-            //    new TransactionItem{Name = "Maintenance" ,BudgetCategory="Car"},
-            //    new TransactionItem{Name = "Wiper Blades" ,BudgetCategory="Car"},
+            //    //new TransactionItem{Name = "Gas" ,BudgetCategory="Car",Amount=50},
+            //    //new TransactionItem{Name = "Maintenance" ,BudgetCategory="Car",Amount=50},
+            //    //new TransactionItem{Name = "Wiper Blades" ,BudgetCategory="Car",Amount=50},
 
-            //    new TransactionItem{Name = "Paint" ,BudgetCategory="House"},
-            //    new TransactionItem{Name = "Plants" ,BudgetCategory="House"},
-            //    new TransactionItem{Name = "Chairs" ,BudgetCategory="House"},
+            //    //new TransactionItem{Name = "Paint" ,BudgetCategory="House",Amount=50},
+            //    //new TransactionItem{Name = "Plants" ,BudgetCategory="House",Amount=50},
+            //    //new TransactionItem{Name = "Chairs" ,BudgetCategory="House",Amount=50},
             //};
 
             //_budgetManager.AutoSort = true;

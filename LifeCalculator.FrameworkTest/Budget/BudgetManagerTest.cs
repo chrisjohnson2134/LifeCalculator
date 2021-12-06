@@ -13,7 +13,7 @@ namespace LifeCalculator.FrameworkTest.Budget
         [Test]
         public void AutoSortBudgetCategoryAutoSortDisabled()
         {
-            IBudgetManager budgetManager = CreateBudgetManagerWithData(false);
+            BudgetManager budgetManager = CreateBudgetManagerWithData(false);
 
             var uncategorizedCategory = budgetManager.BudgetItems.Find(t => t.Name.Equals("Uncategorized"));
             Assert.AreEqual(4, uncategorizedCategory.Transactions.Count);
@@ -22,7 +22,7 @@ namespace LifeCalculator.FrameworkTest.Budget
         [Test]
         public void SortByBudgetCategoryAutoSortAndRemoveItem()
         {
-            IBudgetManager budgetManager = CreateBudgetManagerWithData();
+            BudgetManager budgetManager = CreateBudgetManagerWithData();
 
             TransactionItem newTransactionItem = new TransactionItem() { TransactionId = "5", Name = "New item", BudgetCategory = "Food" };
 
@@ -34,14 +34,12 @@ namespace LifeCalculator.FrameworkTest.Budget
             var foodCategory = budgetManager.BudgetItems.Find(t => t.Name.Equals("Food"));
             Assert.AreEqual(1, foodCategory.Transactions.Count);
             Assert.AreEqual(foodCategory.Transactions.Find(t => t.TransactionId.Equals("5")), newTransactionItem);
-
-
         }
 
         [Test]
         public void AddAndGetByIdAndName()
         {
-            IBudgetManager budgetManager = CreateBudgetManager();
+            BudgetManager budgetManager = CreateBudgetManager();
             string testID = transactionItem1.TransactionId;
             string testName = transactionItem1.Name;
 

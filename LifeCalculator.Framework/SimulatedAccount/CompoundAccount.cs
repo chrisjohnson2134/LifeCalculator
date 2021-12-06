@@ -12,13 +12,13 @@ using System.Linq;
 
 namespace LifeCalculator.Framework.SimulatedAccount
 {
-    public class CompoundAccount : ISimulatedAccount
+    public class CompoundAccount : IAccount
     {
 
         #region Events
 
         public event EventHandler<IAccountEvent> LifeEventAdded;
-        public event EventHandler<ISimulatedAccount> ValueChanged;
+        public event EventHandler<IAccount> ValueChanged;
 
         #endregion
 
@@ -57,6 +57,7 @@ namespace LifeCalculator.Framework.SimulatedAccount
                 }
             }
         }
+
         private int _userId;
         public int UserId
         {

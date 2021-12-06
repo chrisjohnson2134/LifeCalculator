@@ -8,10 +8,10 @@ using System.Collections.Generic;
 
 namespace LifeCalculator.Framework.SimulatedAccount
 {
-    public class LoanAccount : ISimulatedAccount, IDatabaseable
+    public class LoanAccount : IAccount, IDatabaseable
     {
         public event EventHandler<IAccountEvent> LifeEventAdded;
-        public event EventHandler<ISimulatedAccount> ValueChanged;
+        public event EventHandler<IAccount> ValueChanged;
 
         private int _id = -1;
         public int Id
@@ -25,6 +25,7 @@ namespace LifeCalculator.Framework.SimulatedAccount
                 }
             }
         }
+
 
         private int _userId;
         public int UserId

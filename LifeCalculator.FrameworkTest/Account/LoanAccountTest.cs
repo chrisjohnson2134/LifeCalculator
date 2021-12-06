@@ -5,7 +5,7 @@ using NUnit.Framework;
 using Should;
 using System;
 
-namespace LifeCalcuator.FrameworkTest.Account
+namespace LifeCalcuator.FrameworkTest.SimulatedAccount
 {
     //Calculator Used to check Calculations https://www.bankrate.com/calculators/mortgages/mortgage-calculator.aspx
     //Contacted company about 

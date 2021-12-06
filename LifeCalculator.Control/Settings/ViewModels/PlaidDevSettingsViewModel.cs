@@ -7,11 +7,8 @@ using LifeCalculator.Framework.Services.PlaidService;
 using LifeCalculator.Framework.Settings;
 using Microsoft.VisualStudio.PlatformUI;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using LifeCalculator.Framework.Services.PlaidAccInfoDataService;
 
 namespace LifeCalculator.Control.ViewModels
 {
@@ -20,7 +17,8 @@ namespace LifeCalculator.Control.ViewModels
 
         #region Fields
 
-        IBudgetManager _budgetManager;
+        BudgetManager _budgetManager;
+        InstitutionDataService institutionDataService;
 
         #endregion
 
@@ -33,7 +31,13 @@ namespace LifeCalculator.Control.ViewModels
             Name = "Plaid Dev Settings";
 
             if (Framework.Enums.Environment.Development == AppSettings.Instance.PlaidApiSettings.Environment)
+            {
                 Institutions = new ObservableCollection<Institution>();
+                foreach (var item in AppSettings.Instance.DevelopmentInstitutions)
+                {
+                    Institutions.Add(item);
+                }
+            }
             else
                 Institutions = new ObservableCollection<Institution>();
 
@@ -44,6 +48,9 @@ namespace LifeCalculator.Control.ViewModels
             SaveSettingsCommand = new DelegateCommand(SaveSettingsCommandHandler);
             LoadTransactionsCommand = new DelegateCommand(LoadTransactionsCommandHandler);
 
+            institutionDataService = new InstitutionDataService();
+
+
             StartDate = DateTime.Now.AddMonths(-1);
             EndDate = DateTime.Now;
         }
@@ -53,41 +60,6 @@ namespace LifeCalculator.Control.ViewModels
         #region Properties
 
         public string Name { get; set; }
-
-        //public string ClientId
-        //{
-        //    get { return AppSettings.Instance.PlaidApiSettings.ClientId; }
-        //    set { AppSettings.Instance.PlaidApiSettings.ClientId = value; }
-        //}
-
-        //public string PublicKey
-        //{
-        //    get { return AppSettings.Instance.PlaidApiSettings.PublicKey; }
-        //    set { AppSettings.Instance.PlaidApiSettings.PublicKey = value; }
-        //}
-
-        //public string SandboxSecret
-        //{
-        //    get { return AppSettings.Instance.PlaidApiSettings.SandboxSecret; }
-        //    set { AppSettings.Instance.PlaidApiSettings.SandboxSecret = value; }
-        //}
-
-        //public string DevelopmentSecret
-        //{
-        //    get { return AppSettings.Instance.PlaidApiSettings.SecretKey; }
-        //    set { AppSettings.Instance.PlaidApiSettings.SecretKey = value; }
-        //}
-
-        //public string SelectedEnvironment
-        //{
-        //    get { return AppSettings.Instance.PlaidApiSettings.Environment.ToString(); }
-        //    set
-        //    {
-        //        AppSettings.Instance.PlaidApiSettings.Environment = (Framework.Enums.Environment)Enum.Parse(typeof(Framework.Enums.Environment), value);
-        //        EnvironmentChanged();
-        //    }
-        //}
-
 
 
         private string _institutionID;
@@ -142,7 +114,6 @@ namespace LifeCalculator.Control.ViewModels
 
         public ObservableCollection<Institution> Institutions { get; set; }
         public ObservableCollection<TransactionItem> Transactions { get; set; }
-        public List<string> EnvironmentOptions => new List<string> { "Sandbox", "Development" };
 
 
         public DelegateCommand AddNewAccountCommand { get; set; }
@@ -159,26 +130,25 @@ namespace LifeCalculator.Control.ViewModels
             PlaidService.StartPlaidLink();
         }
 
-        private void AddAccountCommandHandler()
+        private async void AddAccountCommandHandler()
         {
             Institution bank = PlaidService.GetInstitutionById(InstitutionID);
             bank.Credentials = PlaidService.AuthorizeInstitution(bank, PublicToken);
 
+            var accounts = PlaidService.GetInstitutionAccounts(AppSettings.Instance.DevelopmentInstitutions[0]);
+            bank.Accounts = accounts;
+
             if (AppSettings.Instance.PlaidApiSettings.Environment == Framework.Enums.Environment.Development)
             {
                 AppSettings.Instance.DevelopmentInstitutions.Add(bank);
-                Institutions.Add(bank);
+                var insertedBank = await institutionDataService.Insert(bank);
+                Institutions.Add(insertedBank);
             }
             else
             {
                 AppSettings.Instance.SandboxInstitutions.Add(bank);
                 Institutions.Add(bank);
             }
-
-            //AppSettings.SaveSettings();
-
-            //InstitutionID = string.Empty;
-            //PublicToken = string.Empty;
         }
 
         public void SaveSettingsCommandHandler()
@@ -188,6 +158,7 @@ namespace LifeCalculator.Control.ViewModels
 
         private void LoadTransactionsCommandHandler(object obj)
         {
+            var transactions = PlaidService.GetTransactions(AppSettings.Instance.DevelopmentInstitutions[0],DateTime.Now.AddMonths(-2),DateTime.Now);
             Transactions.Clear();
             if (Framework.Enums.Environment.Development == AppSettings.Instance.PlaidApiSettings.Environment && AppSettings.Instance.DevelopmentInstitutions[0] != null)
                 foreach (var item in PlaidService.GetTransactions(AppSettings.Instance.DevelopmentInstitutions[0], StartDate, EndDate))
@@ -205,30 +176,6 @@ namespace LifeCalculator.Control.ViewModels
         #endregion
 
         #region HelperMethod
-
-        private void EnvironmentChanged()
-        {
-            Institutions.Clear();
-
-            if (Framework.Enums.Environment.Development == AppSettings.Instance.PlaidApiSettings.Environment)
-            {
-                foreach (var bank in AppSettings.Instance.DevelopmentInstitutions)
-                {
-                    Institutions.Add(bank);
-                }
-            }
-            else
-            {
-                foreach (var bank in AppSettings.Instance.SandboxInstitutions)
-                {
-                    Institutions.Add(bank);
-                }
-            }
-
-            //AppSettings.SaveSettings();
-
-
-        }
 
         #endregion
     }

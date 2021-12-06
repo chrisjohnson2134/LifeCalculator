@@ -25,8 +25,33 @@ namespace LifeCalculator.ViewModels
 
         private string _accountType;
         private IModifyAccount _accountSelected;
-        AccountDataService accountService;
         AccountEventDataService eventDataService;
+
+        #endregion
+
+        #region Constructors
+
+        public CalculatorViewModel(IAccountStore accountStore)
+        {
+            _accountStore = accountStore;
+
+            ValueCollection = new SeriesCollection();
+
+            AccountsList = new ObservableCollection<IModifyAccount>();
+
+            eventDataService = new AccountEventDataService();
+
+            _accountStore.CurrentAccount.SimulatedAccountManager.AccountAdded += AccountManager_AccountAdded;
+            _accountStore.CurrentAccount.SimulatedAccountManager.AccountChanged += AccountManager_AccountChanged;
+            _accountStore.CurrentAccount.SimulatedAccountManager.AccountDeleted += AccountManager_AccountDeleted;
+
+            foreach (var account in _accountStore.CurrentAccount.SimulatedAccountManager.GetAllAccounts())
+            {
+                addAccountToList(account);
+            }
+
+            ReChart(new object(), EventArgs.Empty);
+        }
 
         #endregion
 
@@ -94,72 +119,22 @@ namespace LifeCalculator.ViewModels
 
         #endregion
 
-        #region Constructors
-
-        public CalculatorViewModel(IAccountStore accountStore)
-        {
-            _accountStore = accountStore;
-
-            ValueCollection = new SeriesCollection();
-
-            AccountsList = new ObservableCollection<IModifyAccount>();
-
-            eventDataService = new AccountEventDataService();
-            accountService = new AccountDataService();
-
-            _accountStore.CurrentAccount.SimulatedAccountManager.AccountAdded += AccountManager_AccountAdded;
-            _accountStore.CurrentAccount.SimulatedAccountManager.AccountChanged += AccountManager_AccountChanged;
-            _accountStore.CurrentAccount.SimulatedAccountManager.AccountDeleted += AccountManager_AccountDeleted;
-
-            foreach (var account in _accountStore.CurrentAccount.SimulatedAccountManager.Accounts)
-            {
-                 addAccountToList(account);
-            }
-
-            ReChart(new object(),EventArgs.Empty);
-        }
-
-        public CalculatorViewModel()
-        {
-
-        }
-
-        #endregion
-
         #region Event Handlers
 
-        private async void AccountManager_AccountAdded(object sender, ISimulatedAccount e)
+        private async void AccountManager_AccountAdded(object sender, IAccount e)
         {
-            try
-            {
-                ISimulatedAccount acc = await accountService.Insert(e);
-                e.Id = acc.Id;
-
-                addAccountToList(e);
-            }
-            catch
-            {
-                addAccountToList(e);
-            }
+            addAccountToList(e);
 
             ReChart(this,EventArgs.Empty);
         }
 
-        private async void AccountManager_AccountChanged(object sender, ISimulatedAccount e)
+        private void AccountManager_AccountChanged(object sender, IAccount e)
         {
-            try
-            {
-                await accountService.Save(e);
-            }
-            catch { }
             ReChart(new object(), EventArgs.Empty);
         }
 
-        private async void AccountManager_AccountDeleted(object sender, ISimulatedAccount e)
+        private void AccountManager_AccountDeleted(object sender, IAccount e)
         {
-            try
-            {
-                await accountService.Delete(e);
 
                 foreach (var item in ValueCollection)
                     if(item.Title.Equals(e.Name))
@@ -168,10 +143,6 @@ namespace LifeCalculator.ViewModels
                 foreach (var item in AccountsList)
                     if (item.Name.Equals(e.Name))
                         AccountsList.Remove(item);
-            }
-            catch
-            {
-            }
 
             ReChart(this, EventArgs.Empty);
         }
@@ -217,7 +188,7 @@ namespace LifeCalculator.ViewModels
 
         #endregion
 
-        private void addAccountToList(ISimulatedAccount account)
+        private void addAccountToList(IAccount account)
         {
             if (account is LoanAccount loanAccount)
             {
@@ -266,7 +237,7 @@ namespace LifeCalculator.ViewModels
         /// </remarks>
         private void ReChart(object sender, EventArgs e)
         {
-            foreach (var acc in _accountStore.CurrentAccount.SimulatedAccountManager.Accounts)
+            foreach (var acc in _accountStore.CurrentAccount.SimulatedAccountManager.GetAllAccounts())
                 foreach (var collection in ValueCollection)
                 {
                     if (collection.Title.Equals(acc.Name))

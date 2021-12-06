@@ -13,8 +13,8 @@ namespace LifeCalculator.Control.ViewModels
     {
         #region Events
 
-        public event EventHandler<ISimulatedAccount> AccountAdded;
-        public event EventHandler<ISimulatedAccount> AccountModified;
+        public event EventHandler<IAccount> AccountAdded;
+        public event EventHandler<IAccount> AccountModified;
 
         #endregion
 

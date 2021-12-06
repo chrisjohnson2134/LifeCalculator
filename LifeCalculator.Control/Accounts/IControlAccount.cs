@@ -9,7 +9,7 @@ namespace LifeCalculator.Control.Accounts
 {
     public interface IControlAccount
     {
-        event EventHandler<ISimulatedAccount> AccountAdded;
-        event EventHandler<ISimulatedAccount> AccountModified;
+        event EventHandler<IAccount> AccountAdded;
+        event EventHandler<IAccount> AccountModified;
     }
 }

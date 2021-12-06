@@ -10,9 +10,9 @@ namespace LifeCalculator.Control.ViewModels
     public class BudgetItemTileViewModel : ViewModelBase
     {
         BudgetItemModel _budgetItem;
-        IBudgetManager _budgetManager;
+        BudgetManager _budgetManager;
 
-        public BudgetItemTileViewModel(BudgetItemModel budgetItem,IBudgetManager budgetManager)
+        public BudgetItemTileViewModel(BudgetItemModel budgetItem, BudgetManager budgetManager)
         {
             _budgetItem = budgetItem;
 

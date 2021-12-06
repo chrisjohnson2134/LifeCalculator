@@ -157,7 +157,7 @@ namespace LifeCalculator.Framework.Services.PlaidService
         {
             Institution result = new Institution();
             result.Name = jsonInstitution["name"].ToString();
-            result.Id = jsonInstitution["institution_id"].ToString();
+            result.PlaidId = jsonInstitution["institution_id"].ToString();
 
             return result;
         }
@@ -166,7 +166,7 @@ namespace LifeCalculator.Framework.Services.PlaidService
         {
             Account result = new Account();
             result.Name = jsonAccount["name"].ToString();
-            result.Id = jsonAccount["account_id"].ToString();
+            result.PlaidID = jsonAccount["account_id"].ToString();
 
             Enums.PlaidAccountType accountType;
             bool success = Enum.TryParse(jsonAccount["subtype"].ToString(), true, out accountType);
@@ -220,13 +220,17 @@ namespace LifeCalculator.Framework.Services.PlaidService
             string start_date = startDate.ToString("yyyy-MM-dd");
             string end_date = endDate.ToString("yyyy-MM-dd");
 
+            Dictionary<string,int> properties = new Dictionary<string,int>();
+            properties.Add("count", 250);
+
             JObject json = JObject.FromObject(new
             {
                 client_id = AppSettings.Instance.PlaidApiSettings.ClientId,
                 secret = GetSecret(),
                 access_token = institution.Credentials.AccessToken,
                 start_date,
-                end_date
+                end_date,
+                options = properties
             });
             JObject result = HttpRequestToPlaid("transactions/get", json);
             List<JToken> jsonTransactions = result["transactions"].ToList();
@@ -239,7 +243,7 @@ namespace LifeCalculator.Framework.Services.PlaidService
         {
             foreach (TransactionItem transaction in transactions)
             {
-                Account matchingAccount = accounts.Find(p => p.Id == transaction.AccountId);
+                Account matchingAccount = accounts.Find(p => p.PlaidID == transaction.AccountId);
                 if (matchingAccount != null && matchingAccount.RecentTransactions.Find(p => p.TransactionId == transaction.TransactionId) == null)
                     matchingAccount.RecentTransactions.Add(transaction);
                 else

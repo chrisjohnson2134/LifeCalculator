@@ -8,8 +8,8 @@
              d:DataContext="{d:DesignInstance Type=viewmodels:BudgetItemTileViewModel}"
              mc:Ignorable="d" >
     <Grid Width="100" Height="100" AllowDrop="True" Background="Transparent" Drop="Grid_Drop">
-        <Label Content="{Binding BudgetAmount}" ContentStringFormat="Budget : {0}" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+        <Label Content="{Binding PlannedAmount}" ContentStringFormat="Budget : {0}" VerticalAlignment="Top" HorizontalAlignment="Left"/>
         <Label Content="{Binding Name}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-        <Label Content="{Binding Amount}" ContentStringFormat="Spent :" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
+        <Label Content="{Binding SpentAmount}" ContentStringFormat="Spent : {0}" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
     </Grid>
 </UserControl>
