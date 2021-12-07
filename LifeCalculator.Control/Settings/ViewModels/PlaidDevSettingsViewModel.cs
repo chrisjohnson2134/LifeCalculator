@@ -135,9 +135,6 @@ namespace LifeCalculator.Control.ViewModels
             Institution bank = PlaidService.GetInstitutionById(InstitutionID);
             bank.Credentials = PlaidService.AuthorizeInstitution(bank, PublicToken);
 
-            var accounts = PlaidService.GetInstitutionAccounts(AppSettings.Instance.DevelopmentInstitutions[0]);
-            bank.Accounts = accounts;
-
             if (AppSettings.Instance.PlaidApiSettings.Environment == Framework.Enums.Environment.Development)
             {
                 AppSettings.Instance.DevelopmentInstitutions.Add(bank);

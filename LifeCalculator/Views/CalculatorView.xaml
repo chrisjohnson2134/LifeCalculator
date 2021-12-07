@@ -11,105 +11,110 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="White">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
+    <TabControl>
+        <TabItem Header="Life Calculations">
+            <Grid Background="White">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
 
-        <lvc:CartesianChart
+                <lvc:CartesianChart
             Grid.Row="0" Grid.Column="0" Margin="5"
             Series="{Binding ValueCollection}">
-            <lvc:CartesianChart.AxisX>
-                <lvc:Axis LabelFormatter="{Binding Formatter}" />
-            </lvc:CartesianChart.AxisX>
-        </lvc:CartesianChart>
+                    <lvc:CartesianChart.AxisX>
+                        <lvc:Axis LabelFormatter="{Binding Formatter}" />
+                    </lvc:CartesianChart.AxisX>
+                </lvc:CartesianChart>
 
-        <!--  Account Grid  -->
-        <Grid
+                <!--  Account Grid  -->
+                <Grid
             Grid.Row="0" Grid.Column="1"
             Width="225" Height="300" Margin="20">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
 
-            <Label x:Name="AccountInstructionsLbl" Grid.Row="0" Grid.Column="0" Content="Add Account : " />
+                    <Label x:Name="AccountInstructionsLbl" Grid.Row="0" Grid.Column="0" Content="Add Account : " />
 
-            <Label x:Name="AccountTypes" Grid.Row="1" Grid.Column="0" Margin="2" Content="Account Type:" Foreground="Black" />
-            <ComboBox x:Name="AccountTypeSelection" Grid.Row="1" Grid.Column="1" Margin="2"
+                    <Label x:Name="AccountTypes" Grid.Row="1" Grid.Column="0" Margin="2" Content="Account Type:" Foreground="Black" />
+                    <ComboBox x:Name="AccountTypeSelection" Grid.Row="1" Grid.Column="1" Margin="2"
                       BorderBrush="Black" Foreground="Black"
                       ItemsSource="{Binding AccountTypesList}"
                       Text="{Binding AccountType}" />
 
-            <ContentControl Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"  
+                    <ContentControl Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"  
                 Content="{Binding CurrentViewModel}" />
 
 
-        </Grid>
+                </Grid>
 
-        <!--  Events Grid  -->
-        <Grid
+                <!--  Events Grid  -->
+                <Grid
             Grid.Row="1" Grid.Column="1"
             Width="225" Height="300" Margin="25">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
 
-            <Label
+                    <Label
                 x:Name="EvemtNameLabel"
                 Grid.Row="0" Grid.Column="0" Margin="2"
                 Content="Events:" Foreground="Black" />
-            <ComboBox x:Name="EventNameTextbox"
+                    <ComboBox x:Name="EventNameTextbox"
                 Grid.Row="0" Grid.Column="1"
                 Margin="2" BorderBrush="Black" DisplayMemberPath="Name"
                 ItemsSource="{Binding AccountsList}"
                 SelectedItem="{Binding AccountSelected}"/>
 
-            <ContentControl
+                    <ContentControl
                 Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" 
                 Content="{Binding CurrentEventViewModel}"/>
-        </Grid>
+                </Grid>
 
-        <ScrollViewer
+                <ScrollViewer
             Grid.Row="1" Grid.Column="0"
             Width="620" Height="300" Margin="5">
-            
-            <ItemsControl ItemsSource="{Binding AccountsList}">
-                <ItemsControl.Resources>
-                    <DataTemplate DataType="{x:Type controlViewModels:ModifyLoanViewModel}">
-                        <Expander Header="{Binding Name}" Margin="4">
-                            <controlViews:ModifyLoan />
-                        </Expander>
-                    </DataTemplate>
-                    <DataTemplate DataType="{x:Type controlViewModels:ModifyCompoundViewModel}">
-                        <Expander Header="{Binding Name}" Margin="4">
-                            <!--<Expander.Header>
+
+                    <ItemsControl ItemsSource="{Binding AccountsList}">
+                        <ItemsControl.Resources>
+                            <DataTemplate DataType="{x:Type controlViewModels:ModifyLoanViewModel}">
+                                <Expander Header="{Binding Name}" Margin="4">
+                                    <controlViews:ModifyLoan />
+                                </Expander>
+                            </DataTemplate>
+                            <DataTemplate DataType="{x:Type controlViewModels:ModifyCompoundViewModel}">
+                                <Expander Header="{Binding Name}" Margin="4">
+                                    <!--<Expander.Header>
                                 <StackPanel Orientation="Horizontal">
                                     <Label Content="{Binding Name}" FontSize="14"/>
                                     <CheckBox Content="Hide"/>
                                     <Button Content="Delete" VerticalAlignment="Center"/>
                                 </StackPanel>
                             </Expander.Header> -->
-                            <controlViews:ModifyCompound/>
-                        </Expander>
-                    </DataTemplate>
-                </ItemsControl.Resources>
-            </ItemsControl>
-        </ScrollViewer>
-    </Grid>
+                                    <controlViews:ModifyCompound/>
+                                </Expander>
+                            </DataTemplate>
+                        </ItemsControl.Resources>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Grid>
+        </TabItem>
+    </TabControl>
+    
 </UserControl>
