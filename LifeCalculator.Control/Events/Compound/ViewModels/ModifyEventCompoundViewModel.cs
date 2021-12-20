@@ -34,7 +34,7 @@ namespace LifeCalculator.Control.ViewModels
             set
             {
                 _lifeEvent.Name = value;
-                ValueChanged?.Invoke(this, new EventArgs());
+                ValueChanged?.Invoke(this, _lifeEvent);
                 OnPropertyChanged(nameof(Name));
             }
         }
@@ -48,7 +48,7 @@ namespace LifeCalculator.Control.ViewModels
             {
                 _lifeEvent.StartDate = value;
 
-                ValueChanged?.Invoke(this, new EventArgs());
+                ValueChanged?.Invoke(this, _lifeEvent);
                 OnPropertyChanged(nameof(Date));
             }
         }
@@ -62,7 +62,7 @@ namespace LifeCalculator.Control.ViewModels
             {
                 _lifeEvent.EndDate = value;
 
-                ValueChanged?.Invoke(this, new EventArgs());
+                ValueChanged?.Invoke(this, _lifeEvent);
                 OnPropertyChanged(nameof(EndDate));
             }
         }
@@ -73,7 +73,7 @@ namespace LifeCalculator.Control.ViewModels
             set
             {
                 _lifeEvent.Amount = value;
-                ValueChanged?.Invoke(this, new EventArgs());
+                ValueChanged?.Invoke(this, _lifeEvent);
                 OnPropertyChanged(nameof(Amount));
             }
         }
@@ -84,7 +84,7 @@ namespace LifeCalculator.Control.ViewModels
             set
             {
                 _lifeEvent.CurrentValue = value;
-                ValueChanged?.Invoke(this, new EventArgs());
+                ValueChanged?.Invoke(this, _lifeEvent);
                 OnPropertyChanged(nameof(CurrentValue));
             }
         }
@@ -95,7 +95,7 @@ namespace LifeCalculator.Control.ViewModels
             set
             {
                 _lifeEvent.InterestRate = value;
-                ValueChanged?.Invoke(this, new EventArgs());
+                ValueChanged?.Invoke(this, _lifeEvent);
                 OnPropertyChanged(nameof(InterestRate));
             }
         }
@@ -105,7 +105,7 @@ namespace LifeCalculator.Control.ViewModels
         public DateTime StartDate { get; set; }
         public AccountTypes AccountType { get; set; }
 
-        public event EventHandler ValueChanged;
+        public event EventHandler<IAccountEvent> ValueChanged;
 
         #endregion
 

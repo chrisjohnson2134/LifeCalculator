@@ -1,14 +1,10 @@
-﻿using LifeCalculator.Framework.BaseVM;
-using LifeCalculator.Framework.ColumnDefinitions;
-using LifeCalculator.Framework.Database;
-using LifeCalculator.Framework.Database.Queries;
+﻿using LifeCalculator.Framework.ColumnDefinitions;
 using LifeCalculator.Framework.Enums;
 using LifeCalculator.Framework.LifeEvents;
+using LifeCalculator.Framework.Managers;
 using LifeCalculator.Framework.Services.DataService;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
 
 namespace LifeCalculator.Framework.SimulatedAccount
 {
@@ -22,23 +18,22 @@ namespace LifeCalculator.Framework.SimulatedAccount
 
         #endregion
 
+        #region Fields
+
+        IAccountsEventsManager _accountEventsManager;
+
+        #endregion
+
         #region Constructors
 
         public CompoundAccount()
         {
-            AccountLifeEvents = new List<IAccountEvent>();
+
         }
 
-        public CompoundAccount(string AccountName)
+        public CompoundAccount(IAccountsEventsManager accountEventManager)
         {
-            Name = AccountName;
-            AccountLifeEvents = new List<IAccountEvent>();
-        }
-
-        public CompoundAccount(CompoundAccount compoundAccount)
-        {
-            Name = compoundAccount.Name;
-            AccountLifeEvents = new List<IAccountEvent>();
+            _accountEventsManager = accountEventManager;
         }
 
         #endregion
@@ -153,7 +148,7 @@ namespace LifeCalculator.Framework.SimulatedAccount
 
 
         [IgnoreDatabase]
-        public List<IAccountEvent> AccountLifeEvents { get; set; }
+        public List<IAccountEvent> AccountLifeEvents => _accountEventsManager.GetAllAccountEventsByAccountId(Id);
         
         #endregion
 
@@ -187,7 +182,10 @@ namespace LifeCalculator.Framework.SimulatedAccount
 
             monthlies.Add(new MonthlyColumn());
 
-            monthlyContribute = AccountLifeEvents[0].Amount;
+            if(AccountLifeEvents.Count > 0)
+                monthlyContribute = AccountLifeEvents[0].Amount;
+            else
+                monthlyContribute = 0;
                 monthDiff = Math.Abs((_startDate.Year * 12 + (_startDate.Month - 1))
                 - (_endDate.Year * 12 + (_endDate.Month - 1)));
             
@@ -216,43 +214,44 @@ namespace LifeCalculator.Framework.SimulatedAccount
             return additonalAmount;
         }
 
+        public void SetEventsManager(IAccountsEventsManager accountsEventsManager)
+        {
+            _accountEventsManager = accountsEventsManager;
+        }
+
         public void AddLifeEvent(IAccountEvent lifeEvent)
         {
+            lifeEvent.AccountId = Id;
             lifeEvent.ValueChanged += LifeEvent_ValueChanged;
-            AccountLifeEvents.Add(lifeEvent);
+            _accountEventsManager.AddAccountEvent(lifeEvent);
             ValueChanged?.Invoke(this, this);
         }
 
-        private void LifeEvent_ValueChanged(object sender, EventArgs e)
+        private void LifeEvent_ValueChanged(object sender, IAccountEvent e)
         {
             ValueChanged?.Invoke(this, this);
         }
 
         #endregion
 
-        #region Overrident Methods
+        #region OverridenMethods
 
         public override bool Equals(object obj)
         {
-            var temp = obj as CompoundAccount;
+            var other = obj as CompoundAccount;
 
-            if (temp == null)
-                return false;
-            else if (temp.Id == Id )
-            {
-                foreach (var item in AccountLifeEvents)
-                {
-                    var accEvent = temp.AccountLifeEvents.Find(t => t.Id == item.Id);
-                    if (!accEvent.Equals(item))
-                        return false;
-                }
-                return true;
-            }
-            else
-                return false;
-
+            return obj == null ? false :
+                Id.Equals(other.Id) &&
+                InitialAmount.Equals(other.InitialAmount) &&
+                InterestRate.Equals(other.InterestRate) &&
+                Name.Equals(other.Name) &&
+                StartDate.Equals(other.StartDate) &&
+                EndDate.Equals(other.EndDate) &&
+                UserId.Equals(other.UserId) &&
+                FinalAmount.Equals(other.FinalAmount);
         }
 
         #endregion
+
     }
 }

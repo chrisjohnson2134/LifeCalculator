@@ -5,6 +5,7 @@ using LifeCalculator.Framework.CurrentAccountStorage;
 using Microsoft.VisualStudio.PlatformUI;
 using System;
 using System.Collections.Generic;
+using LifeCalculator.Framework.Managers;
 
 namespace LifeCalculator.Control.ViewModels
 {
@@ -32,6 +33,7 @@ namespace LifeCalculator.Control.ViewModels
             AddAccountCommand = new DelegateCommand(AddAccountCommandHandler);
             _accountStore = accountStore;
             StartDate = DateTime.Now;
+
         }
 
         #endregion

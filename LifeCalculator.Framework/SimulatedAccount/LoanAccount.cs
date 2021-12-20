@@ -1,17 +1,19 @@
 ﻿using LifeCalculator.Framework.ColumnDefinitions;
-using LifeCalculator.Framework.Database;
 using LifeCalculator.Framework.Enums;
 using LifeCalculator.Framework.LifeEvents;
+using LifeCalculator.Framework.Managers;
 using LifeCalculator.Framework.Services.DataService;
 using System;
 using System.Collections.Generic;
 
 namespace LifeCalculator.Framework.SimulatedAccount
 {
-    public class LoanAccount : IAccount, IDatabaseable
+    public class LoanAccount : IAccount
     {
         public event EventHandler<IAccountEvent> LifeEventAdded;
         public event EventHandler<IAccount> ValueChanged;
+
+        IAccountsEventsManager _accountsEventsManager;
 
         private int _id = -1;
         public int Id
@@ -171,11 +173,15 @@ namespace LifeCalculator.Framework.SimulatedAccount
         }
 
         [IgnoreDatabase]
-        public List<IAccountEvent> AccountLifeEvents { get; set; }
+        public List<IAccountEvent> AccountLifeEvents => _accountsEventsManager.GetAllAccountEventsByAccountId(Id);
 
         public LoanAccount()
         {
-            AccountLifeEvents = new List<IAccountEvent>();
+        }
+
+        public LoanAccount(IAccountsEventsManager accountsEventsManager)
+        {
+            SetEventsManager(accountsEventsManager);
         }
 
         public LoanAccount(string name, DateTime date, int loanLengthMonths, double interestRate, double loanAmount, double downPayment)
@@ -187,20 +193,18 @@ namespace LifeCalculator.Framework.SimulatedAccount
             _loanLengthMonths = loanLengthMonths;
             _startDate = date;
 
-
             updateMonthlyPayment();
-            AccountLifeEvents = new List<IAccountEvent>();
 
         }
 
         public void AddLifeEvent(IAccountEvent lifeEvent)
         {
             lifeEvent.ValueChanged += LifeEvent_ValueChanged;
-            AccountLifeEvents.Add(lifeEvent);
+            _accountsEventsManager.AddAccountEvent(lifeEvent);
             ValueChanged?.Invoke(this, this);
         }
 
-        private void LifeEvent_ValueChanged(object sender, EventArgs e)
+        private void LifeEvent_ValueChanged(object sender, IAccountEvent e)
         {
             ValueChanged?.Invoke(this, this);
         }
@@ -273,25 +277,27 @@ namespace LifeCalculator.Framework.SimulatedAccount
             return additonalAmount;
         }
 
+        public void SetEventsManager(IAccountsEventsManager accountsEventsManager)
+        {
+            _accountsEventsManager = accountsEventsManager;
+        }
+
         public override bool Equals(object obj)
         {
-            var entity = obj as LoanAccount;
+            var other = obj as LoanAccount;
 
-            if (obj == null || entity == null)
-                return false;
-
-            if (entity.Id == Id)
-            {
-                foreach (var item in AccountLifeEvents)
-                {
-                    var accEvent = entity.AccountLifeEvents.Find(t => t.Id == item.Id);
-                    if (!accEvent.Equals(item))
-                        return false;
-                }
-                return true;
-            }
-
-            return false;
+            return obj == null ? false :
+                Id.Equals(other.Id) &&
+                DownPayment.Equals(other.DownPayment) &&
+                InterestPaid.Equals(other.InterestPaid) &&
+                InterestRate.Equals(other.InterestRate) &&
+                LoanAmount.Equals(other.LoanAmount) &&
+                LoanLengthMonths.Equals(other.LoanLengthMonths) &&
+                PrincipalPaid.Equals(other.PrincipalPaid) &&
+                UserId.Equals(other.UserId) && 
+                Name.Equals(other.Name) &&
+                MonthlyPayment.Equals(other.MonthlyPayment) &&
+                StartDate.Equals(other.StartDate);
         }
     }
 }

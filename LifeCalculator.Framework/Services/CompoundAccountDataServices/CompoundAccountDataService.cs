@@ -29,64 +29,6 @@ namespace LifeCalculator.Framework.Services.AccountDataServices
             _tableName = "CompoundAccount";
         }
 
-        #endregion
-
-        #region CRUD Methods
-
-        public override async Task<CompoundAccount> Insert(CompoundAccount entity)
-        {
-            CompoundAccountEventDataService dataService = new CompoundAccountEventDataService();
-
-            CompoundAccount outputObj = await base.Insert(entity);
-            outputObj.AccountLifeEvents = new List<IAccountEvent>();
-
-            for (int i = 0; i < entity.AccountLifeEvents.Count; i++)
-            {
-                entity.AccountLifeEvents[i].AccountId = outputObj.Id;
-                outputObj.AddLifeEvent( await dataService.Insert((AccountEvent)entity.AccountLifeEvents[i]));
-            }
-
-            return outputObj;
-        }
-
-        public override async Task<CompoundAccount> Load(int id)
-        {
-            CompoundAccountEventDataService dataService = new CompoundAccountEventDataService();
-
-            CompoundAccount outputObj = await base.Load(id);
-
-            var eventList = await dataService.LoadFromAccountID(id);
-
-            foreach (var item in eventList)
-            {
-                if (item.AccountType == Enums.AccountTypes.CompoundInterest)
-                    outputObj.AddLifeEvent(item);
-            }
-
-            return outputObj;
-        }
-
-        public override async Task Save(int id, CompoundAccount entity)
-        {
-            var dataService = new CompoundAccountEventDataService();
-
-            foreach (var item in entity.AccountLifeEvents)
-            {
-                dataService.Save(item.Id, (AccountEvent)item);
-            }
-
-            base.Save(id, entity);
-        }
-
-        public virtual async Task Delete(int id)
-        {
-            var dataService = new CompoundAccountEventDataService();
-
-            base.Delete(id);
-
-            dataService.DeleteByAccountID(id);
-        }
-
         public async Task<List<CompoundAccount>> LoadAccountsByUserId(int referenceAccountID)
         {
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))

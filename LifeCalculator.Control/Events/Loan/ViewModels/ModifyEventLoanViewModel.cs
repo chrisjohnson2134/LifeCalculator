@@ -35,7 +35,7 @@ namespace LifeCalculator.Control.ViewModels
             set
             {
                 lifeEvent.Name = value;
-                ValueChanged?.Invoke(this, new EventArgs());
+                ValueChanged?.Invoke(this, lifeEvent);
                 OnPropertyChanged("Name");
             }
         }
@@ -49,7 +49,7 @@ namespace LifeCalculator.Control.ViewModels
             set
             {
                 lifeEvent.LifeEventType = value;
-                ValueChanged?.Invoke(this, new EventArgs());
+                ValueChanged?.Invoke(this, lifeEvent);
                 OnPropertyChanged("LifeEventType");
             }
         }
@@ -63,7 +63,7 @@ namespace LifeCalculator.Control.ViewModels
             set
             {
                 lifeEvent.AccountType = value;
-                ValueChanged?.Invoke(this, new EventArgs());
+                ValueChanged?.Invoke(this, lifeEvent);
                 OnPropertyChanged("AccountType");
             }
         }
@@ -77,7 +77,7 @@ namespace LifeCalculator.Control.ViewModels
             set
             {
                 lifeEvent.CurrentValue = value;
-                ValueChanged?.Invoke(this, new EventArgs());
+                ValueChanged?.Invoke(this, lifeEvent);
                 OnPropertyChanged("StartDate");
             }
         }
@@ -91,7 +91,7 @@ namespace LifeCalculator.Control.ViewModels
             set
             {
                 lifeEvent.Amount = value;
-                ValueChanged?.Invoke(this, new EventArgs());
+                ValueChanged?.Invoke(this, lifeEvent);
                 OnPropertyChanged("StartDate");
             }
         }
@@ -105,7 +105,7 @@ namespace LifeCalculator.Control.ViewModels
             set
             {
                 lifeEvent.InterestRate = value;
-                ValueChanged?.Invoke(this, new EventArgs());
+                ValueChanged?.Invoke(this, lifeEvent);
                 OnPropertyChanged("StartDate");
             }
         }
@@ -119,7 +119,7 @@ namespace LifeCalculator.Control.ViewModels
             set
             {
                 lifeEvent.StartDate = value;
-                ValueChanged?.Invoke(this, new EventArgs());
+                ValueChanged?.Invoke(this, lifeEvent);
                 OnPropertyChanged("StartDate");
             }
         }
@@ -133,7 +133,7 @@ namespace LifeCalculator.Control.ViewModels
             set
             {
                 lifeEvent.EndDate = value;
-                ValueChanged?.Invoke(this, new EventArgs());
+                ValueChanged?.Invoke(this, lifeEvent);
                 OnPropertyChanged("StartDate");
             }
         }
@@ -158,12 +158,12 @@ namespace LifeCalculator.Control.ViewModels
             set
             {
                 lifeEvent.AccountId = value;
-                ValueChanged?.Invoke(this, new EventArgs());
+                ValueChanged?.Invoke(this, lifeEvent);
                 OnPropertyChanged("StartDate");
             }
         }
 
-        public event EventHandler ValueChanged;
+        public event EventHandler<IAccountEvent> ValueChanged;
 
         #endregion
 

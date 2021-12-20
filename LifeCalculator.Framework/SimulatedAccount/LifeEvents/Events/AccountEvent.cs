@@ -10,7 +10,7 @@ namespace LifeCalculator.Framework.LifeEvents
 {
     public class AccountEvent : IAccountEvent
     {
-        public event EventHandler ValueChanged;
+        public event EventHandler<IAccountEvent> ValueChanged;
         public int Id { get; set; }
 
 
@@ -24,7 +24,7 @@ namespace LifeCalculator.Framework.LifeEvents
             set
             {
                 _name = value;
-                ValueChanged?.Invoke(this, EventArgs.Empty);
+                ValueChanged?.Invoke(this, this);
             }
         }
 
@@ -38,7 +38,7 @@ namespace LifeCalculator.Framework.LifeEvents
             set
             {
                 _accountId = value;
-                ValueChanged?.Invoke(this, EventArgs.Empty);
+                ValueChanged?.Invoke(this, this);
             }
         }
 
@@ -55,7 +55,7 @@ namespace LifeCalculator.Framework.LifeEvents
             set
             {
                 _startDate = value;
-                ValueChanged?.Invoke(this, EventArgs.Empty);
+                ValueChanged?.Invoke(this, this);
             }
         }
 
@@ -69,7 +69,7 @@ namespace LifeCalculator.Framework.LifeEvents
             set
             {
                 _endDate = value;
-                ValueChanged?.Invoke(this, EventArgs.Empty);
+                ValueChanged?.Invoke(this, this);
             }
         }
 
@@ -83,7 +83,7 @@ namespace LifeCalculator.Framework.LifeEvents
             set
             {
                 _currentValue = value;
-                ValueChanged?.Invoke(this, EventArgs.Empty);
+                ValueChanged?.Invoke(this, this);
             }
         }
 
@@ -97,7 +97,7 @@ namespace LifeCalculator.Framework.LifeEvents
             set
             {
                 _amount = value;
-                ValueChanged?.Invoke(this, EventArgs.Empty);
+                ValueChanged?.Invoke(this, this);
             }
         }
 
@@ -111,12 +111,13 @@ namespace LifeCalculator.Framework.LifeEvents
             set
             {
                 _interestRate = value;
-                ValueChanged?.Invoke(this, EventArgs.Empty);
+                ValueChanged?.Invoke(this, this);
             }
         }
 
         public AccountEvent()
         {
+            Id = -1;
         }
 
         public AccountEvent(IAccountEvent entity)

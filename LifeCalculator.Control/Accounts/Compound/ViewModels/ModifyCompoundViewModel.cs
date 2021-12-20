@@ -171,7 +171,7 @@ namespace LifeCalculator.Control.ViewModels
             }
         }
 
-        private void EventValueChangedHandler(object sender, EventArgs e)
+        private void EventValueChangedHandler(object sender, IAccountEvent e)
         {
             if(AccountLifeEventsVMs.Count != Account.AccountLifeEvents.Count)
             {

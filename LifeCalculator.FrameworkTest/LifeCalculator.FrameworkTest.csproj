@@ -80,17 +80,18 @@
   <ItemGroup>
     <Compile Include="Account\InvestmentAccountTest.cs" />
     <Compile Include="Account\LoanAccountTest.cs" />
-    <Compile Include="Account\Manager\AccountManagerTest.cs" />
+    <Compile Include="Managers\AccountManagerTest.cs" />
+    <Compile Include="Managers\EventManagerTest.cs" />
     <Compile Include="Budget\BudgetManagerTest.cs" />
     <Compile Include="Budget\BudgetManagerTestContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AccountDataService\AccountDataServiceTest.cs" />
     <Compile Include="Services\CompoundAccountDataServices\CompoundAccountDataServiceTest.cs" />
     <Compile Include="Services\EventsDataService\CompoundAccountEventDataServiceTest.cs" />
+    <Compile Include="Services\FinancialAccountService\FinancialAccountDataServiceTest.cs" />
     <Compile Include="Services\LoanAccountDataService\LoanAccountDataServiceTest.cs" />
     <Compile Include="Services\PlaidAccInfoDataService\InstitutionDataServiceTest.cs" />
     <Compile Include="Services\PlaidAccInfoDataService\TransactionDataServiceTest.cs" />
-    <Compile Include="Settings\AppSettingsTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

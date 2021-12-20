@@ -16,6 +16,7 @@ namespace LifeCalculator.Framework.FinancialAccount
         {
             SimulatedAccountManager = new AccountManager();
             BudgetManager = new BudgetManager();
+            AccountsEventsManager = new AccountsEventsManager();
         }
 
         #endregion
@@ -64,6 +65,8 @@ namespace LifeCalculator.Framework.FinancialAccount
         public AccountManager UserAccountManager { get; set; }
         [IgnoreDatabase]
         public BudgetManager BudgetManager { get; set; }
+        [IgnoreDatabase]
+        public IAccountsEventsManager AccountsEventsManager { get; set; }
 
         #endregion
     }

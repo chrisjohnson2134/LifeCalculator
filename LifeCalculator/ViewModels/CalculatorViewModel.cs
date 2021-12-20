@@ -13,7 +13,7 @@ using LifeCalculator.Framework.Services.AccDataService;
 using LifeCalculator.Control.Accounts;
 using LifeCalculator.Control.Events;
 using LifeCalculator.Framework.Services.EventsDataService;
-
+using LifeCalculator.Framework.Managers;
 
 namespace LifeCalculator.ViewModels
 {
@@ -22,6 +22,7 @@ namespace LifeCalculator.ViewModels
         #region Fields
 
         private IAccountStore _accountStore;
+        private IAccountsEventsManager _accountsEventsManager;
 
         private string _accountType;
         private IModifyAccount _accountSelected;
@@ -34,6 +35,11 @@ namespace LifeCalculator.ViewModels
         public CalculatorViewModel(IAccountStore accountStore)
         {
             _accountStore = accountStore;
+            _accountStore.CurrentAccount.SimulatedAccountManager.AccountAdded += AccountManager_AccountAdded;
+            _accountStore.CurrentAccount.SimulatedAccountManager.AccountChanged += AccountManager_AccountChanged;
+            _accountStore.CurrentAccount.SimulatedAccountManager.AccountDeleted += AccountManager_AccountDeleted;
+
+            _accountsEventsManager = _accountStore.CurrentAccount.AccountsEventsManager;
 
             ValueCollection = new SeriesCollection();
 
@@ -41,9 +47,7 @@ namespace LifeCalculator.ViewModels
 
             eventDataService = new AccountEventDataService();
 
-            _accountStore.CurrentAccount.SimulatedAccountManager.AccountAdded += AccountManager_AccountAdded;
-            _accountStore.CurrentAccount.SimulatedAccountManager.AccountChanged += AccountManager_AccountChanged;
-            _accountStore.CurrentAccount.SimulatedAccountManager.AccountDeleted += AccountManager_AccountDeleted;
+            
 
             foreach (var account in _accountStore.CurrentAccount.SimulatedAccountManager.GetAllAccounts())
             {
@@ -136,13 +140,17 @@ namespace LifeCalculator.ViewModels
         private void AccountManager_AccountDeleted(object sender, IAccount e)
         {
 
-                foreach (var item in ValueCollection)
-                    if(item.Title.Equals(e.Name))
-                        ValueCollection.Remove(item);
+            foreach (var item in ValueCollection)
+                if(item.Title.Equals(e.Name))
+                    ValueCollection.Remove(item);
 
-                foreach (var item in AccountsList)
-                    if (item.Name.Equals(e.Name))
-                        AccountsList.Remove(item);
+            IModifyAccount itemVm = null;
+            foreach (var item in AccountsList)
+                if (item.Name.Equals(e.Name))
+                    itemVm = item;
+
+            if(itemVm != null)
+                AccountsList.Remove(itemVm);
 
             ReChart(this, EventArgs.Empty);
         }
@@ -192,12 +200,14 @@ namespace LifeCalculator.ViewModels
         {
             if (account is LoanAccount loanAccount)
             {
+                loanAccount.SetEventsManager(_accountsEventsManager);
                 var vm = new ModifyLoanViewModel(loanAccount,_accountStore.CurrentAccount.SimulatedAccountManager);
                 AccountsList.Add(vm);
             }
 
             else if (account is CompoundAccount compoundAccount)
             {
+                compoundAccount.SetEventsManager(_accountsEventsManager);
                 var vm = new ModifyCompoundViewModel(compoundAccount, _accountStore.CurrentAccount.SimulatedAccountManager);
                 AccountsList.Add(vm);
             }

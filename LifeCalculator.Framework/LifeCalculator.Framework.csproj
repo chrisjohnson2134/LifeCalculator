@@ -148,6 +148,10 @@
     <Compile Include="Accounts\Institution.cs" />
     <Compile Include="Accounts\TransactionItem.cs" />
     <Compile Include="Managers\BudgetManager.cs" />
+    <Compile Include="Managers\EventsManager.cs" />
+    <Compile Include="Managers\Interfaces\IAccountManager.cs" />
+    <Compile Include="Managers\Interfaces\IBudgetManager.cs" />
+    <Compile Include="Managers\Interfaces\IAccountsEventsManager.cs" />
     <Compile Include="Services\BudgetService\BudgetDataService.cs" />
     <Compile Include="Services\PlaidAccInfoDataService\AccountDataService.cs" />
     <Compile Include="Services\PlaidAccInfoDataService\InstitutionDataService.cs" />
@@ -167,12 +171,6 @@
     <Compile Include="CustomExceptions\PasswordsDoNotMatchException.cs" />
     <Compile Include="CustomExceptions\UsernameAlreadyExistsException.cs" />
     <Compile Include="CustomExceptions\UserNotFoundException.cs" />
-    <Compile Include="Database\BaseQuery.cs" />
-    <Compile Include="Database\DatabaseManager.cs" />
-    <Compile Include="Database\Interfaces\IDatabaseable.cs" />
-    <Compile Include="Database\Interfaces\IDatabaseManager.cs" />
-    <Compile Include="Database\Queries\Accounts\CompoundQueries.cs" />
-    <Compile Include="Database\Queries\Accounts\LoanQueries.cs" />
     <Compile Include="SimulatedAccount\LifeEvents\Events\AccountEvent.cs" />
     <Compile Include="SimulatedAccount\CompoundAccount.cs" />
     <Compile Include="Managers\IAccount.cs" />
@@ -211,9 +209,7 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Database\Queries\Events\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Analyzer Include="..\packages\AWSSDK.SecretsManager.3.7.1.55\analyzers\dotnet\cs\AWSSDK.SecretsManager.CodeAnalysis.dll" />
   </ItemGroup>

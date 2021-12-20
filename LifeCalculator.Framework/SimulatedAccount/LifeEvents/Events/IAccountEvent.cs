@@ -6,7 +6,7 @@ namespace LifeCalculator.Framework.LifeEvents
     //Rename the Folder or I will Barf!!
     public interface IAccountEvent
     {
-        event EventHandler ValueChanged;
+        event EventHandler<IAccountEvent> ValueChanged;
         string Name { get; set; }
         int Id { get; set; }
         int AccountId { get; set; }

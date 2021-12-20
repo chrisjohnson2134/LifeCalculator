@@ -8,24 +8,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using LifeCalculator.Framework.Managers;
 
 namespace LifeCalculator.FrameworkTest.Services
 {
     [TestFixture]
     public class LoanAccountDataServiceTest
     {
-
-        protected List<IAccountEvent> AccountLifeEventsExpected;
+        IAccountsEventsManager accountsEventManager;
         public LoanAccount CreateCompoundAccount(string name)
         {
-            var AccountLifeEventsExpected = new List<IAccountEvent>();
-            AccountLifeEventsExpected.Add(new AccountEvent() { Name = "start", AccountType = AccountTypes.LoanAccount });
-            AccountLifeEventsExpected.Add(new AccountEvent() { Name = "stop", AccountType = AccountTypes.LoanAccount });
+            accountsEventManager = new AccountsEventsManager();
 
-            return new LoanAccount()
+            return new LoanAccount(accountsEventManager)
             {
-                Name = name,
-                AccountLifeEvents = AccountLifeEventsExpected
+                Name = name
             };
         }
 
@@ -41,13 +38,13 @@ namespace LifeCalculator.FrameworkTest.Services
             //INSERT
             GusAccount = await dataService.Insert(GusAccount);
             var RoulphInsertedAccount = await dataService.Insert(RoulphAccount);
-
+            RoulphInsertedAccount.SetEventsManager(accountsEventManager);
             Assert.IsFalse(RoulphInsertedAccount.Equals(RoulphAccount));
 
             //LOAD
             var RoulphLoadedAccount = await dataService.Load(RoulphInsertedAccount.Id);
-
-            Assert.That(RoulphInsertedAccount.Equals(RoulphLoadedAccount));
+            RoulphLoadedAccount.SetEventsManager(accountsEventManager);
+            Assert.AreEqual(RoulphInsertedAccount,RoulphLoadedAccount);
 
             RoulphInsertedAccount.Name = "newName";
 

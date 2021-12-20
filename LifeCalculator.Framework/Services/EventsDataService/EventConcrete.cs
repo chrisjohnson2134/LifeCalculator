@@ -21,7 +21,7 @@ namespace LifeCalculator.Framework.Services.EventsDataService
         public double Amount { get; set; }
         public double InterestRate { get; set; }
         
-        public event EventHandler ValueChanged;
+        public event EventHandler<IAccountEvent> ValueChanged;
 
         public EventConcrete()
         {

@@ -5,40 +5,43 @@ using LifeCalculator.Framework.Services.AccDataService;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LifeCalculator.Framework.Managers;
 
 namespace LifeCalculator.FrameworkTest.Services.AccountDataService
 {
     [TestFixture]
     class AccountDataServiceTest
     {
+        IAccountsEventsManager accountsEventsManager;
+
         public CompoundAccount CreateCompoundAccount(string name)
         {
-            var eventsList = new List<IAccountEvent>();
+            accountsEventsManager = new AccountsEventsManager();
 
-            eventsList.Add(new AccountEvent() { Name = name + "hi", AccountType = AccountTypes.CompoundInterest });
-            eventsList.Add(new AccountEvent() { Name = name + "hey", AccountType = AccountTypes.CompoundInterest });
+            accountsEventsManager.AddAccountEvent(new AccountEvent() { Name = name + "hi", AccountType = AccountTypes.CompoundInterest });
+            accountsEventsManager.AddAccountEvent(new AccountEvent() { Name = name + "hey", AccountType = AccountTypes.CompoundInterest });
 
-            return new CompoundAccount()
+            return new CompoundAccount(accountsEventsManager)
             {
                 Name = name,
-                UserId = 123,
-                AccountLifeEvents = eventsList
+                UserId = 123
             };
         }
 
         public LoanAccount CreateLoanAccount(string name)
         {
-            var eventsList = new List<IAccountEvent>();
 
-            eventsList.Add(new AccountEvent() { Name = name + "hi", AccountType = AccountTypes.LoanAccount });
-            eventsList.Add(new AccountEvent() { Name = name + "hey", AccountType = AccountTypes.LoanAccount });
+            
 
-            return new LoanAccount()
+            return new LoanAccount(accountsEventsManager)
             {
                 Name = name,
-                UserId = 123,
-                AccountLifeEvents = eventsList
+                Id = 9,
+                UserId = 123
             };
+
+            accountsEventsManager.AddAccountEvent(new AccountEvent() { Name = name + "hi", AccountType = AccountTypes.LoanAccount });
+            accountsEventsManager.AddAccountEvent(new AccountEvent() { Name = name + "hey", AccountType = AccountTypes.LoanAccount });
         }
 
         [Test]
@@ -55,34 +58,17 @@ namespace LifeCalculator.FrameworkTest.Services.AccountDataService
 
             var insertedAccountList = await data.InsertAccountsList(accountList);
 
-            Assert.That(accountList[0].Name.Equals(insertedAccountList[0].Name));
-            Assert.That(accountList[1].Name.Equals(insertedAccountList[1].Name));
-
             var loadedAccountList = await data.LoadAccountsByUserId(123);
 
-            Assert.That(accountList[0].Name.Equals(loadedAccountList[0].Name));
-            Assert.That(accountList[1].Name.Equals(loadedAccountList[1].Name));
             Assert.AreEqual(loadedAccountList.Count,accountList.Count);
 
             var compoundLoaded = loadedAccountList[0] as CompoundAccount;
             var loanLoaded = loadedAccountList[1] as LoanAccount;
 
 
-            Assert.That(compoundLoaded.AccountLifeEvents[0].Name.Equals(
-                compound1Account.AccountLifeEvents[0].Name));
-            Assert.That(compoundLoaded.AccountLifeEvents[1].Name.Equals(
-                compound1Account.AccountLifeEvents[1].Name));
-
-            Assert.That(loanLoaded.AccountLifeEvents[0].Name.Equals(
-                loan1Account.AccountLifeEvents[0].Name));
-            Assert.That(loanLoaded.AccountLifeEvents[1].Name.Equals(
-                loan1Account.AccountLifeEvents[1].Name));
 
             compoundLoaded.Name = "wrongName1";
             loanLoaded.Name = "wrongName2";
-
-            compoundLoaded.AccountLifeEvents[0].Name = "Goofy";
-            compoundLoaded.AccountLifeEvents[0].Amount = 10.00;
 
             var updatedList = data.UpdateAccountList(loadedAccountList);
             var updatedAccountList = await data.LoadAccountsByUserId(123);
@@ -92,8 +78,6 @@ namespace LifeCalculator.FrameworkTest.Services.AccountDataService
             Assert.That(!accountList[0].Name.Equals(updatedAccountList[0].Name));
             Assert.That(!accountList[1].Name.Equals(updatedAccountList[1].Name));
 
-            Assert.AreNotEqual(compound1Account.AccountLifeEvents[0].Name, updatedCompound.AccountLifeEvents[0].Name);
-            Assert.AreNotEqual(compound1Account.AccountLifeEvents[0].Amount, updatedCompound.AccountLifeEvents[0].Amount);
 
             await data.DeleteAccountList(updatedAccountList);
 
@@ -111,19 +95,15 @@ namespace LifeCalculator.FrameworkTest.Services.AccountDataService
 
             var loadedAccount = await data.Load(insertedAccount) as CompoundAccount;
 
-            Assert.That(insertedAccount.Name.Equals(loadedAccount.Name));//.Equals issue
+            Assert.That(insertedAccount.Name.Equals(loadedAccount.Name));
 
             loadedAccount.Name = "ChangedName";
-            loadedAccount.AccountLifeEvents[0].Name = "lost";
-            loadedAccount.AccountLifeEvents[1].Name = "low";
 
             await data.Save(loadedAccount);
 
             loadedAccount = await data.Load(insertedAccount) as CompoundAccount;
 
             Assert.That(!insertedAccount.Name.Equals(loadedAccount.Name));
-            Assert.That(!insertedAccount.AccountLifeEvents[0].Name.Equals(loadedAccount.AccountLifeEvents[0].Name));
-            Assert.That(!insertedAccount.AccountLifeEvents[1].Name.Equals(loadedAccount.AccountLifeEvents[1].Name));
 
             await data.Delete(loadedAccount);
 

@@ -3,6 +3,7 @@ using LifeCalculator.Framework.LifeEvents;
 using NUnit.Framework;
 using Should;
 using System;
+using LifeCalculator.Framework.Managers;
 
 namespace LifeCalcuator.FrameworkTest.SimulatedAccount
 {
@@ -12,10 +13,13 @@ namespace LifeCalcuator.FrameworkTest.SimulatedAccount
     [TestFixture]
     public class InvestmentAccountTest
     {
+        IAccountsEventsManager accountEventManager;
+
         [Test]
         public void BasicCompoundInterestCalculation()
         {
-            CompoundAccount investmentAccount = new CompoundAccount();
+            accountEventManager = new AccountsEventsManager();
+            CompoundAccount investmentAccount = new CompoundAccount(accountEventManager);
 
             investmentAccount.SetupBasicCalculation(DateTime.Now, DateTime.Now.AddYears(1),
             10, 100, 10);
@@ -27,7 +31,8 @@ namespace LifeCalcuator.FrameworkTest.SimulatedAccount
         [Test]
         public void BasicMonthByMonthReturnTest()
         {
-            CompoundAccount investmentAccount = new CompoundAccount();
+            IAccountsEventsManager accountEventManager = new AccountsEventsManager();
+            CompoundAccount investmentAccount = new CompoundAccount(accountEventManager);
 
             investmentAccount.SetupBasicCalculation(DateTime.Now, DateTime.Now.AddYears(1),
             1, 100, 10);
@@ -41,7 +46,8 @@ namespace LifeCalcuator.FrameworkTest.SimulatedAccount
         [Test]
         public void AddedLifeEventComputation()
         {
-            CompoundAccount investmentAccount = new CompoundAccount();
+            IAccountsEventsManager accountEventManager = new AccountsEventsManager();
+            CompoundAccount investmentAccount = new CompoundAccount(accountEventManager);
 
             investmentAccount.SetupBasicCalculation(DateTime.Now, DateTime.Now.AddYears(2),
             10, 100, 10);

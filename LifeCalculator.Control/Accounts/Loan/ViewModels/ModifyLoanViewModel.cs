@@ -17,6 +17,7 @@ namespace LifeCalculator.Control.ViewModels
 
         private LoanAccount _account;
         private AccountManager _accountManager;
+        private IAccountsEventsManager _accountsEventsManager;
         public event EventHandler ValueChanged;
 
         #endregion
@@ -175,18 +176,7 @@ namespace LifeCalculator.Control.ViewModels
 
         public LoanAccount Account => _account;
 
-        public List<IAccountEvent> AccountLifeEvents
-        {
-            get
-            {
-                return _account.AccountLifeEvents;
-            }
-            set
-            {
-                _account.AccountLifeEvents = value;
-                OnPropertyChanged("AccountLifeEvents");
-            }
-        }
+        public List<IAccountEvent> AccountLifeEvents => _accountsEventsManager.GetAllAccountEventsByAccountId(Account.Id);
 
         #endregion
 
