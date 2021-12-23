@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using LifeCalculator.Framework.Services.AccDataService;
 
-namespace LifeCalculator.FrameworkTest.Account.Managers
+namespace LifeCalculator.FrameworkTest.Managers
 {
     [TestFixture]
     public class AccountManagerTest

@@ -4,6 +4,7 @@ using LifeCalculator.Framework.Users;
 using LifeCalculator.Framework.Services.DataService;
 using LifeCalculator.Framework.Managers;
 using LifeCalculator.Framework.Budget;
+using LifeCalculator.Framework.Managers.Interfaces;
 
 namespace LifeCalculator.Framework.FinancialAccount
 {
@@ -15,7 +16,8 @@ namespace LifeCalculator.Framework.FinancialAccount
         public FinancialAccount()
         {
             SimulatedAccountManager = new AccountManager();
-            BudgetManager = new BudgetManager();
+            TransactionManager = new TransactionsManager();
+            BudgetManager = new BudgetManager(TransactionManager);
             AccountsEventsManager = new AccountsEventsManager();
         }
 
@@ -65,6 +67,8 @@ namespace LifeCalculator.Framework.FinancialAccount
         public AccountManager UserAccountManager { get; set; }
         [IgnoreDatabase]
         public BudgetManager BudgetManager { get; set; }
+        [IgnoreDatabase]
+        public ITransactionManager TransactionManager { get; set; }
         [IgnoreDatabase]
         public IAccountsEventsManager AccountsEventsManager { get; set; }
 

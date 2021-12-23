@@ -9,6 +9,7 @@ using Microsoft.VisualStudio.PlatformUI;
 using System;
 using System.Collections.ObjectModel;
 using LifeCalculator.Framework.Services.PlaidAccInfoDataService;
+using LifeCalculator.Framework.Managers.Interfaces;
 
 namespace LifeCalculator.Control.ViewModels
 {
@@ -19,6 +20,7 @@ namespace LifeCalculator.Control.ViewModels
 
         BudgetManager _budgetManager;
         InstitutionDataService institutionDataService;
+        ITransactionManager _transactionManager;
 
         #endregion
 
@@ -27,6 +29,7 @@ namespace LifeCalculator.Control.ViewModels
         public PlaidDevSettingsViewModel(IAccountStore accountStore)
         {
             _budgetManager = accountStore.CurrentAccount.BudgetManager;
+            _transactionManager = accountStore.CurrentAccount.TransactionManager;
             //_budgetManager.AutoSort = true;
             Name = "Plaid Dev Settings";
 
@@ -161,7 +164,7 @@ namespace LifeCalculator.Control.ViewModels
                 foreach (var item in PlaidService.GetTransactions(AppSettings.Instance.DevelopmentInstitutions[0], StartDate, EndDate))
                 {
                     Transactions.Add(item);
-                    _budgetManager.AddTransaction(item);
+                    _transactionManager.AddAccountTransaction(item);
                 }
             else if (Framework.Enums.Environment.Sandbox == AppSettings.Instance.PlaidApiSettings.Environment && AppSettings.Instance.SandboxInstitutions[0] != null)
                 foreach (var item in PlaidService.GetTransactions(AppSettings.Instance.SandboxInstitutions[0], StartDate, EndDate))

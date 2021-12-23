@@ -152,6 +152,8 @@
     <Compile Include="Managers\Interfaces\IAccountManager.cs" />
     <Compile Include="Managers\Interfaces\IBudgetManager.cs" />
     <Compile Include="Managers\Interfaces\IAccountsEventsManager.cs" />
+    <Compile Include="Managers\Interfaces\ITransactionManager.cs" />
+    <Compile Include="Managers\TransactionsManager.cs" />
     <Compile Include="Services\BudgetService\BudgetDataService.cs" />
     <Compile Include="Services\PlaidAccInfoDataService\AccountDataService.cs" />
     <Compile Include="Services\PlaidAccInfoDataService\InstitutionDataService.cs" />

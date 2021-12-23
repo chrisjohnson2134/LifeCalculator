@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LifeCalculator.FrameworkTest.Account.Managers
+namespace LifeCalculator.FrameworkTest.Managers
 {
     [TestFixture]
     public class EventManagerTest
@@ -110,6 +110,12 @@ namespace LifeCalculator.FrameworkTest.Account.Managers
         [Test, Ignore("notImplemented")]
         //1.) Listed event properies should fire value changed.
         public async Task ChangingSpecifiedValuesWillFireValueChangeEvent()
+        {
+
+        }
+
+        [Test,Ignore("not implemented.")]
+        public void CorrectEventsLoadedForUserAccount()
         {
 
         }

@@ -1,4 +1,5 @@
 ﻿using LifeCalculator.Framework.Accounts;
+using LifeCalculator.Framework.Managers.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +8,7 @@ namespace LifeCalculator.Framework.Budget
 {
     public class BudgetManager
     {
+        private ITransactionManager _transactionManager;
         #region Events
 
         public event EventHandler BudgetsSorted;
@@ -22,7 +24,14 @@ namespace LifeCalculator.Framework.Budget
         public BudgetManager()
         {
             BudgetItems = new List<BudgetItemModel>();
-            Transactions = new List<TransactionItem>();
+        }
+
+        public BudgetManager(ITransactionManager transactionManager)
+        {
+            BudgetItems = new List<BudgetItemModel>();
+            _transactionManager = transactionManager;
+
+            Transactions = _transactionManager.GetAllAccountTransactionsThisMonth(DateTime.Now);
         }
 
         #endregion
@@ -30,7 +39,7 @@ namespace LifeCalculator.Framework.Budget
         #region Properties
 
         public List<BudgetItemModel> BudgetItems { get; set; }
-        public List<TransactionItem> Transactions { get; set; }
+        public List<TransactionItem> Transactions { get; set; }//needs to be maybe more specific??//=> _transactionManager.GetAllAccountTransactions();
 
         public bool AutoSort { get; set; }
 

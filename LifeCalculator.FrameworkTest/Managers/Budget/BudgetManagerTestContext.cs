@@ -1,5 +1,6 @@
 ﻿using LifeCalculator.Framework.Accounts;
 using LifeCalculator.Framework.Budget;
+using LifeCalculator.Framework.Managers;
 using System.Collections.Generic;
 
 namespace LifeCalculator.FrameworkTest.Budget
@@ -16,8 +17,10 @@ namespace LifeCalculator.FrameworkTest.Budget
         public readonly TransactionItem transactionItem3 = new TransactionItem() { TransactionId = "3", Name = "Item3", BudgetCategory = "Housing" };
         public readonly TransactionItem transactionItem4 = new TransactionItem() { TransactionId = "4", Name = "Item4", BudgetCategory = "Entertainment" };
 
+
         public BudgetManagerTestContext()
         {
+
             transactionItems = new List<TransactionItem>()
             {
                 transactionItem1, transactionItem2, transactionItem3, transactionItem4
@@ -26,14 +29,18 @@ namespace LifeCalculator.FrameworkTest.Budget
 
         public BudgetManager CreateBudgetManager(bool autoSort = true)
         {
-            BudgetManager budgetManager = new BudgetManager();
+            TransactionsManager transactionManager = new TransactionsManager();
+
+            BudgetManager budgetManager = new BudgetManager(transactionManager);
             budgetManager.AutoSort = autoSort;
             return budgetManager;
         }
 
         public BudgetManager CreateBudgetManagerWithData(bool autoSort = true)
         {
-            BudgetManager budgetManager = new BudgetManager();
+            TransactionsManager transactionManager = new TransactionsManager();
+
+            BudgetManager budgetManager = new BudgetManager(transactionManager);
             budgetManager.AutoSort = autoSort;
             budgetManager.AddTransactions(transactionItems);
             return budgetManager;
