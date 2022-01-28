@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace LifeCalculator.Framework.SimulatedAccount
 {
-    public class CompoundAccount : IAccount
+    public class CompoundAccount : ISimulatedAccount
     {
 
         #region Events
@@ -163,7 +163,7 @@ namespace LifeCalculator.Framework.SimulatedAccount
             _startDate = startDate;
             _endDate = endDate;
 
-            var newEvent = new AccountEvent() { Name = "Additional Monthly Contribute", StartDate = startDate, EndDate = endDate, Amount = additionalAmount };
+            var newEvent = new AccountEvent() { Name = "Additional Monthly Contribute", StartDate = startDate, EndDate = endDate, Amount = additionalAmount,LifeEventType = LifeEnum.MonthlyContribute };
 
             AddLifeEvent(newEvent);
 
@@ -190,7 +190,8 @@ namespace LifeCalculator.Framework.SimulatedAccount
                 - (_endDate.Year * 12 + (_endDate.Month - 1)));
             
             for (int j = 0; j < monthDiff; j++)
-                {
+            {
+
                 currValue = (currValue + monthlyContribute) * (1 + (InterestRate / 100) / 12) + additionalPriPaymentCalculation(_startDate.AddMonths(j));
                 monthlies.Add(new MonthlyColumn() { Name = Name, Gain = Math.Round(currValue,2), Date = _startDate.AddMonths(j) });
             }

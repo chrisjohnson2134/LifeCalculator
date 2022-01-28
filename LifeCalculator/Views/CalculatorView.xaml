@@ -16,11 +16,11 @@
             <Grid Background="White">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="AUTO" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
-                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
                 <lvc:CartesianChart
@@ -34,7 +34,7 @@
                 <!--  Account Grid  -->
                 <Grid
             Grid.Row="0" Grid.Column="1"
-            Width="225" Height="300" Margin="20">
+            Width="225" Height="350" Margin="20">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
@@ -87,10 +87,7 @@
                 Content="{Binding CurrentEventViewModel}"/>
                 </Grid>
 
-                <ScrollViewer
-            Grid.Row="1" Grid.Column="0"
-            Width="620" Height="300" Margin="5">
-
+                <ScrollViewer Grid.Row="1" Grid.Column="0" Width="620" Height="300" Margin="5">
                     <ItemsControl ItemsSource="{Binding AccountsList}">
                         <ItemsControl.Resources>
                             <DataTemplate DataType="{x:Type controlViewModels:ModifyLoanViewModel}">
@@ -100,13 +97,6 @@
                             </DataTemplate>
                             <DataTemplate DataType="{x:Type controlViewModels:ModifyCompoundViewModel}">
                                 <Expander Header="{Binding Name}" Margin="4">
-                                    <!--<Expander.Header>
-                                <StackPanel Orientation="Horizontal">
-                                    <Label Content="{Binding Name}" FontSize="14"/>
-                                    <CheckBox Content="Hide"/>
-                                    <Button Content="Delete" VerticalAlignment="Center"/>
-                                </StackPanel>
-                            </Expander.Header> -->
                                     <controlViews:ModifyCompound/>
                                 </Expander>
                             </DataTemplate>

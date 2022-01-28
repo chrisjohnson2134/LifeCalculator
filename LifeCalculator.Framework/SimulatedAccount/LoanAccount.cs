@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace LifeCalculator.Framework.SimulatedAccount
 {
-    public class LoanAccount : IAccount
+    public class LoanAccount : ISimulatedAccount
     {
         public event EventHandler<IAccountEvent> LifeEventAdded;
         public event EventHandler<IAccount> ValueChanged;
@@ -251,12 +251,22 @@ namespace LifeCalculator.Framework.SimulatedAccount
                 _interestPaid += interestPay;
                 _principalPaid += principalPay;
                 currValue = currValue - principalPay;
+
+                
+
                 monthlies.Add(new MonthlyColumn()
                 {
                     Name = _name,
                     Gain = Math.Round((_loanAmount - _downPayment) - _principalPaid,2),
                     Date = _startDate.AddMonths(1 + j)
                 });
+
+                if (currValue < 0)
+                {
+                    currValue = 0;
+                    monthlies[monthlies.Count-1].Gain = 0;
+                    break;
+                }
 
             }
 

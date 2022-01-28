@@ -5,9 +5,9 @@ namespace LifeCalculator.Control.Views
     /// <summary>
     /// Interaction logic for AddEventCompound
     /// </summary>
-    public partial class AddEventCompound : UserControl
+    public partial class AddEvent : UserControl
     {
-        public AddEventCompound()
+        public AddEvent()
         {
             InitializeComponent();
         }

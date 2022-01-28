@@ -5,9 +5,9 @@ namespace LifeCalculator.Control.Views
     /// <summary>
     /// Interaction logic for ModifyEventCompound
     /// </summary>
-    public partial class ModifyEventCompound : UserControl
+    public partial class ModifyEvent : UserControl
     {
-        public ModifyEventCompound()
+        public ModifyEvent()
         {
             InitializeComponent();
         }

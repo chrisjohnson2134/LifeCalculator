@@ -173,6 +173,7 @@
     <Compile Include="CustomExceptions\PasswordsDoNotMatchException.cs" />
     <Compile Include="CustomExceptions\UsernameAlreadyExistsException.cs" />
     <Compile Include="CustomExceptions\UserNotFoundException.cs" />
+    <Compile Include="SimulatedAccount\ISimulatedAccount.cs" />
     <Compile Include="SimulatedAccount\LifeEvents\Events\AccountEvent.cs" />
     <Compile Include="SimulatedAccount\CompoundAccount.cs" />
     <Compile Include="Managers\IAccount.cs" />
@@ -193,8 +194,6 @@
     <Compile Include="Services\DataService\GenericDataService.cs" />
     <Compile Include="Services\DataService\IDataService.cs" />
     <Compile Include="Services\EventsDataService\AccountEventDataService.cs" />
-    <Compile Include="Services\EventsDataService\CompoundAccountEventDataService.cs" />
-    <Compile Include="Services\EventsDataService\EventConcrete.cs" />
     <Compile Include="Services\FinancialAccountService\FinancialAccountDataService.cs" />
     <Compile Include="Services\FinancialAccountService\IFinancialAccountDataService.cs" />
     <Compile Include="Services\LoanAccountDataService\LoanAccountDataService.cs" />

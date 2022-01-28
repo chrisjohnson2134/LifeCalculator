@@ -13,6 +13,6 @@ namespace LifeCalculator.Framework.SimulatedAccount
         int Id { get; set; }
         int UserId { get; set; }
 
-        List<MonthlyColumn> Calculation();//REMOVE
+        
     }
 }

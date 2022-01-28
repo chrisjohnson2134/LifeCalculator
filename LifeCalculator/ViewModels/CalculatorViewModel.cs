@@ -26,7 +26,6 @@ namespace LifeCalculator.ViewModels
 
         private string _accountType;
         private IModifyAccount _accountSelected;
-        AccountEventDataService eventDataService;
 
         #endregion
 
@@ -40,14 +39,11 @@ namespace LifeCalculator.ViewModels
             _accountStore.CurrentAccount.SimulatedAccountManager.AccountDeleted += AccountManager_AccountDeleted;
 
             _accountsEventsManager = _accountStore.CurrentAccount.AccountsEventsManager;
+            _accountsEventsManager.AccountEventChanged += AccountsEventsManager_EventChanged;
 
             ValueCollection = new SeriesCollection();
 
             AccountsList = new ObservableCollection<IModifyAccount>();
-
-            eventDataService = new AccountEventDataService();
-
-            
 
             foreach (var account in _accountStore.CurrentAccount.SimulatedAccountManager.GetAllAccounts())
             {
@@ -57,6 +53,7 @@ namespace LifeCalculator.ViewModels
             ReChart(new object(), EventArgs.Empty);
         }
 
+        
         #endregion
 
         #region Properties
@@ -137,6 +134,11 @@ namespace LifeCalculator.ViewModels
             ReChart(new object(), EventArgs.Empty);
         }
 
+        private void AccountsEventsManager_EventChanged(object sender, IAccountEvent e)
+        {
+            ReChart(new object(), EventArgs.Empty);
+        }
+
         private void AccountManager_AccountDeleted(object sender, IAccount e)
         {
 
@@ -178,11 +180,11 @@ namespace LifeCalculator.ViewModels
         {
             if (accountSelected is ModifyLoanViewModel loanAccount)
             {
-                CurrentEventViewModel = new AddEventLoanViewModel(loanAccount.Account);
+                CurrentEventViewModel = new AddEventViewModel(loanAccount.Account);
             }
             else if (accountSelected is ModifyCompoundViewModel compoundAccount)
             {
-                CurrentEventViewModel = new AddEventCompoundViewModel(compoundAccount.Account);
+                CurrentEventViewModel = new AddEventViewModel(compoundAccount.Account);
             }
         }
 
@@ -246,11 +248,11 @@ namespace LifeCalculator.ViewModels
                     {
                         collection.Values.Clear();
 
-                        var monthlyCalculation = acc.Calculation();
+                        var monthlyCalculation = (acc as ISimulatedAccount).Calculation();
 
                         for (int i = 0; i < monthlyCalculation.Count; i++)
                         {
-                            if (i % 12 == 0 && i != 0)
+                            if ((i % 12 == 0 && i != 0) || i == 1)
                             {
                                 collection.Values.Add(new BarChartColumn()
                                 {
@@ -259,6 +261,15 @@ namespace LifeCalculator.ViewModels
                                     Date = monthlyCalculation[i].Date
                                 });
                             }
+                            //else if(i == monthlyCalculation.Count - 1 )
+                            //{
+                            //    collection.Values.Add(new BarChartColumn()
+                            //    {
+                            //        Name = acc.Name,
+                            //        CurrentValue = monthlyCalculation[i].Gain,
+                            //        Date = monthlyCalculation[i].Date
+                            //    });
+                            //}
                         }
                     }
                 }

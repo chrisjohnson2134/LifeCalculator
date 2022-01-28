@@ -9,15 +9,15 @@ using System.Collections.Generic;
 
 namespace LifeCalculator.Control.ViewModels
 {
-    public class AddEventCompoundViewModel : ViewModelBase, IControlEvent
+    public class AddEventViewModel : ViewModelBase, IControlEvent
     {
         public event EventHandler<IAccountEvent> EventAdded;
 
-        private CompoundAccount _compoundAccount;
+        private ISimulatedAccount _account;
 
-        public AddEventCompoundViewModel(CompoundAccount loanAccount)
+        public AddEventViewModel(ISimulatedAccount account)
         {
-            _compoundAccount = loanAccount;
+            _account = account;
 
             EventTypes = new List<string> { "One-Time", "Monthly" };
 
@@ -71,11 +71,11 @@ namespace LifeCalculator.Control.ViewModels
                 StartDate = StartDate,
                 EndDate = EndDate,
                 Amount = Contribute,
-                AccountId = _compoundAccount.Id,
-                AccountType = AccountTypes.CompoundInterest
+                AccountId = _account.Id,
+                AccountType = _account is CompoundAccount ? AccountTypes.CompoundInterest : AccountTypes.LoanAccount,
             };
 
-            _compoundAccount.AddLifeEvent(accountEvent);
+            _account.AddLifeEvent(accountEvent);
 
             EventAdded?.Invoke(this, accountEvent);
         }

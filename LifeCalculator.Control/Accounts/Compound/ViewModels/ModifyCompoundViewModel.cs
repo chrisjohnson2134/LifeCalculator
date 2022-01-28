@@ -34,14 +34,14 @@ namespace LifeCalculator.Control.ViewModels
             _account = account;
             _accountManager = accountManager;
             _account.ValueChanged += Account_ValueChanged;
-            AccountLifeEventsVMs = new BindingList<ModifyEventCompoundViewModel>();
+            AccountLifeEventsVMs = new BindingList<ModifyEventViewModel>();
             DeleteAccountCommand = new DelegateCommand(DeleteAccount);
 
             foreach (var item in _account.AccountLifeEvents)
             {
                 if (item is AccountEvent accEvent)
                 {
-                    var accVM = new ModifyEventCompoundViewModel(accEvent);
+                    var accVM = new ModifyEventViewModel(accEvent);
                     accVM.ValueChanged += EventValueChangedHandler;
                     AccountLifeEventsVMs.Add(accVM);
                 }
@@ -133,7 +133,7 @@ namespace LifeCalculator.Control.ViewModels
         }
 
         public List<IAccountEvent> AccountLifeEvents { get; set; }
-        public BindingList<ModifyEventCompoundViewModel> AccountLifeEventsVMs { get; set; }
+        public BindingList<ModifyEventViewModel> AccountLifeEventsVMs { get; set; }
         public CompoundAccount Account => _account;
         public DelegateCommand DeleteAccountCommand { get; set; }
 
@@ -163,7 +163,7 @@ namespace LifeCalculator.Control.ViewModels
             {
                 if (item is AccountEvent accEvent)
                 {
-                    var compoundModifyVM = new ModifyEventCompoundViewModel(accEvent);
+                    var compoundModifyVM = new ModifyEventViewModel(accEvent);
                     compoundModifyVM.ValueChanged += EventValueChangedHandler;
                     AccountLifeEventsVMs.Add(compoundModifyVM);
                 }
@@ -180,7 +180,7 @@ namespace LifeCalculator.Control.ViewModels
                 {
                     if (item is AccountEvent accEvent)
                     {
-                        var compoundModifyVM = new ModifyEventCompoundViewModel(accEvent);
+                        var compoundModifyVM = new ModifyEventViewModel(accEvent);
                         compoundModifyVM.ValueChanged += EventValueChangedHandler;
                         AccountLifeEventsVMs.Add(compoundModifyVM);
                     }

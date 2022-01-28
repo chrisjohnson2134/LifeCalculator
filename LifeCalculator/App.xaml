@@ -20,6 +20,7 @@
             </ResourceDictionary.MergedDictionaries>
 
             <!--  View/ViewModel Bindings  -->
+            <!--Main Pages-->
             <DataTemplate DataType="{x:Type viewModels:HomeViewModel}">
                 <views:HomeView />
             </DataTemplate>
@@ -41,17 +42,14 @@
             <DataTemplate DataType="{x:Type viewModels:CalculatorViewModel}">
                 <views:CalculatorView />
             </DataTemplate>
+            
+            <!--Adding Simulated Compound/Loan Account Controls-->
             <DataTemplate DataType="{x:Type controlsViewModels:AddCompoundViewModel}">
                 <controlsView:AddCompound />
             </DataTemplate>
-            <DataTemplate DataType="{x:Type controlsViewModels:AddEventCompoundViewModel}">
-                <controlsView:AddEventCompound />
-            </DataTemplate>
+
             <DataTemplate DataType="{x:Type controlsViewModels:AddLoanViewModel}">
                 <controlsView:AddLoan />
-            </DataTemplate>
-            <DataTemplate DataType="{x:Type controlsViewModels:AddEventLoanViewModel}">
-                <controlsView:AddEventLoan />
             </DataTemplate>
             <DataTemplate DataType="{x:Type controlsViewModels:ModifyLoanViewModel}">
                 <controlsView:ModifyLoan />
@@ -59,11 +57,18 @@
             <DataTemplate DataType="{x:Type controlsViewModels:ModifyCompoundViewModel}">
                 <controlsView:ModifyCompound />
             </DataTemplate>
+
+            <!--Add/Edit Account Events-->
+            <DataTemplate DataType="{x:Type controlsViewModels:AddEventViewModel}">
+                <controlsView:AddEvent />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type controlsViewModels:ModifyEventViewModel}">
+                <controlsView:ModifyEvent />
+            </DataTemplate>
+
+            <!--More-->
             <DataTemplate DataType="{x:Type viewModels:BudgetViewModel}">
                 <views:BudgetView />
-            </DataTemplate>
-            <DataTemplate DataType="{x:Type controlsViewModels:ModifyEventLoanViewModel}">
-                <controlsView:ModifyEventLoan />
             </DataTemplate>
             <DataTemplate DataType="{x:Type viewModels:SettingsViewModel}">
                 <views:SettingsView />

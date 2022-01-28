@@ -32,12 +32,12 @@
 
             <StackPanel Orientation="Horizontal">
                 <Label Content="Initial Amount : " Width="100" Height="24"/>
-                <TextBox Text="{Binding InitialAmount}" Width="100" Height="24"/>
+                <TextBox Text="{Binding InitialAmount, StringFormat=C}" Width="100" Height="24"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal">
                 <Label Content="Interest Rate : " Width="100" Height="24"/>
-                <TextBox Text="{Binding InterestRate}" Width="100" Height="24"/>
+                <TextBox Text="{Binding InterestRate, StringFormat={}{0}%}" Width="100" Height="24"/>
             </StackPanel>
             
         </StackPanel>
@@ -66,9 +66,9 @@
             Width="600"  Margin="5">
                 <ItemsControl ItemsSource="{Binding AccountLifeEventsVMs}">
                     <ItemsControl.Resources>
-                        <DataTemplate DataType="{x:Type localVM:ModifyEventCompoundViewModel}">
+                        <DataTemplate DataType="{x:Type localVM:ModifyEventViewModel}">
                             <Expander Header="{Binding Name}">
-                                <local:ModifyEventCompound />
+                                <local:ModifyEvent />
                             </Expander>
                         </DataTemplate>
                     </ItemsControl.Resources>
