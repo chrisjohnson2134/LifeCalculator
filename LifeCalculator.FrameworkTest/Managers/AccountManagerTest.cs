@@ -91,7 +91,7 @@ namespace LifeCalculator.FrameworkTest.Managers
         public void ModifyingLoanAccountTriggersValueChangedEvent()
         {
             IAccountsEventsManager accountEventManager = new AccountsEventsManager();
-            LoanAccount account = new LoanAccount("Chris",DateTime.Now,36,.03,5000,500);
+            LoanAccount account = new LoanAccount(accountEventManager,"Chris",DateTime.Now,36,.03,5000,500);
             account.SetEventsManager(accountEventManager);
             int valueChangedCount = 0;
 
@@ -128,7 +128,8 @@ namespace LifeCalculator.FrameworkTest.Managers
         [Test]
         public async Task AddingAndUpdatingAccountSavesToDatabase()
         {
-            LoanAccount account = new LoanAccount("Chris", DateTime.Now, 36, .03, 5000, 500);
+            AccountsEventsManager accountsEventsManager = new AccountsEventsManager();
+            LoanAccount account = new LoanAccount(accountsEventsManager,"Chris", DateTime.Now, 36, .03, 5000, 500);
             int valueChangedCount = 0;
 
             IAccount addedLoanAccount = new LoanAccount() ;

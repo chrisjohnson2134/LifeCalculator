@@ -66,7 +66,7 @@ namespace LifeCalculator.Control.ViewModels
         private void AddAccountCommandHandler()
         {
 
-            var acc = new LoanAccount(AccountName, StartDate,LoanLength * 12, InterestRate,InitialLoanAmount,
+            var acc = new LoanAccount(_accountStore.CurrentAccount.AccountsEventsManager,AccountName, StartDate,LoanLength * 12, InterestRate,InitialLoanAmount,
             DownPayment);
             acc.UserId = _accountStore.CurrentAccount.Id;
 

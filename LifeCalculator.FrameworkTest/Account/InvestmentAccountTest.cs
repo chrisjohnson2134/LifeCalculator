@@ -61,8 +61,32 @@ namespace LifeCalcuator.FrameworkTest.SimulatedAccount
             }); 
 
             var midCalculationCheck = investmentAccount.Calculation();
-            midCalculationCheck[13].Gain.ShouldEqual(1249.23);
-            investmentAccount.FinalAmount.ShouldEqual(1484.3);
+            midCalculationCheck[13].Gain.ShouldEqual(1257.57);
+            investmentAccount.FinalAmount.ShouldEqual(1493.43);
+
+        }
+
+        [Test]
+        public void AddMonthlyEvents()
+        {
+            IAccountsEventsManager accountEventManager = new AccountsEventsManager();
+            CompoundAccount investmentAccount = new CompoundAccount(accountEventManager);
+
+            investmentAccount.SetupBasicCalculation(DateTime.Now, DateTime.Now.AddYears(2),
+            10, 100, 10);
+
+            investmentAccount.AddLifeEvent(new AccountEvent
+            {
+                Name = "addition",
+                Amount = 10,
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now.AddYears(2),
+                LifeEventType = LifeCalculator.Framework.Enums.LifeEnum.MonthlyContribute
+            });
+
+            var midCalculationCheck = investmentAccount.Calculation();
+            midCalculationCheck[12].Gain.ShouldEqual(352.83);
+            investmentAccount.FinalAmount.ShouldEqual(643.18);
 
         }
     }

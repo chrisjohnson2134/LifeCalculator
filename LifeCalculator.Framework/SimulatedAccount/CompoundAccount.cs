@@ -192,12 +192,12 @@ namespace LifeCalculator.Framework.SimulatedAccount
             for (int j = 0; j < monthDiff; j++)
             {
 
-                currValue = (currValue + monthlyContribute) * (1 + (InterestRate / 100) / 12) + additionalPriPaymentCalculation(_startDate.AddMonths(j));
+                currValue = (currValue + additionalPriPaymentCalculation(_startDate.AddMonths(j))) * (1 + (InterestRate / 100) / 12);
                 monthlies.Add(new MonthlyColumn() { Name = Name, Gain = Math.Round(currValue,2), Date = _startDate.AddMonths(j) });
             }
 
             if (monthDiff != 0)
-                _finalAmount = monthlies[monthlies.Count - 1].Gain;
+                _finalAmount = monthlies[monthlies.Count-1].Gain;
 
             return monthlies;
         }
@@ -206,7 +206,7 @@ namespace LifeCalculator.Framework.SimulatedAccount
         {
             double additonalAmount = 0;
 
-            AccountLifeEvents.FindAll(i => i.StartDate < dateTime && dateTime < i.EndDate && i.LifeEventType == LifeEnum.MonthlyContribute)
+            AccountLifeEvents.FindAll(i => i.StartDate <= dateTime && dateTime <= i.EndDate && i.LifeEventType == LifeEnum.MonthlyContribute)
                 .ForEach(i => additonalAmount += i.Amount);
 
             AccountLifeEvents.FindAll(i => i.StartDate.Year == dateTime.Year && dateTime.Month == i.StartDate.Month && i.LifeEventType == LifeEnum.OneTime)

@@ -184,8 +184,10 @@ namespace LifeCalculator.Framework.SimulatedAccount
             SetEventsManager(accountsEventsManager);
         }
 
-        public LoanAccount(string name, DateTime date, int loanLengthMonths, double interestRate, double loanAmount, double downPayment)
+        public LoanAccount(IAccountsEventsManager _eventsManager, string name, DateTime date, int loanLengthMonths, double interestRate, double loanAmount, double downPayment)
         {
+            SetEventsManager(_eventsManager);
+
             _name = name;
             _interestRate = interestRate / 100;
             _loanAmount = loanAmount;
@@ -278,7 +280,7 @@ namespace LifeCalculator.Framework.SimulatedAccount
         {
             double additonalAmount = 0;
 
-            AccountLifeEvents.FindAll(i => i.StartDate < dateTime && dateTime < i.EndDate && i.LifeEventType == LifeEnum.MonthlyContribute)
+            AccountLifeEvents.FindAll(i => i.StartDate <= dateTime && dateTime <= i.EndDate && i.LifeEventType == LifeEnum.MonthlyContribute)
                 .ForEach(i => additonalAmount += i.Amount);
 
             AccountLifeEvents.FindAll(i => i.StartDate.Year == dateTime.Year && dateTime.Month == i.StartDate.Month && i.LifeEventType == LifeEnum.OneTime)
