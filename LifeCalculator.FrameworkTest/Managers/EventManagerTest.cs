@@ -1,4 +1,5 @@
-﻿using LifeCalculator.Framework.LifeEvents;
+﻿using LifeCalculator.Framework.Enums;
+using LifeCalculator.Framework.LifeEvents;
 using LifeCalculator.Framework.Managers;
 using LifeCalculator.Framework.Services.EventsDataService;
 using NUnit.Framework;
@@ -99,8 +100,8 @@ namespace LifeCalculator.FrameworkTest.Managers
             manager.AddAccountEvent(CreateBasicAccountEvent(accountId: 2222));
             manager.AddAccountEvent(CreateBasicAccountEvent(accountId: 3333));
 
-            Assert.AreEqual(manager.GetAllAccountEventsByAccountId(1111).Count, 2);
-            Assert.AreEqual(manager.GetAllAccountEventsByAccountId(3333).Count, 1);
+            Assert.AreEqual(manager.GetAllAccountEventsByAccountId(1111,AccountTypes.CompoundInterest).Count, 2);
+            Assert.AreEqual(manager.GetAllAccountEventsByAccountId(3333,AccountTypes.CompoundInterest).Count, 1);
 
             _accountEventDataService.DeleteByAccountID(1111);
             _accountEventDataService.DeleteByAccountID(2222);

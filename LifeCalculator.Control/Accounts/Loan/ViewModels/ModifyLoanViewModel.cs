@@ -8,6 +8,7 @@ using Microsoft.VisualStudio.PlatformUI;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using LifeCalculator.Framework.Enums;
 
 namespace LifeCalculator.Control.ViewModels
 {
@@ -176,7 +177,7 @@ namespace LifeCalculator.Control.ViewModels
 
         public LoanAccount Account => _account;
 
-        public List<IAccountEvent> AccountLifeEvents => _accountsEventsManager.GetAllAccountEventsByAccountId(Account.Id);
+        public List<IAccountEvent> AccountLifeEvents => _accountsEventsManager.GetAllAccountEventsByAccountId(Account.Id,AccountTypes.LoanAccount);
 
         #endregion
 

@@ -22,8 +22,8 @@
 
     public enum AccountTypes
     {
-        CompoundInterest,
-        LoanAccount
+        CompoundInterest = 0,
+        LoanAccount = 1
     }
 
     public enum RegistrationResult

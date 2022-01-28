@@ -173,7 +173,7 @@ namespace LifeCalculator.Framework.SimulatedAccount
         }
 
         [IgnoreDatabase]
-        public List<IAccountEvent> AccountLifeEvents => _accountsEventsManager.GetAllAccountEventsByAccountId(Id);
+        public List<IAccountEvent> AccountLifeEvents => _accountsEventsManager.GetAllAccountEventsByAccountId(Id,AccountTypes.LoanAccount);
 
         public LoanAccount()
         {

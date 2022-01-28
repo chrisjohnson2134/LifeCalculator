@@ -1,4 +1,5 @@
-﻿using LifeCalculator.Framework.LifeEvents;
+﻿using LifeCalculator.Framework.Enums;
+using LifeCalculator.Framework.LifeEvents;
 using LifeCalculator.Framework.Services.EventsDataService;
 using System;
 using System.Collections.Generic;
@@ -39,9 +40,9 @@ namespace LifeCalculator.Framework.Managers
             return AccountEvents;
         }
 
-        public List<IAccountEvent> GetAllAccountEventsByAccountId(int accountId)
+        public List<IAccountEvent> GetAllAccountEventsByAccountId(int accountId,AccountTypes accType)
         {
-            return AccountEvents.Where(t => t.AccountId == accountId).ToList();
+            return AccountEvents.Where(t => t.AccountId == accountId && t.AccountType == accType).ToList();
         }
 
         public void DeleteAccountEvent(IAccountEvent AccountEvent)

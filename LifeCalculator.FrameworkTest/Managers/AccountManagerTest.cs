@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 using LifeCalculator.Framework.Services.AccDataService;
+using LifeCalculator.Framework.Enums;
 
 namespace LifeCalculator.FrameworkTest.Managers
 {
@@ -110,7 +111,7 @@ namespace LifeCalculator.FrameworkTest.Managers
             account.Calculation();
 
             //should trigger 8 events
-            var priPayment = new AccountEvent() { AccountId = account.Id};
+            var priPayment = new AccountEvent() { AccountId = account.Id,AccountType = AccountTypes.LoanAccount};
             account.AddLifeEvent(priPayment);
 
             account.AccountLifeEvents[0].Name = "newName";

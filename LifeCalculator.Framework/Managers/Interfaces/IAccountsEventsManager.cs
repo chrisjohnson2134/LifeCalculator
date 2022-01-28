@@ -1,4 +1,5 @@
-﻿using LifeCalculator.Framework.LifeEvents;
+﻿using LifeCalculator.Framework.Enums;
+using LifeCalculator.Framework.LifeEvents;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace LifeCalculator.Framework.Managers
         IAccountEvent GetAccountEvent(int id);
         IAccountEvent GetAccountEvent(string name);
         List<IAccountEvent> GetAllAccountEvents();
-        List<IAccountEvent> GetAllAccountEventsByAccountId(int accountId);
+        List<IAccountEvent> GetAllAccountEventsByAccountId(int accountId, AccountTypes accType);
 
         void DeleteAccountEvent(IAccountEvent AccountEvent);
         void AddAccountEvents(List<IAccountEvent> accountEvents);

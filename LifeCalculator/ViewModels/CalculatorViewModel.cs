@@ -155,12 +155,6 @@ namespace LifeCalculator.ViewModels
             ReChart(this, EventArgs.Empty);
         }
 
-        public async void _currentEventViewModel_EventAddedEvent(object sendere, IAccountEvent e)
-        {
-            var eventInserted = await eventDataService.Insert(new AccountEvent(e));
-            e.Id = e.Id;
-        }
-
         #endregion
 
         #region Private Methods
@@ -185,12 +179,10 @@ namespace LifeCalculator.ViewModels
             if (accountSelected is ModifyLoanViewModel loanAccount)
             {
                 CurrentEventViewModel = new AddEventLoanViewModel(loanAccount.Account);
-                CurrentEventViewModel.EventAdded += _currentEventViewModel_EventAddedEvent;
             }
             else if (accountSelected is ModifyCompoundViewModel compoundAccount)
             {
                 CurrentEventViewModel = new AddEventCompoundViewModel(compoundAccount.Account);
-                CurrentEventViewModel.EventAdded += _currentEventViewModel_EventAddedEvent;
             }
         }
 

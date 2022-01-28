@@ -148,7 +148,7 @@ namespace LifeCalculator.Framework.SimulatedAccount
 
 
         [IgnoreDatabase]
-        public List<IAccountEvent> AccountLifeEvents => _accountEventsManager.GetAllAccountEventsByAccountId(Id);
+        public List<IAccountEvent> AccountLifeEvents => _accountEventsManager.GetAllAccountEventsByAccountId(Id,AccountTypes.CompoundInterest);
         
         #endregion
 

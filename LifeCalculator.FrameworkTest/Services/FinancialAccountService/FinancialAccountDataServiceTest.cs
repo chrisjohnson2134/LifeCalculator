@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using LifeCalculator.Framework.Services.FinancialAccountService;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,6 @@ namespace LifeCalculator.FrameworkTest.Services.FinancialAccountService
         [Test,Ignore("notImplemented")]
         public void CorrectDataLoadedFromUserIdLoadsAccountsAndEvents()
         {
-
         }
 
         [Test, Ignore("notImplemented")]
