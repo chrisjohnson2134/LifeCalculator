@@ -12,6 +12,9 @@
     mc:Ignorable="d">
     
     <Grid Background="White">
-        
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Label Content="Coming Soon!" HorizontalAlignment="Center" FontSize="30" FontWeight="Bold"/>
+            <Label Content="Explore the rest of the app!" HorizontalAlignment="Center" FontSize="30" FontWeight="Bold"/>
+        </StackPanel>
     </Grid>
 </UserControl>

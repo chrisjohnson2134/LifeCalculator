@@ -15,13 +15,16 @@
     <Grid Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <StackPanel Orientation="Horizontal" Grid.Row="0">
+        <Label Grid.Row="0" Content="This is a demo! Enjoy being able to create budgets categories and drag them the way you want!" FontSize="22" FontWeight="Bold" />
+
+        <StackPanel Orientation="Horizontal" Grid.Row="1">
             <Label Content="Budget Sorting"/>
             <Button x:Name="AddBudgetItemBtn" Command="{Binding AddBudgetItemCommand}" Content="Add Budget Item" HorizontalAlignment="Right"/>
             <Label Content="Name : " Margin="4"/>
@@ -30,6 +33,6 @@
             <TextBox x:Name="BudgetItemPlannedAmountTB" Text="{Binding AddBudgetITemPlannedAmount,StringFormat=C}" Width="100" BorderBrush="Black" BorderThickness="2" Margin="4"/>
         </StackPanel>
         
-        <controlsViews:TransactionSorterView Grid.Row="1" DataContext="{Binding TransactionSorterControl}"/>
+        <controlsViews:TransactionSorterView Grid.Row="2" DataContext="{Binding TransactionSorterControl}"/>
     </Grid>
 </UserControl>

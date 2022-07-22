@@ -24,27 +24,28 @@ namespace LifeCalculator.ViewModels
         {
             _budgetManager = accountStore.CurrentAccount.BudgetManager;
 
-            //List<TransactionItem> transactionItemsMocked = new List<TransactionItem>()
-            //{
-            //    //new TransactionItem{Name = "Hamburger" ,BudgetCategory="Food",Amount=50},
-            //    //new TransactionItem{Name = "HotDog" ,BudgetCategory="Food",Amount=50},
-            //    //new TransactionItem{Name = "Blue Cheese" ,BudgetCategory="Food",Amount=50},
+            List<TransactionItem> transactionItemsMocked = new List<TransactionItem>()
+            {
+                new TransactionItem{Name = "Hamburger" ,BudgetCategory="Uncatogorized",Amount=50},
+                new TransactionItem{Name = "HotDog" ,BudgetCategory="Uncatogorized",Amount=50},
+                new TransactionItem{Name = "Blue Cheese" ,BudgetCategory="Uncatogorized",Amount=50},
 
-            //    //new TransactionItem{Name = "Gas" ,BudgetCategory="Car",Amount=50},
-            //    //new TransactionItem{Name = "Maintenance" ,BudgetCategory="Car",Amount=50},
-            //    //new TransactionItem{Name = "Wiper Blades" ,BudgetCategory="Car",Amount=50},
+                new TransactionItem{Name = "Gas" ,BudgetCategory="Uncatogorized",Amount=50},
+                new TransactionItem{Name = "Maintenance" ,BudgetCategory="Uncatogorized",Amount=50},
+                new TransactionItem{Name = "Wiper Blades" ,BudgetCategory="Uncatogorized",Amount=50},
 
-            //    //new TransactionItem{Name = "Paint" ,BudgetCategory="House",Amount=50},
-            //    //new TransactionItem{Name = "Plants" ,BudgetCategory="House",Amount=50},
-            //    //new TransactionItem{Name = "Chairs" ,BudgetCategory="House",Amount=50},
-            //};
+                new TransactionItem{Name = "Paint" ,BudgetCategory="Uncatogorized",Amount=50},
+                new TransactionItem{Name = "Plants" ,BudgetCategory="Uncatogorized",Amount=50},
+                new TransactionItem{Name = "Chairs" ,BudgetCategory="Uncatogorized",Amount=50},
+            };
 
-            //_budgetManager.AutoSort = true;
-            //_budgetManager.AddTransactions(transactionItemsMocked);
+            _budgetManager.AutoSort = true;
+            _budgetManager.AddTransactions(transactionItemsMocked);
 
             AddBudgetItemCommand = new DelegateCommand(AddBudgetItemcommandHandler);
 
             TransactionSorterControl = new TransactionSorterViewModel(_budgetManager);
+            _budgetManager.SortByBudgetCategory();
 
         }
 

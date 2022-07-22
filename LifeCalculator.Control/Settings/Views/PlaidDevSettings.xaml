@@ -10,6 +10,7 @@
     <Grid Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
@@ -19,7 +20,9 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Row="0" Grid.Column="0" Margin="10">
+        <Label Content="Demo of What Plaid Settings will look like! And Light Functionality." FontSize="22" FontWeight="Bold" Grid.ColumnSpan="3"/>
+
+        <StackPanel Grid.Row="1" Grid.Column="0" Margin="10">
             <Label Content="Add new Bank Account"/>
             <Button x:Name="AddViaPlaidBtn" Content ="Add New" Command="{Binding AddNewAccountCommand}" Width="140" HorizontalAlignment="Left" Margin="10"/>
             <DockPanel LastChildFill="True">
@@ -33,7 +36,7 @@
             <Button x:Name="AddAccountBtn" Content ="Add" Command="{Binding AddAccountCommand}" Width="120" HorizontalAlignment="Left" Margin="10"/>
         </StackPanel>
 
-        <StackPanel Grid.Row="0" Grid.Column="1" Margin="10">
+        <StackPanel Grid.Row="1" Grid.Column="1" Margin="10">
             <Label Content="Banks"/>
             <DataGrid ItemsSource="{Binding Institutions}"  AutoGenerateColumns="False">
                 <DataGrid.Columns>

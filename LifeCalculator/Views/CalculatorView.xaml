@@ -19,12 +19,15 @@
                     <ColumnDefinition Width="AUTO" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="AUTO"/>
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
+                <Label Content="Plan out your Life by adding your debts and investments, see where you will be in 5/10/50 years!" FontSize="18" FontWeight="Bold" Grid.Row="0" Grid.ColumnSpan="2" Height="50"/>
+
                 <lvc:CartesianChart
-            Grid.Row="0" Grid.Column="0" Margin="5"
+            Grid.Row="1" Grid.Column="0" Margin="5"
             Series="{Binding ValueCollection}">
                     <lvc:CartesianChart.AxisX>
                         <lvc:Axis LabelFormatter="{Binding Formatter}" />
@@ -33,7 +36,7 @@
 
                 <!--  Account Grid  -->
                 <Grid
-            Grid.Row="0" Grid.Column="1"
+            Grid.Row="1" Grid.Column="2"
             Width="225" Height="350" Margin="20">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -61,7 +64,7 @@
 
                 <!--  Events Grid  -->
                 <Grid
-            Grid.Row="1" Grid.Column="1"
+            Grid.Row="2" Grid.Column="1"
             Width="225" Height="300" Margin="25">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -87,7 +90,8 @@
                 Content="{Binding CurrentEventViewModel}"/>
                 </Grid>
 
-                <ScrollViewer Grid.Row="1" Grid.Column="0" Width="620" Height="300" Margin="5">
+                <!--Scroll Through Events-->
+                <ScrollViewer Grid.Row="2" Grid.Column="0" Width="620" Height="300" Margin="5">
                     <ItemsControl ItemsSource="{Binding AccountsList}">
                         <ItemsControl.Resources>
                             <DataTemplate DataType="{x:Type controlViewModels:ModifyLoanViewModel}">
