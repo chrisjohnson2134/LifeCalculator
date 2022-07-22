@@ -1,10 +1,11 @@
-﻿using LifeCalculator.Framework.Account;
+﻿using LifeCalculator.Framework.SimulatedAccount;
 using LifeCalculator.Framework.LifeEvents;
 using NUnit.Framework;
 using Should;
 using System;
+using LifeCalculator.Framework.Managers;
 
-namespace LifeCalcuator.FrameworkTest.Account
+namespace LifeCalcuator.FrameworkTest.SimulatedAccount
 {
     //calculator I trust to prove calculations
     //https://www.bankrate.com/calculators/savings/compound-savings-calculator-tool.aspx
@@ -12,10 +13,13 @@ namespace LifeCalcuator.FrameworkTest.Account
     [TestFixture]
     public class InvestmentAccountTest
     {
+        IAccountsEventsManager accountEventManager;
+
         [Test]
         public void BasicCompoundInterestCalculation()
         {
-            CompoundAccount investmentAccount = new CompoundAccount();
+            accountEventManager = new AccountsEventsManager();
+            CompoundAccount investmentAccount = new CompoundAccount(accountEventManager);
 
             investmentAccount.SetupBasicCalculation(DateTime.Now, DateTime.Now.AddYears(1),
             10, 100, 10);
@@ -27,7 +31,8 @@ namespace LifeCalcuator.FrameworkTest.Account
         [Test]
         public void BasicMonthByMonthReturnTest()
         {
-            CompoundAccount investmentAccount = new CompoundAccount();
+            IAccountsEventsManager accountEventManager = new AccountsEventsManager();
+            CompoundAccount investmentAccount = new CompoundAccount(accountEventManager);
 
             investmentAccount.SetupBasicCalculation(DateTime.Now, DateTime.Now.AddYears(1),
             1, 100, 10);
@@ -41,9 +46,10 @@ namespace LifeCalcuator.FrameworkTest.Account
         [Test]
         public void AddedLifeEventComputation()
         {
-            CompoundAccount investmentAccount = new CompoundAccount();
+            IAccountsEventsManager accountEventManager = new AccountsEventsManager();
+            CompoundAccount investmentAccount = new CompoundAccount(accountEventManager);
 
-            investmentAccount.SetupBasicCalculation(DateTime.Now, DateTime.Now.AddYears(1),
+            investmentAccount.SetupBasicCalculation(DateTime.Now, DateTime.Now.AddYears(2),
             10, 100, 10);
 
             investmentAccount.AddLifeEvent(new AccountEvent
@@ -51,25 +57,37 @@ namespace LifeCalcuator.FrameworkTest.Account
                 Name = "addition",
                 Amount = 1000,
                 StartDate = DateTime.Now.AddYears(1),
-                InterestRate = 10
-            });
+                LifeEventType = LifeCalculator.Framework.Enums.LifeEnum.OneTime
+            }); 
 
             var midCalculationCheck = investmentAccount.Calculation();
-            midCalculationCheck[12].Gain.ShouldBeInRange(126.70, 126.71);
-            investmentAccount.FinalAmount.ShouldBeInRange(126.70, 126.71);
+            midCalculationCheck[13].Gain.ShouldEqual(1257.57);
+            investmentAccount.FinalAmount.ShouldEqual(1493.43);
+
+        }
+
+        [Test]
+        public void AddMonthlyEvents()
+        {
+            IAccountsEventsManager accountEventManager = new AccountsEventsManager();
+            CompoundAccount investmentAccount = new CompoundAccount(accountEventManager);
+
+            investmentAccount.SetupBasicCalculation(DateTime.Now, DateTime.Now.AddYears(2),
+            10, 100, 10);
 
             investmentAccount.AddLifeEvent(new AccountEvent
             {
                 Name = "addition",
-                Amount = 0,
-                StartDate = DateTime.Now.AddYears(2),
-                InterestRate = 10
+                Amount = 10,
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now.AddYears(2),
+                LifeEventType = LifeCalculator.Framework.Enums.LifeEnum.MonthlyContribute
             });
 
-            var a = investmentAccount.Calculation();
-            a[12].Gain.ShouldBeInRange(126.70, 126.71);
-            a[24].Gain.ShouldBeInRange(12810.25, 12810.26);
-            investmentAccount.FinalAmount.ShouldBeInRange(12810.25, 12810.26);
+            var midCalculationCheck = investmentAccount.Calculation();
+            midCalculationCheck[12].Gain.ShouldEqual(352.83);
+            investmentAccount.FinalAmount.ShouldEqual(643.18);
+
         }
     }
 }

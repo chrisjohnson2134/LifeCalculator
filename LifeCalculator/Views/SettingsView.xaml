@@ -1,0 +1,34 @@
+﻿<UserControl x:Class="LifeCalculator.Views.SettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:tabData="clr-namespace:LifeCalculator.Control.Settings.Interfaces;assembly=LifeCalculator.Control"
+             xmlns:views="clr-namespace:LifeCalculator.Control.Views;assembly=LifeCalculator.Control"
+             xmlns:viewModels="clr-namespace:LifeCalculator.Control.ViewModels;assembly=LifeCalculator.Control"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Label Grid.Row="0" Content="Header"/>
+        
+        <TabControl Grid.Row="1" Margin="15" ItemsSource="{Binding SettingsTabs}">
+            <TabControl.Resources>
+                <DataTemplate DataType="{x:Type viewModels:PlaidDevSettingsViewModel}">
+                    <views:PlaidDevSettings/>
+                </DataTemplate>
+            </TabControl.Resources>
+            <TabControl.ItemTemplate>
+                <DataTemplate DataType="{x:Type tabData:ISettingsViewModel}">
+                    <TextBlock>
+                        <Run Text="{Binding Name}"/>
+                    </TextBlock>
+                </DataTemplate>
+            </TabControl.ItemTemplate>
+        </TabControl>
+    </Grid>
+</UserControl>

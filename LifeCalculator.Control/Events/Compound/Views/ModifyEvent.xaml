@@ -1,0 +1,32 @@
+﻿<UserControl
+    x:Class="LifeCalculator.Control.Views.ModifyEvent"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid>
+        <StackPanel Orientation="Horizontal">
+            <StackPanel>
+                <Label x:Name="InvestmentNameLabel"  Content="Name:" />
+                <Label x:Name="StartDateLabel" Content="Start Date:" />
+            </StackPanel>
+
+            <StackPanel>
+                <TextBox x:Name="InvestmentNameTextBox" Width="100" Text="{Binding Name}" />
+                <DatePicker x:Name="StartDateTextBox" Width="100" SelectedDate="{Binding Date}" />
+            </StackPanel>
+
+            <StackPanel>
+                <Label x:Name="AdditionalContributionLabel" Content="Additional Contribution :" />
+                <Label x:Name="EndDateLabel" Content="End Date:" />
+            </StackPanel>
+
+            <StackPanel>
+                <TextBox x:Name="AdditionalContributionTextBox" Text="{Binding Amount, StringFormat=C}" MinWidth="100"/>
+                <DatePicker x:Name="EndDateTextBox" Width="100" SelectedDate="{Binding EndDate}" IsEnabled="{Binding EndDateEnabled}"/>
+            </StackPanel>
+        </StackPanel>
+
+        
+        
+
+    </Grid>
+</UserControl>

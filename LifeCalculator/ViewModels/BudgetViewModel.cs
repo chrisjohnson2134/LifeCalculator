@@ -1,9 +1,12 @@
-﻿using LifeCalculator.Framework.BudgetItems;
+﻿using LifeCalculator.Framework.Budget;
 using LifeCalculator.Framework.BaseVM;
-using System.Collections.ObjectModel;
 using System.Windows.Input;
-using LifeCalculator.Commands;
-using LifeCalculator.Framework.Enums;
+using LifeCalculator.Control.ViewModels;
+using LifeCalculator.Framework.Accounts;
+using LifeCalculator.Framework.CurrentAccountStorage;
+using System.Collections.Generic;
+using Microsoft.VisualStudio.PlatformUI;
+using System;
 
 namespace LifeCalculator.ViewModels
 {
@@ -11,46 +14,42 @@ namespace LifeCalculator.ViewModels
     {
         #region Fields
 
-        private  ObservableCollection<BudgetItemModel> _incomeBudgetItems;
-        private  ObservableCollection<BudgetItemModel> _savingsBudgetItems;
-        private  ObservableCollection<BudgetItemModel> _housingBudgetItems;
-        private  ObservableCollection<BudgetItemModel> _foodBudgetItems;
-        private  ObservableCollection<BudgetItemModel> _transportationBudgetItems;
-        private  ObservableCollection<BudgetItemModel> _personalBudgetItems;
-        private  ObservableCollection<BudgetItemModel> _debtBudgetItems;
-        private  ObservableCollection<BudgetItemModel> _insuranceBudgetItems;
-        private  ObservableCollection<BudgetItemModel> _healthBudgetItems;
+        private BudgetManager _budgetManager;
 
         #endregion
 
         #region Constructors
 
-        public BudgetViewModel()
+        public BudgetViewModel(IAccountStore accountStore)
         {
-            _incomeBudgetItems = new ObservableCollection<BudgetItemModel>();
-            _savingsBudgetItems = new ObservableCollection<BudgetItemModel>();
-            _housingBudgetItems = new ObservableCollection<BudgetItemModel>();
-            _foodBudgetItems = new ObservableCollection<BudgetItemModel>();
-            _transportationBudgetItems = new ObservableCollection<BudgetItemModel>();
-            _personalBudgetItems = new ObservableCollection<BudgetItemModel>();
-            _debtBudgetItems = new ObservableCollection<BudgetItemModel>();
-            _insuranceBudgetItems = new ObservableCollection<BudgetItemModel>();
-            _healthBudgetItems = new ObservableCollection<BudgetItemModel>();
+            _budgetManager = accountStore.CurrentAccount.BudgetManager;
 
-            AddBudgetItemCommand = new AddBudgetItemCommand(this);
-            DeleteBudgetItemCommand = new DeleteBudgetItemCommand(this);
+            List<TransactionItem> transactionItemsMocked = new List<TransactionItem>()
+            {
+                new TransactionItem{Name = "Hamburger" ,BudgetCategory="Uncatogorized",Amount=50},
+                new TransactionItem{Name = "HotDog" ,BudgetCategory="Uncatogorized",Amount=50},
+                new TransactionItem{Name = "Blue Cheese" ,BudgetCategory="Uncatogorized",Amount=50},
 
+                new TransactionItem{Name = "Gas" ,BudgetCategory="Uncatogorized",Amount=50},
+                new TransactionItem{Name = "Maintenance" ,BudgetCategory="Uncatogorized",Amount=50},
+                new TransactionItem{Name = "Wiper Blades" ,BudgetCategory="Uncatogorized",Amount=50},
 
-            InitializeIncomeBudgetDefaults();
-            InitializeSavingsBudgetDefaults();
-            InitializeHousingBudgetDefaults();
-            InitializeFoodBudgetDefaults();
-            InitializeTransportationBudgetDefaults();
-            InitializePersonalBudgetDefaults();
-            InitializeInsuranceBudgetDefaults();
-            InitializeHealthBudgetDefaults();
-            InitializeDebtBudgetDefaults();
+                new TransactionItem{Name = "Paint" ,BudgetCategory="Uncatogorized",Amount=50},
+                new TransactionItem{Name = "Plants" ,BudgetCategory="Uncatogorized",Amount=50},
+                new TransactionItem{Name = "Chairs" ,BudgetCategory="Uncatogorized",Amount=50},
+            };
+
+            _budgetManager.AutoSort = true;
+            _budgetManager.AddTransactions(transactionItemsMocked);
+
+            AddBudgetItemCommand = new DelegateCommand(AddBudgetItemcommandHandler);
+
+            TransactionSorterControl = new TransactionSorterViewModel(_budgetManager);
+            _budgetManager.SortByBudgetCategory();
+
         }
+
+        
 
         #endregion
 
@@ -58,373 +57,43 @@ namespace LifeCalculator.ViewModels
 
         #region Budget Item Collections
 
-        public ObservableCollection<BudgetItemModel> IncomeBudgetItems
-        {
-            get
-            {
-                return _incomeBudgetItems;
-            }
-            set
-            {
-                _incomeBudgetItems = value;
-            }
-        }
+        public TransactionSorterViewModel TransactionSorterControl { get; set; }
 
-        public ObservableCollection<BudgetItemModel> SavingsBudgetItems
-        {
-            get
-            {
-                return _savingsBudgetItems;
-            }
-            set
-            {
-                _savingsBudgetItems = value;
-            }
-        }
-
-        public ObservableCollection<BudgetItemModel> HousingBudgetItems
-        {
-            get
-            {
-                return _housingBudgetItems;
-            }
-            set
-            {
-                _housingBudgetItems = value;
-            }
-        }
-
-        public ObservableCollection<BudgetItemModel> FoodBudgetItems
-        {
-            get
-            {
-                return _foodBudgetItems;
-            }
-            set
-            {
-                _foodBudgetItems = value;
-            }
-        }
-
-        public ObservableCollection<BudgetItemModel> TransportationBudgetItems
-        {
-            get
-            {
-                return _transportationBudgetItems;
-            }
-            set
-            {
-                _transportationBudgetItems = value;
-            }
-        }
-
-        public ObservableCollection<BudgetItemModel> PersonalBudgetItems
-        {
-            get
-            {
-                return _personalBudgetItems;
-            }
-            set
-            {
-                _personalBudgetItems = value;
-            }
-        }
-
-        public ObservableCollection<BudgetItemModel> DebtBudgetItems
-        {
-            get
-            {
-                return _debtBudgetItems;
-            }
-            set
-            {
-                _debtBudgetItems = value;
-            }
-        }
-
-        public ObservableCollection<BudgetItemModel> InsuranceBudgetItems
-        {
-            get
-            {
-                return _insuranceBudgetItems;
-            }
-            set
-            {
-                _insuranceBudgetItems = value;
-            }
-        }
-
-        public ObservableCollection<BudgetItemModel> HealthBudgetItems
-        {
-            get
-            {
-                return _healthBudgetItems;
-            }
-            set
-            {
-                _healthBudgetItems = value;
-            }
-        }
 
         #endregion
+
+        public string AddBudgetITemName { get; set; }
+        public double AddBudgetITemPlannedAmount { get; set; }
+
+        public ICommand AddBudgetItemCommand { get; set; }
 
         public double MonthlyIncome
         {
             get
             {
                 var monthlyIncome = 0.0;
-                foreach (var item in IncomeBudgetItems)
-                {
-                    monthlyIncome += item.PlannedAmount;
-                }
 
                 return monthlyIncome;
             }
            
         }
 
-        public ICommand AddBudgetItemCommand { get; private set; }
-
-        public ICommand DeleteBudgetItemCommand { get; private set; }
 
         #endregion
 
-        #region Initialize Methods
+        #region Command Handlers
 
-        public void InitializeIncomeBudgetDefaults()
+        private void AddBudgetItemcommandHandler(object obj)
         {
-            var paycheck1 = new BudgetItemModel
-            {
-                Name = "Paycheck1",
-                Type = BudgetItemSection.Income
-            };
+            if (string.IsNullOrEmpty(AddBudgetITemName))
+                return;
 
-            var paycheck2 = new BudgetItemModel
-            {
-                Name = "Paycheck2",
-                Type = BudgetItemSection.Income
-            };
+            _budgetManager.AddBudgetItem(AddBudgetITemName, AddBudgetITemPlannedAmount);
 
-            _incomeBudgetItems.Add(paycheck1);
-            _incomeBudgetItems.Add(paycheck2);
-        }
-
-        public void InitializeSavingsBudgetDefaults()
-        {
-            var emergencyFund = new BudgetItemModel
-            {
-                Name = "Emergency Fund",
-                Type = BudgetItemSection.Savings
-            };
-
-            var savings = new BudgetItemModel
-            {
-                Name = "Savings",
-                Type = BudgetItemSection.Savings
-            };
-
-            var investments = new BudgetItemModel
-            {
-                Name = "Investment Contributions",
-                Type = BudgetItemSection.Savings
-            };
-
-            _savingsBudgetItems.Add(emergencyFund);
-            _savingsBudgetItems.Add(savings);
-            _savingsBudgetItems.Add(investments);
-        }
-
-        public void InitializeHousingBudgetDefaults()
-        {
-            var rent = new BudgetItemModel
-            {
-                Name = "Rent/Mortgage",
-                Type = BudgetItemSection.Housing
-            };
-
-            var electricBill = new BudgetItemModel
-            {
-                Name = "Electric Bill",
-                Type = BudgetItemSection.Housing
-            };
-
-            var waterBill = new BudgetItemModel
-            {
-                Name = "waterBill",
-                Type = BudgetItemSection.Housing
-            };
-
-            var internet = new BudgetItemModel
-            {
-                Name = "Internet Bill",
-                Type = BudgetItemSection.Housing
-            };
-
-            var cableBill = new BudgetItemModel
-            {
-                Name = "Cable Bill",
-                Type = BudgetItemSection.Housing
-            };
-
-            _housingBudgetItems.Add(rent);
-            _housingBudgetItems.Add(electricBill);
-            _housingBudgetItems.Add(waterBill);
-            _housingBudgetItems.Add(internet);
-            _housingBudgetItems.Add(cableBill);
-        }
-
-        public void InitializeTransportationBudgetDefaults()
-        {
-            var gas = new BudgetItemModel
-            {
-                Name = "Gas",
-                Type = BudgetItemSection.Transportation
-            };
-
-            var maintenance = new BudgetItemModel
-            {
-                Name = "Car Maintenance",
-                Type = BudgetItemSection.Transportation
-            };
-
-            _transportationBudgetItems.Add(gas);
-            _transportationBudgetItems.Add(maintenance);
-
-        }
-
-        public void InitializeFoodBudgetDefaults()
-        {
-            var groceries = new BudgetItemModel
-            {
-                Name = "Groceries",
-                Type = BudgetItemSection.Food
-            };
-
-            var fastFood = new BudgetItemModel
-            {
-                Name = "Fast Food",
-                Type = BudgetItemSection.Food
-            };
-
-            _foodBudgetItems.Add(groceries);
-            _foodBudgetItems.Add(fastFood);
-        }
-
-        public void InitializePersonalBudgetDefaults()
-        {
-            var haircuts = new BudgetItemModel
-            {
-                Name = "Haircuts",
-                Type = BudgetItemSection.Personal
-            };
-
-            var clothing = new BudgetItemModel
-            {
-                Name = "Clothing",
-                Type = BudgetItemSection.Personal
-            };
-
-            var entertainment = new BudgetItemModel
-            {
-                Name = "Entertainment",
-                Type = BudgetItemSection.Personal
-            };
-
-            var phone = new BudgetItemModel
-            {
-                Name = "PhoneBill",
-                Type = BudgetItemSection.Personal
-            };
-
-            var subscriptions = new BudgetItemModel
-            {
-                Name = "Subscriptions",
-                Type = BudgetItemSection.Personal
-            };
-
-            var travel = new BudgetItemModel
-            {
-                Name = "Travel",
-                Type = BudgetItemSection.Personal
-            };
-
-            _personalBudgetItems.Add(haircuts);
-            _personalBudgetItems.Add(clothing);
-            _personalBudgetItems.Add(entertainment);
-            _personalBudgetItems.Add(phone);
-            _personalBudgetItems.Add(subscriptions);
-            _personalBudgetItems.Add(travel);
-        }
-
-        public void InitializeHealthBudgetDefaults()
-        {
-            var gym = new BudgetItemModel
-            {
-                Name = "Gym",
-                Type = BudgetItemSection.Health
-            };
-
-            var doctor = new BudgetItemModel
-            {
-                Name = "Doctor Visits",
-                Type = BudgetItemSection.Health
-            };
-
-            var medicine = new BudgetItemModel
-            {
-                Name = "Medicine/Prescriptions",
-                Type = BudgetItemSection.Health
-            };
-
-            _healthBudgetItems.Add(gym);
-            _healthBudgetItems.Add(doctor);
-            _healthBudgetItems.Add(medicine);
-        }
-
-        public void InitializeInsuranceBudgetDefaults()
-        {
-            var autoInsurance = new BudgetItemModel
-            {
-                Name = "Auto Insurance",
-                Type = BudgetItemSection.Insurance
-            };
-
-            var homeInsurance = new BudgetItemModel
-            {
-                Name = "Home/Renters Insurance",
-                Type = BudgetItemSection.Insurance
-            };
-
-            _insuranceBudgetItems.Add(autoInsurance);
-            _insuranceBudgetItems.Add(homeInsurance);
-        }
-
-        public void InitializeDebtBudgetDefaults()
-        {
-            var studentLoans = new BudgetItemModel
-            {
-                Name = "Student Loans",
-                Type = BudgetItemSection.Insurance
-            };
-
-            var carPayment = new BudgetItemModel
-            {
-                Name = "Car Payment",
-                Type = BudgetItemSection.Insurance
-            };
-
-            var creditCard = new BudgetItemModel
-            {
-                Name = "Credit Card",
-                Type = BudgetItemSection.Insurance
-            };
-
-            _debtBudgetItems.Add(studentLoans);
-            _debtBudgetItems.Add(carPayment);
-            _debtBudgetItems.Add(creditCard);
-
+            AddBudgetITemName = string.Empty;
         }
 
         #endregion
+
     }
 }

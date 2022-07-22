@@ -12,3 +12,5 @@ artifacts/
 *.testlog
 *.testlog
 /.vs/LifeCalculator/v16/TestStore/2/testlog.manifest
+# Visual Studio temp something
+/.vs

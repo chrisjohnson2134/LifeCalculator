@@ -28,26 +28,26 @@
 
             <StackPanel Orientation="Horizontal">
                 <Label Content="Loan Amount : " Width="100" Height="24"/>
-                <TextBox Text="{Binding LoanAmount,Mode=TwoWay}" Width="100" Height="24"/>
+                <TextBox Text="{Binding LoanAmount,Mode=TwoWay, StringFormat=C}" Width="100" Height="24"/>
             </StackPanel>
         </StackPanel>
 
         <StackPanel Grid.Row="0" Grid.Column="1">
             <StackPanel Orientation="Horizontal">
                 <Label Content="Monthly Payment : " Width="100" Height="24"/>
-                <TextBox Text="{Binding MonthlyPayment,Mode=OneWay}" Width="100" Height="24" IsEnabled="False"/>
+                <TextBox Text="{Binding MonthlyPayment,Mode=OneWay, StringFormat=C}" Width="100" Height="24" IsEnabled="False"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal">
                 <Label Content="Interest Rate : " Width="100" Height="24"/>
-                <TextBox Text="{Binding InterestRate}" Width="100" Height="24"/>
+                <TextBox Text="{Binding InterestRate, StringFormat={}{0}%}" Width="100" Height="24"/>
             </StackPanel>
         </StackPanel>
 
         <StackPanel Grid.Row="0" Grid.Column="2">
             <StackPanel Orientation="Horizontal">
                 <Label Content="Down Payment : " Width="100" Height="24"/>
-                <TextBox Text="{Binding DownPayment}" Width="100" Height="24"/>
+                <TextBox Text="{Binding DownPayment, StringFormat=C}" Width="100" Height="24"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal">
@@ -71,9 +71,9 @@
             Width="600" Margin="5">
                 <ItemsControl ItemsSource="{Binding AccountLifeEventsVMs}">
                     <ItemsControl.Resources>
-                        <DataTemplate DataType="{x:Type localVM:ModifyEventLoanViewModel}">
+                        <DataTemplate DataType="{x:Type localVM:ModifyEventViewModel}">
                             <Expander Header="{Binding Name}">
-                                <local:ModifyEventLoan />
+                                <local:ModifyEvent />
                             </Expander>
                         </DataTemplate>
                     </ItemsControl.Resources>

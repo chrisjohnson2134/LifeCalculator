@@ -9,21 +9,21 @@
         Login,
         Register,
         Welcome,
-        Calculator
+        Calculator,
+        Settings,
+        PlaidDevSettings
     }
 
     public enum LifeEnum
     {
-        StartLifeEvent,
         OneTime,
-        MonthlyContribute,
-        EndLifeEvent
+        MonthlyContribute
     }
 
     public enum AccountTypes
     {
-        CompoundInterest,
-        LoanAccount
+        CompoundInterest = 0,
+        LoanAccount = 1
     }
 
     public enum RegistrationResult
@@ -45,5 +45,19 @@
         Savings,
         Insurance,
         Personal
+    }
+
+    public enum Environment
+    {
+        Sandbox,
+        Development
+    }
+
+    public enum PlaidAccountType
+    {
+        Other,
+        Checking,
+        Savings,
+        CreditCard
     }
 }

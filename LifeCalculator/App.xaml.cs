@@ -1,4 +1,5 @@
-﻿using LifeCalculator.Ninject;
+﻿using LifeCalculator.Framework.Settings;
+using LifeCalculator.Ninject;
 using LifeCalculator.ViewModels;
 using LifeCalculator.Views;
 using Ninject;
@@ -16,8 +17,10 @@ namespace LifeCalculator
             IKernel kernel = new StandardKernel();
             NinjectContainer container = new NinjectContainer();
             kernel.Load(container);
+            AppSettings.LoadCredentials();
             Window window = new MainWindow();
             window.DataContext = kernel.Get<MainWindowViewModel>();
+
             window.Show();
             base.OnStartup(e);
         }

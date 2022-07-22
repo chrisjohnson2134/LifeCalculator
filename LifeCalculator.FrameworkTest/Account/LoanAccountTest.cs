@@ -1,11 +1,12 @@
-﻿using LifeCalculator.Framework.Account;
+﻿using LifeCalculator.Framework.SimulatedAccount;
 using LifeCalculator.Framework.Enums;
 using LifeCalculator.Framework.LifeEvents;
 using NUnit.Framework;
 using Should;
 using System;
+using LifeCalculator.Framework.Managers;
 
-namespace LifeCalcuator.FrameworkTest.Account
+namespace LifeCalcuator.FrameworkTest.SimulatedAccount
 {
     //Calculator Used to check Calculations https://www.bankrate.com/calculators/mortgages/mortgage-calculator.aspx
     //Contacted company about 
@@ -14,10 +15,10 @@ namespace LifeCalcuator.FrameworkTest.Account
     public class LoanAccountTest
     {
         LoanAccount LoanAccount;
-
         private LoanAccount setupLoanAccount()
         {
-            return new LoanAccount("mortgage", DateTime.Now, 120, 2.75, 40000, 5000);
+            AccountsEventsManager _eventsManager = new AccountsEventsManager();
+            return new LoanAccount(_eventsManager,"mortgage", DateTime.Now, 120, 2.75, 40000, 5000) { Id = 0};
         }
 
         public LoanAccountTest()
@@ -64,7 +65,8 @@ namespace LifeCalcuator.FrameworkTest.Account
                 StartDate = DateTime.Now,
                 EndDate = DateTime.Now.AddYears(10),
                 Amount = 400,
-                LifeEventType = LifeEnum.MonthlyContribute
+                LifeEventType = LifeEnum.MonthlyContribute,
+                AccountType = AccountTypes.LoanAccount
             };
 
             localLoanAccount.AddLifeEvent(monthlyContribute);
@@ -76,7 +78,9 @@ namespace LifeCalcuator.FrameworkTest.Account
             calcs[35].Gain.ShouldEqual(11205.11);
             calcs[46].Gain.ShouldEqual(3324.35);
             calcs[50].Gain.ShouldEqual(409.06);
-            calcs[51].Gain.ShouldEqual(-323.94);
+            calcs[51].Gain.ShouldEqual(0);
+
+            calcs.Count.ShouldEqual(52);
         }
 
         /// <summary>
@@ -91,7 +95,8 @@ namespace LifeCalcuator.FrameworkTest.Account
             {
                 StartDate = DateTime.Now.AddYears(1),
                 Amount = 10000,
-                LifeEventType = LifeEnum.OneTime
+                LifeEventType = LifeEnum.OneTime, 
+                AccountType = AccountTypes.LoanAccount
             };
 
             localLoanAccount.AddLifeEvent(oneTimeContribute);

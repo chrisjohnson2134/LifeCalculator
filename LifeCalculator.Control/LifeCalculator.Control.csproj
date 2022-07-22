@@ -59,17 +59,11 @@
     <Compile Include="Accounts\Loan\Views\ModifyLoan.xaml.cs">
       <DependentUpon>ModifyLoan.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Budget\ViewModels\BudgetItemsControlViewModel.cs" />
+    <Compile Include="Budget\ViewModels\BudgetItemTileViewModel.cs" />
     <Compile Include="Events\IControlEvent.cs" />
-    <Compile Include="Events\Loan\ViewModels\AddEventLoanViewModel.cs" />
     <Compile Include="FinancialProfileEdit\FinancialProfileEditView.xaml.cs">
       <DependentUpon>FinancialProfileEditView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Events\Loan\ViewModels\ModifyEventLoanViewModel.cs" />
-    <Compile Include="Events\Loan\Views\AddEventLoan.xaml.cs">
-      <DependentUpon>AddEventLoan.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Events\Loan\Views\ModifyEventLoan.xaml.cs">
-      <DependentUpon>ModifyEventLoan.xaml</DependentUpon>
     </Compile>
     <Compile Include="FinancialProfileSummary\FinancialProfileSummaryView.xaml.cs">
       <DependentUpon>FinancialProfileSummaryView.xaml</DependentUpon>
@@ -90,12 +84,12 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Events\Compound\ViewModels\AddEventCompoundViewModel.cs" />
+    <Compile Include="Events\Compound\ViewModels\AddEventViewModel.cs" />
     <Compile Include="Accounts\Compound\ViewModels\AddCompoundViewModel.cs" />
     <Compile Include="Accounts\Loan\ViewModels\AddLoanViewModel.cs" />
-    <Compile Include="Events\Compound\ViewModels\ModifyEventCompoundViewModel.cs" />
-    <Compile Include="Events\Compound\Views\AddEventCompound.xaml.cs">
-      <DependentUpon>AddEventCompound.xaml</DependentUpon>
+    <Compile Include="Events\Compound\ViewModels\ModifyEventViewModel.cs" />
+    <Compile Include="Events\Compound\Views\AddEvent.xaml.cs">
+      <DependentUpon>AddEvent.xaml</DependentUpon>
     </Compile>
     <Compile Include="Accounts\Compound\Views\AddCompound.xaml.cs">
       <DependentUpon>AddCompound.xaml</DependentUpon>
@@ -103,8 +97,28 @@
     <Compile Include="Accounts\Loan\Views\AddLoan.xaml.cs">
       <DependentUpon>AddLoan.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Events\Compound\Views\ModifyEventCompound.xaml.cs">
-      <DependentUpon>ModifyEventCompound.xaml</DependentUpon>
+    <Compile Include="Events\Compound\Views\ModifyEvent.xaml.cs">
+      <DependentUpon>ModifyEvent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\Interfaces\ISettingsViewModel.cs" />
+    <Compile Include="Settings\ViewModels\PlaidDevSettingsViewModel.cs" />
+    <Compile Include="Settings\Views\PlaidDevSettings.xaml.cs">
+      <DependentUpon>PlaidDevSettings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TransactionSorter\ViewModels\TransactionSorterViewModel.cs" />
+    <Compile Include="TransactionSorter\Views\TransactionSorterView.xaml.cs">
+      <DependentUpon>TransactionSorterView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Transaction\ViewModels\TransactionItemViewModel.cs" />
+    <Compile Include="Transaction\ViewModels\TransactionListViewModel.cs" />
+    <Compile Include="Budget\Views\BudgetItemsControl.xaml.cs">
+      <DependentUpon>BudgetItemsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Budget\Views\BudgetItemTile.xaml.cs">
+      <DependentUpon>BudgetItemTile.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Transaction\Views\TransactionListView.xaml.cs">
+      <DependentUpon>TransactionListView.xaml</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -129,7 +143,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Events\Compound\Views\AddEventCompound.xaml">
+    <Page Include="Events\Compound\Views\AddEvent.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -141,15 +155,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Events\Compound\Views\ModifyEventCompound.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Events\Loan\Views\AddEventLoan.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Events\Loan\Views\ModifyEventLoan.xaml">
+    <Page Include="Events\Compound\Views\ModifyEvent.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -158,6 +164,26 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="PasswordBox\BindablePasswordBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Settings\Views\PlaidDevSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Budget\Views\BudgetItemsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Budget\Views\BudgetItemTile.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TransactionSorter\Views\TransactionSorterView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Transaction\Views\TransactionListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
