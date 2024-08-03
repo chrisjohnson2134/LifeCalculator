@@ -17,7 +17,7 @@ namespace LifeCalculator
             IKernel kernel = new StandardKernel();
             NinjectContainer container = new NinjectContainer();
             kernel.Load(container);
-            AppSettings.LoadCredentials();
+            //AppSettings.LoadCredentials();
             Window window = new MainWindow();
             window.DataContext = kernel.Get<MainWindowViewModel>();
 
