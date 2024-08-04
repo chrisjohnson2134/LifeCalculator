@@ -1,6 +1,6 @@
 ﻿using LifeCalculator.Control.Accounts;
-using LifeCalculator.Framework.Account;
-using LifeCalculator.Framework.Account.Manager;
+using LifeCalculator.Framework.SimulatedAccount;
+using LifeCalculator.Framework.Managers;
 using LifeCalculator.Framework.BaseVM;
 using LifeCalculator.Framework.ColumnDefinitions;
 using LifeCalculator.Framework.LifeEvents;
@@ -8,6 +8,7 @@ using Microsoft.VisualStudio.PlatformUI;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using LifeCalculator.Framework.Enums;
 
 namespace LifeCalculator.Control.ViewModels
 {
@@ -17,6 +18,7 @@ namespace LifeCalculator.Control.ViewModels
 
         private LoanAccount _account;
         private AccountManager _accountManager;
+        private IAccountsEventsManager _accountsEventsManager;
         public event EventHandler ValueChanged;
 
         #endregion
@@ -33,12 +35,12 @@ namespace LifeCalculator.Control.ViewModels
             _account = account;
             _accountManager = accountManager;
 
-            AccountLifeEventsVMs = new BindingList<ModifyEventLoanViewModel>();
+            AccountLifeEventsVMs = new BindingList<ModifyEventViewModel>();
             foreach (var item in _account.AccountLifeEvents)
             {
                 if (item is AccountEvent accEvent)
                 {
-                    var accVM = new ModifyEventLoanViewModel(accEvent);
+                    var accVM = new ModifyEventViewModel(accEvent);
                     AccountLifeEventsVMs.Add(accVM);
                 }
             }
@@ -120,11 +122,11 @@ namespace LifeCalculator.Control.ViewModels
         {
             get
             {
-                return _account.InterestRate;
+                return _account.InterestRate * 100;
             }
             set
             {
-                _account.InterestRate = value;
+                _account.InterestRate = value / 100;
                 OnPropertyChanged("InterestRate");
             }
         }
@@ -171,22 +173,11 @@ namespace LifeCalculator.Control.ViewModels
             }
         }
 
-        public BindingList<ModifyEventLoanViewModel> AccountLifeEventsVMs { get; set; }
+        public BindingList<ModifyEventViewModel> AccountLifeEventsVMs { get; set; }
 
         public LoanAccount Account => _account;
 
-        public List<IAccountEvent> AccountLifeEvents
-        {
-            get
-            {
-                return _account.AccountLifeEvents;
-            }
-            set
-            {
-                _account.AccountLifeEvents = value;
-                OnPropertyChanged("AccountLifeEvents");
-            }
-        }
+        public List<IAccountEvent> AccountLifeEvents => _accountsEventsManager.GetAllAccountEventsByAccountId(Account.Id,AccountTypes.LoanAccount);
 
         #endregion
 
@@ -210,7 +201,7 @@ namespace LifeCalculator.Control.ViewModels
                 {
                     if (item is AccountEvent accEvent)
                     {
-                        var modifyLoanVM = new ModifyEventLoanViewModel(accEvent);
+                        var modifyLoanVM = new ModifyEventViewModel(accEvent);
                         AccountLifeEventsVMs.Add(modifyLoanVM);
                     }
                 }

@@ -1,36 +1,34 @@
-﻿using LifeCalculator.Framework.Account;
+﻿using LifeCalculator.Framework.SimulatedAccount;
 using LifeCalculator.Framework.LifeEvents;
 using LifeCalculator.Framework.Services.AccountDataServices;
-using LifeCalculator.Framework.Services.EventsDataService;
 using NUnit.Framework;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using LifeCalculator.Framework.Managers;
+using System.Threading;
 
 namespace LifeCalculator.FrameworkTest.Services.CompoundAccountDataServices
 {
     [TestFixture]
     public class CompoundAccountDataServiceTest
     {
+        IAccountsEventsManager accountsEventsManager;
+
         protected List<IAccountEvent> AccountLifeEventsExpected;
         public readonly double InitialAmountExpected = 100.1;
         public readonly double FinalAmountExpected = 200.2;
 
         public CompoundAccount CreateCompoundAccount(string name)
         {
-            var AccountLifeEventsExpected = new List<IAccountEvent>();
-            AccountLifeEventsExpected.Add(new AccountEvent() { Name = "start" });
-            AccountLifeEventsExpected.Add(new AccountEvent() { Name = "stop" });
+            accountsEventsManager = new AccountsEventsManager();
+            Thread.Sleep(1000);
 
-            return new CompoundAccount()
+            return new CompoundAccount(accountsEventsManager)
             {
                 Name = name,
                 UserId = 1234,
                 InitialAmount = InitialAmountExpected,
-                FinalAmount = FinalAmountExpected,
-                AccountLifeEvents = AccountLifeEventsExpected
+                FinalAmount = FinalAmountExpected
             };
         }
 
@@ -52,7 +50,7 @@ namespace LifeCalculator.FrameworkTest.Services.CompoundAccountDataServices
             //LOAD
             var RoulphLoadedAccount = await dataService.Load(RoulphInsertedAccount.Id);
 
-            Assert.That(RoulphInsertedAccount.Equals(RoulphLoadedAccount));
+            Assert.AreEqual(RoulphInsertedAccount,RoulphLoadedAccount);
 
             RoulphInsertedAccount.FinalAmount = 123.1;
             RoulphInsertedAccount.InitialAmount = 321.2;
@@ -63,7 +61,7 @@ namespace LifeCalculator.FrameworkTest.Services.CompoundAccountDataServices
 
             RoulphLoadedAccount = await dataService.Load(RoulphInsertedAccount.Id);
 
-            Assert.That(RoulphInsertedAccount.Equals(RoulphLoadedAccount));
+            Assert.AreEqual(RoulphInsertedAccount,RoulphLoadedAccount);
 
             //DELETE
             dataService.Delete(RoulphLoadedAccount.Id);

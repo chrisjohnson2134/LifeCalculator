@@ -1,4 +1,5 @@
-﻿using LifeCalculator.Framework.Authenticator;
+﻿using LifeCalculator.Control.ViewModels;
+using LifeCalculator.Framework.Authenticator;
 using LifeCalculator.Framework.BaseVM;
 using LifeCalculator.Framework.CurrentAccountStorage;
 using LifeCalculator.Framework.Services.AuthenticationService;
@@ -27,6 +28,13 @@ namespace LifeCalculator.Ninject
             Bind<WelcomePageViewModel>().ToSelf().InSingletonScope();
             Bind<BudgetViewModel>().ToSelf().InSingletonScope();
             Bind<CalculatorViewModel>().ToSelf().InSingletonScope();
+            Bind<SettingsViewModel>().ToSelf().InSingletonScope();
+            Bind<PlaidDevSettingsViewModel>().ToSelf().InSingletonScope();
+            Bind<TransactionSorterViewModel>().ToSelf().InSingletonScope();
+            Bind<BudgetItemsControlViewModel>().ToSelf().InSingletonScope();
+            Bind<BudgetItemTileViewModel>().ToSelf().InSingletonScope();
+            Bind<TransactionListViewModel>().ToSelf().InSingletonScope();
+            Bind<TransactionItemViewModel>().ToSelf().InSingletonScope();
 
             Bind<INavigator>().To<Navigator>().InSingletonScope();
             Bind<IViewModelFactory>().To<ViewModelFactory>().InSingletonScope();
@@ -68,6 +76,14 @@ namespace LifeCalculator.Ninject
             Bind<CreateViewModel<CalculatorViewModel>>().ToMethod((Kernel) =>
             {
                 return () => kernel.Get<CalculatorViewModel>();
+            });
+            Bind<CreateViewModel<SettingsViewModel>>().ToMethod((Kernel) =>
+            {
+                return () => kernel.Get<SettingsViewModel>();
+            });
+            Bind<CreateViewModel<PlaidDevSettingsViewModel>>().ToMethod((Kernel) =>
+            {
+                return () => kernel.Get<PlaidDevSettingsViewModel>();
             });
 
         }

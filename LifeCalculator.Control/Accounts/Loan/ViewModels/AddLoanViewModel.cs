@@ -1,10 +1,11 @@
 ﻿using LifeCalculator.Control.Accounts;
-using LifeCalculator.Framework.Account;
+using LifeCalculator.Framework.SimulatedAccount;
 using LifeCalculator.Framework.BaseVM;
 using LifeCalculator.Framework.CurrentAccountStorage;
 using Microsoft.VisualStudio.PlatformUI;
 using System;
 using System.Collections.Generic;
+using LifeCalculator.Framework.Managers;
 
 namespace LifeCalculator.Control.ViewModels
 {
@@ -32,6 +33,7 @@ namespace LifeCalculator.Control.ViewModels
             AddAccountCommand = new DelegateCommand(AddAccountCommandHandler);
             _accountStore = accountStore;
             StartDate = DateTime.Now;
+
         }
 
         #endregion
@@ -64,11 +66,11 @@ namespace LifeCalculator.Control.ViewModels
         private void AddAccountCommandHandler()
         {
 
-            var acc = new LoanAccount(AccountName, StartDate,LoanLength * 12, InterestRate,InitialLoanAmount,
+            var acc = new LoanAccount(_accountStore.CurrentAccount.AccountsEventsManager,AccountName, StartDate,LoanLength * 12, InterestRate,InitialLoanAmount,
             DownPayment);
             acc.UserId = _accountStore.CurrentAccount.Id;
 
-            _accountStore.CurrentAccount.AccountManager.AddAccount(acc);
+            _accountStore.CurrentAccount.SimulatedAccountManager.AddAccount(acc);
 
             AccountAdded?.Invoke(this, acc);
         }

@@ -63,6 +63,7 @@ namespace LifeCalculator.Framework.Services.DataService
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
                 var output = await cnn.QueryAsync<T>($"SELECT * FROM {_tableName}", new DynamicParameters());
+                
                 return output.AsList<T>();
             }
         }

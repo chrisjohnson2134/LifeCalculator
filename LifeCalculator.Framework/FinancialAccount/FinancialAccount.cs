@@ -1,8 +1,10 @@
-﻿using LifeCalculator.Framework.Account;
+﻿using LifeCalculator.Framework.SimulatedAccount;
 using System.Collections.Generic;
 using LifeCalculator.Framework.Users;
 using LifeCalculator.Framework.Services.DataService;
-using LifeCalculator.Framework.Account.Manager;
+using LifeCalculator.Framework.Managers;
+using LifeCalculator.Framework.Budget;
+using LifeCalculator.Framework.Managers.Interfaces;
 
 namespace LifeCalculator.Framework.FinancialAccount
 {
@@ -13,7 +15,10 @@ namespace LifeCalculator.Framework.FinancialAccount
 
         public FinancialAccount()
         {
-            AccountManager = new AccountManager();
+            SimulatedAccountManager = new AccountManager();
+            TransactionManager = new TransactionsManager();
+            BudgetManager = new BudgetManager(TransactionManager);
+            AccountsEventsManager = new AccountsEventsManager();
         }
 
         #endregion
@@ -57,7 +62,15 @@ namespace LifeCalculator.Framework.FinancialAccount
         public double MiscellaneousPayments { get; set; }
 
         [IgnoreDatabase]
-        public AccountManager AccountManager { get; set; }
+        public AccountManager SimulatedAccountManager { get; set; }
+        [IgnoreDatabase]
+        public AccountManager UserAccountManager { get; set; }
+        [IgnoreDatabase]
+        public BudgetManager BudgetManager { get; set; }
+        [IgnoreDatabase]
+        public ITransactionManager TransactionManager { get; set; }
+        [IgnoreDatabase]
+        public IAccountsEventsManager AccountsEventsManager { get; set; }
 
         #endregion
     }

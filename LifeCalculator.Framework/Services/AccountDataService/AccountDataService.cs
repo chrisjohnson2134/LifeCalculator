@@ -1,4 +1,4 @@
-﻿using LifeCalculator.Framework.Account;
+﻿using LifeCalculator.Framework.SimulatedAccount;
 using LifeCalculator.Framework.Services.AccountDataServices;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -53,12 +53,12 @@ namespace LifeCalculator.Framework.Services.AccDataService
             if (entity is LoanAccount)
             {
                 var dataService = new LoanAccountDataService();
-                 await dataService.Save(entity.Id,entity as LoanAccount);
+                 await dataService.Save(entity.Id, entity as LoanAccount);
             }
             else if (entity is CompoundAccount)
             {
                 var dataService = new CompoundAccountDataService();
-                await dataService.Save(entity.Id,entity as CompoundAccount);
+                await dataService.Save(entity.Id, entity as CompoundAccount);
             }
         }
 
