@@ -11,7 +11,7 @@
 
             <DockPanel LastChildFill="True">
                 <Label Margin="2" Content="Start Date:" Width="115"/>
-                <DatePicker  Margin="2" Text="{Binding StartDate}" Width="auto" />
+                <DatePicker  Margin="2" SelectedDate="{Binding StartDate}" SelectedDateFormat="Short" Width="auto" />
             </DockPanel>
 
             <DockPanel LastChildFill="True">

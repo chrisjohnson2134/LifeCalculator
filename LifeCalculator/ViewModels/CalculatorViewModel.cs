@@ -14,6 +14,7 @@ using LifeCalculator.Control.Accounts;
 using LifeCalculator.Control.Events;
 using LifeCalculator.Framework.Services.EventsDataService;
 using LifeCalculator.Framework.Managers;
+using Microsoft.VisualStudio.PlatformUI;
 
 namespace LifeCalculator.ViewModels
 {
@@ -49,6 +50,10 @@ namespace LifeCalculator.ViewModels
             {
                 addAccountToList(account);
             }
+
+            // Initialize commands
+            AddCompoundAccountCommand = new DelegateCommand(AddCompoundAccountHandler);
+            AddLoanAccountCommand = new DelegateCommand(AddLoanAccountHandler);
 
             ReChart(new object(), EventArgs.Empty);
         }
@@ -118,6 +123,10 @@ namespace LifeCalculator.ViewModels
         //Everything Else
         public ObservableCollection<IModifyAccount> AccountsList { get; set; }
 
+        //Commands
+        public DelegateCommand AddCompoundAccountCommand { get; set; }
+        public DelegateCommand AddLoanAccountCommand { get; set; }
+
         #endregion
 
         #region Event Handlers
@@ -162,6 +171,16 @@ namespace LifeCalculator.ViewModels
         #region Private Methods
 
         #region UI Command Handlers
+
+        private void AddCompoundAccountHandler()
+        {
+            CurrentViewModel = new AddCompoundViewModel(_accountStore);
+        }
+
+        private void AddLoanAccountHandler()
+        {
+            CurrentViewModel = new AddLoanViewModel(_accountStore);
+        }
 
         private void NavigateAddAccount(string account)
         {
@@ -219,9 +238,13 @@ namespace LifeCalculator.ViewModels
                 .X(dayModel => dayModel.Date.Ticks / (TimeSpan.FromDays(1).Ticks * 365.2425))
                 .Y(dayModel => dayModel.CurrentValue);
 
-                var series = new ColumnSeries(dayConfig);
+                var series = new LineSeries(dayConfig);
                 series.Title = seriesName;
                 series.Values = new ChartValues<BarChartColumn>();
+                series.Fill = System.Windows.Media.Brushes.Transparent;
+                series.StrokeThickness = 2;
+                series.PointGeometrySize = 6;
+                series.LineSmoothness = 0.2;
                 series.LabelPoint = point => String.Format("{0:C}", Convert.ToInt32(point.Y));
                 ValueCollection.Add(series);
                 Formatter = value => new DateTime((long)(value * TimeSpan.FromDays(1).Ticks * 365.2425)).ToString("yyyy");//MM/yyyy
@@ -241,7 +264,11 @@ namespace LifeCalculator.ViewModels
         /// </remarks>
         private void ReChart(object sender, EventArgs e)
         {
+            var netWorthData = new System.Collections.Generic.Dictionary<DateTime, double>();
+
+            // First, collect all account data
             foreach (var acc in _accountStore.CurrentAccount.SimulatedAccountManager.GetAllAccounts())
+            {
                 foreach (var collection in ValueCollection)
                 {
                     if (collection.Title.Equals(acc.Name))
@@ -250,30 +277,99 @@ namespace LifeCalculator.ViewModels
 
                         var monthlyCalculation = (acc as ISimulatedAccount).Calculation();
 
+                        // Plot data points every 6 months for better visualization
                         for (int i = 0; i < monthlyCalculation.Count; i++)
                         {
-                            if ((i % 12 == 0 && i != 0) || i == 1)
+                            if ((i % 6 == 0 && i != 0) || i == 1)
                             {
+                                var accountValue = monthlyCalculation[i].Gain;
+                                var date = monthlyCalculation[i].Date;
+
                                 collection.Values.Add(new BarChartColumn()
                                 {
                                     Name = acc.Name,
-                                    CurrentValue = monthlyCalculation[i].Gain,
-                                    Date = monthlyCalculation[i].Date
+                                    CurrentValue = accountValue,
+                                    Date = date
                                 });
+
+                                
                             }
-                            //else if(i == monthlyCalculation.Count - 1 )
-                            //{
-                            //    collection.Values.Add(new BarChartColumn()
-                            //    {
-                            //        Name = acc.Name,
-                            //        CurrentValue = monthlyCalculation[i].Gain,
-                            //        Date = monthlyCalculation[i].Date
-                            //    });
-                            //}
                         }
                     }
                 }
-            
+            }
+
+            foreach (var collection in ValueCollection)
+            {
+                if (collection.Title != "Net Worth (Total)")
+                {
+                    foreach (var item in collection.Values)
+                    {
+                        var acc = item as BarChartColumn;
+                        var date = acc.Date;
+                        var accountValue = acc.CurrentValue;
+                        // Accumulate net worth data by summing all account values at each date
+                        if (!netWorthData.ContainsKey(date))
+                            netWorthData[date] = 0;
+                        netWorthData[date] += accountValue;
+                    }
+                    
+                }
+            }
+
+            // Update or create Net Worth series
+            UpdateNetWorthSeries(netWorthData);
+        }
+
+        private void UpdateNetWorthSeries(System.Collections.Generic.Dictionary<DateTime, double> netWorthData)
+        {
+            LineSeries netWorthSeries = null;
+
+            // Find existing Net Worth series
+            foreach (var series in ValueCollection)
+            {
+                if (series.Title == "Net Worth (Total)" || series.Title == "Net Worth")
+                {
+                    netWorthSeries = series as LineSeries;
+                    break;
+                }
+            }
+
+            // Create Net Worth series if it doesn't exist
+            if (netWorthSeries == null)
+            {
+                var dayConfig = Mappers.Xy<BarChartColumn>()
+                    .X(dayModel => dayModel.Date.Ticks / (TimeSpan.FromDays(1).Ticks * 365.2425))
+                    .Y(dayModel => dayModel.CurrentValue);
+
+                netWorthSeries = new LineSeries(dayConfig);
+                netWorthSeries.Title = "Net Worth (Total)";
+                netWorthSeries.Values = new ChartValues<BarChartColumn>();
+                netWorthSeries.Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 215, 0)); // Gold color
+                netWorthSeries.Fill = System.Windows.Media.Brushes.Transparent;
+                netWorthSeries.StrokeThickness = 4;
+                netWorthSeries.PointGeometrySize = 10;
+                netWorthSeries.LineSmoothness = 0.2;
+                netWorthSeries.LabelPoint = point => String.Format("{0:C}", Convert.ToInt32(point.Y));
+
+                if(ValueCollection.Contains(netWorthSeries) == false)
+                ValueCollection.Add(netWorthSeries);
+            }
+
+            // Clear and repopulate Net Worth series
+            netWorthSeries.Values.Clear();
+            var sortedDates = new System.Collections.Generic.List<DateTime>(netWorthData.Keys);
+            sortedDates.Sort();
+
+            foreach (var date in sortedDates)
+            {
+                netWorthSeries.Values.Add(new BarChartColumn()
+                {
+                    Name = "Net Worth",
+                    CurrentValue = netWorthData[date],
+                    Date = date
+                });
+            }
         }
 
         #endregion

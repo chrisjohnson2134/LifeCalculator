@@ -52,7 +52,7 @@
 
             <StackPanel Orientation="Horizontal">
                 <Label Content="Start Date : " Width="100" Height="24"/>
-                <DatePicker SelectedDate="{Binding StartDate}" Width="100" Height="24"/>
+                <DatePicker SelectedDate="{Binding StartDate}" SelectedDateFormat="Short" Width="100" Height="24"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal">

@@ -54,8 +54,8 @@ namespace LifeCalculator.Control.ViewModels
             institutionDataService = new InstitutionDataService();
 
 
-            StartDate = DateTime.Now.AddMonths(-1);
-            EndDate = DateTime.Now;
+            StartDate = DateTime.Today.AddMonths(-1);
+            EndDate = DateTime.Today;
         }
 
         #endregion
@@ -158,7 +158,7 @@ namespace LifeCalculator.Control.ViewModels
 
         private void LoadTransactionsCommandHandler(object obj)
         {
-            var transactions = PlaidService.GetTransactions(AppSettings.Instance.DevelopmentInstitutions[0],DateTime.Now.AddMonths(-2),DateTime.Now);
+            var transactions = PlaidService.GetTransactions(AppSettings.Instance.DevelopmentInstitutions[0],DateTime.Today.AddMonths(-2),DateTime.Today);
             Transactions.Clear();
             if (Framework.Enums.Environment.Development == AppSettings.Instance.PlaidApiSettings.Environment && AppSettings.Instance.DevelopmentInstitutions[0] != null)
                 foreach (var item in PlaidService.GetTransactions(AppSettings.Instance.DevelopmentInstitutions[0], StartDate, EndDate))

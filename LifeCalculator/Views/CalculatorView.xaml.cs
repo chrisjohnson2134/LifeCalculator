@@ -24,5 +24,6 @@ namespace LifeCalculator.Views
         {
             InitializeComponent();
         }
+
     }
 }

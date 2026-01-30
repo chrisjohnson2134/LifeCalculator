@@ -47,9 +47,9 @@
                 <Label Content="Transactions (all accounts)" FontSize="11"/>
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Transactions" FontSize="11" VerticalAlignment="Center"/>
-                    <DatePicker Width="50" FontSize="11" SelectedDate="{Binding StartDate}"/>
+                    <DatePicker Width="50" FontSize="11" SelectedDate="{Binding StartDate}" SelectedDateFormat="Short"/>
                     <Label Content="To" FontSize="11"/>
-                    <DatePicker Width="50" FontSize="11" SelectedDate="{Binding EndDate}"/>
+                    <DatePicker Width="50" FontSize="11" SelectedDate="{Binding EndDate}" SelectedDateFormat="Short"/>
                     <Button x:Name="LoadBtn" Content="Load" Command="{Binding LoadTransactionsCommand}" Margin="5" FontSize="11"/>
                 </StackPanel>
                 <DataGrid ItemsSource="{Binding Transactions}" Height="275"/>

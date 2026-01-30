@@ -17,12 +17,12 @@
 
             <StackPanel Orientation="Horizontal">
                 <Label x:Name="EventDateLabel"  Margin="2" Width="75"  Content="Event Date:" />
-                <DatePicker x:Name="EventDateTextBox" Margin="2" Width="100" SelectedDate="{Binding StartDate}" />
+                <DatePicker x:Name="EventDateTextBox" Margin="2" Width="100" SelectedDate="{Binding StartDate}" SelectedDateFormat="Short" />
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" >
                 <Label Margin="2" Content="End Date:" Width="75"  />
-                <DatePicker Margin="2" Width="100" SelectedDate="{Binding EndDate}" IsEnabled="{Binding NeedsEndDate}"/>
+                <DatePicker Margin="2" Width="100" SelectedDate="{Binding EndDate}" SelectedDateFormat="Short" IsEnabled="{Binding NeedsEndDate}"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal">

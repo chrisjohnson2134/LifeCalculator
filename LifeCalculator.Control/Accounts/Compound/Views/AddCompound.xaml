@@ -37,14 +37,14 @@
                 <!--  row 5  -->
                 <DockPanel LastChildFill="True">
                     <Label x:Name="StartDataLabel" Margin="2" Width="100" Content="Start Date:" />
-                    <DatePicker x:Name="StartDateTextbox" Margin="2" SelectedDate="{Binding StartDate}" />
+                    <DatePicker x:Name="StartDateTextbox" Margin="2" SelectedDate="{Binding StartDate}" SelectedDateFormat="Short" />
                 </DockPanel>
 
 
                 <!--  row 6  -->
                 <DockPanel LastChildFill="True">
                     <Label x:Name="StopDataLabel" Margin="2" Width="100" Content="Stop Date:" />
-                    <DatePicker x:Name="StopDateTextbox" Margin="2" SelectedDate="{Binding StopDate}" />
+                    <DatePicker x:Name="StopDateTextbox" Margin="2" SelectedDate="{Binding StopDate}" SelectedDateFormat="Short" />
                 </DockPanel>
 
                 <!--  row 7  -->

@@ -21,8 +21,8 @@ namespace LifeCalculator.Control.ViewModels
 
             EventTypes = new List<string> { "One-Time", "Monthly" };
 
-            StartDate = DateTime.Now;
-            EndDate = DateTime.Now.AddYears(1);
+            StartDate = DateTime.Today;
+            EndDate = DateTime.Today.AddYears(1);
 
             AddEventCommand = new DelegateCommand(AddEventCommandHandler);
 

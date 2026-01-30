@@ -36,8 +36,8 @@ namespace LifeCalculator.Control.ViewModels
 
             AddAccountCommand = new DelegateCommand(AddAccountCommandHandler);
 
-            StartDate = DateTime.Now;
-            StopDate = DateTime.Now.AddYears(1);
+            StartDate = DateTime.Today;
+            StopDate = DateTime.Today.AddYears(1);
         }
 
         #endregion

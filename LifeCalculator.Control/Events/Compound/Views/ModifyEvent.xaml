@@ -11,7 +11,7 @@
 
             <StackPanel>
                 <TextBox x:Name="InvestmentNameTextBox" Width="100" Text="{Binding Name}" />
-                <DatePicker x:Name="StartDateTextBox" Width="100" SelectedDate="{Binding Date}" />
+                <DatePicker x:Name="StartDateTextBox" Width="100" SelectedDate="{Binding Date}" SelectedDateFormat="Short" />
             </StackPanel>
 
             <StackPanel>
@@ -21,7 +21,7 @@
 
             <StackPanel>
                 <TextBox x:Name="AdditionalContributionTextBox" Text="{Binding Amount, StringFormat=C}" MinWidth="100"/>
-                <DatePicker x:Name="EndDateTextBox" Width="100" SelectedDate="{Binding EndDate}" IsEnabled="{Binding EndDateEnabled}"/>
+                <DatePicker x:Name="EndDateTextBox" Width="100" SelectedDate="{Binding EndDate}" SelectedDateFormat="Short" IsEnabled="{Binding EndDateEnabled}"/>
             </StackPanel>
         </StackPanel>
 
