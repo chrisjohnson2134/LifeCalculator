@@ -7,8 +7,8 @@
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:navbar="clr-namespace:LifeCalculator.Navigation"
-    Width="1280"
-    Height="760"
+    Width="1600"
+    Height="1100"
     MinWidth="1200"
     MinHeight="700"
     AllowsTransparency="False"
@@ -42,7 +42,9 @@
                 </Grid.Style>
                 <navbar:SideNavigationBar Grid.Column="0" Grid.ColumnSpan="2" />
             </Grid>
-            <ContentControl Grid.Column="1" Content="{Binding CurrentViewModel}" />
+            <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                <ContentControl Content="{Binding CurrentViewModel}" />
+            </ScrollViewer>
         </Grid>
     </Border>
 </Window>
