@@ -1,11 +1,12 @@
 ﻿using LifeCalculator.Framework.SimulatedAccount;
 using LifeCalculator.Framework.LifeEvents;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows.Media;
 using LiveCharts;
-using LiveCharts.Configurations;
 using LiveCharts.Wpf;
-using LifeCalculator.Framework.Chart;
 using LifeCalculator.Framework.BaseVM;
 using LifeCalculator.Framework.CurrentAccountStorage;
 using LifeCalculator.Control.ViewModels;
@@ -59,8 +60,25 @@ namespace LifeCalculator.ViewModels
         #region Properties
 
         //live charts
-        public Func<double, string> Formatter { get; set; }
         public SeriesCollection ValueCollection { get; set; }
+
+        // Real calendar years used as the (categorical) X axis labels.
+        private string[] _labels = new string[0];
+        public string[] Labels
+        {
+            get => _labels;
+            set
+            {
+                _labels = value;
+                OnPropertyChanged(nameof(Labels));
+            }
+        }
+
+        // Currency formatter for the Y axis.
+        public Func<double, string> YFormatter { get; set; } = value => value.ToString("C0");
+
+        // Running counter so each account keeps a stable palette color.
+        private int _colorCounter = 0;
 
 
         //Add Account
@@ -141,17 +159,12 @@ namespace LifeCalculator.ViewModels
 
         private void AccountManager_AccountDeleted(object sender, IAccount e)
         {
+            var seriesToRemove = ValueCollection.FirstOrDefault(s => s.Title.Equals(e.Name));
+            if (seriesToRemove != null)
+                ValueCollection.Remove(seriesToRemove);
 
-            foreach (var item in ValueCollection)
-                if(item.Title.Equals(e.Name))
-                    ValueCollection.Remove(item);
-
-            IModifyAccount itemVm = null;
-            foreach (var item in AccountsList)
-                if (item.Name.Equals(e.Name))
-                    itemVm = item;
-
-            if(itemVm != null)
+            var itemVm = AccountsList.FirstOrDefault(a => a.Name.Equals(e.Name));
+            if (itemVm != null)
                 AccountsList.Remove(itemVm);
 
             ReChart(this, EventArgs.Empty);
@@ -192,88 +205,98 @@ namespace LifeCalculator.ViewModels
 
         private void addAccountToList(IAccount account)
         {
+            var brush = AccountColorPalette.BrushAt(_colorCounter++);
+
+            IModifyAccount vm = null;
             if (account is LoanAccount loanAccount)
             {
                 loanAccount.SetEventsManager(_accountsEventsManager);
-                var vm = new ModifyLoanViewModel(loanAccount,_accountStore.CurrentAccount.SimulatedAccountManager);
-                AccountsList.Add(vm);
+                vm = new ModifyLoanViewModel(loanAccount, _accountStore.CurrentAccount.SimulatedAccountManager);
             }
-
             else if (account is CompoundAccount compoundAccount)
             {
                 compoundAccount.SetEventsManager(_accountsEventsManager);
-                var vm = new ModifyCompoundViewModel(compoundAccount, _accountStore.CurrentAccount.SimulatedAccountManager);
+                vm = new ModifyCompoundViewModel(compoundAccount, _accountStore.CurrentAccount.SimulatedAccountManager);
+            }
+
+            if (vm != null)
+            {
+                vm.SeriesColor = brush;
                 AccountsList.Add(vm);
             }
 
-            AddChartSeries(account.Name);
+            AddChartSeries(account.Name, brush);
         }
 
 
-        // Add Chart series
-        private void AddChartSeries(string seriesName)
+        // Add a grouped column series for one account, colored to match its list entry.
+        private void AddChartSeries(string seriesName, Brush brush)
         {
             try
             {
-                var dayConfig = Mappers.Xy<BarChartColumn>()
-                .X(dayModel => dayModel.Date.Ticks / (TimeSpan.FromDays(1).Ticks * 365.2425))
-                .Y(dayModel => dayModel.CurrentValue);
+                var series = new ColumnSeries
+                {
+                    Title = seriesName,
+                    Values = new ChartValues<double>(),
+                    Fill = brush,
+                    Stroke = brush,
+                    StrokeThickness = 0,
+                    MaxColumnWidth = 28,
+                    LabelPoint = point => string.Format("{0:C0}", point.Y)
+                };
 
-                var series = new ColumnSeries(dayConfig);
-                series.Title = seriesName;
-                series.Values = new ChartValues<BarChartColumn>();
-                series.LabelPoint = point => String.Format("{0:C}", Convert.ToInt32(point.Y));
                 ValueCollection.Add(series);
-                Formatter = value => new DateTime((long)(value * TimeSpan.FromDays(1).Ticks * 365.2425)).ToString("yyyy");//MM/yyyy
             }
             catch (Exception)
             {
             }
-
         }
 
-        ///// <summary>
-        /// Method Recomputes the Chart
+        /// <summary>
+        /// Recomputes the chart.
         /// </summary>
         /// <remarks>
-        /// Use Method to Re-Display the chart whenever modifications are made or Events
-        /// are added
+        /// All accounts share one categorical X axis of calendar years, so columns are
+        /// grouped side-by-side (no overlap) and labels show the real year. Years an
+        /// account doesn't span are filled with NaN so nothing is drawn for them.
         /// </remarks>
         private void ReChart(object sender, EventArgs e)
         {
-            foreach (var acc in _accountStore.CurrentAccount.SimulatedAccountManager.GetAllAccounts())
-                foreach (var collection in ValueCollection)
+            var accounts = _accountStore.CurrentAccount.SimulatedAccountManager.GetAllAccounts().ToList();
+
+            // Build the shared timeline (union of every account's years) and a
+            // year -> value lookup per account (last month of the year wins = year-end).
+            var years = new SortedSet<int>();
+            var valuesByAccount = new Dictionary<string, Dictionary<int, double>>();
+
+            foreach (var acc in accounts)
+            {
+                var monthlyCalculation = (acc as ISimulatedAccount).Calculation();
+                var yearly = new Dictionary<int, double>();
+
+                foreach (var month in monthlyCalculation)
                 {
-                    if (collection.Title.Equals(acc.Name))
-                    {
-                        collection.Values.Clear();
-
-                        var monthlyCalculation = (acc as ISimulatedAccount).Calculation();
-
-                        for (int i = 0; i < monthlyCalculation.Count; i++)
-                        {
-                            if ((i % 12 == 0 && i != 0) || i == 1)
-                            {
-                                collection.Values.Add(new BarChartColumn()
-                                {
-                                    Name = acc.Name,
-                                    CurrentValue = monthlyCalculation[i].Gain,
-                                    Date = monthlyCalculation[i].Date
-                                });
-                            }
-                            //else if(i == monthlyCalculation.Count - 1 )
-                            //{
-                            //    collection.Values.Add(new BarChartColumn()
-                            //    {
-                            //        Name = acc.Name,
-                            //        CurrentValue = monthlyCalculation[i].Gain,
-                            //        Date = monthlyCalculation[i].Date
-                            //    });
-                            //}
-                        }
-                    }
+                    yearly[month.Date.Year] = month.Gain;
+                    years.Add(month.Date.Year);
                 }
-            
+
+                valuesByAccount[acc.Name] = yearly;
+            }
+
+            var yearList = years.ToList();
+            Labels = yearList.Select(y => y.ToString()).ToArray();
+
+            foreach (var series in ValueCollection)
+            {
+                Dictionary<int, double> yearly;
+                valuesByAccount.TryGetValue(series.Title, out yearly);
+
+                var values = new ChartValues<double>();
+                foreach (var year in yearList)
+                    values.Add(yearly != null && yearly.ContainsKey(year) ? yearly[year] : double.NaN);
+
+                series.Values = values;
+            }
         }
 
         #endregion

@@ -84,6 +84,17 @@ namespace LifeCalculator.Control.ViewModels
             }
         }
 
+        private System.Windows.Media.Brush _seriesColor;
+        public System.Windows.Media.Brush SeriesColor
+        {
+            get => _seriesColor;
+            set
+            {
+                _seriesColor = value;
+                OnPropertyChanged(nameof(SeriesColor));
+            }
+        }
+
         public double MonthlyPayment
         {
             get

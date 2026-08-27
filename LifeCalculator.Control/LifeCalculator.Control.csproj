@@ -53,6 +53,7 @@
     <Compile Include="Accounts\Compound\Views\ModifyCompound.xaml.cs">
       <DependentUpon>ModifyCompound.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Accounts\AccountColorPalette.cs" />
     <Compile Include="Accounts\IControlAccount.cs" />
     <Compile Include="Accounts\IModifyAccount.cs" />
     <Compile Include="Accounts\Loan\ViewModels\ModifyLoanViewModel.cs" />

@@ -65,20 +65,20 @@
             </StackPanel>
         </StackPanel>
 
-        <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3">
-            <ScrollViewer
-            Grid.Row="1" Grid.Column="0"
-            Width="600" Margin="5">
-                <ItemsControl ItemsSource="{Binding AccountLifeEventsVMs}">
-                    <ItemsControl.Resources>
-                        <DataTemplate DataType="{x:Type localVM:ModifyEventViewModel}">
-                            <Expander Header="{Binding Name}">
+        <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="0,8,0,0">
+            <TextBlock Text="Events" FontWeight="SemiBold" Margin="4,0,0,4" />
+            <ItemsControl ItemsSource="{Binding AccountLifeEventsVMs}">
+                <ItemsControl.Resources>
+                    <DataTemplate DataType="{x:Type localVM:ModifyEventViewModel}">
+                        <Border BorderBrush="#DDDDDD" BorderThickness="1" CornerRadius="4" Background="#FAFAFA" Margin="0,3" Padding="6">
+                            <StackPanel>
+                                <TextBlock Text="{Binding Name}" FontWeight="SemiBold" />
                                 <local:ModifyEvent />
-                            </Expander>
-                        </DataTemplate>
-                    </ItemsControl.Resources>
-                </ItemsControl>
-            </ScrollViewer>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.Resources>
+            </ItemsControl>
         </StackPanel>
 
     </Grid>
