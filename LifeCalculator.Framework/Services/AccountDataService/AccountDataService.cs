@@ -29,6 +29,11 @@ namespace LifeCalculator.Framework.Services.AccDataService
                 var dataService = new RetirementAccountDataService();
                 outputAccount = await dataService.Insert(entity as RetirementAccount);
             }
+            else if (entity is EmergencyFundAccount)
+            {
+                var dataService = new EmergencyFundDataService();
+                outputAccount = await dataService.Insert(entity as EmergencyFundAccount);
+            }
 
             return outputAccount;
         }
@@ -54,6 +59,11 @@ namespace LifeCalculator.Framework.Services.AccDataService
                 var dataService = new RetirementAccountDataService();
                 outputAccount = await dataService.Load(entity.Id);
             }
+            else if (entity is EmergencyFundAccount)
+            {
+                var dataService = new EmergencyFundDataService();
+                outputAccount = await dataService.Load(entity.Id);
+            }
 
             return outputAccount;
         }
@@ -75,6 +85,11 @@ namespace LifeCalculator.Framework.Services.AccDataService
                 var dataService = new RetirementAccountDataService();
                 await dataService.Save(entity.Id, entity as RetirementAccount);
             }
+            else if (entity is EmergencyFundAccount)
+            {
+                var dataService = new EmergencyFundDataService();
+                await dataService.Save(entity.Id, entity as EmergencyFundAccount);
+            }
         }
 
         public async Task Delete(IAccount entity)
@@ -95,6 +110,11 @@ namespace LifeCalculator.Framework.Services.AccDataService
             else if (entity is RetirementAccount)
             {
                 var dataService = new RetirementAccountDataService();
+                await dataService.Delete(entity.Id);
+            }
+            else if (entity is EmergencyFundAccount)
+            {
+                var dataService = new EmergencyFundDataService();
                 await dataService.Delete(entity.Id);
             }
 
@@ -132,6 +152,7 @@ namespace LifeCalculator.Framework.Services.AccDataService
             var loanAccountDataSevice = new LoanAccountDataService();
             var compoundAccountDataService = new CompoundAccountDataService();
             var retirementAccountDataService = new RetirementAccountDataService();
+            var emergencyFundDataService = new EmergencyFundDataService();
 
             var accountList = new List<IAccount>();
 
@@ -146,6 +167,11 @@ namespace LifeCalculator.Framework.Services.AccDataService
             }
 
             foreach (var item in await retirementAccountDataService.LoadAccountsByUserId(userId))
+            {
+                accountList.Add(item);
+            }
+
+            foreach (var item in await emergencyFundDataService.LoadAccountsByUserId(userId))
             {
                 accountList.Add(item);
             }

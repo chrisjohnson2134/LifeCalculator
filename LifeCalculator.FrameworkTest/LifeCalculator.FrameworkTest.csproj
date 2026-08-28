@@ -87,6 +87,7 @@
     <Compile Include="Account\RetirementAccountTest.cs" />
     <Compile Include="Simulation\CashFlowSimulatorTest.cs" />
     <Compile Include="Simulation\NetWorthAggregatorTest.cs" />
+    <Compile Include="Account\EmergencyFundAccountTest.cs" />
     <Compile Include="Income\IncomeStreamTest.cs" />
     <Compile Include="Tax\TaxEstimatorTest.cs" />
     <Compile Include="Tax\HouseholdTaxEstimatorTest.cs" />

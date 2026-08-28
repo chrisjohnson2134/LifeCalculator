@@ -140,6 +140,12 @@
                 </ScrollViewer>
             </TabItem>
 
+            <TabItem Header="Emergency Fund">
+                <ScrollViewer Style="{StaticResource TabScrollViewer}">
+                    <controlViews:EmergencyFundPanel DataContext="{Binding EmergencyFund}" />
+                </ScrollViewer>
+            </TabItem>
+
             <TabItem Header="Investments">
                 <ScrollViewer Style="{StaticResource TabScrollViewer}">
                     <StackPanel>

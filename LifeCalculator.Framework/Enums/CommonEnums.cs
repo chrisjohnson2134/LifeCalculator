@@ -25,7 +25,8 @@ namespace LifeCalculator.Framework.Enums
     {
         CompoundInterest = 0,
         LoanAccount = 1,
-        RetirementAccount = 2
+        RetirementAccount = 2,
+        EmergencyFund = 3
     }
 
     // [Description] drives what the UI shows (via EnumDescriptionConverter) — a C# identifier

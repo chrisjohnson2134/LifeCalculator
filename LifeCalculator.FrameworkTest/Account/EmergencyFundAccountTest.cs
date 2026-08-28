@@ -1,0 +1,221 @@
+using LifeCalculator.Framework.Enums;
+using LifeCalculator.Framework.LifeEvents;
+using LifeCalculator.Framework.Managers;
+using LifeCalculator.Framework.SimulatedAccount;
+using NUnit.Framework;
+using Should;
+using System;
+
+namespace LifeCalcuator.FrameworkTest.Account
+{
+    /// <summary>
+    /// Covers the emergency fund's two jobs: projecting when the goal is reached, and turning a
+    /// balance into months of expenses covered.
+    /// </summary>
+    [TestFixture]
+    public class EmergencyFundAccountTest
+    {
+        private static EmergencyFundAccount BuildFund(
+            double balance = 0,
+            double goal = 0,
+            double monthly = 0,
+            double rate = 0)
+        {
+            return new EmergencyFundAccount(new AccountsEventsManager())
+            {
+                Name = "Emergency Fund",
+                InitialAmount = balance,
+                GoalAmount = goal,
+                MonthlyContribution = monthly,
+                InterestRate = rate,
+                StartDate = new DateTime(2026, 1, 1),
+                EndDate = new DateTime(2036, 1, 1)
+            };
+        }
+
+        /// <summary>
+        /// With no interest the arithmetic is exact: $500 a month toward a $6,000 goal is twelve
+        /// months, landing on the twelfth month from the start.
+        /// </summary>
+        [Test]
+        public void ProjectedGoalDate_NoInterest_IsPlainDivision()
+        {
+            var fund = BuildFund(balance: 0, goal: 6000, monthly: 500);
+
+            DateTime? date = fund.ProjectedGoalDate();
+
+            date.HasValue.ShouldBeTrue();
+
+            // Month 0 deposits the first $500, so the 12th deposit lands on month index 11.
+            date.Value.ShouldEqual(new DateTime(2026, 12, 1));
+        }
+
+        [Test]
+        public void ProjectedGoalDate_ExistingBalance_ShortensTheTimeline()
+        {
+            var withNothing = BuildFund(balance: 0, goal: 6000, monthly: 500);
+            var withHalf = BuildFund(balance: 3000, goal: 6000, monthly: 500);
+
+            withHalf.ProjectedGoalDate().Value.ShouldBeLessThan(withNothing.ProjectedGoalDate().Value);
+        }
+
+        /// <summary>
+        /// Interest should pull the date in, never push it out.
+        /// </summary>
+        [Test]
+        public void ProjectedGoalDate_Interest_ReachesGoalNoLaterThanWithout()
+        {
+            var noInterest = BuildFund(balance: 1000, goal: 20000, monthly: 400);
+            var withInterest = BuildFund(balance: 1000, goal: 20000, monthly: 400, rate: 0.045);
+
+            withInterest.ProjectedGoalDate().Value.ShouldBeLessThanOrEqualTo(noInterest.ProjectedGoalDate().Value);
+        }
+
+        [Test]
+        public void ProjectedGoalDate_AlreadyFunded_IsTheStartDate()
+        {
+            var fund = BuildFund(balance: 10000, goal: 6000, monthly: 100);
+
+            fund.ProjectedGoalDate().ShouldEqual(fund.StartDate);
+            fund.IsGoalMet.ShouldBeTrue();
+        }
+
+        [Test]
+        public void ProjectedGoalDate_NoGoalSet_IsNull()
+        {
+            BuildFund(balance: 500, goal: 0, monthly: 100).ProjectedGoalDate().HasValue.ShouldBeFalse();
+        }
+
+        /// <summary>
+        /// Nothing going in and no interest means the goal is never reached — the UI needs a null
+        /// here so it can say so rather than showing a bogus date.
+        /// </summary>
+        [Test]
+        public void ProjectedGoalDate_NoContributionAndNoInterest_IsNull()
+        {
+            BuildFund(balance: 500, goal: 6000, monthly: 0).ProjectedGoalDate().HasValue.ShouldBeFalse();
+        }
+
+        /// <summary>
+        /// Interest alone can carry a fund over the line, so a zero contribution is not by itself
+        /// unreachable.
+        /// </summary>
+        [Test]
+        public void ProjectedGoalDate_InterestAloneCanReachGoal()
+        {
+            var fund = BuildFund(balance: 10000, goal: 11000, monthly: 0, rate: 0.05);
+
+            fund.ProjectedGoalDate().HasValue.ShouldBeTrue();
+        }
+
+        /// <summary>
+        /// A contribution too small to ever get there must terminate rather than loop forever.
+        /// </summary>
+        [Test]
+        public void ProjectedGoalDate_UnreachableWithinFiftyYears_IsNull()
+        {
+            var fund = BuildFund(balance: 0, goal: 10000000, monthly: 5);
+
+            fund.ProjectedGoalDate().HasValue.ShouldBeFalse();
+        }
+
+        [Test]
+        public void MonthsOfExpensesCovered_DividesBalanceByMonthlySpend()
+        {
+            var fund = BuildFund(balance: 12000);
+
+            fund.MonthsOfExpensesCovered(3000).ShouldEqual(4.0);
+        }
+
+        /// <summary>No budget entered yet — must not divide by zero.</summary>
+        [Test]
+        public void MonthsOfExpensesCovered_NoExpenses_IsZero()
+        {
+            BuildFund(balance: 12000).MonthsOfExpensesCovered(0).ShouldEqual(0.0);
+        }
+
+        [TestCase(3, 9000)]
+        [TestCase(6, 18000)]
+        [TestCase(12, 36000)]
+        public void SetGoalFromMonthsOfExpenses_MultipliesMonthlySpend(int months, double expectedGoal)
+        {
+            var fund = BuildFund();
+
+            fund.SetGoalFromMonthsOfExpenses(months, 3000);
+
+            fund.GoalAmount.ShouldEqual(expectedGoal);
+            fund.GoalMonthsOfExpenses.ShouldEqual(months);
+        }
+
+        [Test]
+        public void ProgressFraction_IsClampedToOne_WhenOverfunded()
+        {
+            BuildFund(balance: 9000, goal: 6000).ProgressFraction.ShouldEqual(1.0);
+        }
+
+        [Test]
+        public void ProgressFraction_NoGoal_IsZeroRatherThanDivideByZero()
+        {
+            BuildFund(balance: 9000, goal: 0).ProgressFraction.ShouldEqual(0.0);
+        }
+
+        [Test]
+        public void RemainingToGoal_NeverGoesNegative()
+        {
+            BuildFund(balance: 9000, goal: 6000).RemainingToGoal.ShouldEqual(0.0);
+            BuildFund(balance: 2000, goal: 6000).RemainingToGoal.ShouldEqual(4000.0);
+        }
+
+        /// <summary>
+        /// A one-off deposit should move the projection forward, confirming that events still
+        /// layer on top of the standing monthly contribution.
+        /// </summary>
+        [Test]
+        public void OneTimeDeposit_PullsGoalDateForward()
+        {
+            var eventsManager = new AccountsEventsManager();
+
+            var plain = BuildFund(balance: 0, goal: 6000, monthly: 500);
+
+            var boosted = new EmergencyFundAccount(eventsManager)
+            {
+                Id = 1,
+                Name = "Emergency Fund",
+                InitialAmount = 0,
+                GoalAmount = 6000,
+                MonthlyContribution = 500,
+                StartDate = new DateTime(2026, 1, 1),
+                EndDate = new DateTime(2036, 1, 1)
+            };
+
+            boosted.AddLifeEvent(new AccountEvent
+            {
+                Name = "Tax refund",
+                Amount = 2000,
+                StartDate = new DateTime(2026, 3, 1),
+                EndDate = new DateTime(2026, 3, 1),
+                LifeEventType = LifeEnum.OneTime,
+                AccountType = AccountTypes.EmergencyFund
+            });
+
+            boosted.ProjectedGoalDate().Value.ShouldBeLessThan(plain.ProjectedGoalDate().Value);
+        }
+
+        /// <summary>
+        /// Growth still compounds monthly like every other account, so the balance after a year
+        /// of contributions exceeds the contributions alone.
+        /// </summary>
+        [Test]
+        public void Calculation_AppliesInterestOnTopOfContributions()
+        {
+            var fund = BuildFund(balance: 0, goal: 100000, monthly: 500, rate: 0.05);
+            fund.EndDate = new DateTime(2027, 1, 1);
+
+            var columns = fund.Calculation();
+
+            double finalBalance = columns[columns.Count - 1].Gain;
+
+            finalBalance.ShouldBeGreaterThan(6000.0);
+        }
+    }
+}

@@ -77,6 +77,28 @@ namespace LifeCalculator.ViewModels
             ToggleAddInvestmentCommand = new RelayCommand(ToggleAddInvestment);
             ToggleAddRetirementCommand = new RelayCommand(ToggleAddRetirement);
 
+            EmergencyFund = new EmergencyFundViewModel(
+                _accountStore,
+                _accountStore.CurrentAccount.SimulatedAccountManager,
+                _accountsEventsManager,
+                _accountStore.CurrentAccount.ExpenseManager);
+
+            // The fund is an asset and its contribution competes with everything else for the
+            // monthly surplus, so a change there has to re-run the whole projection.
+            EmergencyFund.GoalChanged += (s, e) => Recalculate();
+
+            // This view model is a singleton, so it is not rebuilt when the user navigates back
+            // from the Budget screen. Without these the months-of-expenses figures and the
+            // 3/6/12-month goal presets would keep showing the expense total from whenever the
+            // page was first opened.
+            var expenseManager = _accountStore.CurrentAccount.ExpenseManager;
+            if (expenseManager != null)
+            {
+                expenseManager.ExpenseAdded += ExpenseManager_Changed;
+                expenseManager.ExpenseChanged += ExpenseManager_Changed;
+                expenseManager.ExpenseDeleted += ExpenseManager_Changed;
+            }
+
             _payoffStrategy = _accountStore.CurrentAccount.PayoffStrategy;
             _selectedChartView = ChartView.NetWorth;
 
@@ -95,6 +117,9 @@ namespace LifeCalculator.ViewModels
         public ObservableCollection<ModifyLoanViewModel> Debts { get; }
         public ObservableCollection<ModifyCompoundViewModel> Investments { get; }
         public ObservableCollection<ModifyRetirementViewModel> RetirementAccounts { get; }
+
+        /// <summary>Single fund — see EmergencyFundViewModel for why it isn't a collection.</summary>
+        public EmergencyFundViewModel EmergencyFund { get; }
 
         // Charts
         public ObservableCollection<ISeries> DebtSeriesCollection { get; }
@@ -341,6 +366,16 @@ namespace LifeCalculator.ViewModels
             Recalculate();
         }
 
+        /// <summary>
+        /// Editing the Budget moves both the monthly surplus and the emergency fund's
+        /// months-of-expenses figures, so refresh the fund panel as well as the projection.
+        /// </summary>
+        private void ExpenseManager_Changed(object sender, LifeCalculator.Framework.Budget.ExpenseItem e)
+        {
+            EmergencyFund?.RefreshFromBudget();
+            Recalculate();
+        }
+
         private void AccountManager_AccountDeleted(object sender, IAccount e)
         {
             var debt = Debts.FirstOrDefault(a => a.Name.Equals(e.Name));
@@ -361,6 +396,15 @@ namespace LifeCalculator.ViewModels
 
         private void addAccountToList(IAccount account)
         {
+            // The emergency fund has its own section rather than a row in one of the lists, so
+            // it only needs its events manager wired. Handled before the colour is taken so it
+            // doesn't consume a series colour the account lists are going to use.
+            if (account is EmergencyFundAccount emergencyFund)
+            {
+                emergencyFund.SetEventsManager(_accountsEventsManager);
+                return;
+            }
+
             var brush = AccountColorPalette.BrushAt(_colorCounter++);
 
             if (account is LoanAccount loanAccount)
@@ -408,6 +452,15 @@ namespace LifeCalculator.ViewModels
                 assetColors[retirement.Name] = retirement.SeriesColor;
             }
 
+            // Cash in an emergency fund is still net worth, so it belongs on the growth and
+            // net-worth charts alongside every other asset.
+            var emergencyFundAccount = EmergencyFund?.Fund;
+            if (emergencyFundAccount != null)
+            {
+                assetTimelines[emergencyFundAccount.Name] = emergencyFundAccount.Calculation();
+                assetColors[emergencyFundAccount.Name] = AccountColorPalette.BrushAt(_colorCounter);
+            }
+
             RebuildDebtChart(debtResult);
             RebuildGrowthChart(assetTimelines, assetColors);
 
@@ -419,6 +472,9 @@ namespace LifeCalculator.ViewModels
             var growthAccountsForCashFlow = Investments.Select(vm => (ISimulatedAccount)vm.Account)
                 .Concat(RetirementAccounts.Select(vm => (ISimulatedAccount)vm.Account))
                 .ToList();
+
+            if (emergencyFundAccount != null)
+                growthAccountsForCashFlow.Add(emergencyFundAccount);
 
             DateTime currentMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
             var cashFlow = CashFlowSimulator.Calculate(_accountStore.CurrentAccount, currentMonth, currentMonth, debtResult, growthAccountsForCashFlow);

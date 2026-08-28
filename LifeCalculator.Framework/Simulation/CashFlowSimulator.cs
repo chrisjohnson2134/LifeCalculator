@@ -54,7 +54,12 @@ namespace LifeCalculator.Framework.Simulation
                     ? payment
                     : 0;
 
-                double totalContributions = growthAccounts.Sum(a => AccountEventResolver.ResolveAdditionalAmount(a.AccountLifeEvents, date));
+                // Event-driven contributions, plus the emergency fund's standing monthly amount.
+                // That one is a plain field rather than an event, so it would otherwise be
+                // invisible here and the surplus would count money already committed to savings.
+                double totalContributions =
+                    growthAccounts.Sum(a => AccountEventResolver.ResolveAdditionalAmount(a.AccountLifeEvents, date))
+                    + growthAccounts.OfType<EmergencyFundAccount>().Sum(f => f.MonthlyContribution);
 
                 double surplus = totalIncome - totalBills - totalDebtPayments - totalContributions;
 

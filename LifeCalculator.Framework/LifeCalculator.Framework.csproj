@@ -185,6 +185,9 @@
     <Compile Include="SimulatedAccount\RetirementAccount.cs" />
     <Compile Include="Services\AccountDataService\RetirementAccountDataServices\IRetirementAccountDataService.cs" />
     <Compile Include="Services\AccountDataService\RetirementAccountDataServices\RetirementAccountDataService.cs" />
+    <Compile Include="SimulatedAccount\EmergencyFundAccount.cs" />
+    <Compile Include="Services\AccountDataService\EmergencyFundDataServices\IEmergencyFundDataService.cs" />
+    <Compile Include="Services\AccountDataService\EmergencyFundDataServices\EmergencyFundDataService.cs" />
     <Compile Include="Income\IncomeStream.cs" />
     <Compile Include="Services\IncomeStreamDataService\IncomeStreamDataService.cs" />
     <Compile Include="Managers\Interfaces\IIncomeStreamManager.cs" />

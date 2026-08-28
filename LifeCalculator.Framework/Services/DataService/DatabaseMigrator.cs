@@ -106,6 +106,23 @@ namespace LifeCalculator.Framework.Services.DataService
                 cnn.Execute("UPDATE IncomeStream SET PayRate = MonthlyAmount, PayFrequency = 4;");
             }
 
+            // Cash savings held against an emergency. Separate from CompoundAccount because it
+            // carries a target and a first-class monthly contribution.
+            cnn.Execute(@"
+                CREATE TABLE IF NOT EXISTS EmergencyFund (
+                    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    UserId INTEGER,
+                    Name TEXT,
+                    InitialAmount REAL,
+                    InterestRate REAL,
+                    GoalAmount REAL,
+                    MonthlyContribution REAL,
+                    GoalMonthsOfExpenses INTEGER NOT NULL DEFAULT 0,
+                    StartDate TEXT,
+                    EndDate TEXT,
+                    FinalAmount REAL
+                );");
+
             cnn.Execute(@"
                 CREATE TABLE IF NOT EXISTS ExpenseItem (
                     Id INTEGER PRIMARY KEY AUTOINCREMENT,
