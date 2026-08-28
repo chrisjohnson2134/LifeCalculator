@@ -26,12 +26,45 @@ namespace LifeCalculator.ViewModels
 {
     public enum ChartView
     {
-        [System.ComponentModel.Description("Debt payoff")]
-        DebtPayoff,
+        [System.ComponentModel.Description("Net worth")]
+        NetWorth,
         [System.ComponentModel.Description("Account growth")]
         AccountGrowth,
-        [System.ComponentModel.Description("Net worth")]
-        NetWorth
+        [System.ComponentModel.Description("Debt payoff")]
+        DebtPayoff,
+        [System.ComponentModel.Description("Emergency fund")]
+        EmergencyFund
+    }
+
+    /// <summary>
+    /// How the time-series views are drawn. A stacked variant was tried and dropped: stacking
+    /// assets and debt made the total harder to read, not easier, because the thing you actually
+    /// want off this chart is one number's path over time.
+    /// </summary>
+    public enum ChartStyle
+    {
+        [System.ComponentModel.Description("Line")]
+        Line,
+        [System.ComponentModel.Description("Area")]
+        Area
+    }
+
+    /// <summary>
+    /// How far out to plot. A 40-year projection squashes the next two years into a few pixels,
+    /// which is exactly the part someone is usually trying to read.
+    /// </summary>
+    public enum ChartRange
+    {
+        [System.ComponentModel.Description("1 year")]
+        OneYear = 1,
+        [System.ComponentModel.Description("5 years")]
+        FiveYears = 5,
+        [System.ComponentModel.Description("10 years")]
+        TenYears = 10,
+        [System.ComponentModel.Description("30 years")]
+        ThirtyYears = 30,
+        [System.ComponentModel.Description("All")]
+        All = 0
     }
 
     public class CalculatorViewModel : ViewModelBase
@@ -72,6 +105,12 @@ namespace LifeCalculator.ViewModels
             DebtSeriesCollection = new ObservableCollection<ISeries>();
             GrowthSeriesCollection = new ObservableCollection<ISeries>();
             NetWorthSeriesCollection = new ObservableCollection<ISeries>();
+            DebtTimelineSeries = new ObservableCollection<ISeries>();
+            EmergencyGaugeSeries = new ObservableCollection<ISeries>();
+            SeriesToggles = new ObservableCollection<ChartSeriesToggle>();
+
+            _selectedChartStyle = ChartStyle.Line;
+            _selectedChartRange = ChartRange.TenYears;
 
             ToggleAddDebtCommand = new RelayCommand(ToggleAddDebt);
             ToggleAddInvestmentCommand = new RelayCommand(ToggleAddInvestment);
@@ -179,14 +218,105 @@ namespace LifeCalculator.ViewModels
                 OnPropertyChanged(nameof(IsDebtChartVisible));
                 OnPropertyChanged(nameof(IsGrowthChartVisible));
                 OnPropertyChanged(nameof(IsNetWorthChartVisible));
+                OnPropertyChanged(nameof(IsEmergencyChartVisible));
+                OnPropertyChanged(nameof(SupportsChartStyle));
+                OnPropertyChanged(nameof(SupportsLegend));
+                OnPropertyChanged(nameof(ChartCaption));
+                Recalculate();
             }
         }
 
         public bool IsDebtChartVisible => SelectedChartView == ChartView.DebtPayoff;
         public bool IsGrowthChartVisible => SelectedChartView == ChartView.AccountGrowth;
         public bool IsNetWorthChartVisible => SelectedChartView == ChartView.NetWorth;
+        public bool IsEmergencyChartVisible => SelectedChartView == ChartView.EmergencyFund;
+
+        /// <summary>Line/Area/Stacked only mean something for the two time-series views.</summary>
+        public bool SupportsChartStyle => IsNetWorthChartVisible || IsGrowthChartVisible;
+
+        public bool SupportsLegend => IsNetWorthChartVisible || IsGrowthChartVisible || IsDebtChartVisible;
+
+        /// <summary>One line saying what the current view actually shows.</summary>
+        public string ChartCaption
+        {
+            get
+            {
+                switch (SelectedChartView)
+                {
+                    case ChartView.NetWorth:
+                        return "Everything you own minus everything you owe, projected forward.";
+                    case ChartView.AccountGrowth:
+                        return "Each account's balance over time.";
+                    case ChartView.DebtPayoff:
+                        return "How long until each debt is cleared, in payoff order. Bars end on the month the balance hits zero.";
+                    default:
+                        return "Progress toward your emergency fund goal.";
+                }
+            }
+        }
 
         public List<ChartView> ChartViews { get; } = Enum.GetValues(typeof(ChartView)).Cast<ChartView>().ToList();
+
+        private ChartStyle _selectedChartStyle;
+        public ChartStyle SelectedChartStyle
+        {
+            get => _selectedChartStyle;
+            set
+            {
+                _selectedChartStyle = value;
+                OnPropertyChanged(nameof(SelectedChartStyle));
+                OnPropertyChanged(nameof(ChartCaption));
+                Recalculate();
+            }
+        }
+
+        public List<ChartStyle> ChartStyles { get; } = Enum.GetValues(typeof(ChartStyle)).Cast<ChartStyle>().ToList();
+
+        private ChartRange _selectedChartRange;
+        public ChartRange SelectedChartRange
+        {
+            get => _selectedChartRange;
+            set
+            {
+                _selectedChartRange = value;
+                OnPropertyChanged(nameof(SelectedChartRange));
+                Recalculate();
+            }
+        }
+
+        public List<ChartRange> ChartRanges { get; } = Enum.GetValues(typeof(ChartRange)).Cast<ChartRange>().ToList();
+
+        /// <summary>Clickable legend; hiding a series rebuilds the chart without it.</summary>
+        public ObservableCollection<ChartSeriesToggle> SeriesToggles { get; }
+
+        // Debt payoff timeline: horizontal bars, one per debt, length = months until cleared.
+        public ObservableCollection<ISeries> DebtTimelineSeries { get; }
+        public Axis[] DebtTimelineXAxes { get; } = { new Axis { Labeler = value => FormatMonths(value), MinStep = 6 } };
+        public Axis[] DebtTimelineYAxes { get; } = { new Axis { Labels = new List<string>() } };
+
+        // Emergency fund gauge: a donut of funded vs remaining.
+        public ObservableCollection<ISeries> EmergencyGaugeSeries { get; }
+
+        private string _emergencyGaugeCaption;
+        public string EmergencyGaugeCaption
+        {
+            get => _emergencyGaugeCaption;
+            private set { _emergencyGaugeCaption = value; OnPropertyChanged(nameof(EmergencyGaugeCaption)); }
+        }
+
+        private string _emergencyGaugeHeadline;
+        public string EmergencyGaugeHeadline
+        {
+            get => _emergencyGaugeHeadline;
+            private set { _emergencyGaugeHeadline = value; OnPropertyChanged(nameof(EmergencyGaugeHeadline)); }
+        }
+
+        private static string FormatMonths(double months)
+        {
+            if (months < 0) return string.Empty;
+            if (months < 12) return $"{months:0}mo";
+            return $"{months / 12:0.#}yr";
+        }
 
         private DebtPayoffStrategy _payoffStrategy;
         public DebtPayoffStrategy PayoffStrategy
@@ -431,7 +561,14 @@ namespace LifeCalculator.ViewModels
         /// Recomputes every projection (debt payoff, account growth, net worth, cash-flow
         /// surplus) and refreshes the three charts plus the summary cards.
         /// </summary>
-        private void Recalculate()
+        private void Recalculate() => Recalculate(rebuildToggles: true);
+
+        /// <summary>
+        /// <paramref name="rebuildToggles"/> is false when the user has just clicked a legend
+        /// entry: the toggles are already correct, and rebuilding them mid-click would replace
+        /// the object that raised the event.
+        /// </summary>
+        private void Recalculate(bool rebuildToggles)
         {
             var debtAccounts = Debts.Select(vm => vm.Account).ToList();
             var debtResult = DebtPayoffSimulator.Simulate(debtAccounts, PayoffStrategy);
@@ -461,11 +598,17 @@ namespace LifeCalculator.ViewModels
                 assetColors[emergencyFundAccount.Name] = AccountColorPalette.BrushAt(_colorCounter);
             }
 
-            RebuildDebtChart(debtResult);
-            RebuildGrowthChart(assetTimelines, assetColors);
-
             var netWorthTimeline = NetWorthAggregator.Aggregate(debtResult, assetTimelines);
+
+            // Toggles first: every rebuild below filters on them.
+            if (rebuildToggles)
+                RebuildSeriesToggles(assetTimelines);
+
+            RebuildDebtChart(debtResult);
+            RebuildDebtTimeline(debtResult);
+            RebuildGrowthChart(assetTimelines, assetColors);
             RebuildNetWorthChart(netWorthTimeline);
+            RebuildEmergencyGauge();
 
             UpdateSummaryCards(debtResult, netWorthTimeline);
 
@@ -512,7 +655,79 @@ namespace LifeCalculator.ViewModels
                 if (!debtResult.BalancesByDebtName.TryGetValue(debt.Name, out var series))
                     continue;
 
+                if (!IsSeriesVisible(debt.Name))
+                    continue;
+
                 DebtSeriesCollection.Add(BuildLineSeries(debt.Name, series, debt.SeriesColor));
+            }
+        }
+
+        /// <summary>
+        /// Horizontal bars, one per debt, ordered by when they clear. Overlapping balance lines
+        /// make it genuinely hard to see which debt finishes first — and with rollover that
+        /// ordering is the whole point of picking avalanche over snowball.
+        /// </summary>
+        private void RebuildDebtTimeline(DebtPayoffResult debtResult)
+        {
+            DebtTimelineSeries.Clear();
+
+            DateTime now = DateTime.Now;
+
+            var rows = Debts
+                .Where(d => IsSeriesVisible(d.Name))
+                .Select(d => new
+                {
+                    d.Name,
+                    d.SeriesColor,
+                    PayoffDate = debtResult.PayoffDateByDebtName.TryGetValue(d.Name, out var date) ? date : null
+                })
+                // Debts that never clear sort last; they'd otherwise lead with a zero-length bar.
+                .OrderBy(r => r.PayoffDate == null)
+                .ThenBy(r => r.PayoffDate)
+                .ToList();
+
+            if (rows.Count == 0)
+                return;
+
+            DebtTimelineYAxes[0].Labels = rows.Select(r => r.Name).ToList();
+
+            var monthsPerRow = rows
+                .Select(r => r.PayoffDate == null
+                    ? 0
+                    : Math.Max(0, ((r.PayoffDate.Value.Year - now.Year) * 12) + (r.PayoffDate.Value.Month - now.Month)))
+                .ToList();
+
+            // The date sits past the end of its bar, so the axis needs room for it. Without the
+            // headroom the longest bar reaches the edge of the plot and its label is clipped —
+            // and the longest bar is exactly the one whose date you most want to read.
+            double longestBar = monthsPerRow.Count == 0 ? 0 : monthsPerRow.Max();
+            DebtTimelineXAxes[0].MinLimit = 0;
+            DebtTimelineXAxes[0].MaxLimit = Math.Max(12, longestBar * 1.35);
+
+            // One RowSeries per debt so each keeps its own colour; the null padding places each
+            // bar on its own row rather than stacking them all at the bottom.
+            for (int i = 0; i < rows.Count; i++)
+            {
+                var row = rows[i];
+
+                var values = new double?[rows.Count];
+                values[i] = monthsPerRow[i];
+
+                DebtTimelineSeries.Add(new RowSeries<double?>
+                {
+                    Name = row.PayoffDate == null
+                        ? $"{row.Name} (not on track)"
+                        : $"{row.Name} — {row.PayoffDate.Value:MMM yyyy}",
+                    Values = values,
+                    Fill = new SolidColorPaint(ToSkColor(row.SeriesColor)),
+                    Stroke = null,
+                    MaxBarWidth = 26,
+                    DataLabelsPaint = new SolidColorPaint(SKColors.Black.WithAlpha(160)),
+                    DataLabelsPosition = LiveChartsCore.Measure.DataLabelsPosition.Right,
+                    DataLabelsFormatter = point => row.PayoffDate == null
+                        ? "not on track"
+                        : row.PayoffDate.Value.ToString("MMM yyyy")
+                });
             }
         }
 
@@ -522,8 +737,13 @@ namespace LifeCalculator.ViewModels
 
             foreach (var kvp in assetTimelines)
             {
+                if (!IsSeriesVisible(kvp.Key))
+                    continue;
+
                 var brush = assetColors.TryGetValue(kvp.Key, out var b) ? b : Brushes.Gray;
-                GrowthSeriesCollection.Add(BuildLineSeries(kvp.Key, kvp.Value, brush));
+
+                GrowthSeriesCollection.Add(
+                    BuildLineSeries(kvp.Key, kvp.Value, brush, SelectedChartStyle == ChartStyle.Area));
             }
         }
 
@@ -531,14 +751,122 @@ namespace LifeCalculator.ViewModels
         {
             NetWorthSeriesCollection.Clear();
 
+            var window = RangeCutoff();
+
+            var points = netWorthTimeline
+                .Where(c => InRange(c.Date, window))
+                .Select(c => new DateTimePoint(c.Date, c.NetWorth))
+                .ToArray();
+
             NetWorthSeriesCollection.Add(new LineSeries<DateTimePoint>
             {
                 Name = "Net Worth",
-                Values = netWorthTimeline.Select(c => new DateTimePoint(c.Date, c.NetWorth)).ToArray(),
+                Values = points,
                 Stroke = new SolidColorPaint(SKColors.MediumSeaGreen, 3),
-                Fill = null,
+                Fill = SelectedChartStyle == ChartStyle.Area
+                    ? new SolidColorPaint(SKColors.MediumSeaGreen.WithAlpha(60))
+                    : null,
                 GeometrySize = 0
             });
+        }
+
+        /// <summary>
+        /// Rebuilds the legend to match the accounts that exist, preserving whatever the user has
+        /// already hidden. Rebuilt rather than reconciled in place because accounts come and go.
+        /// </summary>
+        private void RebuildSeriesToggles(Dictionary<string, List<MonthlyColumn>> assetTimelines)
+        {
+            var previous = SeriesToggles.ToDictionary(t => t.Name, t => t.IsVisible);
+
+            SeriesToggles.Clear();
+
+            foreach (var debt in Debts)
+                AddToggle(debt.Name, debt.SeriesColor, previous);
+
+            foreach (var investment in Investments)
+                AddToggle(investment.Name, investment.SeriesColor, previous);
+
+            foreach (var retirement in RetirementAccounts)
+                AddToggle(retirement.Name, retirement.SeriesColor, previous);
+
+            var fund = EmergencyFund?.Fund;
+            if (fund != null)
+                AddToggle(fund.Name, AccountColorPalette.BrushAt(_colorCounter), previous);
+
+        }
+
+        private void AddToggle(string name, Brush color, Dictionary<string, bool> previous)
+        {
+            if (string.IsNullOrWhiteSpace(name) || SeriesToggles.Any(t => t.Name == name))
+                return;
+
+            bool visible = !previous.TryGetValue(name, out var wasVisible) || wasVisible;
+
+            SeriesToggles.Add(new ChartSeriesToggle(name, color, visible, OnSeriesToggled));
+        }
+
+        private void OnSeriesToggled()
+        {
+            // Rebuild the plotted series only — re-running RebuildSeriesToggles here would
+            // recreate the very toggle the user just clicked.
+            Recalculate(rebuildToggles: false);
+        }
+
+        private bool IsSeriesVisible(string name)
+        {
+            var toggle = SeriesToggles.FirstOrDefault(t => t.Name == name);
+            return toggle == null || toggle.IsVisible;
+        }
+
+        /// <summary>Latest date to plot for the selected range, or null for "All".</summary>
+        private DateTime? RangeCutoff()
+        {
+            if (SelectedChartRange == ChartRange.All)
+                return null;
+
+            return DateTime.Now.AddYears((int)SelectedChartRange);
+        }
+
+        private static bool InRange(DateTime date, DateTime? cutoff) => cutoff == null || date <= cutoff.Value;
+
+        private void RebuildEmergencyGauge()
+        {
+            EmergencyGaugeSeries.Clear();
+
+            var fund = EmergencyFund?.Fund;
+
+            if (fund == null || fund.GoalAmount <= 0)
+            {
+                EmergencyGaugeHeadline = "No goal set";
+                EmergencyGaugeCaption = fund == null
+                    ? "Start an emergency fund on the Emergency Fund tab."
+                    : "Set a goal on the Emergency Fund tab to track progress here.";
+                return;
+            }
+
+            double funded = Math.Min(fund.InitialAmount, fund.GoalAmount);
+            double remaining = Math.Max(0, fund.GoalAmount - funded);
+
+            EmergencyGaugeSeries.Add(new PieSeries<double>
+            {
+                Name = "Saved",
+                Values = new[] { funded },
+                InnerRadius = 90,
+                Fill = new SolidColorPaint(SKColors.SeaGreen),
+                DataLabelsPaint = null
+            });
+
+            EmergencyGaugeSeries.Add(new PieSeries<double>
+            {
+                Name = "Still to save",
+                Values = new[] { remaining },
+                InnerRadius = 90,
+                Fill = new SolidColorPaint(SKColors.LightGray.WithAlpha(120)),
+                DataLabelsPaint = null
+            });
+
+            EmergencyGaugeHeadline = $"{fund.ProgressFraction * 100:0}% funded";
+            EmergencyGaugeCaption = EmergencyFund.ProjectionText;
         }
 
         private void UpdateSummaryCards(DebtPayoffResult debtResult, List<NetWorthColumn> netWorthTimeline)
@@ -571,22 +899,32 @@ namespace LifeCalculator.ViewModels
             }
         }
 
-        private static ISeries BuildLineSeries(string name, List<MonthlyColumn> monthly, Brush brush)
+        private ISeries BuildLineSeries(string name, List<MonthlyColumn> monthly, Brush brush, bool filled = false)
         {
+            var color = ToSkColor(brush);
+
             return new LineSeries<DateTimePoint>
             {
                 Name = name,
-                // Skip the placeholder row each Calculation() prepends (see MonthlyColumn.IsPlaceholder) —
-                // plotting its year-1 date would stretch the axis back two thousand years.
-                Values = monthly
-                    .Where(m => !m.IsPlaceholder)
-                    .OrderBy(m => m.Date)
-                    .Select(m => new DateTimePoint(m.Date, m.Gain))
-                    .ToArray(),
-                Stroke = new SolidColorPaint(ToSkColor(brush), 3),
-                Fill = null,
+                Values = ToPoints(monthly),
+                Stroke = new SolidColorPaint(color, 3),
+                Fill = filled ? new SolidColorPaint(color.WithAlpha(60)) : null,
                 GeometrySize = 0
             };
+        }
+
+        private DateTimePoint[] ToPoints(List<MonthlyColumn> monthly)
+        {
+            DateTime? cutoff = RangeCutoff();
+
+            // Skip the placeholder row each Calculation() prepends (see MonthlyColumn.IsPlaceholder) —
+            // plotting its year-1 date would stretch the axis back two thousand years.
+            return monthly
+                .Where(m => !m.IsPlaceholder)
+                .Where(m => InRange(m.Date, cutoff))
+                .OrderBy(m => m.Date)
+                .Select(m => new DateTimePoint(m.Date, m.Gain))
+                .ToArray();
         }
 
         private static SKColor ToSkColor(Brush brush)

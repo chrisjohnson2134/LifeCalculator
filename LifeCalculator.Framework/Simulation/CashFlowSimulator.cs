@@ -36,6 +36,13 @@ namespace LifeCalculator.Framework.Simulation
             // can't be taxed independently) and then looked up per month below.
             var netMonthlyByStreamId = ResolveNetMonthlyByStream(account, incomeStreams);
 
+            // Resolved once per fund: working out the goal date walks up to 600 months, so doing
+            // it inside the month loop would make a long projection quadratic.
+            var emergencyFunds = growthAccounts
+                .OfType<EmergencyFundAccount>()
+                .Select(fund => new KeyValuePair<EmergencyFundAccount, DateTime?>(fund, fund.ProjectedGoalDate()))
+                .ToList();
+
             int monthDiff = Math.Abs((start.Year * 12 + (start.Month - 1)) - (end.Year * 12 + (end.Month - 1)));
 
             for (int i = 0; i <= monthDiff; i++)
@@ -57,9 +64,12 @@ namespace LifeCalculator.Framework.Simulation
                 // Event-driven contributions, plus the emergency fund's standing monthly amount.
                 // That one is a plain field rather than an event, so it would otherwise be
                 // invisible here and the surplus would count money already committed to savings.
+                // It stops once the fund hits its goal, at which point that money is free again.
                 double totalContributions =
                     growthAccounts.Sum(a => AccountEventResolver.ResolveAdditionalAmount(a.AccountLifeEvents, date))
-                    + growthAccounts.OfType<EmergencyFundAccount>().Sum(f => f.MonthlyContribution);
+                    + emergencyFunds
+                        .Where(pair => pair.Key.IsContributingOn(date, pair.Value))
+                        .Sum(pair => pair.Key.MonthlyContribution);
 
                 double surplus = totalIncome - totalBills - totalDebtPayments - totalContributions;
 

@@ -25,8 +25,8 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="1.5*" />
-            <RowDefinition Height="3.6*" />
+            <RowDefinition Height="2.3*" />
+            <RowDefinition Height="3*" />
         </Grid.RowDefinitions>
 
         <!--  Summary cards  -->
@@ -73,12 +73,19 @@
             </Border>
         </UniformGrid>
 
-        <!--  Chart view toggle + payoff strategy  -->
+        <!--  Chart view selector + payoff strategy  -->
         <DockPanel Grid.Row="1" Margin="20,4,20,8" LastChildFill="False">
             <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center">
-                <TextBlock Text="Chart:" VerticalAlignment="Center" Margin="0,0,8,0" Style="{StaticResource BodyMutedText}" />
-                <ComboBox Width="160" Style="{StaticResource EnumComboBox}" ItemsSource="{Binding ChartViews}" SelectedItem="{Binding SelectedChartView}" />
+                <RadioButton Style="{StaticResource SegmentedToggle}" GroupName="ChartView" Content="Net worth"
+                             IsChecked="{Binding SelectedChartView, Converter={StaticResource EqualValueToParameterConverter}, ConverterParameter=NetWorth}" />
+                <RadioButton Style="{StaticResource SegmentedToggle}" GroupName="ChartView" Content="Account growth"
+                             IsChecked="{Binding SelectedChartView, Converter={StaticResource EqualValueToParameterConverter}, ConverterParameter=AccountGrowth}" />
+                <RadioButton Style="{StaticResource SegmentedToggle}" GroupName="ChartView" Content="Debt payoff"
+                             IsChecked="{Binding SelectedChartView, Converter={StaticResource EqualValueToParameterConverter}, ConverterParameter=DebtPayoff}" />
+                <RadioButton Style="{StaticResource SegmentedToggle}" GroupName="ChartView" Content="Emergency fund"
+                             IsChecked="{Binding SelectedChartView, Converter={StaticResource EqualValueToParameterConverter}, ConverterParameter=EmergencyFund}" />
             </StackPanel>
+
             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
                 <TextBlock Text="Payoff strategy:" VerticalAlignment="Center" Margin="0,0,8,0" Style="{StaticResource BodyMutedText}" />
                 <ComboBox Width="230" Style="{StaticResource EnumComboBox}" ItemsSource="{Binding PayoffStrategies}" SelectedItem="{Binding PayoffStrategy}" />
@@ -86,23 +93,110 @@
         </DockPanel>
 
         <!--  Chart  -->
-        <Border Grid.Row="2" Margin="12,4,12,4" Style="{StaticResource LedgerCard}" Padding="8">
+        <Border Grid.Row="2" Margin="12,4,12,4" Style="{StaticResource LedgerCard}" Padding="12">
             <Grid>
-                <lvc:CartesianChart
-                    Visibility="{Binding IsNetWorthChartVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
-                    Series="{Binding NetWorthSeriesCollection}"
-                    XAxes="{Binding NetWorthDateAxes}"
-                    YAxes="{Binding NetWorthCurrencyAxes}" />
-                <lvc:CartesianChart
-                    Visibility="{Binding IsDebtChartVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
-                    Series="{Binding DebtSeriesCollection}"
-                    XAxes="{Binding DebtDateAxes}"
-                    YAxes="{Binding DebtCurrencyAxes}" />
-                <lvc:CartesianChart
-                    Visibility="{Binding IsGrowthChartVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
-                    Series="{Binding GrowthSeriesCollection}"
-                    XAxes="{Binding GrowthDateAxes}"
-                    YAxes="{Binding GrowthCurrencyAxes}" />
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <!--  Style + range controls, and a line saying what the view shows  -->
+                <DockPanel Grid.Row="0" Margin="0,0,0,8" LastChildFill="True">
+                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
+                        <StackPanel Orientation="Horizontal" Margin="0,0,14,0"
+                                    Visibility="{Binding SupportsChartStyle, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <RadioButton Style="{StaticResource SegmentedToggle}" GroupName="ChartStyle" Content="Line"
+                                         IsChecked="{Binding SelectedChartStyle, Converter={StaticResource EqualValueToParameterConverter}, ConverterParameter=Line}" />
+                            <RadioButton Style="{StaticResource SegmentedToggle}" GroupName="ChartStyle" Content="Area"
+                                         IsChecked="{Binding SelectedChartStyle, Converter={StaticResource EqualValueToParameterConverter}, ConverterParameter=Area}" />
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal"
+                                    Visibility="{Binding SupportsChartStyle, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <RadioButton Style="{StaticResource SegmentedToggle}" GroupName="ChartRange" Content="1y"
+                                         IsChecked="{Binding SelectedChartRange, Converter={StaticResource EqualValueToParameterConverter}, ConverterParameter=OneYear}" />
+                            <RadioButton Style="{StaticResource SegmentedToggle}" GroupName="ChartRange" Content="5y"
+                                         IsChecked="{Binding SelectedChartRange, Converter={StaticResource EqualValueToParameterConverter}, ConverterParameter=FiveYears}" />
+                            <RadioButton Style="{StaticResource SegmentedToggle}" GroupName="ChartRange" Content="10y"
+                                         IsChecked="{Binding SelectedChartRange, Converter={StaticResource EqualValueToParameterConverter}, ConverterParameter=TenYears}" />
+                            <RadioButton Style="{StaticResource SegmentedToggle}" GroupName="ChartRange" Content="30y"
+                                         IsChecked="{Binding SelectedChartRange, Converter={StaticResource EqualValueToParameterConverter}, ConverterParameter=ThirtyYears}" />
+                            <RadioButton Style="{StaticResource SegmentedToggle}" GroupName="ChartRange" Content="All"
+                                         IsChecked="{Binding SelectedChartRange, Converter={StaticResource EqualValueToParameterConverter}, ConverterParameter=All}" />
+                        </StackPanel>
+                    </StackPanel>
+
+                    <TextBlock Text="{Binding ChartCaption}" Style="{StaticResource BodyMutedText}" FontSize="11"
+                               VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Margin="0,0,12,0" />
+                </DockPanel>
+
+                <Grid Grid.Row="1">
+                    <lvc:CartesianChart
+                        Visibility="{Binding IsNetWorthChartVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        Series="{Binding NetWorthSeriesCollection}"
+                        XAxes="{Binding NetWorthDateAxes}"
+                        YAxes="{Binding NetWorthCurrencyAxes}" />
+                    <lvc:CartesianChart
+                        Visibility="{Binding IsGrowthChartVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        Series="{Binding GrowthSeriesCollection}"
+                        XAxes="{Binding GrowthDateAxes}"
+                        YAxes="{Binding GrowthCurrencyAxes}" />
+
+                    <!--  Debt payoff as horizontal bars: which debt clears, and when  -->
+                    <lvc:CartesianChart
+                        Visibility="{Binding IsDebtChartVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        Series="{Binding DebtTimelineSeries}"
+                        XAxes="{Binding DebtTimelineXAxes}"
+                        YAxes="{Binding DebtTimelineYAxes}" />
+
+                    <!--
+                        Emergency fund gauge. Only the percentage sits inside the ring — the
+                        sentence goes beside it, because wrapped text over the donut collided
+                        with the arc and was unreadable at any size.
+                    -->
+                    <Grid Visibility="{Binding IsEmergencyChartVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Grid Grid.Column="0" Width="220" Margin="8">
+                            <lvc:PieChart Series="{Binding EmergencyGaugeSeries}" InitialRotation="-90" MaxAngle="360" />
+                            <TextBlock
+                                Text="{Binding EmergencyGaugeHeadline}"
+                                Style="{StaticResource DataFigureText}" FontSize="24"
+                                HorizontalAlignment="Center" VerticalAlignment="Center"
+                                IsHitTestVisible="False" />
+                        </Grid>
+
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="20,0,8,0">
+                            <TextBlock Text="EMERGENCY FUND" Style="{StaticResource EyebrowText}" Foreground="{StaticResource InkMutedBrush}" />
+                            <TextBlock Text="{Binding EmergencyGaugeCaption}" Style="{StaticResource BodyMutedText}"
+                                       TextWrapping="Wrap" MaxWidth="420" Margin="0,6,0,0" />
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+
+                <!--  Clickable legend: hide an account to get it out of the way  -->
+                <ItemsControl Grid.Row="2" ItemsSource="{Binding SeriesToggles}" Margin="0,10,0,0"
+                              Visibility="{Binding SupportsLegend, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <ToggleButton Style="{StaticResource LegendToggle}" IsChecked="{Binding IsVisible}" Margin="0,0,8,6">
+                                <StackPanel Orientation="Horizontal">
+                                    <Ellipse Width="10" Height="10" Fill="{Binding Color}" VerticalAlignment="Center" Margin="0,0,6,0" />
+                                    <TextBlock Text="{Binding Name}" VerticalAlignment="Center" FontSize="11" />
+                                </StackPanel>
+                            </ToggleButton>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
             </Grid>
         </Border>
 

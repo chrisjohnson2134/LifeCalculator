@@ -202,6 +202,89 @@ namespace LifeCalcuator.FrameworkTest.Account
         }
 
         /// <summary>
+        /// The fund is a target, not a pot you feed forever. Once the goal is reached the
+        /// monthly contribution stops, so with no interest the balance goes flat instead of
+        /// climbing as though you kept paying in.
+        /// </summary>
+        [Test]
+        public void Calculation_StopsContributing_OnceGoalIsMet()
+        {
+            var fund = BuildFund(balance: 0, goal: 6000, monthly: 500, rate: 0);
+            fund.EndDate = new DateTime(2029, 1, 1);
+
+            var columns = fund.Calculation();
+
+            double finalBalance = columns[columns.Count - 1].Gain;
+
+            // Three years of unchecked $500 deposits would be $18,000; it must stop at the goal.
+            finalBalance.ShouldEqual(6000.0);
+        }
+
+        /// <summary>
+        /// Past the goal the only thing that moves the balance is interest.
+        /// </summary>
+        [Test]
+        public void Calculation_AfterGoalIsMet_OnlyInterestGrowsTheBalance()
+        {
+            var fund = BuildFund(balance: 6000, goal: 6000, monthly: 500, rate: 0.12);
+            fund.StartDate = new DateTime(2026, 1, 1);
+            fund.EndDate = new DateTime(2027, 1, 1);
+
+            var columns = fund.Calculation();
+
+            double finalBalance = columns[columns.Count - 1].Gain;
+
+            // Starts funded, so no contributions at all: 12 months of 1%/mo on $6,000.
+            double interestOnly = 6000 * Math.Pow(1 + 0.12 / 12, 12);
+
+            finalBalance.ShouldBeInRange(interestOnly - 1, interestOnly + 1);
+        }
+
+        /// <summary>
+        /// With no goal there's nothing to stop at, so contributions continue.
+        /// </summary>
+        [Test]
+        public void Calculation_NoGoal_KeepsContributing()
+        {
+            var fund = BuildFund(balance: 0, goal: 0, monthly: 500, rate: 0);
+            fund.EndDate = new DateTime(2027, 1, 1);
+
+            var columns = fund.Calculation();
+
+            columns[columns.Count - 1].Gain.ShouldEqual(6000.0);
+        }
+
+        [Test]
+        public void IsContributingOn_IsFalse_AfterTheGoalDate()
+        {
+            var fund = BuildFund(balance: 0, goal: 6000, monthly: 500);
+
+            // Goal lands December 2026.
+            fund.IsContributingOn(new DateTime(2026, 6, 1)).ShouldBeTrue();
+            fund.IsContributingOn(new DateTime(2026, 12, 1)).ShouldBeTrue();
+            fund.IsContributingOn(new DateTime(2027, 1, 1)).ShouldBeFalse();
+        }
+
+        [Test]
+        public void IsContributingOn_AlreadyFunded_IsFalse()
+        {
+            var fund = BuildFund(balance: 10000, goal: 6000, monthly: 500);
+
+            fund.IsContributingOn(new DateTime(2027, 1, 1)).ShouldBeFalse();
+        }
+
+        /// <summary>
+        /// A goal that is never reached keeps taking contributions rather than stopping early.
+        /// </summary>
+        [Test]
+        public void IsContributingOn_UnreachableGoal_StaysTrue()
+        {
+            var fund = BuildFund(balance: 0, goal: 10000000, monthly: 5);
+
+            fund.IsContributingOn(new DateTime(2040, 1, 1)).ShouldBeTrue();
+        }
+
+        /// <summary>
         /// Growth still compounds monthly like every other account, so the balance after a year
         /// of contributions exceeds the contributions alone.
         /// </summary>

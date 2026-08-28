@@ -92,6 +92,7 @@
     </Compile>
     <Compile Include="ViewModels\BudgetViewModel.cs" />
     <Compile Include="ViewModels\CalculatorViewModel.cs" />
+    <Compile Include="ViewModels\ChartSeriesToggle.cs" />
     <Compile Include="ViewModels\RegisterViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\WelcomePageViewModel.cs" />

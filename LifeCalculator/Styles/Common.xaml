@@ -8,6 +8,7 @@
     xmlns:converters="clr-namespace:LifeCalculator.Tools.Common.Converters;assembly=LifeCalculator.Tools">
 
     <converters:EnumDescriptionConverter x:Key="EnumDescriptionConverter" />
+    <converters:EqualValueToParameterConverter x:Key="EqualValueToParameterConverter" />
 
     <!--
         Every interactive control sits on this height so a TextBox, ComboBox, DatePicker
@@ -541,6 +542,94 @@
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="Opacity" Value="0.5" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--
+        Segmented toggle: a row of these reads as one control with the active option filled in.
+        Used for chart view / style / range, where a dropdown would hide the options behind a
+        click even though there are only a handful and switching between them is the point.
+    -->
+    <Style x:Key="SegmentedToggle" TargetType="{x:Type RadioButton}">
+        <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}" />
+        <Setter Property="FontSize" Value="11" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{StaticResource InkMutedBrush}" />
+        <Setter Property="Padding" Value="11,0" />
+        <Setter Property="MinHeight" Value="26" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type RadioButton}">
+                    <Border
+                        x:Name="chrome"
+                        Background="Transparent"
+                        BorderBrush="{StaticResource HairlineBrush}"
+                        BorderThickness="1"
+                        CornerRadius="3"
+                        Margin="0,0,-1,0"
+                        SnapsToDevicePixels="True">
+                        <ContentPresenter
+                            Margin="{TemplateBinding Padding}"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="chrome" Property="Background" Value="{StaticResource InkBrush}" />
+                            <Setter TargetName="chrome" Property="BorderBrush" Value="{StaticResource InkBrush}" />
+                            <Setter Property="Foreground" Value="{StaticResource OnInkBrush}" />
+                            <Setter TargetName="chrome" Property="Panel.ZIndex" Value="1" />
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMouseOver" Value="True" />
+                                <Condition Property="IsChecked" Value="False" />
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="chrome" Property="Background" Value="{StaticResource SurfaceBrush}" />
+                            <Setter Property="Foreground" Value="{StaticResource InkBrush}" />
+                        </MultiTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--
+        Legend entry. Reads as a colour swatch plus a name; unchecking dims it so a hidden
+        series still shows in the legend to be brought back, rather than vanishing.
+    -->
+    <Style x:Key="LegendToggle" TargetType="{x:Type ToggleButton}">
+        <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}" />
+        <Setter Property="Foreground" Value="{StaticResource InkBrush}" />
+        <Setter Property="Padding" Value="8,4" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                    <Border
+                        x:Name="chrome"
+                        Background="Transparent"
+                        BorderBrush="{StaticResource HairlineBrush}"
+                        BorderThickness="1"
+                        CornerRadius="12"
+                        Padding="{TemplateBinding Padding}">
+                        <ContentPresenter x:Name="content" VerticalAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="False">
+                            <Setter TargetName="content" Property="Opacity" Value="0.35" />
+                            <Setter TargetName="chrome" Property="Background" Value="Transparent" />
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="chrome" Property="Background" Value="{StaticResource SurfaceBrush}" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="chrome" Property="BorderBrush" Value="{StaticResource BrassBrush}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

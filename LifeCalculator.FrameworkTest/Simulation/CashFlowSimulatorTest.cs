@@ -194,6 +194,78 @@ namespace LifeCalcuator.FrameworkTest.Simulation
         }
 
         /// <summary>
+        /// Saving into an emergency fund is money you can't spend, so it has to come out of the
+        /// surplus. The contribution is a plain field rather than an event, so it would be
+        /// invisible to the event-based contribution total without explicit handling.
+        /// </summary>
+        [Test]
+        public void Calculate_EmergencyFundContribution_ReducesSurplus()
+        {
+            var financialAccount = new LifeCalculator.Framework.FinancialAccount.FinancialAccount();
+            DateTime date = new DateTime(2026, 1, 1);
+
+            financialAccount.IncomeStreamManager.AddIncomeStream(new IncomeStream
+            {
+                Name = "Job",
+                IsGross = false,
+                MonthlyAmount = 4000,
+                StartDate = date,
+                StreamType = IncomeStreamType.Salary
+            });
+
+            var fund = new EmergencyFundAccount(new AccountsEventsManager())
+            {
+                Name = "Emergency Fund",
+                InitialAmount = 0,
+                GoalAmount = 6000,
+                MonthlyContribution = 500,
+                StartDate = date,
+                EndDate = date.AddYears(5)
+            };
+
+            var columns = CashFlowSimulator.Calculate(
+                financialAccount, date, date, new DebtPayoffResult(), new List<ISimulatedAccount> { fund });
+
+            columns[0].TotalContributions.ShouldEqual(500.0);
+            columns[0].Surplus.ShouldEqual(3500.0);
+        }
+
+        /// <summary>
+        /// Once the fund is full that money is free again, so it stops being subtracted.
+        /// </summary>
+        [Test]
+        public void Calculate_FullyFundedEmergencyFund_NoLongerReducesSurplus()
+        {
+            var financialAccount = new LifeCalculator.Framework.FinancialAccount.FinancialAccount();
+            DateTime date = new DateTime(2026, 1, 1);
+
+            financialAccount.IncomeStreamManager.AddIncomeStream(new IncomeStream
+            {
+                Name = "Job",
+                IsGross = false,
+                MonthlyAmount = 4000,
+                StartDate = date,
+                StreamType = IncomeStreamType.Salary
+            });
+
+            var fund = new EmergencyFundAccount(new AccountsEventsManager())
+            {
+                Name = "Emergency Fund",
+                InitialAmount = 6000,
+                GoalAmount = 6000,
+                MonthlyContribution = 500,
+                StartDate = date,
+                EndDate = date.AddYears(5)
+            };
+
+            var columns = CashFlowSimulator.Calculate(
+                financialAccount, date, date, new DebtPayoffResult(), new List<ISimulatedAccount> { fund });
+
+            columns[0].TotalContributions.ShouldEqual(0.0);
+            columns[0].Surplus.ShouldEqual(4000.0);
+        }
+
+        /// <summary>
         /// Income is entered gross, so cash flow has to tax it before treating it as spendable.
         /// Counting gross as available money would overstate every surplus by the whole tax
         /// bill and make unaffordable plans look affordable.

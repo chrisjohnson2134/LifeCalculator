@@ -190,8 +190,13 @@ namespace LifeCalculator.Framework.SimulatedAccount
             {
                 DateTime month = _startDate.AddMonths(j);
 
-                double contribution = MonthlyContribution
-                    + AccountEventResolver.ResolveAdditionalAmount(events, month);
+                // Contributions stop once the goal is met. An emergency fund is a target to
+                // reach, not a pot to feed forever — past the goal the money goes somewhere
+                // else, so projecting it as if you kept paying in would overstate both this
+                // balance and your net worth. Interest keeps compounding on what's there.
+                double contribution = IsFundedAt(currValue)
+                    ? 0
+                    : MonthlyContribution + AccountEventResolver.ResolveAdditionalAmount(events, month);
 
                 currValue = (currValue + contribution) * (1 + InterestRate / 12);
 
@@ -248,6 +253,47 @@ namespace LifeCalculator.Framework.SimulatedAccount
 
             return null;
         }
+
+        /// <summary>
+        /// Whether a balance has reached the target. No goal set means never funded, so an
+        /// unbounded fund keeps taking contributions rather than silently stopping at zero.
+        /// </summary>
+        private bool IsFundedAt(double balance) => GoalAmount > 0 && balance >= GoalAmount;
+
+        /// <summary>
+        /// Whether money is still going in as of the given month. Used by the cash-flow
+        /// projection so a fully funded emergency fund stops eating into monthly surplus.
+        /// </summary>
+        public bool IsContributingOn(DateTime date) => IsContributingOn(date, ProjectedGoalDate());
+
+        /// <summary>
+        /// Overload taking an already-computed goal date. <see cref="ProjectedGoalDate"/> walks up
+        /// to 600 months, so a caller simulating many months should resolve it once rather than
+        /// per month, which would make a long projection quadratic.
+        /// </summary>
+        public bool IsContributingOn(DateTime date, DateTime? projectedGoalDate)
+        {
+            if (MonthlyContribution <= 0)
+                return false;
+
+            if (GoalAmount <= 0)
+                return true;
+
+            // Already funded before a single deposit, so nothing is going in. Checked separately
+            // because ProjectedGoalDate reports the start date in that case, which the
+            // comparison below would otherwise read as "still contributing this month".
+            if (IsFundedAt(InitialAmount))
+                return false;
+
+            // Never reaches the goal, so contributions continue indefinitely.
+            if (projectedGoalDate == null)
+                return true;
+
+            // Inclusive: the goal month is the one whose deposit tips the balance over.
+            return MonthOf(date) <= MonthOf(projectedGoalDate.Value);
+        }
+
+        private static DateTime MonthOf(DateTime date) => new DateTime(date.Year, date.Month, 1);
 
         /// <summary>
         /// How many months of spending the current balance covers. This is the number that makes
