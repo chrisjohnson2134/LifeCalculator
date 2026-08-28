@@ -58,6 +58,30 @@ namespace LifeCalculator.Framework.Enums
     /// How an income stream is treated for payroll tax. Income tax itself is always computed
     /// on combined household income; only the payroll-tax layer differs by stream.
     /// </summary>
+    /// <summary>
+    /// How often a paycheque arrives. People know their rate in the units their employer
+    /// pays them in — an hourly wage, a per-cheque figure, a salary — so we take that and
+    /// annualise it rather than making them do the arithmetic.
+    ///
+    /// Bi-weekly (26/yr) and semi-monthly (24/yr) are genuinely different and are the pair
+    /// people most often conflate: 26 cheques of $2,000 is $52,000, 24 is $48,000.
+    /// </summary>
+    public enum PayFrequency
+    {
+        [Description("Per hour")]
+        Hourly = 0,
+        [Description("Per week (52/yr)")]
+        Weekly = 1,
+        [Description("Every 2 weeks (26/yr)")]
+        BiWeekly = 2,
+        [Description("Twice a month (24/yr)")]
+        SemiMonthly = 3,
+        [Description("Per month (12/yr)")]
+        Monthly = 4,
+        [Description("Per year")]
+        Annual = 5
+    }
+
     public enum IncomeTaxTreatment
     {
         [Description("W-2 wages (employer withholds)")]

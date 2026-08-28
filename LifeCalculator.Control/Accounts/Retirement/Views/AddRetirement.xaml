@@ -14,13 +14,13 @@
         <TextBlock Text="INITIAL AMOUNT" Style="{StaticResource EyebrowText}" Margin="0,10,0,3" />
         <TextBox Style="{StaticResource ValidatingTextBox}" Text="{Binding InitialValue, ValidatesOnNotifyDataErrors=True, StringFormat=C}" />
 
-        <TextBlock Text="AVERAGE GROWTH RATE" Style="{StaticResource EyebrowText}" Margin="0,10,0,3" />
+        <TextBlock Text="GROWTH RATE" Style="{StaticResource EyebrowText}" Margin="0,10,0,3" />
         <TextBox Style="{StaticResource ValidatingTextBox}" Text="{Binding Interest, ValidatesOnNotifyDataErrors=True, StringFormat={}{0}%}" />
 
-        <TextBlock Text="MONTHLY CONTRIBUTION" Style="{StaticResource EyebrowText}" Margin="0,10,0,3" />
+        <TextBlock Text="CONTRIBUTION" Style="{StaticResource EyebrowText}" Margin="0,10,0,3" />
         <TextBox Text="{Binding Contribute, StringFormat=C}" />
 
-        <TextBlock Text="LINKED INCOME STREAM" Style="{StaticResource EyebrowText}" Margin="0,10,0,3" />
+        <TextBlock Text="INCOME STREAM" Style="{StaticResource EyebrowText}" Margin="0,10,0,3" />
         <ComboBox ItemsSource="{Binding IncomeStreams}" SelectedItem="{Binding LinkedIncomeStream}" DisplayMemberPath="Display" />
         <TextBlock Text="The job this account belongs to — its salary sets the match cap." Style="{StaticResource BodyMutedText}" FontSize="11" TextWrapping="Wrap" Margin="0,2,0,0" />
 
@@ -28,7 +28,7 @@
         <TextBox Style="{StaticResource ValidatingTextBox}" Text="{Binding EmployerMatchPercent, ValidatesOnNotifyDataErrors=True, StringFormat={}{0}%}" />
         <TextBlock Text="e.g. 50 = employer matches 50% of your contribution" Style="{StaticResource BodyMutedText}" FontSize="11" Margin="0,2,0,0" />
 
-        <TextBlock Text="MATCH CAP (% OF SALARY)" Style="{StaticResource EyebrowText}" Margin="0,10,0,3" />
+        <TextBlock Text="MATCH CAP %" Style="{StaticResource EyebrowText}" Margin="0,10,0,3" />
         <TextBox Style="{StaticResource ValidatingTextBox}" Text="{Binding EmployerMatchCapPercentOfSalary, ValidatesOnNotifyDataErrors=True, StringFormat={}{0}%}" />
         <TextBlock Text="e.g. 6 = match applies up to 6% of your salary" Style="{StaticResource BodyMutedText}" FontSize="11" Margin="0,2,0,0" />
 

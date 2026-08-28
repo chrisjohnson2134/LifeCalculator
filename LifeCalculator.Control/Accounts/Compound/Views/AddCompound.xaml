@@ -11,10 +11,10 @@
         <TextBlock Text="INITIAL AMOUNT" Style="{StaticResource EyebrowText}" Margin="0,10,0,3" />
         <TextBox Style="{StaticResource ValidatingTextBox}" Text="{Binding InitialValue, ValidatesOnNotifyDataErrors=True, StringFormat=C}" />
 
-        <TextBlock Text="AVERAGE GROWTH RATE" Style="{StaticResource EyebrowText}" Margin="0,10,0,3" />
+        <TextBlock Text="GROWTH RATE" Style="{StaticResource EyebrowText}" Margin="0,10,0,3" />
         <TextBox Style="{StaticResource ValidatingTextBox}" Text="{Binding Interest, ValidatesOnNotifyDataErrors=True, StringFormat={}{0}%}" />
 
-        <TextBlock Text="MONTHLY CONTRIBUTION" Style="{StaticResource EyebrowText}" Margin="0,10,0,3" />
+        <TextBlock Text="CONTRIBUTION" Style="{StaticResource EyebrowText}" Margin="0,10,0,3" />
         <TextBox Text="{Binding Contribute, StringFormat=C}" />
 
         <TextBlock Text="START DATE" Style="{StaticResource EyebrowText}" Margin="0,10,0,3" />

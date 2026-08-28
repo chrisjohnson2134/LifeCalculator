@@ -80,16 +80,20 @@
                     </TextBlock.Style>
                 </TextBlock>
 
-                <!--  Tax settings: secondary, and collapsed by default so the page opens on income.  -->
-                <Expander Margin="0,28,0,0" IsExpanded="False">
+                <!--
+                    Open by default: income is entered gross, so these two settings are what
+                    turn it into a take-home figure. Left unset, every number on this page and
+                    the Life Calculator's surplus would be estimated against the wrong rate.
+                -->
+                <Expander Margin="0,28,0,0" IsExpanded="True">
                     <Expander.Header>
-                        <TextBlock Text="Tax settings" Style="{StaticResource DisplayText}" FontSize="15" />
+                        <TextBlock Text="Where you pay tax" Style="{StaticResource DisplayText}" FontSize="15" />
                     </Expander.Header>
 
                     <Border Style="{StaticResource LedgerCard}" Margin="0,10,0,0">
                         <StackPanel>
                             <TextBlock
-                                Text="Applied to every stream marked gross — all of them together, at your real marginal rate, since income tax stacks across total income. Saved automatically."
+                                Text="Set these once and every income stream is converted to take-home for you. All your gross income is taxed together at your real marginal rate, since brackets stack across total income. Saved automatically."
                                 Style="{StaticResource BodyMutedText}" MaxWidth="620" HorizontalAlignment="Left" Margin="0,0,0,16" />
 
                             <UniformGrid Columns="2">
@@ -116,7 +120,7 @@
                                 </StackPanel>
 
                                 <StackPanel>
-                                    <TextBlock Text="PRE-TAX DEDUCTIONS (ANNUAL)" Style="{StaticResource EyebrowText}" Margin="0,0,0,3" />
+                                    <TextBlock Text="PRE-TAX DEDUCTIONS/YR" Style="{StaticResource EyebrowText}" Margin="0,0,0,3" />
                                     <TextBox Style="{StaticResource ValidatingTextBox}" Text="{Binding PreTaxDeductionsAnnual, ValidatesOnNotifyDataErrors=True, StringFormat=C}" />
                                     <TextBlock Text="Traditional 401(k), HSA, health premiums." Style="{StaticResource BodyMutedText}" FontSize="11" TextWrapping="Wrap" Margin="0,2,0,0" />
                                 </StackPanel>

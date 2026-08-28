@@ -30,13 +30,21 @@ namespace LifeCalculator.Framework.Simulation
             var incomeStreams = account.IncomeStreamManager?.GetAllIncomeStreams() ?? new List<Income.IncomeStream>();
             growthAccounts = growthAccounts ?? new List<ISimulatedAccount>();
 
+            // Income is entered gross, so it has to be taxed before it can be spent — otherwise
+            // every surplus is overstated by the entire tax bill. The net figure per stream is
+            // computed once across the whole household (brackets are progressive, so streams
+            // can't be taxed independently) and then looked up per month below.
+            var netMonthlyByStreamId = ResolveNetMonthlyByStream(account, incomeStreams);
+
             int monthDiff = Math.Abs((start.Year * 12 + (start.Month - 1)) - (end.Year * 12 + (end.Month - 1)));
 
             for (int i = 0; i <= monthDiff; i++)
             {
                 DateTime date = start.AddMonths(i);
 
-                double totalIncome = incomeStreams.Where(s => s.IsActiveDuring(date)).Sum(s => s.MonthlyAmount);
+                double totalIncome = incomeStreams
+                    .Where(s => s.IsActiveDuring(date))
+                    .Sum(s => netMonthlyByStreamId.TryGetValue(s.Id, out var net) ? net : s.MonthlyAmount);
 
                 // Payment totals are bucketed by month, so look them up the same way rather
                 // than by exact timestamp.
@@ -62,6 +70,30 @@ namespace LifeCalculator.Framework.Simulation
             }
 
             return columns;
+        }
+
+        /// <summary>
+        /// Take-home per stream, taxed as one household.
+        ///
+        /// Streams flagged as already-net pass through untouched. Gross streams get their share
+        /// of household take-home, which is why this can't be done per stream in isolation: a
+        /// second job is taxed at the marginal rate the first already pushed you into, so taxing
+        /// each alone would understate the bill and overstate the surplus.
+        /// </summary>
+        private static Dictionary<int, double> ResolveNetMonthlyByStream(
+            FinancialAccount.FinancialAccount account,
+            List<Income.IncomeStream> incomeStreams)
+        {
+            if (incomeStreams.Count == 0)
+                return new Dictionary<int, double>();
+
+            var estimate = Tax.HouseholdTaxEstimator.Estimate(
+                incomeStreams,
+                account.FilingStatus,
+                account.PreTaxDeductionsAnnual,
+                account.StateTaxRatePercent);
+
+            return estimate.NetMonthlyByStreamId ?? new Dictionary<int, double>();
         }
 
         /// <summary>

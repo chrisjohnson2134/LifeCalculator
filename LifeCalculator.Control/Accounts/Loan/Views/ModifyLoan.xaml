@@ -34,7 +34,7 @@
                 <TextBlock Text="DOWN PAYMENT" Style="{StaticResource EyebrowText}" Margin="0,0,0,3" />
                 <TextBox Style="{StaticResource ValidatingTextBox}" Text="{Binding DownPayment, ValidatesOnNotifyDataErrors=True, StringFormat=C}" />
 
-                <TextBlock Text="LOAN LENGTH (MONTHS)" Style="{StaticResource EyebrowText}" Margin="0,12,0,3" />
+                <TextBlock Text="LENGTH (MONTHS)" Style="{StaticResource EyebrowText}" Margin="0,12,0,3" />
                 <TextBox Style="{StaticResource ValidatingTextBox}" Text="{Binding LoanLengthMonths, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
             </StackPanel>
         </UniformGrid>

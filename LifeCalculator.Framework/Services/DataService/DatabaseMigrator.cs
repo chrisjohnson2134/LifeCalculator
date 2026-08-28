@@ -91,6 +91,21 @@ namespace LifeCalculator.Framework.Services.DataService
                 cnn.Execute("ALTER TABLE IncomeStream ADD COLUMN GrossAnnualSalary REAL NOT NULL DEFAULT 0;");
             }
 
+            // Pay entered at its natural frequency (hourly rate, per-cheque, salary) instead of
+            // a monthly figure the user had to work out themselves.
+            //
+            // The backfill matters: IncomeStream.MonthlyAmount is now derived from PayRate, and
+            // a row left at PayRate = 0 would be treated as "no rate recorded". Seeding
+            // PayRate = MonthlyAmount at Monthly frequency reproduces each existing row's
+            // current value exactly, so nobody's income changes when they next open the app.
+            if (!ColumnExists(cnn, "IncomeStream", "PayRate"))
+            {
+                cnn.Execute("ALTER TABLE IncomeStream ADD COLUMN PayRate REAL NOT NULL DEFAULT 0;");
+                cnn.Execute("ALTER TABLE IncomeStream ADD COLUMN PayFrequency INTEGER NOT NULL DEFAULT 4;");
+                cnn.Execute("ALTER TABLE IncomeStream ADD COLUMN HoursPerWeek REAL NOT NULL DEFAULT 40;");
+                cnn.Execute("UPDATE IncomeStream SET PayRate = MonthlyAmount, PayFrequency = 4;");
+            }
+
             cnn.Execute(@"
                 CREATE TABLE IF NOT EXISTS ExpenseItem (
                     Id INTEGER PRIMARY KEY AUTOINCREMENT,

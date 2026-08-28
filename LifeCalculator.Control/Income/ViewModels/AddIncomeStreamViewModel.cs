@@ -3,6 +3,7 @@ using LifeCalculator.Framework.BaseVM;
 using LifeCalculator.Framework.CurrentAccountStorage;
 using LifeCalculator.Framework.Enums;
 using LifeCalculator.Framework.Income;
+using LifeCalculator.Framework.Tax;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,6 +35,7 @@ namespace LifeCalculator.Control.ViewModels
 
             StartDate = DateTime.Now;
             StreamType = IncomeStreamType.Salary;
+            PayFrequency = PayFrequency.Annual;
 
             ValidateAll();
         }
@@ -43,6 +45,8 @@ namespace LifeCalculator.Control.ViewModels
         #region Properties
 
         public List<IncomeStreamType> StreamTypes { get; } = Enum.GetValues(typeof(IncomeStreamType)).Cast<IncomeStreamType>().ToList();
+
+        public List<PayFrequency> PayFrequencies { get; } = Enum.GetValues(typeof(PayFrequency)).Cast<PayFrequency>().ToList();
 
         private string _name;
         public string Name
@@ -56,15 +60,59 @@ namespace LifeCalculator.Control.ViewModels
             }
         }
 
-        private double _monthlyAmount;
-        public double MonthlyAmount
+        private double _payRate;
+        public double PayRate
         {
-            get => _monthlyAmount;
+            get => _payRate;
             set
             {
-                _monthlyAmount = value;
-                Validate(nameof(MonthlyAmount), () => _monthlyAmount > 0, "Monthly amount must be greater than 0.");
-                OnPropertyChanged(nameof(MonthlyAmount));
+                _payRate = value;
+                Validate(nameof(PayRate), () => _payRate > 0, "Pay must be greater than 0.");
+                OnPropertyChanged(nameof(PayRate));
+                RaiseEstimateChanged();
+            }
+        }
+
+        private PayFrequency _payFrequency;
+        public PayFrequency PayFrequency
+        {
+            get => _payFrequency;
+            set
+            {
+                _payFrequency = value;
+                OnPropertyChanged(nameof(PayFrequency));
+                OnPropertyChanged(nameof(PayRateLabel));
+                OnPropertyChanged(nameof(IsHourly));
+                RaiseEstimateChanged();
+            }
+        }
+
+        public bool IsHourly => PayFrequency == PayFrequency.Hourly;
+
+        private double _hoursPerWeek = 40;
+        public double HoursPerWeek
+        {
+            get => _hoursPerWeek;
+            set
+            {
+                _hoursPerWeek = value;
+                Validate(nameof(HoursPerWeek), () => !IsHourly || (_hoursPerWeek > 0 && _hoursPerWeek <= 168),
+                    "Hours per week must be between 0 and 168.");
+                OnPropertyChanged(nameof(HoursPerWeek));
+                RaiseEstimateChanged();
+            }
+        }
+
+        public string PayRateLabel
+        {
+            get
+            {
+                switch (PayFrequency)
+                {
+                    case PayFrequency.Hourly: return "HOURLY RATE";
+                    case PayFrequency.Annual: return IsGross ? "ANNUAL SALARY" : "ANNUAL TAKE-HOME";
+                    default: return IsGross ? "GROSS PER CHEQUE" : "TAKE-HOME PER CHEQUE";
+                }
             }
         }
 
@@ -94,27 +142,15 @@ namespace LifeCalculator.Control.ViewModels
         public IncomeTaxTreatment TaxTreatment
         {
             get => _taxTreatment;
-            set { _taxTreatment = value; OnPropertyChanged(nameof(TaxTreatment)); }
+            set { _taxTreatment = value; OnPropertyChanged(nameof(TaxTreatment)); RaiseEstimateChanged(); }
         }
 
         /// <summary>
-        /// When true the amount entered is gross and tax is estimated across all gross streams
-        /// together. The tax-treatment picker only matters in that case.
+        /// Gross by default — that's what an offer letter states, and it's the only basis that
+        /// lets us estimate tax rather than ask the user to. Unticking it means "this money is
+        /// never withheld against", which is true of gifts and Roth withdrawals.
         /// </summary>
-        /// <summary>Optional; only needed if a 401(k) will be linked to this stream.</summary>
-        private double _grossAnnualSalary;
-        public double GrossAnnualSalary
-        {
-            get => _grossAnnualSalary;
-            set
-            {
-                _grossAnnualSalary = value;
-                Validate(nameof(GrossAnnualSalary), () => _grossAnnualSalary >= 0, "Salary cannot be negative.");
-                OnPropertyChanged(nameof(GrossAnnualSalary));
-            }
-        }
-
-        private bool _isGross;
+        private bool _isGross = true;
         public bool IsGross
         {
             get => _isGross;
@@ -122,11 +158,87 @@ namespace LifeCalculator.Control.ViewModels
             {
                 _isGross = value;
                 OnPropertyChanged(nameof(IsGross));
-                OnPropertyChanged(nameof(AmountLabel));
+                OnPropertyChanged(nameof(IsAlreadyNet));
+                OnPropertyChanged(nameof(PayRateLabel));
+                RaiseEstimateChanged();
             }
         }
 
-        public string AmountLabel => IsGross ? "MONTHLY AMOUNT (GROSS)" : "MONTHLY AMOUNT (TAKE-HOME)";
+        /// <summary>The checkbox is phrased as the exception ("already after tax"), so it binds
+        /// to the inverse. A property rather than a converter keeps it visible to validation.</summary>
+        public bool IsAlreadyNet
+        {
+            get => !IsGross;
+            set => IsGross = !value;
+        }
+
+        public double AnnualGross => IncomeStream.AnnualiseRate(PayRate, PayFrequency, HoursPerWeek);
+
+        public double MonthlyGross => AnnualGross / 12;
+
+        /// <summary>
+        /// The marginal effect of adding this stream: household take-home with it, minus
+        /// household take-home without it. Tax is progressive over total income, so a second
+        /// job's take-home depends on what the first already earns — estimating this stream in
+        /// isolation would flatter it by starting again from the 10% bracket.
+        /// </summary>
+        public double EstimatedMonthlyTakeHome
+        {
+            get
+            {
+                if (!IsGross)
+                    return MonthlyGross;
+
+                var account = _accountStore?.CurrentAccount;
+                if (account?.IncomeStreamManager == null || AnnualGross <= 0)
+                    return 0;
+
+                var existing = account.IncomeStreamManager.GetAllIncomeStreams() ?? new List<IncomeStream>();
+
+                var candidate = new IncomeStream
+                {
+                    Name = Name,
+                    PayFrequency = PayFrequency,
+                    HoursPerWeek = HoursPerWeek,
+                    PayRate = PayRate,
+                    IsGross = true,
+                    TaxTreatment = TaxTreatment,
+                    StartDate = StartDate
+                };
+
+                double withoutIt = NetMonthly(existing);
+                double withIt = NetMonthly(existing.Concat(new[] { candidate }));
+
+                return Math.Max(0, withIt - withoutIt);
+            }
+        }
+
+        public double EstimatedMonthlyTax => Math.Max(0, MonthlyGross - EstimatedMonthlyTakeHome);
+
+        public double EffectiveTaxRate => MonthlyGross <= 0 ? 0 : EstimatedMonthlyTax / MonthlyGross;
+
+        /// <summary>Reads the household-level tax settings the user set on their profile.</summary>
+        private double NetMonthly(IEnumerable<IncomeStream> streams)
+        {
+            var account = _accountStore.CurrentAccount;
+
+            var estimate = HouseholdTaxEstimator.Estimate(
+                streams,
+                account.FilingStatus,
+                account.PreTaxDeductionsAnnual,
+                account.StateTaxRatePercent);
+
+            return (estimate.NetFromGrossAnnual + estimate.AlreadyNetAnnual) / 12;
+        }
+
+        private void RaiseEstimateChanged()
+        {
+            OnPropertyChanged(nameof(AnnualGross));
+            OnPropertyChanged(nameof(MonthlyGross));
+            OnPropertyChanged(nameof(EstimatedMonthlyTakeHome));
+            OnPropertyChanged(nameof(EstimatedMonthlyTax));
+            OnPropertyChanged(nameof(EffectiveTaxRate));
+        }
 
         private DateTime _startDate;
         public DateTime StartDate
@@ -179,7 +291,9 @@ namespace LifeCalculator.Control.ViewModels
         private void ValidateAll()
         {
             Validate(nameof(Name), () => !string.IsNullOrWhiteSpace(_name), "Name is required.");
-            Validate(nameof(MonthlyAmount), () => _monthlyAmount > 0, "Monthly amount must be greater than 0.");
+            Validate(nameof(PayRate), () => _payRate > 0, "Pay must be greater than 0.");
+            Validate(nameof(HoursPerWeek), () => !IsHourly || (_hoursPerWeek > 0 && _hoursPerWeek <= 168),
+                "Hours per week must be between 0 and 168.");
             ValidateDateRange();
         }
 
@@ -194,16 +308,19 @@ namespace LifeCalculator.Control.ViewModels
 
         private void AddIncomeStreamCommandHandler()
         {
+            // PayFrequency and HoursPerWeek before PayRate: the rate setter derives MonthlyAmount
+            // from all three, so it has to run last to see the final frequency.
             var incomeStream = new IncomeStream
             {
                 Name = Name,
-                MonthlyAmount = MonthlyAmount,
+                PayFrequency = PayFrequency,
+                HoursPerWeek = HoursPerWeek,
+                PayRate = PayRate,
                 StartDate = StartDate,
                 EndDate = HasEndDate ? EndDate : null,
                 StreamType = StreamType,
                 IsGross = IsGross,
                 TaxTreatment = TaxTreatment,
-                GrossAnnualSalary = GrossAnnualSalary,
                 UserId = _accountStore.CurrentAccount.Id
             };
 

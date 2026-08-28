@@ -3,9 +3,19 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:LifeCalculator.Styles"
     xmlns:behaviors="clr-namespace:LifeCalculator.Behaviors;assembly=LifeCalculator"
+    xmlns:primitives="clr-namespace:System.Windows.Controls.Primitives;assembly=PresentationFramework"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
     xmlns:converters="clr-namespace:LifeCalculator.Tools.Common.Converters;assembly=LifeCalculator.Tools">
 
     <converters:EnumDescriptionConverter x:Key="EnumDescriptionConverter" />
+
+    <!--
+        Every interactive control sits on this height so a TextBox, ComboBox, DatePicker
+        and Button placed in adjacent columns line up on both edges. Padding alone can't
+        do this — each control type measures its content differently, so they'd all end
+        up a few pixels apart.
+    -->
+    <sys:Double x:Key="ControlHeight">32</sys:Double>
 
     <!--
         "Ledger" palette — warm, precise, financial-journal.
@@ -75,6 +85,14 @@
         <Setter Property="FontWeight" Value="SemiBold" />
         <Setter Property="Foreground" Value="{StaticResource BrassDarkBrush}" />
         <Setter Property="Uid" Value="eyebrow" />
+        <!--
+            Field labels sit above their input in independent StackPanels, so a label that
+            wraps to two lines pushes its input a line below its neighbours' and the row
+            stops lining up. Pinning to one line keeps every input on the same baseline;
+            keep labels short enough that the ellipsis never actually engages.
+        -->
+        <Setter Property="TextWrapping" Value="NoWrap" />
+        <Setter Property="TextTrimming" Value="CharacterEllipsis" />
     </Style>
 
     <Style x:Key="BodyMutedText" TargetType="TextBlock">
@@ -127,7 +145,10 @@
         <Setter Property="Foreground" Value="{StaticResource OnInkBrush}" />
         <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}" />
         <Setter Property="FontWeight" Value="SemiBold" />
-        <Setter Property="Padding" Value="16,9" />
+        <Setter Property="Padding" Value="16,0" />
+        <Setter Property="MinHeight" Value="{StaticResource ControlHeight}" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Cursor" Value="Hand" />
         <Setter Property="Template">
@@ -185,7 +206,9 @@
         <Setter Property="Foreground" Value="{StaticResource InkBrush}" />
         <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}" />
         <Setter Property="FontSize" Value="13" />
-        <Setter Property="Padding" Value="8,6" />
+        <Setter Property="Padding" Value="8,0" />
+        <Setter Property="MinHeight" Value="{StaticResource ControlHeight}" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="BorderBrush" Value="{StaticResource HairlineBrush}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="CaretBrush" Value="{StaticResource InkBrush}" />
@@ -223,7 +246,9 @@
         <Setter Property="Foreground" Value="{StaticResource InkBrush}" />
         <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}" />
         <Setter Property="FontSize" Value="13" />
-        <Setter Property="Padding" Value="8,6" />
+        <Setter Property="Padding" Value="8,0" />
+        <Setter Property="MinHeight" Value="{StaticResource ControlHeight}" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="BorderBrush" Value="{StaticResource HairlineBrush}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="CaretBrush" Value="{StaticResource InkBrush}" />
@@ -295,7 +320,9 @@
         <Setter Property="Foreground" Value="{StaticResource InkBrush}" />
         <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}" />
         <Setter Property="FontSize" Value="13" />
-        <Setter Property="Padding" Value="8,6" />
+        <Setter Property="Padding" Value="8,0" />
+        <Setter Property="MinHeight" Value="{StaticResource ControlHeight}" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="BorderBrush" Value="{StaticResource HairlineBrush}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Template">
@@ -334,10 +361,14 @@
                                 </ControlTemplate>
                             </ToggleButton.Template>
                         </ToggleButton>
-                        <!--  RelativeSource (not TemplateBinding) so DisplayMemberPath's generated template resolves.  -->
+                        <!--
+                            RelativeSource (not TemplateBinding) so DisplayMemberPath's generated
+                            template resolves. The right margin clears the dropdown arrow so long
+                            values don't run underneath it.
+                        -->
                         <ContentPresenter
                             x:Name="content"
-                            Margin="{TemplateBinding Padding}"
+                            Margin="9,0,26,0"
                             HorizontalAlignment="Left" VerticalAlignment="Center"
                             IsHitTestVisible="False"
                             Content="{Binding SelectionBoxItem, RelativeSource={RelativeSource TemplatedParent}}"
@@ -384,14 +415,137 @@
         </Setter>
     </Style>
 
-    <!--  DatePicker: light touch only — the calendar popup keeps its default chrome  -->
+    <!--
+        DatePicker's inner text field is a DatePickerTextBox, not a TextBox, so the implicit
+        TextBox style above does NOT reach it (WPF implicit styles match the exact type).
+        Left alone it renders with default Windows chrome — a sunken 3D box sitting inside
+        our flat hairline border, at a different height to everything beside it. Strip its
+        own border/background so the DatePicker's border is the only one drawn.
+    -->
+    <Style TargetType="{x:Type primitives:DatePickerTextBox}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{StaticResource InkBrush}" />
+        <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="CaretBrush" Value="{StaticResource InkBrush}" />
+        <Setter Property="SelectionBrush" Value="{StaticResource BrassBrush}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type primitives:DatePickerTextBox}">
+                    <Grid>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="WatermarkStates">
+                                <VisualState x:Name="Unwatermarked" />
+                                <VisualState x:Name="Watermarked">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PART_Watermark" Storyboard.TargetProperty="Visibility">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+
+                        <!--  Shown only while no date is selected, so an empty picker isn't a blank box.  -->
+                        <ContentControl
+                            x:Name="PART_Watermark"
+                            Content="Pick a date"
+                            Foreground="{StaticResource InkMutedBrush}"
+                            Focusable="False"
+                            IsHitTestVisible="False"
+                            VerticalAlignment="Center"
+                            Visibility="Collapsed" />
+
+                        <ScrollViewer x:Name="PART_ContentHost" VerticalAlignment="Center" Focusable="False" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--  DatePicker: matches TextBox metrics; the calendar popup keeps its default chrome  -->
     <Style TargetType="{x:Type DatePicker}">
         <Setter Property="Background" Value="{StaticResource SurfaceBrush}" />
         <Setter Property="Foreground" Value="{StaticResource InkBrush}" />
         <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}" />
         <Setter Property="FontSize" Value="13" />
+        <Setter Property="Padding" Value="8,0" />
+        <Setter Property="MinHeight" Value="{StaticResource ControlHeight}" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="BorderBrush" Value="{StaticResource HairlineBrush}" />
         <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type DatePicker}">
+                    <Border
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="3">
+                        <!--  Named PART_Root because DatePicker declares it as a template part.  -->
+                        <Grid x:Name="PART_Root">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <primitives:DatePickerTextBox
+                                x:Name="PART_TextBox"
+                                Grid.Column="0"
+                                Margin="{TemplateBinding Padding}"
+                                VerticalAlignment="Center"
+                                Focusable="{TemplateBinding Focusable}" />
+
+                            <Button
+                                x:Name="PART_Button"
+                                Grid.Column="1"
+                                Width="26"
+                                Margin="0"
+                                Padding="0"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Cursor="Hand"
+                                Focusable="False">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="Transparent">
+                                            <!--  Simple calendar glyph: page outline with a binding rule  -->
+                                            <Canvas Width="13" Height="13" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                <Rectangle
+                                                    Canvas.Top="1.5" Width="13" Height="11.5"
+                                                    RadiusX="1.5" RadiusY="1.5"
+                                                    Stroke="{StaticResource InkMutedBrush}" StrokeThickness="1.2" />
+                                                <Line X1="0" Y1="5" X2="13" Y2="5" Stroke="{StaticResource InkMutedBrush}" StrokeThickness="1.2" />
+                                                <Line X1="3.5" Y1="0" X2="3.5" Y2="3" Stroke="{StaticResource InkMutedBrush}" StrokeThickness="1.2" />
+                                                <Line X1="9.5" Y1="0" X2="9.5" Y2="3" Stroke="{StaticResource InkMutedBrush}" StrokeThickness="1.2" />
+                                            </Canvas>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+
+                            <Popup
+                                x:Name="PART_Popup"
+                                AllowsTransparency="True"
+                                Placement="Bottom"
+                                PlacementTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}"
+                                StaysOpen="False" />
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                            <Setter TargetName="PART_TextBox" Property="Focusable" Value="True" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.5" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 
     <!--  TabControl / TabItem: hairline underline instead of 3D tab chrome  -->

@@ -42,14 +42,14 @@
             </StackPanel>
 
             <StackPanel>
-                <TextBlock Text="MATCH CAP (% SALARY)" Style="{StaticResource EyebrowText}" Margin="0,0,0,3" />
+                <TextBlock Text="MATCH CAP %" Style="{StaticResource EyebrowText}" Margin="0,0,0,3" />
                 <TextBox Style="{StaticResource ValidatingTextBox}" Text="{Binding EmployerMatchCapPercentOfSalary, ValidatesOnNotifyDataErrors=True, StringFormat={}{0}%}" />
             </StackPanel>
         </UniformGrid>
 
         <UniformGrid Columns="2" Margin="0,12,0,0">
             <StackPanel Margin="0,0,16,0">
-                <TextBlock Text="LINKED INCOME STREAM" Style="{StaticResource EyebrowText}" Margin="0,0,0,3" />
+                <TextBlock Text="INCOME STREAM" Style="{StaticResource EyebrowText}" Margin="0,0,0,3" />
                 <ComboBox ItemsSource="{Binding IncomeStreams}" SelectedItem="{Binding LinkedIncomeStream}" DisplayMemberPath="Display" />
                 <TextBlock Text="Its salary sets the employer match cap." Style="{StaticResource BodyMutedText}" FontSize="11" TextWrapping="Wrap" Margin="0,2,0,0" />
             </StackPanel>

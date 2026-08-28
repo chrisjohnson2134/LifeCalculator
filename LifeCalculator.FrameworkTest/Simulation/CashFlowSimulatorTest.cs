@@ -28,6 +28,8 @@ namespace LifeCalcuator.FrameworkTest.Simulation
             financialAccount.IncomeStreamManager.AddIncomeStream(new IncomeStream
             {
                 Name = "Job",
+                // Pinned to take-home so this test measures the surplus formula, not the tax engine.
+                IsGross = false,
                 MonthlyAmount = 3000,
                 StartDate = date,
                 StreamType = IncomeStreamType.Salary
@@ -75,6 +77,8 @@ namespace LifeCalcuator.FrameworkTest.Simulation
             financialAccount.IncomeStreamManager.AddIncomeStream(new IncomeStream
             {
                 Name = "Job",
+                // Pinned to take-home so this test measures the surplus formula, not the tax engine.
+                IsGross = false,
                 MonthlyAmount = 2000,
                 StartDate = date,
                 StreamType = IncomeStreamType.Salary
@@ -128,6 +132,8 @@ namespace LifeCalcuator.FrameworkTest.Simulation
             financialAccount.IncomeStreamManager.AddIncomeStream(new IncomeStream
             {
                 Name = "New job",
+                // Pinned to take-home so this test measures the surplus formula, not the tax engine.
+                IsGross = false,
                 MonthlyAmount = 5000,
                 StartDate = new DateTime(2026, 8, 27),
                 StreamType = IncomeStreamType.Salary
@@ -149,6 +155,8 @@ namespace LifeCalcuator.FrameworkTest.Simulation
             financialAccount.IncomeStreamManager.AddIncomeStream(new IncomeStream
             {
                 Name = "Contract ending",
+                // Pinned to take-home so this test measures the surplus formula, not the tax engine.
+                IsGross = false,
                 MonthlyAmount = 2000,
                 StartDate = new DateTime(2026, 1, 1),
                 EndDate = new DateTime(2026, 8, 10),
@@ -171,6 +179,8 @@ namespace LifeCalcuator.FrameworkTest.Simulation
             financialAccount.IncomeStreamManager.AddIncomeStream(new IncomeStream
             {
                 Name = "ExpiredContract",
+                // Pinned to take-home so this test measures the surplus formula, not the tax engine.
+                IsGross = false,
                 MonthlyAmount = 1000,
                 StartDate = new DateTime(2025, 1, 1),
                 EndDate = new DateTime(2026, 1, 1),
@@ -181,6 +191,74 @@ namespace LifeCalcuator.FrameworkTest.Simulation
                 financialAccount, date, date, new DebtPayoffResult(), new List<ISimulatedAccount>());
 
             columns[0].TotalIncome.ShouldEqual(0.0);
+        }
+
+        /// <summary>
+        /// Income is entered gross, so cash flow has to tax it before treating it as spendable.
+        /// Counting gross as available money would overstate every surplus by the whole tax
+        /// bill and make unaffordable plans look affordable.
+        /// </summary>
+        [Test]
+        public void Calculate_GrossIncome_IsTaxedBeforeItCountsAsSpendable()
+        {
+            var financialAccount = new LifeCalculator.Framework.FinancialAccount.FinancialAccount
+            {
+                FilingStatus = FilingStatus.Single,
+                StateTaxRatePercent = 0
+            };
+
+            DateTime date = new DateTime(2026, 1, 1);
+
+            financialAccount.IncomeStreamManager.AddIncomeStream(new IncomeStream
+            {
+                Name = "Salaried job",
+                PayFrequency = PayFrequency.Annual,
+                PayRate = 90000,
+                IsGross = true,
+                TaxTreatment = IncomeTaxTreatment.W2Wages,
+                StartDate = date,
+                StreamType = IncomeStreamType.Salary
+            });
+
+            var columns = CashFlowSimulator.Calculate(
+                financialAccount, date, date, new DebtPayoffResult(), new List<ISimulatedAccount>());
+
+            double grossMonthly = 90000.0 / 12;
+
+            columns[0].TotalIncome.ShouldBeLessThan(grossMonthly);
+
+            // Sanity-check the magnitude rather than pin an exact figure, so the assertion
+            // survives a bracket-table update: federal + FICA on $90k lands well inside this.
+            columns[0].TotalIncome.ShouldBeGreaterThan(grossMonthly * 0.6);
+            columns[0].TotalIncome.ShouldBeLessThan(grossMonthly * 0.9);
+        }
+
+        /// <summary>
+        /// Take-home income is spent as-is: no second round of tax on money already withheld.
+        /// </summary>
+        [Test]
+        public void Calculate_AlreadyNetIncome_IsNotTaxedAgain()
+        {
+            var financialAccount = new LifeCalculator.Framework.FinancialAccount.FinancialAccount
+            {
+                FilingStatus = FilingStatus.Single
+            };
+
+            DateTime date = new DateTime(2026, 1, 1);
+
+            financialAccount.IncomeStreamManager.AddIncomeStream(new IncomeStream
+            {
+                Name = "Gift",
+                IsGross = false,
+                MonthlyAmount = 1500,
+                StartDate = date,
+                StreamType = IncomeStreamType.Other
+            });
+
+            var columns = CashFlowSimulator.Calculate(
+                financialAccount, date, date, new DebtPayoffResult(), new List<ISimulatedAccount>());
+
+            columns[0].TotalIncome.ShouldEqual(1500.0);
         }
     }
 }

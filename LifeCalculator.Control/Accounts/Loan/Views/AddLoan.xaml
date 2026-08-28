@@ -9,13 +9,13 @@
         <TextBlock Text="START DATE" Style="{StaticResource EyebrowText}" Margin="0,10,0,3" />
         <DatePicker Text="{Binding StartDate}" />
 
-        <TextBlock Text="INITIAL LOAN AMOUNT" Style="{StaticResource EyebrowText}" Margin="0,10,0,3" />
+        <TextBlock Text="LOAN AMOUNT" Style="{StaticResource EyebrowText}" Margin="0,10,0,3" />
         <TextBox Style="{StaticResource ValidatingTextBox}" Text="{Binding InitialLoanAmount, ValidatesOnNotifyDataErrors=True, StringFormat=C}" />
 
         <TextBlock Text="INTEREST RATE" Style="{StaticResource EyebrowText}" Margin="0,10,0,3" />
         <TextBox Style="{StaticResource ValidatingTextBox}" Text="{Binding InterestRate, ValidatesOnNotifyDataErrors=True, StringFormat={}{0}%}" />
 
-        <TextBlock Text="LOAN LENGTH (YEARS)" Style="{StaticResource EyebrowText}" Margin="0,10,0,3" />
+        <TextBlock Text="LENGTH (YEARS)" Style="{StaticResource EyebrowText}" Margin="0,10,0,3" />
         <TextBox Style="{StaticResource ValidatingTextBox}" Text="{Binding LoanLength, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
 
         <TextBlock Text="DOWN PAYMENT" Style="{StaticResource EyebrowText}" Margin="0,10,0,3" />

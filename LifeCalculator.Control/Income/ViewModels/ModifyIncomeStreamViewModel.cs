@@ -43,19 +43,77 @@ namespace LifeCalculator.Control.ViewModels
             }
         }
 
-        public double MonthlyAmount
+        public List<PayFrequency> PayFrequencies { get; } = Enum.GetValues(typeof(PayFrequency)).Cast<PayFrequency>().ToList();
+
+        public double PayRate
         {
-            get => _incomeStream.MonthlyAmount;
+            get => _incomeStream.PayRate;
             set
             {
-                Validate(nameof(MonthlyAmount), () => value > 0, "Monthly amount must be greater than 0.");
+                Validate(nameof(PayRate), () => value > 0, "Pay must be greater than 0.");
 
                 if (value > 0)
                 {
-                    _incomeStream.MonthlyAmount = value;
-                    OnPropertyChanged(nameof(MonthlyAmount));
+                    _incomeStream.PayRate = value;
+                    RaiseDerivedChanged();
                 }
             }
+        }
+
+        public PayFrequency PayFrequency
+        {
+            get => _incomeStream.PayFrequency;
+            set
+            {
+                _incomeStream.PayFrequency = value;
+                OnPropertyChanged(nameof(IsHourly));
+                OnPropertyChanged(nameof(PayRateLabel));
+                RaiseDerivedChanged();
+            }
+        }
+
+        public bool IsHourly => _incomeStream.PayFrequency == PayFrequency.Hourly;
+
+        public double HoursPerWeek
+        {
+            get => _incomeStream.HoursPerWeek;
+            set
+            {
+                Validate(nameof(HoursPerWeek), () => !IsHourly || (value > 0 && value <= 168),
+                    "Hours per week must be between 0 and 168.");
+
+                if (!IsHourly || (value > 0 && value <= 168))
+                {
+                    _incomeStream.HoursPerWeek = value;
+                    RaiseDerivedChanged();
+                }
+            }
+        }
+
+        public string PayRateLabel
+        {
+            get
+            {
+                switch (_incomeStream.PayFrequency)
+                {
+                    case PayFrequency.Hourly: return "HOURLY RATE";
+                    case PayFrequency.Annual: return IsGross ? "ANNUAL SALARY" : "ANNUAL TAKE-HOME";
+                    default: return IsGross ? "GROSS PER CHEQUE" : "TAKE-HOME PER CHEQUE";
+                }
+            }
+        }
+
+        public double MonthlyAmount => _incomeStream.MonthlyAmount;
+
+        public double AnnualAmount => _incomeStream.AnnualAmount;
+
+        private void RaiseDerivedChanged()
+        {
+            OnPropertyChanged(nameof(PayRate));
+            OnPropertyChanged(nameof(PayFrequency));
+            OnPropertyChanged(nameof(HoursPerWeek));
+            OnPropertyChanged(nameof(MonthlyAmount));
+            OnPropertyChanged(nameof(AnnualAmount));
         }
 
         public IncomeStreamType StreamType
@@ -88,29 +146,16 @@ namespace LifeCalculator.Control.ViewModels
             {
                 _incomeStream.IsGross = value;
                 OnPropertyChanged(nameof(IsGross));
-                OnPropertyChanged(nameof(AmountLabel));
+                OnPropertyChanged(nameof(IsAlreadyNet));
+                OnPropertyChanged(nameof(PayRateLabel));
             }
         }
 
-        public string AmountLabel => IsGross ? "MONTHLY (GROSS)" : "MONTHLY (TAKE-HOME)";
-
-        /// <summary>
-        /// Optional, and only relevant when a 401(k) is linked to this stream — employer match
-        /// caps are a percentage of gross pay.
-        /// </summary>
-        public double GrossAnnualSalary
+        /// <summary>Inverse of <see cref="IsGross"/>; the checkbox is phrased as the exception.</summary>
+        public bool IsAlreadyNet
         {
-            get => _incomeStream.GrossAnnualSalary;
-            set
-            {
-                Validate(nameof(GrossAnnualSalary), () => value >= 0, "Salary cannot be negative.");
-
-                if (value >= 0)
-                {
-                    _incomeStream.GrossAnnualSalary = value;
-                    OnPropertyChanged(nameof(GrossAnnualSalary));
-                }
-            }
+            get => !IsGross;
+            set => IsGross = !value;
         }
 
         public DateTime StartDate
@@ -158,7 +203,7 @@ namespace LifeCalculator.Control.ViewModels
         private void ValidateAll()
         {
             Validate(nameof(Name), () => !string.IsNullOrWhiteSpace(_incomeStream.Name), "Name is required.");
-            Validate(nameof(MonthlyAmount), () => _incomeStream.MonthlyAmount > 0, "Monthly amount must be greater than 0.");
+            Validate(nameof(PayRate), () => _incomeStream.PayRate > 0, "Pay must be greater than 0.");
             ValidateDateRange();
         }
 
