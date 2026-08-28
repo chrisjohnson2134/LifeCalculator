@@ -20,65 +20,31 @@
                     Text="Your recurring monthly expenses — everything except loan payments. These feed the Life Calculator's monthly surplus, so what you set here shapes every projection."
                     Style="{StaticResource BodyMutedText}" MaxWidth="620" HorizontalAlignment="Left" Margin="0,0,0,18" />
 
-                <!--  Debt payments live in the Life Calculator; surfaced here so the leftover figure is explainable.  -->
-                <Border Margin="0,0,0,22" Padding="14" CornerRadius="6"
-                        Background="{StaticResource SurfaceBrush}"
-                        BorderBrush="{StaticResource BrassBrush}" BorderThickness="3,1,1,1">
-                    <StackPanel>
-                        <TextBlock Text="DEBT PAYMENTS ARE COUNTED TOO" Style="{StaticResource EyebrowText}" Margin="0,0,0,6" />
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                            <TextBlock Text="{Binding TotalMonthlyDebtPayments, StringFormat=C0}" Style="{StaticResource DataFigureText}" FontSize="20" VerticalAlignment="Center" />
-                            <TextBlock Text="per month toward loans" Style="{StaticResource BodyMutedText}" VerticalAlignment="Center" Margin="8,0,0,0" />
-                        </StackPanel>
-                        <TextBlock
-                            Text="Add loans in the Life Calculator, not here — they carry interest rates and payoff dates. Their payments are subtracted from your leftover below, so don't enter them as expenses or they'll be counted twice."
-                            Style="{StaticResource BodyMutedText}" FontSize="11" TextWrapping="Wrap" MaxWidth="580" HorizontalAlignment="Left" />
-                    </StackPanel>
-                </Border>
 
-                <!--  Totals  -->
-                <UniformGrid Rows="1" Margin="0,0,0,24">
-                    <Border Style="{StaticResource LedgerCard}" Margin="0,0,10,0" BorderThickness="1,1,1,3" BorderBrush="{StaticResource SageBrush}">
-                        <StackPanel>
-                            <TextBlock Text="MONTHLY INCOME" Style="{StaticResource EyebrowText}" Foreground="{StaticResource InkMutedBrush}" />
-                            <TextBlock Text="{Binding TotalMonthlyIncome, StringFormat=C0}" Style="{StaticResource DataFigureText}" FontSize="24" Margin="0,4,0,0" />
-                        </StackPanel>
-                    </Border>
-                    <Border Style="{StaticResource LedgerCard}" Margin="0,0,10,0" BorderThickness="1,1,1,3" BorderBrush="{StaticResource HairlineBrush}">
-                        <StackPanel>
-                            <TextBlock Text="MONTHLY EXPENSES" Style="{StaticResource EyebrowText}" Foreground="{StaticResource InkMutedBrush}" />
-                            <TextBlock Text="{Binding TotalMonthlyExpenses, StringFormat=C0}" Style="{StaticResource DataFigureText}" FontSize="24" Margin="0,4,0,0" />
-                        </StackPanel>
-                    </Border>
-                    <Border Style="{StaticResource LedgerCard}" BorderThickness="1,1,1,3" BorderBrush="{StaticResource BrassBrush}">
-                        <StackPanel>
-                            <TextBlock Text="LEFT OVER" Style="{StaticResource EyebrowText}" Foreground="{StaticResource InkMutedBrush}" />
-                            <TextBlock Text="{Binding LeftOver, StringFormat=C0}" FontSize="24" Margin="0,4,0,0">
-                                <TextBlock.Style>
-                                    <Style TargetType="TextBlock" BasedOn="{StaticResource DataFigureText}">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsOverspending}" Value="True">
-                                                <Setter Property="Foreground" Value="{StaticResource BrickBrush}" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
-                        </StackPanel>
-                    </Border>
-                </UniformGrid>
-
-                <!--  Shows why "left over" is smaller than income minus expenses.  -->
-                <Border Style="{StaticResource LedgerCard}" Margin="0,0,0,24">
+                <!--  One place for the money math: headline figure plus the itemisation behind it.  -->
+                <Border Style="{StaticResource LedgerCard}" Margin="0,0,0,24" BorderThickness="1,1,1,3" BorderBrush="{StaticResource BrassBrush}">
                     <StackPanel>
-                        <TextBlock Text="Where it goes each month" Style="{StaticResource DisplayText}" FontSize="15" Margin="0,0,0,12" />
-                        <Grid>
+                        <TextBlock Text="LEFT OVER EACH MONTH" Style="{StaticResource EyebrowText}" Foreground="{StaticResource InkMutedBrush}" />
+                        <TextBlock Text="{Binding LeftOver, StringFormat=C0}" FontSize="34" Margin="0,4,0,14">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock" BasedOn="{StaticResource DataFigureText}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsOverspending}" Value="True">
+                                            <Setter Property="Foreground" Value="{StaticResource BrickBrush}" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+
+                        <Border BorderBrush="{StaticResource HairlineBrush}" BorderThickness="0,1,0,0" Margin="0,0,0,12" />
+
+                        <Grid MaxWidth="420" HorizontalAlignment="Left">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
@@ -91,18 +57,16 @@
                             <TextBlock Grid.Row="1" Grid.Column="0" Text="Less expenses" Style="{StaticResource BodyMutedText}" Margin="0,0,0,6" />
                             <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding TotalMonthlyExpenses, StringFormat=C0}" FontFamily="{StaticResource DataFontFamily}" FontSize="13" Margin="0,0,0,6" />
 
-                            <TextBlock Grid.Row="2" Grid.Column="0" Text="Less debt payments" Style="{StaticResource BodyMutedText}" Margin="0,0,0,6" />
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="Less loan payments" Style="{StaticResource BodyMutedText}" Margin="0,0,0,6" />
                             <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding TotalMonthlyDebtPayments, StringFormat=C0}" FontFamily="{StaticResource DataFontFamily}" FontSize="13" Margin="0,0,0,6" />
 
-                            <TextBlock Grid.Row="3" Grid.Column="0" Text="Less investment contributions" Style="{StaticResource BodyMutedText}" Margin="0,0,0,10" />
-                            <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding TotalMonthlyContributions, StringFormat=C0}" FontFamily="{StaticResource DataFontFamily}" FontSize="13" Margin="0,0,0,10" />
-
-                            <TextBlock Grid.Row="4" Grid.Column="0" Text="Left over" FontWeight="SemiBold" VerticalAlignment="Center" />
-                            <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding LeftOver, StringFormat=C0}" Style="{StaticResource DataFigureText}" FontSize="18" />
+                            <TextBlock Grid.Row="3" Grid.Column="0" Text="Less investment contributions" Style="{StaticResource BodyMutedText}" />
+                            <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding TotalMonthlyContributions, StringFormat=C0}" FontFamily="{StaticResource DataFontFamily}" FontSize="13" />
                         </Grid>
+
                         <TextBlock
-                            Text="Debt payments and investment contributions come from the Life Calculator — this matches the monthly surplus shown there."
-                            Style="{StaticResource BodyMutedText}" FontSize="11" TextWrapping="Wrap" MaxWidth="580" HorizontalAlignment="Left" Margin="0,12,0,0" />
+                            Text="Loan payments and contributions come from the Life Calculator — add loans there, not here, or they'll be counted twice."
+                            Style="{StaticResource BodyMutedText}" FontSize="11" TextWrapping="Wrap" MaxWidth="580" HorizontalAlignment="Left" Margin="0,14,0,0" />
                     </StackPanel>
                 </Border>
 
