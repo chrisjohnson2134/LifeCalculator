@@ -12,6 +12,7 @@ namespace LifeCalculator.Framework.SimulatedAccount
     {
         List<MonthlyColumn> Calculation();
         void AddLifeEvent(IAccountEvent lifeEvent);
+        List<IAccountEvent> AccountLifeEvents { get; }
 
     }
 }

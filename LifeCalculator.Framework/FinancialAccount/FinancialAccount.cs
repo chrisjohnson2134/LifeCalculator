@@ -5,6 +5,7 @@ using LifeCalculator.Framework.Services.DataService;
 using LifeCalculator.Framework.Managers;
 using LifeCalculator.Framework.Budget;
 using LifeCalculator.Framework.Managers.Interfaces;
+using LifeCalculator.Framework.Enums;
 
 namespace LifeCalculator.Framework.FinancialAccount
 {
@@ -19,6 +20,8 @@ namespace LifeCalculator.Framework.FinancialAccount
             TransactionManager = new TransactionsManager();
             BudgetManager = new BudgetManager(TransactionManager);
             AccountsEventsManager = new AccountsEventsManager();
+            IncomeStreamManager = new IncomeStreamManager();
+            ExpenseManager = new ExpenseManager();
         }
 
         #endregion
@@ -61,6 +64,14 @@ namespace LifeCalculator.Framework.FinancialAccount
 
         public double MiscellaneousPayments { get; set; }
 
+        public DebtPayoffStrategy PayoffStrategy { get; set; }
+
+        // Inputs for the take-home estimate on the Financial Profile screen.
+        public FilingStatus FilingStatus { get; set; }
+        public string StateCode { get; set; }
+        public double StateTaxRatePercent { get; set; }
+        public double PreTaxDeductionsAnnual { get; set; }
+
         [IgnoreDatabase]
         public AccountManager SimulatedAccountManager { get; set; }
         [IgnoreDatabase]
@@ -71,6 +82,10 @@ namespace LifeCalculator.Framework.FinancialAccount
         public ITransactionManager TransactionManager { get; set; }
         [IgnoreDatabase]
         public IAccountsEventsManager AccountsEventsManager { get; set; }
+        [IgnoreDatabase]
+        public IIncomeStreamManager IncomeStreamManager { get; set; }
+        [IgnoreDatabase]
+        public IExpenseManager ExpenseManager { get; set; }
 
         #endregion
     }

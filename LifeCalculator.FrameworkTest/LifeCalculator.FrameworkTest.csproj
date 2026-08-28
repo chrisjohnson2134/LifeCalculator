@@ -82,6 +82,14 @@
     <Compile Include="Account\InvestmentAccountTest.cs" />
     <Compile Include="Account\LoanAccountTest.cs" />
     <Compile Include="Managers\AccountManagerTest.cs" />
+    <Compile Include="GlobalTestSetup.cs" />
+    <Compile Include="Simulation\DebtPayoffSimulatorTest.cs" />
+    <Compile Include="Account\RetirementAccountTest.cs" />
+    <Compile Include="Simulation\CashFlowSimulatorTest.cs" />
+    <Compile Include="Simulation\NetWorthAggregatorTest.cs" />
+    <Compile Include="Tax\TaxEstimatorTest.cs" />
+    <Compile Include="Tax\HouseholdTaxEstimatorTest.cs" />
+    <Compile Include="Services\LoanAccountDataService\LoanPersistenceTest.cs" />
     <Compile Include="Managers\EventManagerTest.cs" />
     <Compile Include="Managers\Budget\BudgetManagerTest.cs" />
     <Compile Include="Managers\Budget\BudgetManagerTestContext.cs" />

@@ -1,18 +1,19 @@
-﻿using LifeCalculator.Control.Accounts;
+using LifeCalculator.Control.Accounts;
 using LifeCalculator.Framework.SimulatedAccount;
 using LifeCalculator.Framework.Managers;
 using LifeCalculator.Framework.BaseVM;
 using LifeCalculator.Framework.ColumnDefinitions;
 using LifeCalculator.Framework.LifeEvents;
-using Microsoft.VisualStudio.PlatformUI;
+using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using LifeCalculator.Framework.Enums;
 
 namespace LifeCalculator.Control.ViewModels
 {
-    public class ModifyLoanViewModel : ViewModelBase, IModifyAccount
+    public class ModifyLoanViewModel : ValidatableViewModelBase, IModifyAccount
     {
         #region Fields
 
@@ -27,27 +28,29 @@ namespace LifeCalculator.Control.ViewModels
 
         public ModifyLoanViewModel()
         {
-            DeleteAccountCommand = new DelegateCommand(DeleteAccount);
+            DeleteAccountCommand = new RelayCommand(DeleteAccount);
         }
 
-        public ModifyLoanViewModel(LoanAccount account, AccountManager accountManager)
+        public ModifyLoanViewModel(LoanAccount account, AccountManager accountManager, IAccountsEventsManager eventsManager = null)
         {
             _account = account;
             _accountManager = accountManager;
+            _accountsEventsManager = eventsManager;
 
             AccountLifeEventsVMs = new BindingList<ModifyEventViewModel>();
             foreach (var item in _account.AccountLifeEvents)
             {
                 if (item is AccountEvent accEvent)
                 {
-                    var accVM = new ModifyEventViewModel(accEvent);
-                    AccountLifeEventsVMs.Add(accVM);
+                    AccountLifeEventsVMs.Add(CreateEventRow(accEvent));
                 }
             }
 
             _account.ValueChanged += ValueChangedHandler;
-            DeleteAccountCommand = new DelegateCommand(DeleteAccount);
+            DeleteAccountCommand = new RelayCommand(DeleteAccount);
+            ToggleAddEventCommand = new RelayCommand(ToggleAddEvent);
 
+            ValidateAll();
         }
 
         #endregion
@@ -56,7 +59,22 @@ namespace LifeCalculator.Control.ViewModels
 
         public int Id => _account.Id;
 
-        public DelegateCommand DeleteAccountCommand { get; set; }
+        public IRelayCommand DeleteAccountCommand { get; set; }
+        public IRelayCommand ToggleAddEventCommand { get; set; }
+
+        private bool _isAddEventOpen;
+        public bool IsAddEventOpen
+        {
+            get => _isAddEventOpen;
+            private set { _isAddEventOpen = value; OnPropertyChanged(nameof(IsAddEventOpen)); }
+        }
+
+        private AddEventViewModel _addEventViewModel;
+        public AddEventViewModel AddEventViewModel
+        {
+            get => _addEventViewModel;
+            private set { _addEventViewModel = value; OnPropertyChanged(nameof(AddEventViewModel)); }
+        }
 
         public int UserId
         {
@@ -79,8 +97,17 @@ namespace LifeCalculator.Control.ViewModels
             }
             set
             {
-                _account.Name = value;
-                OnPropertyChanged("Name");
+                bool isDuplicate = _accountManager != null && _accountManager.GetAllAccounts()
+                    .Any(a => a.Id != _account.Id && a.Name != null && a.Name.Equals(value, StringComparison.OrdinalIgnoreCase));
+
+                Validate(nameof(Name), () => !string.IsNullOrWhiteSpace(value), "Account name is required.");
+                Validate(nameof(Name), () => !isDuplicate, "An account with this name already exists.");
+
+                if (!string.IsNullOrWhiteSpace(value) && !isDuplicate)
+                {
+                    _account.Name = value;
+                    OnPropertyChanged("Name");
+                }
             }
         }
 
@@ -101,6 +128,20 @@ namespace LifeCalculator.Control.ViewModels
             {
                 return _account.MonthlyPayment;
             }
+            set
+            {
+                double principal = _account.LoanAmount - _account.DownPayment;
+                double interestOnlyPayment = principal * (_account.InterestRate / 12);
+
+                Validate(nameof(MonthlyPayment), () => value > interestOnlyPayment, "Payment must be more than the interest accruing each month, or the loan will never pay off.");
+
+                if (value > interestOnlyPayment)
+                {
+                    _account.MonthlyPayment = value;
+                    OnPropertyChanged("MonthlyPayment");
+                    OnPropertyChanged(nameof(LoanLengthMonths));
+                }
+            }
         }
 
         public double LoanAmount
@@ -111,8 +152,16 @@ namespace LifeCalculator.Control.ViewModels
             }
             set
             {
-                _account.LoanAmount = value;
-                OnPropertyChanged("LoanAmount");
+                Validate(nameof(LoanAmount), () => value > 0, "Loan amount must be greater than 0.");
+
+                if (value > 0)
+                {
+                    _account.LoanAmount = value;
+                    OnPropertyChanged("LoanAmount");
+                    OnPropertyChanged(nameof(MonthlyPayment));
+                }
+
+                ValidateDownPayment(_account.DownPayment);
             }
         }
 
@@ -124,8 +173,14 @@ namespace LifeCalculator.Control.ViewModels
             }
             set
             {
-                _account.DownPayment = value;
-                OnPropertyChanged("DownPayment");
+                ValidateDownPayment(value);
+
+                if (value >= 0 && value <= _account.LoanAmount)
+                {
+                    _account.DownPayment = value;
+                    OnPropertyChanged("DownPayment");
+                    OnPropertyChanged(nameof(MonthlyPayment));
+                }
             }
         }
 
@@ -137,8 +192,14 @@ namespace LifeCalculator.Control.ViewModels
             }
             set
             {
-                _account.InterestRate = value / 100;
-                OnPropertyChanged("InterestRate");
+                Validate(nameof(InterestRate), () => value >= 0 && value <= 100, "Interest rate must be between 0 and 100.");
+
+                if (value >= 0 && value <= 100)
+                {
+                    _account.InterestRate = value / 100;
+                    OnPropertyChanged("InterestRate");
+                    OnPropertyChanged(nameof(MonthlyPayment));
+                }
             }
         }
 
@@ -166,8 +227,14 @@ namespace LifeCalculator.Control.ViewModels
             }
             set
             {
-                _account.LoanLengthMonths = value;
-                OnPropertyChanged("LoanLengthMonths");
+                Validate(nameof(LoanLengthMonths), () => value > 0, "Loan length must be greater than 0 months.");
+
+                if (value > 0)
+                {
+                    _account.LoanLengthMonths = value;
+                    OnPropertyChanged("LoanLengthMonths");
+                    OnPropertyChanged(nameof(MonthlyPayment));
+                }
             }
         }
 
@@ -192,11 +259,49 @@ namespace LifeCalculator.Control.ViewModels
 
         #endregion
 
+        #region Validation
+
+        private void ValidateAll()
+        {
+            Validate(nameof(LoanAmount), () => _account.LoanAmount > 0, "Loan amount must be greater than 0.");
+            Validate(nameof(InterestRate), () => _account.InterestRate * 100 >= 0 && _account.InterestRate * 100 <= 100, "Interest rate must be between 0 and 100.");
+            Validate(nameof(LoanLengthMonths), () => _account.LoanLengthMonths > 0, "Loan length must be greater than 0 months.");
+            ValidateDownPayment(_account.DownPayment);
+        }
+
+        private void ValidateDownPayment(double downPayment)
+        {
+            Validate(nameof(DownPayment), () => downPayment >= 0, "Down payment cannot be negative.");
+            Validate(nameof(DownPayment), () => downPayment <= _account.LoanAmount, "Down payment cannot exceed the loan amount.");
+        }
+
+        #endregion
+
         #region Commands
 
         public void DeleteAccount()
         {
             _accountManager.DeleteAccount(_account);
+        }
+
+        /// <summary>Builds an event row wired for deletion, so removing one updates this list.</summary>
+        private ModifyEventViewModel CreateEventRow(AccountEvent accEvent)
+        {
+            var vm = new ModifyEventViewModel(accEvent, _accountsEventsManager);
+            vm.EventDeleted += (s, e) => AccountLifeEventsVMs.Remove(vm);
+            return vm;
+        }
+
+        private void ToggleAddEvent()
+        {
+            IsAddEventOpen = !IsAddEventOpen;
+
+            if (!IsAddEventOpen)
+                return;
+
+            var vm = new AddEventViewModel(_account);
+            vm.EventAdded += (s, e) => IsAddEventOpen = false;
+            AddEventViewModel = vm;
         }
 
         #endregion
@@ -212,8 +317,7 @@ namespace LifeCalculator.Control.ViewModels
                 {
                     if (item is AccountEvent accEvent)
                     {
-                        var modifyLoanVM = new ModifyEventViewModel(accEvent);
-                        AccountLifeEventsVMs.Add(modifyLoanVM);
+                        AccountLifeEventsVMs.Add(CreateEventRow(accEvent));
                     }
                 }
             }

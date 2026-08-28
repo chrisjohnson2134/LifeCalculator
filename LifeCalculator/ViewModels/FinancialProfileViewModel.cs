@@ -1,20 +1,33 @@
-﻿using LifeCalculator.Framework.BaseVM;
-using LifeCalculator.Framework.FinancialAccount;
-using Microsoft.VisualStudio.PlatformUI;
-using System.Windows.Input;
+using CommunityToolkit.Mvvm.Input;
+using LifeCalculator.Control.ViewModels;
+using LifeCalculator.Framework.BaseVM;
 using LifeCalculator.Framework.CurrentAccountStorage;
+using LifeCalculator.Framework.Enums;
+using LifeCalculator.Framework.FinancialAccount;
+using LifeCalculator.Framework.Income;
+using LifeCalculator.Framework.Managers;
 using LifeCalculator.Framework.Services.FinancialAccountService;
+using LifeCalculator.Framework.Tax;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace LifeCalculator.ViewModels
 {
-    public class FinancialProfileViewModel : ViewModelBase
+    /// <summary>
+    /// The "money in" screen: salary (which the 401(k) employer-match cap is computed against)
+    /// and the income streams that drive the Life Calculator's monthly-surplus projection.
+    /// Expenses live on the Budget screen.
+    /// </summary>
+    public class FinancialProfileViewModel : ValidatableViewModelBase
     {
         #region Fields
 
-        private FinancialAccount _currentAccount;
-        private IFinancialAccountDataService _financialAccountService;
-        private bool _editViewVisible;
-        private bool _summaryViewVisible;
+        private readonly FinancialAccount _currentAccount;
+        private readonly IFinancialAccountDataService _financialAccountService;
+        private readonly IIncomeStreamManager _incomeStreamManager;
+        private readonly IAccountStore _accountStore;
 
         #endregion
 
@@ -22,11 +35,24 @@ namespace LifeCalculator.ViewModels
 
         public FinancialProfileViewModel(IAccountStore accountStore, IFinancialAccountDataService financialAccountService)
         {
+            _accountStore = accountStore;
             _currentAccount = accountStore.CurrentAccount;
             _financialAccountService = financialAccountService;
-            SummaryViewVisible = true;
-            EditViewCommand = new DelegateCommand(EditViewCommand_Execute, EditViewCommand_CanExecute);
-            SummaryViewCommand = new DelegateCommand(SummaryViewCommand_Execute, SummaryViewCommand_CanExecute);
+            _incomeStreamManager = accountStore.CurrentAccount.IncomeStreamManager;
+
+            IncomeStreams = new ObservableCollection<ModifyIncomeStreamViewModel>();
+
+            _incomeStreamManager.IncomeStreamAdded += IncomeStreamManager_Changed;
+            _incomeStreamManager.IncomeStreamChanged += IncomeStreamManager_Changed;
+            _incomeStreamManager.IncomeStreamDeleted += IncomeStreamManager_Deleted;
+
+            ToggleAddIncomeCommand = new RelayCommand(ToggleAddIncome);
+
+            foreach (var stream in _incomeStreamManager.GetAllIncomeStreams())
+                AddIncomeRow(stream);
+
+            RefreshTotals();
+            RefreshTaxEstimate();
         }
 
         #endregion
@@ -38,225 +64,238 @@ namespace LifeCalculator.ViewModels
             get => _currentAccount.Salary;
             set
             {
+                Validate(nameof(Salary), () => value >= 0, "Salary cannot be negative.");
+
+                if (value < 0)
+                    return;
+
                 _currentAccount.Salary = value;
+                SaveAndRefreshTax();
                 OnPropertyChanged(nameof(Salary));
             }
         }
 
-        public double NetMonthlyIncome
+        /// <summary>Take-home for the year — always populated, unlike a gross-only figure.</summary>
+        public double AnnualTakeHome => TotalMonthlyIncome * 12;
+
+        public List<FilingStatus> FilingStatuses { get; } =
+            Enum.GetValues(typeof(FilingStatus)).Cast<FilingStatus>().ToList();
+
+        public FilingStatus FilingStatus
         {
-            get => _currentAccount.NetMonthlyIncome;
+            get => _currentAccount.FilingStatus;
             set
             {
-                _currentAccount.NetMonthlyIncome = value;
-                OnPropertyChanged(nameof(NetMonthlyIncome));
+                _currentAccount.FilingStatus = value;
+                SaveAndRefreshTax();
+                OnPropertyChanged(nameof(FilingStatus));
             }
         }
 
-        public double Rent
+        public IReadOnlyList<StateTaxRate> States { get; } = StateTaxRates.All;
+
+        /// <summary>
+        /// Picking a state fills in its rate, so nobody has to know their own effective rate.
+        /// Editing the rate afterwards switches to "Custom" rather than silently disagreeing
+        /// with the state label.
+        /// </summary>
+        public StateTaxRate SelectedState
         {
-            get => _currentAccount.Rent;
+            get => StateTaxRates.FromCode(_currentAccount.StateCode);
             set
             {
-                _currentAccount.Rent = value;
-                OnPropertyChanged(nameof(Rent));
+                if (value == null)
+                    return;
+
+                _currentAccount.StateCode = value.Code;
+
+                if (value.Code != StateTaxRates.CustomCode)
+                    _currentAccount.StateTaxRatePercent = value.RatePercent;
+
+                SaveAndRefreshTax();
+                OnPropertyChanged(nameof(SelectedState));
+                OnPropertyChanged(nameof(StateTaxRatePercent));
+                OnPropertyChanged(nameof(IsCustomStateRate));
             }
         }
 
-        public double WaterBill
+        public bool IsCustomStateRate => _currentAccount.StateCode == StateTaxRates.CustomCode;
+
+        public double StateTaxRatePercent
         {
-            get => _currentAccount.WaterBill;
+            get => _currentAccount.StateTaxRatePercent;
             set
             {
-                _currentAccount.WaterBill = value;
-                OnPropertyChanged(nameof(WaterBill));
+                Validate(nameof(StateTaxRatePercent), () => value >= 0 && value <= 20, "State rate must be between 0 and 20%.");
+
+                if (value < 0 || value > 20)
+                    return;
+
+                _currentAccount.StateTaxRatePercent = value;
+
+                // A hand-edited rate no longer matches the named state.
+                if (Math.Abs(SelectedState.RatePercent - value) > 0.001)
+                {
+                    _currentAccount.StateCode = StateTaxRates.CustomCode;
+                    OnPropertyChanged(nameof(SelectedState));
+                    OnPropertyChanged(nameof(IsCustomStateRate));
+                }
+
+                SaveAndRefreshTax();
+                OnPropertyChanged(nameof(StateTaxRatePercent));
             }
         }
 
-        public double ElectricBill
+        public double PreTaxDeductionsAnnual
         {
-            get => _currentAccount.ElectricBill;
+            get => _currentAccount.PreTaxDeductionsAnnual;
             set
             {
-                _currentAccount.ElectricBill = value;
-                OnPropertyChanged(nameof(ElectricBill));
+                Validate(nameof(PreTaxDeductionsAnnual), () => value >= 0, "Deductions cannot be negative.");
+                Validate(nameof(PreTaxDeductionsAnnual), () => value <= _currentAccount.Salary || _currentAccount.Salary == 0,
+                    "Deductions can't exceed your salary.");
+
+                if (value < 0)
+                    return;
+
+                _currentAccount.PreTaxDeductionsAnnual = value;
+                SaveAndRefreshTax();
+                OnPropertyChanged(nameof(PreTaxDeductionsAnnual));
             }
         }
 
-        public double InternetBill
+        private HouseholdTaxEstimate _taxEstimate = new HouseholdTaxEstimate();
+        public HouseholdTaxEstimate TaxEstimate
         {
-            get => _currentAccount.InternetBill;
-            set
+            get => _taxEstimate;
+            private set
             {
-                _currentAccount.InternetBill = value;
-                OnPropertyChanged(nameof(InternetBill));
+                _taxEstimate = value;
+                OnPropertyChanged(nameof(TaxEstimate));
+                OnPropertyChanged(nameof(EffectiveTaxRateText));
+                OnPropertyChanged(nameof(HasGrossStreams));
             }
         }
 
-        public double CableBill
+        public string EffectiveTaxRateText => $"{TaxEstimate.EffectiveTaxRate:P1} of gross";
+
+        public string TaxYearText => $"Based on {TaxEstimator.TaxYear} federal brackets";
+
+        /// <summary>Drives whether the tax breakdown is worth showing at all.</summary>
+        public bool HasGrossStreams => TaxEstimate.GrossAnnual > 0;
+
+        public ObservableCollection<ModifyIncomeStreamViewModel> IncomeStreams { get; }
+
+        private double _totalMonthlyIncome;
+        public double TotalMonthlyIncome
         {
-            get => _currentAccount.CableBill;
-            set
+            get => _totalMonthlyIncome;
+            private set
             {
-                _currentAccount.CableBill = value;
-                OnPropertyChanged(nameof(CableBill));
+                _totalMonthlyIncome = value;
+                OnPropertyChanged(nameof(TotalMonthlyIncome));
+                OnPropertyChanged(nameof(AnnualTakeHome));
             }
         }
 
-        public double Subscriptions
+        private bool _isAddIncomeOpen;
+        public bool IsAddIncomeOpen
         {
-            get => _currentAccount.Subscriptions;
-            set
-            {
-                _currentAccount.Subscriptions = value;
-                OnPropertyChanged(nameof(Subscriptions));
-            }
+            get => _isAddIncomeOpen;
+            private set { _isAddIncomeOpen = value; OnPropertyChanged(nameof(IsAddIncomeOpen)); }
         }
 
-        public double Groceries
+        private AddIncomeStreamViewModel _addIncomeStreamViewModel;
+        public AddIncomeStreamViewModel AddIncomeStreamViewModel
         {
-            get => _currentAccount.Groceries;
-            set
-            {
-                _currentAccount.Groceries = value;
-                OnPropertyChanged(nameof(Groceries));
-            }
+            get => _addIncomeStreamViewModel;
+            private set { _addIncomeStreamViewModel = value; OnPropertyChanged(nameof(AddIncomeStreamViewModel)); }
         }
 
-        public double EmergencyFundContributions
-        {
-            get => _currentAccount.EmergencyFundContributions;
-            set
-            { 
-                _currentAccount.EmergencyFundContributions = value;
-                OnPropertyChanged(nameof(EmergencyFundContributions));
-            }
-        }
-
-        public double Gas
-        {
-            get => _currentAccount.Gas;
-            set
-            {
-                _currentAccount.Gas = value;
-                OnPropertyChanged(nameof(Gas));
-            }
-        }
-
-        public double CarInsurance
-        {
-            get => _currentAccount.CarInsurance;
-            set
-            {
-                _currentAccount.CarInsurance = value;
-                OnPropertyChanged(nameof(CarInsurance));
-            }
-        }
-
-        public double HomeInsurance
-        {
-            get => _currentAccount.HomeInsurance;
-            set
-            {
-                _currentAccount.HomeInsurance = value;
-                OnPropertyChanged(nameof(HomeInsurance));
-            }
-        }
-
-        public double CarPayments
-        {
-            get => _currentAccount.CarPayments;
-            set
-            {
-                _currentAccount.CarPayments = value;
-                OnPropertyChanged(nameof(CarPayments));
-            }
-        }
-
-        public double OtherDebts
-        {
-            get => _currentAccount.OtherDebts;
-            set
-            {
-                _currentAccount.OtherDebts = value;
-                OnPropertyChanged(nameof(OtherDebts));
-            }
-        }
-
-        public double MiscellaneousPayments
-        {
-            get => _currentAccount.MiscellaneousPayments;
-            set
-            {
-                _currentAccount.MiscellaneousPayments = value;
-                OnPropertyChanged(nameof(MiscellaneousPayments));
-            }
-        }
-
-        public bool EditViewVisible
-        {
-            get
-            {
-                return _editViewVisible;
-            }
-            set
-            {
-                _editViewVisible = value;
-                OnPropertyChanged(nameof(EditViewVisible));
-            }
-        }
-
-        public bool SummaryViewVisible
-        {
-            get
-            {
-                return _summaryViewVisible;
-            }
-            set
-            {
-                _summaryViewVisible = value;
-                OnPropertyChanged(nameof(SummaryViewVisible));
-            }
-        }
-
-        #region Commands
-
-        public ICommand EditViewCommand { get; private set; }
-
-        public ICommand SummaryViewCommand { get; private set; }
+        public IRelayCommand ToggleAddIncomeCommand { get; }
 
         #endregion
 
-        #endregion
+        #region Methods
 
-        #region Command Methods
-
-        public void EditViewCommand_Execute()
+        private void ToggleAddIncome()
         {
-            EditViewVisible = true;
-            SummaryViewVisible = false;
+            IsAddIncomeOpen = !IsAddIncomeOpen;
+
+            if (!IsAddIncomeOpen)
+                return;
+
+            var vm = new AddIncomeStreamViewModel(_accountStore);
+            vm.IncomeStreamAdded += (s, e) => IsAddIncomeOpen = false;
+            AddIncomeStreamViewModel = vm;
         }
 
-        public bool EditViewCommand_CanExecute()
+        private void IncomeStreamManager_Changed(object sender, IncomeStream e)
         {
-            return SummaryViewVisible == true;
+            if (IncomeStreams.All(row => row.Id != e.Id))
+                AddIncomeRow(e);
+
+            RefreshTaxEstimate();
         }
 
         /// <summary>
-        /// Saves the entered data into the users financial account in the database
-        /// and swaps back to the edit view.
+        /// Recomputes the moment a row is edited, rather than waiting for the manager's async
+        /// database save to round-trip — otherwise the summary cards lag behind what's on screen.
         /// </summary>
-        public void SummaryViewCommand_Execute()
+        private void AddIncomeRow(IncomeStream stream)
         {
-            SummaryViewVisible = true;
-            EditViewVisible = false;
-            _financialAccountService.Save(_currentAccount.Id ,_currentAccount);
+            var row = new ModifyIncomeStreamViewModel(stream, _incomeStreamManager);
+            row.PropertyChanged += (s, e) => RefreshTaxEstimate();
+            IncomeStreams.Add(row);
         }
 
-        public bool SummaryViewCommand_CanExecute()
+        private void IncomeStreamManager_Deleted(object sender, IncomeStream e)
         {
-           return EditViewVisible == true;
+            var row = IncomeStreams.FirstOrDefault(r => r.Id == e.Id);
+            if (row != null)
+                IncomeStreams.Remove(row);
+
+            RefreshTaxEstimate();
         }
+
+        /// <summary>
+        /// Shows take-home: gross streams contribute their post-tax share, streams already
+        /// entered as take-home contribute as-is.
+        /// </summary>
+        private void RefreshTotals()
+        {
+            DateTime today = DateTime.Now;
+
+            TotalMonthlyIncome = _incomeStreamManager.GetAllIncomeStreams()
+                .Where(s => s.IsActiveDuring(today))
+                .Sum(s => _taxEstimate.NetMonthlyByStreamId.TryGetValue(s.Id, out var net)
+                    ? net
+                    : s.MonthlyAmount);
+        }
+
+        private void SaveAndRefreshTax()
+        {
+            _financialAccountService.Save(_currentAccount.Id, _currentAccount);
+            RefreshTaxEstimate();
+        }
+
+        /// <summary>
+        /// Taxes every gross stream together rather than one at a time — income tax is
+        /// progressive over total income, so a second stream is taxed at the marginal rate the
+        /// first one already pushed you into.
+        /// </summary>
+        private void RefreshTaxEstimate()
+        {
+            TaxEstimate = HouseholdTaxEstimator.Estimate(
+                _incomeStreamManager.GetAllIncomeStreams(),
+                _currentAccount.FilingStatus,
+                _currentAccount.PreTaxDeductionsAnnual,
+                _currentAccount.StateTaxRatePercent);
+
+            RefreshTotals();
+        }
+
+
         #endregion
     }
 }

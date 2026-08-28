@@ -1,4 +1,4 @@
-﻿using System.Windows;
+using System.Windows;
 
 namespace LifeCalculator.Views
 {
@@ -10,14 +10,6 @@ namespace LifeCalculator.Views
         public MainWindow()
         {
             InitializeComponent();
-        }
-
-        private void Grid_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            if(e.LeftButton == System.Windows.Input.MouseButtonState.Pressed)
-            {
-                DragMove();
-            }
         }
     }
 }

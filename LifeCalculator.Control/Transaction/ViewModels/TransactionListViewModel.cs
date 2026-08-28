@@ -1,5 +1,5 @@
 ﻿using LifeCalculator.Framework.BaseVM;
-using Microsoft.VisualStudio.PlatformUI;
+using CommunityToolkit.Mvvm.Input;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
@@ -76,9 +76,9 @@ namespace LifeCalculator.Control.ViewModels
         {
             _transactionViewModels = new ObservableCollection<TransactionItemViewModel>();
 
-            TransactionItemReceivedCommand = new DelegateCommand(TransactionItemReceivedCommandHandler);
-            TransactionItemRemovedCommand = new DelegateCommand(TransactionItemRemovedCommandHandler);
-            TransactionItemInsertedCommand = new DelegateCommand(TransactionItemInsertedCommandHandler);
+            TransactionItemReceivedCommand = new RelayCommand<object>(TransactionItemReceivedCommandHandler);
+            TransactionItemRemovedCommand = new RelayCommand<object>(TransactionItemRemovedCommandHandler);
+            TransactionItemInsertedCommand = new RelayCommand<object>(TransactionItemInsertedCommandHandler);
         }
 
         public  void ClearItems()

@@ -92,6 +92,10 @@ namespace LifeCalculator.Framework.SimulatedAccount
                 ValueChanged?.Invoke(this, this);
             }
         }
+        /// <summary>
+        /// Stored as a fraction (0.05 = 5%), matching <see cref="LoanAccount.InterestRate"/>.
+        /// UI-facing view models convert to/from percent at the binding boundary.
+        /// </summary>
         private double _interestRate;
         public double InterestRate
         {
@@ -159,7 +163,7 @@ namespace LifeCalculator.Framework.SimulatedAccount
         {
 
             _initialAmount = initialAmount;
-            _interestRate = interestRate;
+            _interestRate = interestRate / 100;
             _startDate = startDate;
             _endDate = endDate;
 
@@ -192,7 +196,7 @@ namespace LifeCalculator.Framework.SimulatedAccount
             for (int j = 0; j < monthDiff; j++)
             {
 
-                currValue = (currValue + additionalPriPaymentCalculation(_startDate.AddMonths(j))) * (1 + (InterestRate / 100) / 12);
+                currValue = (currValue + additionalPriPaymentCalculation(_startDate.AddMonths(j))) * (1 + InterestRate / 12);
                 monthlies.Add(new MonthlyColumn() { Name = Name, Gain = Math.Round(currValue,2), Date = _startDate.AddMonths(j) });
             }
 
@@ -204,15 +208,7 @@ namespace LifeCalculator.Framework.SimulatedAccount
 
         private double additionalPriPaymentCalculation(DateTime dateTime)
         {
-            double additonalAmount = 0;
-
-            AccountLifeEvents.FindAll(i => i.StartDate <= dateTime && dateTime <= i.EndDate && i.LifeEventType == LifeEnum.MonthlyContribute)
-                .ForEach(i => additonalAmount += i.Amount);
-
-            AccountLifeEvents.FindAll(i => i.StartDate.Year == dateTime.Year && dateTime.Month == i.StartDate.Month && i.LifeEventType == LifeEnum.OneTime)
-                .ForEach(i => additonalAmount += i.Amount);
-
-            return additonalAmount;
+            return AccountEventResolver.ResolveAdditionalAmount(AccountLifeEvents, dateTime);
         }
 
         public void SetEventsManager(IAccountsEventsManager accountsEventsManager)

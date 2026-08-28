@@ -1,38 +1,223 @@
-﻿<UserControl
+<UserControl
     x:Class="LifeCalculator.Views.BudgetView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:controlViews="clr-namespace:LifeCalculator.Control.Views;assembly=LifeCalculator.Control"
+    xmlns:controlViewModels="clr-namespace:LifeCalculator.Control.ViewModels;assembly=LifeCalculator.Control"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:enums="clr-namespace:LifeCalculator.Framework.Enums;assembly=LifeCalculator.Framework"
     xmlns:local="clr-namespace:LifeCalculator.Views"
-    xmlns:controlsViews="clr-namespace:LifeCalculator.Control.Views;assembly=LifeCalculator.Control"
-    xmlns:material="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <Grid Background="White">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
 
-        <Label Grid.Row="0" Content="This is a demo! Enjoy being able to create budgets categories and drag them the way you want!" FontSize="22" FontWeight="Bold" />
+    <Grid Background="{StaticResource ParchmentBrush}">
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="32" MaxWidth="1000" HorizontalAlignment="Left">
 
-        <StackPanel Orientation="Horizontal" Grid.Row="1">
-            <Label Content="Budget Sorting"/>
-            <Button x:Name="AddBudgetItemBtn" Command="{Binding AddBudgetItemCommand}" Content="Add Budget Item" HorizontalAlignment="Right"/>
-            <Label Content="Name : " Margin="4"/>
-            <TextBox x:Name="BudgetItemNameTB" Text="{Binding AddBudgetITemName}" Width="100" BorderBrush="Black" BorderThickness="2" Margin="4"/>
-            <Label Content="Planned Amount : " Margin="4"/>
-            <TextBox x:Name="BudgetItemPlannedAmountTB" Text="{Binding AddBudgetITemPlannedAmount,StringFormat=C}" Width="100" BorderBrush="Black" BorderThickness="2" Margin="4"/>
-        </StackPanel>
-        
-        <controlsViews:TransactionSorterView Grid.Row="2" DataContext="{Binding TransactionSorterControl}"/>
+                <TextBlock Text="MONEY OUT" Style="{StaticResource EyebrowText}" />
+                <TextBlock Text="Budget" Style="{StaticResource DisplayLargeText}" Margin="0,4,0,6" />
+                <TextBlock
+                    Text="Your recurring monthly expenses — everything except loan payments. These feed the Life Calculator's monthly surplus, so what you set here shapes every projection."
+                    Style="{StaticResource BodyMutedText}" MaxWidth="620" HorizontalAlignment="Left" Margin="0,0,0,18" />
+
+                <!--  Debt payments live in the Life Calculator; surfaced here so the leftover figure is explainable.  -->
+                <Border Margin="0,0,0,22" Padding="14" CornerRadius="6"
+                        Background="{StaticResource SurfaceBrush}"
+                        BorderBrush="{StaticResource BrassBrush}" BorderThickness="3,1,1,1">
+                    <StackPanel>
+                        <TextBlock Text="DEBT PAYMENTS ARE COUNTED TOO" Style="{StaticResource EyebrowText}" Margin="0,0,0,6" />
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                            <TextBlock Text="{Binding TotalMonthlyDebtPayments, StringFormat=C0}" Style="{StaticResource DataFigureText}" FontSize="20" VerticalAlignment="Center" />
+                            <TextBlock Text="per month toward loans" Style="{StaticResource BodyMutedText}" VerticalAlignment="Center" Margin="8,0,0,0" />
+                        </StackPanel>
+                        <TextBlock
+                            Text="Add loans in the Life Calculator, not here — they carry interest rates and payoff dates. Their payments are subtracted from your leftover below, so don't enter them as expenses or they'll be counted twice."
+                            Style="{StaticResource BodyMutedText}" FontSize="11" TextWrapping="Wrap" MaxWidth="580" HorizontalAlignment="Left" />
+                    </StackPanel>
+                </Border>
+
+                <!--  Totals  -->
+                <UniformGrid Rows="1" Margin="0,0,0,24">
+                    <Border Style="{StaticResource LedgerCard}" Margin="0,0,10,0" BorderThickness="1,1,1,3" BorderBrush="{StaticResource SageBrush}">
+                        <StackPanel>
+                            <TextBlock Text="MONTHLY INCOME" Style="{StaticResource EyebrowText}" Foreground="{StaticResource InkMutedBrush}" />
+                            <TextBlock Text="{Binding TotalMonthlyIncome, StringFormat=C0}" Style="{StaticResource DataFigureText}" FontSize="24" Margin="0,4,0,0" />
+                        </StackPanel>
+                    </Border>
+                    <Border Style="{StaticResource LedgerCard}" Margin="0,0,10,0" BorderThickness="1,1,1,3" BorderBrush="{StaticResource HairlineBrush}">
+                        <StackPanel>
+                            <TextBlock Text="MONTHLY EXPENSES" Style="{StaticResource EyebrowText}" Foreground="{StaticResource InkMutedBrush}" />
+                            <TextBlock Text="{Binding TotalMonthlyExpenses, StringFormat=C0}" Style="{StaticResource DataFigureText}" FontSize="24" Margin="0,4,0,0" />
+                        </StackPanel>
+                    </Border>
+                    <Border Style="{StaticResource LedgerCard}" BorderThickness="1,1,1,3" BorderBrush="{StaticResource BrassBrush}">
+                        <StackPanel>
+                            <TextBlock Text="LEFT OVER" Style="{StaticResource EyebrowText}" Foreground="{StaticResource InkMutedBrush}" />
+                            <TextBlock Text="{Binding LeftOver, StringFormat=C0}" FontSize="24" Margin="0,4,0,0">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock" BasedOn="{StaticResource DataFigureText}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsOverspending}" Value="True">
+                                                <Setter Property="Foreground" Value="{StaticResource BrickBrush}" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </StackPanel>
+                    </Border>
+                </UniformGrid>
+
+                <!--  Shows why "left over" is smaller than income minus expenses.  -->
+                <Border Style="{StaticResource LedgerCard}" Margin="0,0,0,24">
+                    <StackPanel>
+                        <TextBlock Text="Where it goes each month" Style="{StaticResource DisplayText}" FontSize="15" Margin="0,0,0,12" />
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Income" Style="{StaticResource BodyMutedText}" Margin="0,0,0,6" />
+                            <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding TotalMonthlyIncome, StringFormat=C0}" FontFamily="{StaticResource DataFontFamily}" FontSize="13" Margin="0,0,0,6" />
+
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="Less expenses" Style="{StaticResource BodyMutedText}" Margin="0,0,0,6" />
+                            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding TotalMonthlyExpenses, StringFormat=C0}" FontFamily="{StaticResource DataFontFamily}" FontSize="13" Margin="0,0,0,6" />
+
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="Less debt payments" Style="{StaticResource BodyMutedText}" Margin="0,0,0,6" />
+                            <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding TotalMonthlyDebtPayments, StringFormat=C0}" FontFamily="{StaticResource DataFontFamily}" FontSize="13" Margin="0,0,0,6" />
+
+                            <TextBlock Grid.Row="3" Grid.Column="0" Text="Less investment contributions" Style="{StaticResource BodyMutedText}" Margin="0,0,0,10" />
+                            <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding TotalMonthlyContributions, StringFormat=C0}" FontFamily="{StaticResource DataFontFamily}" FontSize="13" Margin="0,0,0,10" />
+
+                            <TextBlock Grid.Row="4" Grid.Column="0" Text="Left over" FontWeight="SemiBold" VerticalAlignment="Center" />
+                            <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding LeftOver, StringFormat=C0}" Style="{StaticResource DataFigureText}" FontSize="18" />
+                        </Grid>
+                        <TextBlock
+                            Text="Debt payments and investment contributions come from the Life Calculator — this matches the monthly surplus shown there."
+                            Style="{StaticResource BodyMutedText}" FontSize="11" TextWrapping="Wrap" MaxWidth="580" HorizontalAlignment="Left" Margin="0,12,0,0" />
+                    </StackPanel>
+                </Border>
+
+                <!--  Add an expense  -->
+                <Border Style="{StaticResource LedgerCard}" Margin="0,0,0,20">
+                    <StackPanel>
+                        <TextBlock Text="Add an expense" Style="{StaticResource DisplayText}" FontSize="15" Margin="0,0,0,12" />
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0" Margin="0,0,12,0">
+                                <TextBlock Text="NAME" Style="{StaticResource EyebrowText}" Margin="0,0,0,3" />
+                                <TextBox Style="{StaticResource ValidatingTextBox}" Text="{Binding NewExpenseName, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="1" Width="130" Margin="0,0,12,0">
+                                <TextBlock Text="MONTHLY AMOUNT" Style="{StaticResource EyebrowText}" Margin="0,0,0,3" />
+                                <TextBox Style="{StaticResource ValidatingTextBox}" Text="{Binding NewExpenseAmount, ValidatesOnNotifyDataErrors=True, StringFormat=C}" />
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="2" Width="150" Margin="0,0,12,0">
+                                <TextBlock Text="CATEGORY" Style="{StaticResource EyebrowText}" Margin="0,0,0,3" />
+                                <ComboBox Style="{StaticResource EnumComboBox}" ItemsSource="{Binding Categories}" SelectedItem="{Binding NewExpenseCategory}" />
+                            </StackPanel>
+
+                            <Button
+                                Grid.Column="3" VerticalAlignment="Bottom"
+                                Content="Add" Command="{Binding AddExpenseCommand}"
+                                Style="{StaticResource LedgerPrimaryButton}" />
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!--  Empty state: offer the usual monthly bills as a starting point  -->
+                <Border Margin="0,0,0,20" BorderThickness="1,1,1,3" BorderBrush="{StaticResource BrassBrush}">
+                    <Border.Style>
+                        <Style TargetType="Border" BasedOn="{StaticResource LedgerCard}">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Expenses.Count}" Value="0">
+                                    <Setter Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                    <StackPanel>
+                        <TextBlock Text="Start with the usual bills" Style="{StaticResource DisplayText}" FontSize="15" Margin="0,0,0,4" />
+                        <TextBlock
+                            Text="Adds rent, utilities, phone, insurance, gas, groceries, eating out, entertainment, subscriptions, shopping, clothes, haircuts, and miscellaneous — all at $0, so you just fill in your amounts."
+                            Style="{StaticResource BodyMutedText}" MaxWidth="560" HorizontalAlignment="Left" Margin="0,0,0,10" />
+                        <TextBlock
+                            Text="Loan payments (car, student, credit card) aren't included on purpose — add those in the Life Calculator as debts, where they get interest rates and payoff dates. Their monthly payments are already subtracted from your surplus."
+                            Style="{StaticResource BodyMutedText}" FontSize="11" MaxWidth="560" HorizontalAlignment="Left" Margin="0,0,0,14" />
+                        <Button
+                            Content="Add these expenses"
+                            Command="{Binding AddStarterExpensesCommand}"
+                            Style="{StaticResource LedgerPrimaryButton}"
+                            HorizontalAlignment="Left" />
+                    </StackPanel>
+                </Border>
+
+                <!--  Expense list  -->
+                <Grid Margin="0,0,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="Your expenses" Style="{StaticResource DisplayText}" VerticalAlignment="Center" />
+                    <Button
+                        Grid.Column="1" VerticalAlignment="Center"
+                        Content="+ Add usual bills"
+                        Command="{Binding AddStarterExpensesCommand}"
+                        Style="{StaticResource LedgerSecondaryButton}" />
+                </Grid>
+
+                <ItemsControl ItemsSource="{Binding Expenses}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type controlViewModels:ExpenseRowViewModel}">
+                            <Border Style="{StaticResource LedgerCard}" Margin="0,0,0,8" Padding="12">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Grid.Column="0" Margin="0,0,10,0" VerticalAlignment="Center" Style="{StaticResource ValidatingTextBox}" Text="{Binding Name, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBox Grid.Column="1" Width="130" Margin="0,0,10,0" VerticalAlignment="Center" Style="{StaticResource ValidatingTextBox}" Text="{Binding MonthlyAmount, ValidatesOnNotifyDataErrors=True, StringFormat=C}" />
+                                    <ComboBox Grid.Column="2" Width="150" Margin="0,0,10,0" VerticalAlignment="Center" Style="{StaticResource EnumComboBox}" ItemsSource="{Binding Categories}" SelectedItem="{Binding Category}" />
+                                    <Button Grid.Column="3" VerticalAlignment="Center" Content="Delete" Command="{Binding DeleteExpenseCommand}" Style="{StaticResource LedgerSecondaryButton}" />
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <TextBlock Text="No expenses yet — add your rent, groceries, and bills above to see where your money goes.">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock" BasedOn="{StaticResource BodyMutedText}">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Expenses.Count}" Value="0">
+                                    <Setter Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </UserControl>

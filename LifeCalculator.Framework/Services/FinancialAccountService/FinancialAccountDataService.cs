@@ -42,6 +42,8 @@ namespace LifeCalculator.Framework.Services.FinancialAccountService
 
                 await result.AccountsEventsManager.LoadFromDb();
                 await result.TransactionManager.LoadFromDb();
+                await result.IncomeStreamManager.LoadFromDb(result.Id);
+                await result.ExpenseManager.LoadFromDb(result.Id);
 
                 //foreach(IAccount acc in result.SimulatedAccountManager.GetAllAccounts())
                 //{

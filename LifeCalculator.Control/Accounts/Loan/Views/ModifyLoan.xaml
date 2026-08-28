@@ -1,85 +1,77 @@
-﻿<UserControl x:Class="LifeCalculator.Control.Views.ModifyLoan"
+<UserControl x:Class="LifeCalculator.Control.Views.ModifyLoan"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:LifeCalculator.Control.Views"
              xmlns:localVM="clr-namespace:LifeCalculator.Control.ViewModels"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        
-        <!-- column 0 -->
 
-        <StackPanel Grid.Row="0" Grid.Column="0">
-            <StackPanel Orientation="Horizontal">
-                <Label Content="Name : " Width="100" Height="24"/>
-                <TextBox Text="{Binding Name}" Width="100" Height="24"/>
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </UserControl.Resources>
+
+    <StackPanel Margin="6">
+        <UniformGrid Columns="3">
+            <StackPanel Margin="0,0,16,0">
+                <TextBlock Text="NAME" Style="{StaticResource EyebrowText}" Margin="0,0,0,3" />
+                <TextBox Style="{StaticResource ValidatingTextBox}" Text="{Binding Name, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
+
+                <TextBlock Text="LOAN AMOUNT" Style="{StaticResource EyebrowText}" Margin="0,12,0,3" />
+                <TextBox Style="{StaticResource ValidatingTextBox}" Text="{Binding LoanAmount, ValidatesOnNotifyDataErrors=True, StringFormat=C}" />
             </StackPanel>
 
-            <StackPanel Orientation="Horizontal">
-                <Label Content="Loan Amount : " Width="100" Height="24"/>
-                <TextBox Text="{Binding LoanAmount,Mode=TwoWay, StringFormat=C}" Width="100" Height="24"/>
-            </StackPanel>
-        </StackPanel>
+            <StackPanel Margin="0,0,16,0">
+                <TextBlock Text="MONTHLY PAYMENT" Style="{StaticResource EyebrowText}" Margin="0,0,0,3" />
+                <TextBox Style="{StaticResource ValidatingTextBox}" Text="{Binding MonthlyPayment, ValidatesOnNotifyDataErrors=True, StringFormat=C}" />
 
-        <StackPanel Grid.Row="0" Grid.Column="1">
-            <StackPanel Orientation="Horizontal">
-                <Label Content="Monthly Payment : " Width="100" Height="24"/>
-                <TextBox Text="{Binding MonthlyPayment,Mode=OneWay, StringFormat=C}" Width="100" Height="24" IsEnabled="False"/>
-            </StackPanel>
-
-            <StackPanel Orientation="Horizontal">
-                <Label Content="Interest Rate : " Width="100" Height="24"/>
-                <TextBox Text="{Binding InterestRate, StringFormat={}{0}%}" Width="100" Height="24"/>
-            </StackPanel>
-        </StackPanel>
-
-        <StackPanel Grid.Row="0" Grid.Column="2">
-            <StackPanel Orientation="Horizontal">
-                <Label Content="Down Payment : " Width="100" Height="24"/>
-                <TextBox Text="{Binding DownPayment, StringFormat=C}" Width="100" Height="24"/>
-            </StackPanel>
-
-            <StackPanel Orientation="Horizontal">
-                <Label Content="Start Date : " Width="100" Height="24"/>
-                <DatePicker SelectedDate="{Binding StartDate}" Width="100" Height="24"/>
-            </StackPanel>
-
-            <StackPanel Orientation="Horizontal">
-                <Label Content="Loan Length months : " Width="100" Height="24"/>
-                <TextBox Text="{Binding LoanLengthMonths}" Width="100" Height="24"/>
+                <TextBlock Text="INTEREST RATE" Style="{StaticResource EyebrowText}" Margin="0,12,0,3" />
+                <TextBox Style="{StaticResource ValidatingTextBox}" Text="{Binding InterestRate, ValidatesOnNotifyDataErrors=True, StringFormat={}{0}%}" />
             </StackPanel>
 
             <StackPanel>
-                <Button x:Name="DeleteAccount" Content="Delete" Command="{Binding DeleteAccountCommand}" Width="100" Margin="10"/>
+                <TextBlock Text="DOWN PAYMENT" Style="{StaticResource EyebrowText}" Margin="0,0,0,3" />
+                <TextBox Style="{StaticResource ValidatingTextBox}" Text="{Binding DownPayment, ValidatesOnNotifyDataErrors=True, StringFormat=C}" />
+
+                <TextBlock Text="LOAN LENGTH (MONTHS)" Style="{StaticResource EyebrowText}" Margin="0,12,0,3" />
+                <TextBox Style="{StaticResource ValidatingTextBox}" Text="{Binding LoanLengthMonths, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
             </StackPanel>
-        </StackPanel>
+        </UniformGrid>
 
-        <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="0,8,0,0">
-            <TextBlock Text="Events" FontWeight="SemiBold" Margin="4,0,0,4" />
-            <ItemsControl ItemsSource="{Binding AccountLifeEventsVMs}">
-                <ItemsControl.Resources>
-                    <DataTemplate DataType="{x:Type localVM:ModifyEventViewModel}">
-                        <Border BorderBrush="#DDDDDD" BorderThickness="1" CornerRadius="4" Background="#FAFAFA" Margin="0,3" Padding="6">
-                            <StackPanel>
-                                <TextBlock Text="{Binding Name}" FontWeight="SemiBold" />
-                                <local:ModifyEvent />
-                            </StackPanel>
-                        </Border>
-                    </DataTemplate>
-                </ItemsControl.Resources>
-            </ItemsControl>
-        </StackPanel>
+        <TextBlock Text="START DATE" Style="{StaticResource EyebrowText}" Margin="0,12,0,3" />
+        <DatePicker SelectedDate="{Binding StartDate}" HorizontalAlignment="Left" Width="160" />
 
-    </Grid>
+        <Button
+            Content="Delete Debt" Command="{Binding DeleteAccountCommand}"
+            Style="{StaticResource LedgerSecondaryButton}"
+            HorizontalAlignment="Left" Margin="0,16,0,0" />
+
+        <Border BorderBrush="{StaticResource HairlineBrush}" BorderThickness="0,1,0,0" Margin="0,18,0,14" />
+
+        <Button
+            Content="+ Add Event" Command="{Binding ToggleAddEventCommand}"
+            Style="{StaticResource LedgerSecondaryButton}"
+            HorizontalAlignment="Left" />
+
+        <Border
+            Style="{StaticResource LedgerCard}" Margin="0,10,0,0"
+            Visibility="{Binding IsAddEventOpen, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <local:AddEvent DataContext="{Binding AddEventViewModel}" />
+        </Border>
+
+        <TextBlock Text="Events" Style="{StaticResource DisplayText}" FontSize="15" Margin="0,18,0,8" />
+        <ItemsControl ItemsSource="{Binding AccountLifeEventsVMs}">
+            <ItemsControl.Resources>
+                <DataTemplate DataType="{x:Type localVM:ModifyEventViewModel}">
+                    <Border Style="{StaticResource LedgerCard}" Margin="0,0,0,6">
+                        <StackPanel>
+                            <TextBlock Text="{Binding Name}" FontWeight="SemiBold" />
+                            <local:ModifyEvent />
+                        </StackPanel>
+                    </Border>
+                </DataTemplate>
+            </ItemsControl.Resources>
+        </ItemsControl>
+    </StackPanel>
 </UserControl>

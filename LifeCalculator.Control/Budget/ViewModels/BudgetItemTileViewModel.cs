@@ -1,7 +1,7 @@
 ﻿using LifeCalculator.Framework.Accounts;
 using LifeCalculator.Framework.BaseVM;
 using LifeCalculator.Framework.Budget;
-using Microsoft.VisualStudio.PlatformUI;
+using CommunityToolkit.Mvvm.Input;
 using System.Collections.Generic;
 using System.Windows.Input;
 
@@ -19,7 +19,7 @@ namespace LifeCalculator.Control.ViewModels
             _budgetManager = budgetManager;
             _budgetManager.BudgetsSorted += _budgetManager_BudgetsSorted;
 
-            TransactionAddCommand = new DelegateCommand(TransactionAddCommandHandler);
+            TransactionAddCommand = new RelayCommand<object>(TransactionAddCommandHandler);
 
             TransactionListViewModel = new TransactionListViewModel();
 

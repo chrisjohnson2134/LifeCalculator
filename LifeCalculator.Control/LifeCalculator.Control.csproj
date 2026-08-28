@@ -63,12 +63,6 @@
     <Compile Include="Budget\ViewModels\BudgetItemsControlViewModel.cs" />
     <Compile Include="Budget\ViewModels\BudgetItemTileViewModel.cs" />
     <Compile Include="Events\IControlEvent.cs" />
-    <Compile Include="FinancialProfileEdit\FinancialProfileEditView.xaml.cs">
-      <DependentUpon>FinancialProfileEditView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="FinancialProfileSummary\FinancialProfileSummaryView.xaml.cs">
-      <DependentUpon>FinancialProfileSummaryView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="PasswordBox\BindablePasswordBox.xaml.cs">
       <DependentUpon>BindablePasswordBox.xaml</DependentUpon>
     </Compile>
@@ -121,6 +115,23 @@
     <Compile Include="Transaction\Views\TransactionListView.xaml.cs">
       <DependentUpon>TransactionListView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Accounts\Retirement\ViewModels\AddRetirementViewModel.cs" />
+    <Compile Include="Accounts\Retirement\ViewModels\ModifyRetirementViewModel.cs" />
+    <Compile Include="Accounts\Retirement\Views\AddRetirement.xaml.cs">
+      <DependentUpon>AddRetirement.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Accounts\Retirement\Views\ModifyRetirement.xaml.cs">
+      <DependentUpon>ModifyRetirement.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Budget\ViewModels\ExpenseRowViewModel.cs" />
+    <Compile Include="Income\ViewModels\AddIncomeStreamViewModel.cs" />
+    <Compile Include="Income\ViewModels\ModifyIncomeStreamViewModel.cs" />
+    <Compile Include="Income\Views\AddIncomeStream.xaml.cs">
+      <DependentUpon>AddIncomeStream.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Income\Views\ModifyIncomeStream.xaml.cs">
+      <DependentUpon>ModifyIncomeStream.xaml</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -140,10 +151,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="FinancialProfileEdit\FinancialProfileEditView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Events\Compound\Views\AddEvent.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -157,10 +164,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Events\Compound\Views\ModifyEvent.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="FinancialProfileSummary\FinancialProfileSummaryView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -188,6 +191,22 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Accounts\Retirement\Views\AddRetirement.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Accounts\Retirement\Views\ModifyRetirement.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Income\Views\AddIncomeStream.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Income\Views\ModifyIncomeStream.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LifeCalculator.Framework\LifeCalculator.Framework.csproj">
@@ -200,10 +219,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.VisualStudio.Utilities">
-      <Version>16.7.30329.38</Version>
+    <PackageReference Include="CommunityToolkit.Mvvm">
+      <Version>8.2.2</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

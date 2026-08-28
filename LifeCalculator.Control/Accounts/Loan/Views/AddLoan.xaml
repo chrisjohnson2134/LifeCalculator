@@ -1,43 +1,30 @@
-﻿<UserControl
+<UserControl
     x:Class="LifeCalculator.Control.Views.AddLoan"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <Grid Width="200">
-        <StackPanel Width="AUTO">
-            <DockPanel LastChildFill="True">
-                <Label Margin="2" Content="Account Name:" Width="115"/>
-                <TextBox  Margin="2" Text="{Binding AccountName}" Width="auto"/>
-            </DockPanel>
+    <StackPanel Margin="4" Width="320">
+        <TextBlock Text="ACCOUNT NAME" Style="{StaticResource EyebrowText}" Margin="0,6,0,3" />
+        <TextBox Style="{StaticResource ValidatingTextBox}" Text="{Binding AccountName, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
 
-            <DockPanel LastChildFill="True">
-                <Label Margin="2" Content="Start Date:" Width="115"/>
-                <DatePicker  Margin="2" Text="{Binding StartDate}" Width="auto" />
-            </DockPanel>
+        <TextBlock Text="START DATE" Style="{StaticResource EyebrowText}" Margin="0,10,0,3" />
+        <DatePicker Text="{Binding StartDate}" />
 
-            <DockPanel LastChildFill="True">
-                <Label  Margin="2" Content="Initial Loan Amount:" Width="115"/>
-                <TextBox  Margin="2" GotFocus="TextBox_GotFocus" Text="{Binding InitialLoanAmount, StringFormat=C}" Width="auto" />
-            </DockPanel>
+        <TextBlock Text="INITIAL LOAN AMOUNT" Style="{StaticResource EyebrowText}" Margin="0,10,0,3" />
+        <TextBox Style="{StaticResource ValidatingTextBox}" Text="{Binding InitialLoanAmount, ValidatesOnNotifyDataErrors=True, StringFormat=C}" />
 
-            <DockPanel LastChildFill="True">
-                <Label  Margin="2" Content="Interest Rate:" Width="115"/>
-                <TextBox  Margin="2" GotFocus="TextBox_GotFocus" Text="{Binding InterestRate, StringFormat={}{0}%}" Width="auto" />
-            </DockPanel>
+        <TextBlock Text="INTEREST RATE" Style="{StaticResource EyebrowText}" Margin="0,10,0,3" />
+        <TextBox Style="{StaticResource ValidatingTextBox}" Text="{Binding InterestRate, ValidatesOnNotifyDataErrors=True, StringFormat={}{0}%}" />
 
-            <DockPanel LastChildFill="True">
-                <Label Margin="2" Content="Loan Length years:" Width="115"/>
-                <TextBox Margin="2" GotFocus="TextBox_GotFocus" Text="{Binding LoanLength}" Width="auto" />
-            </DockPanel>
+        <TextBlock Text="LOAN LENGTH (YEARS)" Style="{StaticResource EyebrowText}" Margin="0,10,0,3" />
+        <TextBox Style="{StaticResource ValidatingTextBox}" Text="{Binding LoanLength, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
 
-            <DockPanel LastChildFill="True">
-                <Label Margin="2" Content="Down Payment" Width="115"/>
-                <TextBox Margin="2" GotFocus="TextBox_GotFocus" Text="{Binding DownPayment, StringFormat=C}" Width="auto" />
-            </DockPanel>
+        <TextBlock Text="DOWN PAYMENT" Style="{StaticResource EyebrowText}" Margin="0,10,0,3" />
+        <TextBox Style="{StaticResource ValidatingTextBox}" Text="{Binding DownPayment, ValidatesOnNotifyDataErrors=True, StringFormat=C}" />
 
-            <DockPanel>
-                <Button Margin="2" Command="{Binding AddAccountCommand}" Content="Add Loan" />
-            </DockPanel>
-        </StackPanel>
-
-    </Grid>
+        <Button
+            Margin="0,16,0,0" HorizontalAlignment="Right"
+            Command="{Binding AddAccountCommand}"
+            Content="Add Loan"
+            Style="{StaticResource LedgerPrimaryButton}" />
+    </StackPanel>
 </UserControl>

@@ -1,0 +1,63 @@
+<UserControl
+    x:Class="LifeCalculator.Control.Views.ModifyIncomeStream"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </UserControl.Resources>
+
+    <StackPanel>
+        <UniformGrid Columns="3">
+            <StackPanel Margin="0,0,16,0">
+                <TextBlock Text="SOURCE NAME" Style="{StaticResource EyebrowText}" Margin="0,0,0,3" />
+                <TextBox Style="{StaticResource ValidatingTextBox}" Text="{Binding Name, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+
+            <StackPanel Margin="0,0,16,0">
+                <TextBlock Text="{Binding AmountLabel}" Style="{StaticResource EyebrowText}" Margin="0,0,0,3" />
+                <TextBox Style="{StaticResource ValidatingTextBox}" Text="{Binding MonthlyAmount, ValidatesOnNotifyDataErrors=True, StringFormat=C}" />
+            </StackPanel>
+
+            <StackPanel>
+                <TextBlock Text="TYPE" Style="{StaticResource EyebrowText}" Margin="0,0,0,3" />
+                <ComboBox Style="{StaticResource EnumComboBox}" ItemsSource="{Binding StreamTypes}" SelectedItem="{Binding StreamType}" />
+            </StackPanel>
+        </UniformGrid>
+
+        <!--  Only needed for 401(k) matching.  -->
+        <Expander Margin="0,12,0,0" IsExpanded="False">
+            <Expander.Header>
+                <TextBlock Text="Retirement matching (optional)" Style="{StaticResource BodyMutedText}" FontWeight="SemiBold" />
+            </Expander.Header>
+            <StackPanel Margin="0,10,0,0" MaxWidth="420" HorizontalAlignment="Left">
+                <TextBlock Text="GROSS ANNUAL SALARY" Style="{StaticResource EyebrowText}" Margin="0,0,0,3" />
+                <TextBox Style="{StaticResource ValidatingTextBox}" Text="{Binding GrossAnnualSalary, ValidatesOnNotifyDataErrors=True, StringFormat=C}" />
+                <TextBlock
+                    Text="Only needed if a 401(k) is linked to this job — the employer match cap is a percentage of gross pay."
+                    Style="{StaticResource BodyMutedText}" FontSize="11" TextWrapping="Wrap" Margin="0,4,0,0" />
+            </StackPanel>
+        </Expander>
+
+        <UniformGrid Columns="3" Margin="0,12,0,0">
+            <StackPanel Margin="0,0,16,0">
+                <TextBlock Text="START DATE" Style="{StaticResource EyebrowText}" Margin="0,0,0,3" />
+                <DatePicker SelectedDate="{Binding StartDate}" />
+            </StackPanel>
+
+            <StackPanel Margin="0,0,16,0">
+                <TextBlock Text="END DATE" Style="{StaticResource EyebrowText}" Margin="0,0,0,3" />
+                <DatePicker Style="{StaticResource ValidatingDatePicker}" IsEnabled="{Binding HasEndDate}" SelectedDate="{Binding EndDate, ValidatesOnNotifyDataErrors=True}" />
+                <CheckBox Content="Has a known end date" IsChecked="{Binding HasEndDate}" Margin="0,8,0,0" />
+            </StackPanel>
+
+            <StackPanel VerticalAlignment="Bottom">
+                <Button
+                    Content="Delete"
+                    Command="{Binding DeleteIncomeStreamCommand}"
+                    Style="{StaticResource LedgerSecondaryButton}"
+                    HorizontalAlignment="Left" />
+            </StackPanel>
+        </UniformGrid>
+    </StackPanel>
+</UserControl>

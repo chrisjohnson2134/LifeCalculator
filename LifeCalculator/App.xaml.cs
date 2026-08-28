@@ -1,4 +1,5 @@
-﻿using LifeCalculator.Framework.Settings;
+﻿using LifeCalculator.Framework.Services.DataService;
+using LifeCalculator.Framework.Settings;
 using LifeCalculator.Ninject;
 using LifeCalculator.ViewModels;
 using LifeCalculator.Views;
@@ -14,6 +15,8 @@ namespace LifeCalculator
     {
         protected override void OnStartup(StartupEventArgs e)
         {
+            DatabaseMigrator.RunMigrations();
+
             IKernel kernel = new StandardKernel();
             NinjectContainer container = new NinjectContainer();
             kernel.Load(container);

@@ -35,6 +35,41 @@ namespace LifeCalcuator.FrameworkTest.SimulatedAccount
         }
 
         [Test]
+        public void SettingMonthlyPaymentDirectly_SolvesForLoanLength()
+        {
+            var testLoanAccount = setupLoanAccount();
+
+            // Round-trip against the bankrate-verified case above: the same payment on the
+            // same loan should solve back to (approximately) the same 120-month term.
+            testLoanAccount.MonthlyPayment = 333.94;
+
+            testLoanAccount.LoanLengthMonths.ShouldEqual(120);
+        }
+
+        [Test]
+        public void SettingHigherMonthlyPayment_ShortensLoanLength()
+        {
+            var testLoanAccount = setupLoanAccount();
+
+            testLoanAccount.MonthlyPayment = 600;
+
+            (testLoanAccount.LoanLengthMonths < 120).ShouldBeTrue();
+        }
+
+        [Test]
+        public void SettingMonthlyPaymentBelowInterestOnly_IsIgnored()
+        {
+            var testLoanAccount = setupLoanAccount();
+            int originalLength = testLoanAccount.LoanLengthMonths;
+
+            // 35000 principal @ 2.75%/12 accrues ~80.2/mo in interest; anything at or below
+            // that would never pay down principal, so the loan length should be unaffected.
+            testLoanAccount.MonthlyPayment = 50;
+
+            testLoanAccount.LoanLengthMonths.ShouldEqual(originalLength);
+        }
+
+        [Test]
         public void CalculationTest()
         {
             LoanAccount localLoanAccount = setupLoanAccount();

@@ -7,7 +7,7 @@ using LifeCalculator.Framework.CurrentAccountStorage;
 using LifeCalculator.Framework.Enums;
 using LifeCalculator.Navigation;
 using LifeCalculator.ViewModels.Factory;
-using Microsoft.VisualStudio.PlatformUI;
+using CommunityToolkit.Mvvm.Input;
 using System.Windows.Input;
 
 namespace LifeCalculator.ViewModels
@@ -32,7 +32,7 @@ namespace LifeCalculator.ViewModels
             _accountStore = accountStore;
             _navigator.StateChanged += Navigator_OnStateChanged;
             UpdateCurrentViewModelCommand = new UpdateCurrentViewModelCommand(navigator, viewModelFactory);
-            LogoutCommand = new DelegateCommand(LogoutCommand_Execute, LogoutCommand_CanExecute);
+            LogoutCommand = new RelayCommand<object>(LogoutCommand_Execute, LogoutCommand_CanExecute);
             UpdateCurrentViewModelCommand.Execute(ViewType.Welcome);
 
         }
@@ -42,6 +42,8 @@ namespace LifeCalculator.ViewModels
         #region Properties
 
         public ViewModelBase CurrentViewModel => _navigator.CurrentViewModel;
+
+        public ViewType CurrentViewType => _navigator.CurrentViewType;
 
         public ICommand UpdateCurrentViewModelCommand { get; private set; }
 
@@ -71,6 +73,7 @@ namespace LifeCalculator.ViewModels
         private void Navigator_OnStateChanged()
         {
             OnPropertyChanged(nameof(CurrentViewModel));
+            OnPropertyChanged(nameof(CurrentViewType));
             OnPropertyChanged(nameof(IsLoggedIn));
         }
 

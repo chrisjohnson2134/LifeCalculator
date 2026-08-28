@@ -41,6 +41,7 @@ namespace LifeCalculator.Commands
             if (parameter is ViewType)
             {
                 var viewModelType = (ViewType)parameter;
+                _navigator.CurrentViewType = viewModelType;
                 _navigator.CurrentViewModel = _viewModelFactory.CreateViewModel(viewModelType);
             }
 

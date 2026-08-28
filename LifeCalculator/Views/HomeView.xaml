@@ -1,20 +1,108 @@
-﻿<UserControl
+<UserControl
     x:Class="LifeCalculator.Views.HomeView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:controlViewModels="clr-namespace:LifeCalculator.Control.ViewModels;assembly=LifeCalculator.Control"
-    xmlns:controlViews="clr-namespace:LifeCalculator.Control.Views;assembly=LifeCalculator.Control"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:LifeCalculator.Views"
-    xmlns:framework="clr-namespace:LifeCalculator.Framework.SimulatedAccount;assembly=LifeCalculator.Framework"
-    xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+    xmlns:nav="clr-namespace:LifeCalculator.Framework.Enums;assembly=LifeCalculator.Framework"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
-    
-    <Grid Background="White">
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Label Content="Coming Soon!" HorizontalAlignment="Center" FontSize="30" FontWeight="Bold"/>
-            <Label Content="Explore the rest of the app!" HorizontalAlignment="Center" FontSize="30" FontWeight="Bold"/>
-        </StackPanel>
+
+    <Grid Background="{StaticResource InkBrush}">
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+
+                <!--  Hero: net worth as the ledger's bottom line, with a faint ascending
+                      accent line behind it — the one deliberate flourish on this page.  -->
+                <Grid Margin="0,0,0,0" Height="230">
+                    <!--  Viewbox so the curve scales with the window instead of relying on fixed coordinates  -->
+                    <Viewbox Stretch="Fill" VerticalAlignment="Bottom" Height="140" Opacity="0.14">
+                        <Canvas Width="1000" Height="140">
+                            <Polyline
+                                Points="0,120 140,96 300,104 460,58 640,70 820,20 1000,34"
+                                Stroke="{StaticResource BrassBrush}"
+                                StrokeThickness="3"
+                                StrokeLineJoin="Round" />
+                        </Canvas>
+                    </Viewbox>
+                    <StackPanel Margin="44,0,44,0" VerticalAlignment="Center">
+                        <TextBlock Text="NET WORTH" Foreground="{StaticResource BrassBrush}" FontFamily="{StaticResource BodyFontFamily}" FontSize="12" FontWeight="SemiBold" />
+                        <TextBlock
+                            Text="{Binding NetWorth, StringFormat=C0}"
+                            Foreground="{StaticResource ParchmentBrush}"
+                            FontFamily="{StaticResource DisplayFontFamily}"
+                            FontSize="58" FontWeight="SemiBold" Margin="0,4,0,0" />
+                        <Border BorderBrush="{StaticResource BrassBrush}" BorderThickness="0,0,0,2" Width="72" HorizontalAlignment="Left" Margin="0,10,0,18" />
+
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel Margin="0,0,40,0">
+                                <TextBlock Text="TOTAL DEBT" Foreground="#8FA0A8" FontFamily="{StaticResource BodyFontFamily}" FontSize="11" FontWeight="SemiBold" />
+                                <TextBlock Text="{Binding TotalDebt, StringFormat=C0}" Foreground="{StaticResource ParchmentBrush}" FontFamily="{StaticResource DataFontFamily}" FontSize="20" FontWeight="SemiBold" Margin="0,2,0,0" />
+                            </StackPanel>
+                            <StackPanel>
+                                <TextBlock Text="TOTAL ASSETS" Foreground="#8FA0A8" FontFamily="{StaticResource BodyFontFamily}" FontSize="11" FontWeight="SemiBold" />
+                                <TextBlock Text="{Binding TotalAssets, StringFormat=C0}" Foreground="{StaticResource ParchmentBrush}" FontFamily="{StaticResource DataFontFamily}" FontSize="20" FontWeight="SemiBold" Margin="0,2,0,0" />
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+
+                <!--  Content well  -->
+                <Border Background="{StaticResource ParchmentBrush}" CornerRadius="18,18,0,0" Padding="44,36,44,44">
+                    <StackPanel MaxWidth="900" HorizontalAlignment="Left">
+
+                        <TextBlock Text="Upcoming payoffs" Style="{StaticResource DisplayText}" Margin="0,0,0,12" />
+                        <Border Style="{StaticResource LedgerCard}">
+                            <StackPanel>
+                                <ItemsControl ItemsSource="{Binding UpcomingPayoffs}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Margin="0,6">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+                                                <Border Grid.Column="0" Width="8" Height="8" CornerRadius="4" Background="{StaticResource BrassBrush}" Margin="0,0,10,0" VerticalAlignment="Center" />
+                                                <TextBlock Grid.Column="1" Text="{Binding Name}" FontWeight="SemiBold" VerticalAlignment="Center" />
+                                                <TextBlock Grid.Column="2" Text="{Binding PayoffDateText}" Style="{StaticResource BodyMutedText}" VerticalAlignment="Center" />
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                                <TextBlock Text="No debts on the books yet — add one from the Life Calculator.">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock" BasedOn="{StaticResource BodyMutedText}">
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding UpcomingPayoffs.Count}" Value="0">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </StackPanel>
+                        </Border>
+
+                        <TextBlock Text="Go to" Style="{StaticResource DisplayText}" Margin="0,32,0,12" />
+                        <StackPanel Orientation="Horizontal">
+                            <Button
+                                Content="Life Calculator" Margin="0,0,10,0"
+                                Command="{Binding NavigateCommand}" CommandParameter="{x:Static nav:ViewType.Calculator}"
+                                Style="{StaticResource LedgerPrimaryButton}" />
+                            <Button
+                                Content="Budget" Margin="0,0,10,0"
+                                Command="{Binding NavigateCommand}" CommandParameter="{x:Static nav:ViewType.Budget}"
+                                Style="{StaticResource LedgerSecondaryButton}" />
+                            <Button
+                                Content="Financial Profile"
+                                Command="{Binding NavigateCommand}" CommandParameter="{x:Static nav:ViewType.FinancialProfile}"
+                                Style="{StaticResource LedgerSecondaryButton}" />
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </UserControl>

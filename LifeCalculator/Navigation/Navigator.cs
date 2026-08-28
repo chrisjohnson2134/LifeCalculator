@@ -3,7 +3,6 @@ using LifeCalculator.Framework.BaseVM;
 using LifeCalculator.Framework.CurrentAccountStorage;
 using LifeCalculator.Framework.Enums;
 using LifeCalculator.ViewModels.Factory;
-using Microsoft.VisualStudio.PlatformUI;
 using System;
 using System.Windows.Input;
 
@@ -42,6 +41,8 @@ namespace LifeCalculator.Navigation
                 StateChanged?.Invoke();
             }
         }
+
+        public ViewType CurrentViewType { get; set; }
 
         #endregion
     }

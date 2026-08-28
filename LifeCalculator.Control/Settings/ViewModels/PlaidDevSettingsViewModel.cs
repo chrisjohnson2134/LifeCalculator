@@ -5,7 +5,7 @@ using LifeCalculator.Framework.Budget;
 using LifeCalculator.Framework.CurrentAccountStorage;
 using LifeCalculator.Framework.Services.PlaidService;
 using LifeCalculator.Framework.Settings;
-using Microsoft.VisualStudio.PlatformUI;
+using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.ObjectModel;
 using LifeCalculator.Framework.Services.PlaidAccInfoDataService;
@@ -46,10 +46,10 @@ namespace LifeCalculator.Control.ViewModels
 
             Transactions = new ObservableCollection<TransactionItem>();
 
-            AddNewAccountCommand = new DelegateCommand(AddNewAccountCommandHandler);
-            AddAccountCommand = new DelegateCommand(AddAccountCommandHandler);
-            SaveSettingsCommand = new DelegateCommand(SaveSettingsCommandHandler);
-            LoadTransactionsCommand = new DelegateCommand(LoadTransactionsCommandHandler);
+            AddNewAccountCommand = new RelayCommand(AddNewAccountCommandHandler);
+            AddAccountCommand = new RelayCommand(AddAccountCommandHandler);
+            SaveSettingsCommand = new RelayCommand(SaveSettingsCommandHandler);
+            LoadTransactionsCommand = new RelayCommand<object>(LoadTransactionsCommandHandler);
 
             institutionDataService = new InstitutionDataService();
 
@@ -119,10 +119,10 @@ namespace LifeCalculator.Control.ViewModels
         public ObservableCollection<TransactionItem> Transactions { get; set; }
 
 
-        public DelegateCommand AddNewAccountCommand { get; set; }
-        public DelegateCommand AddAccountCommand { get; set; }
-        public DelegateCommand SaveSettingsCommand { get; set; }
-        public DelegateCommand LoadTransactionsCommand { get; set; }
+        public IRelayCommand AddNewAccountCommand { get; set; }
+        public IRelayCommand AddAccountCommand { get; set; }
+        public IRelayCommand SaveSettingsCommand { get; set; }
+        public IRelayCommand LoadTransactionsCommand { get; set; }
 
         #endregion
 

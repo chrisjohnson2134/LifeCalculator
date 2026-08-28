@@ -1,15 +1,15 @@
-﻿using LifeCalculator.Control.Events;
+using LifeCalculator.Control.Events;
 using LifeCalculator.Framework.SimulatedAccount;
 using LifeCalculator.Framework.BaseVM;
 using LifeCalculator.Framework.Enums;
 using LifeCalculator.Framework.LifeEvents;
-using Microsoft.VisualStudio.PlatformUI;
+using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 
 namespace LifeCalculator.Control.ViewModels
 {
-    public class AddEventViewModel : ViewModelBase, IControlEvent
+    public class AddEventViewModel : ValidatableViewModelBase, IControlEvent
     {
         public event EventHandler<IAccountEvent> EventAdded;
 
@@ -24,8 +24,10 @@ namespace LifeCalculator.Control.ViewModels
             StartDate = DateTime.Now;
             EndDate = DateTime.Now.AddYears(1);
 
-            AddEventCommand = new DelegateCommand(AddEventCommandHandler);
+            AddEventCommand = new RelayCommand(AddEventCommandHandler, () => !HasErrors);
+            LinkCommandToValidation(AddEventCommand);
 
+            ValidateAll();
         }
 
         #region Properties
@@ -41,22 +43,92 @@ namespace LifeCalculator.Control.ViewModels
             set
             {
                 _eventSelected = value;
-                if (_eventSelected.Equals("One-Time"))
+                if (_eventSelected != null && _eventSelected.Equals("One-Time"))
                     NeedsEndDate = false;
                 else
                     NeedsEndDate = true;
 
+                Validate(nameof(EventSelected), () => !string.IsNullOrWhiteSpace(_eventSelected), "Select an event type.");
+                ValidateDateRange();
                 OnPropertyChanged("NeedsEndDate");
             }
         }
-        public string EventName { get; set; }
-        public DateTime StartDate { get; set; }
+
+        private string _eventName;
+        public string EventName
+        {
+            get => _eventName;
+            set
+            {
+                _eventName = value;
+                Validate(nameof(EventName), () => !string.IsNullOrWhiteSpace(_eventName), "Event name is required.");
+                OnPropertyChanged(nameof(EventName));
+            }
+        }
+
+        private DateTime _startDate;
+        public DateTime StartDate
+        {
+            get => _startDate;
+            set
+            {
+                _startDate = value;
+                ValidateDateRange();
+                OnPropertyChanged(nameof(StartDate));
+            }
+        }
+
         public bool NeedsEndDate { get; set; }
-        public DateTime EndDate { get; set; }
-        public double Contribute { get; set; }
 
-        public DelegateCommand AddEventCommand { get; set; }
+        private DateTime _endDate;
+        public DateTime EndDate
+        {
+            get => _endDate;
+            set
+            {
+                _endDate = value;
+                ValidateDateRange();
+                OnPropertyChanged(nameof(EndDate));
+            }
+        }
 
+        private double _contribute;
+        public double Contribute
+        {
+            get => _contribute;
+            set
+            {
+                _contribute = value;
+                Validate(nameof(Contribute), () => _contribute > 0, "Amount must be greater than 0.");
+                OnPropertyChanged(nameof(Contribute));
+            }
+        }
+
+        public IRelayCommand AddEventCommand { get; set; }
+
+
+        #endregion
+
+        #region Validation
+
+        private void ValidateAll()
+        {
+            Validate(nameof(EventSelected), () => !string.IsNullOrWhiteSpace(_eventSelected), "Select an event type.");
+            Validate(nameof(EventName), () => !string.IsNullOrWhiteSpace(_eventName), "Event name is required.");
+            Validate(nameof(Contribute), () => _contribute > 0, "Amount must be greater than 0.");
+            ValidateDateRange();
+        }
+
+        private void ValidateDateRange()
+        {
+            if (!NeedsEndDate)
+            {
+                RemoveError(nameof(EndDate), "End date must be after the start date.");
+                return;
+            }
+
+            Validate(nameof(EndDate), () => _endDate > _startDate, "End date must be after the start date.");
+        }
 
         #endregion
 

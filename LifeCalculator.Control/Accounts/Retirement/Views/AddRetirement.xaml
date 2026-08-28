@@ -1,0 +1,47 @@
+<UserControl
+    x:Class="LifeCalculator.Control.Views.AddRetirement"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:LifeCalculator.Control.ViewModels">
+
+    <StackPanel Margin="4" Width="300">
+        <TextBlock Text="ACCOUNT NAME" Style="{StaticResource EyebrowText}" Margin="0,6,0,3" />
+        <TextBox Style="{StaticResource ValidatingTextBox}" Text="{Binding AccountName, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
+
+        <TextBlock Text="ACCOUNT TYPE" Style="{StaticResource EyebrowText}" Margin="0,10,0,3" />
+        <ComboBox Style="{StaticResource EnumComboBox}" ItemsSource="{Binding AccountKinds}" SelectedItem="{Binding AccountKind}" />
+
+        <TextBlock Text="INITIAL AMOUNT" Style="{StaticResource EyebrowText}" Margin="0,10,0,3" />
+        <TextBox Style="{StaticResource ValidatingTextBox}" Text="{Binding InitialValue, ValidatesOnNotifyDataErrors=True, StringFormat=C}" />
+
+        <TextBlock Text="AVERAGE GROWTH RATE" Style="{StaticResource EyebrowText}" Margin="0,10,0,3" />
+        <TextBox Style="{StaticResource ValidatingTextBox}" Text="{Binding Interest, ValidatesOnNotifyDataErrors=True, StringFormat={}{0}%}" />
+
+        <TextBlock Text="MONTHLY CONTRIBUTION" Style="{StaticResource EyebrowText}" Margin="0,10,0,3" />
+        <TextBox Text="{Binding Contribute, StringFormat=C}" />
+
+        <TextBlock Text="LINKED INCOME STREAM" Style="{StaticResource EyebrowText}" Margin="0,10,0,3" />
+        <ComboBox ItemsSource="{Binding IncomeStreams}" SelectedItem="{Binding LinkedIncomeStream}" DisplayMemberPath="Display" />
+        <TextBlock Text="The job this account belongs to — its salary sets the match cap." Style="{StaticResource BodyMutedText}" FontSize="11" TextWrapping="Wrap" Margin="0,2,0,0" />
+
+        <TextBlock Text="EMPLOYER MATCH %" Style="{StaticResource EyebrowText}" Margin="0,10,0,3" />
+        <TextBox Style="{StaticResource ValidatingTextBox}" Text="{Binding EmployerMatchPercent, ValidatesOnNotifyDataErrors=True, StringFormat={}{0}%}" />
+        <TextBlock Text="e.g. 50 = employer matches 50% of your contribution" Style="{StaticResource BodyMutedText}" FontSize="11" Margin="0,2,0,0" />
+
+        <TextBlock Text="MATCH CAP (% OF SALARY)" Style="{StaticResource EyebrowText}" Margin="0,10,0,3" />
+        <TextBox Style="{StaticResource ValidatingTextBox}" Text="{Binding EmployerMatchCapPercentOfSalary, ValidatesOnNotifyDataErrors=True, StringFormat={}{0}%}" />
+        <TextBlock Text="e.g. 6 = match applies up to 6% of your salary" Style="{StaticResource BodyMutedText}" FontSize="11" Margin="0,2,0,0" />
+
+        <TextBlock Text="START DATE" Style="{StaticResource EyebrowText}" Margin="0,10,0,3" />
+        <DatePicker SelectedDate="{Binding StartDate}" />
+
+        <TextBlock Text="STOP DATE" Style="{StaticResource EyebrowText}" Margin="0,10,0,3" />
+        <DatePicker Style="{StaticResource ValidatingDatePicker}" SelectedDate="{Binding StopDate, ValidatesOnNotifyDataErrors=True}" />
+
+        <Button
+            Margin="0,16,0,0" HorizontalAlignment="Right"
+            Command="{Binding AddAccountCommand}"
+            Content="Add Retirement Account"
+            Style="{StaticResource LedgerPrimaryButton}" />
+    </StackPanel>
+</UserControl>

@@ -5,7 +5,7 @@ using LifeCalculator.Framework.Enums;
 using LifeCalculator.Navigation;
 using LifeCalculator.Tools.Common.Messages;
 using LifeCalculator.ViewModels.Factory;
-using Microsoft.VisualStudio.PlatformUI;
+using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Windows.Input;
 
@@ -27,7 +27,7 @@ namespace LifeCalculator.ViewModels
             LoginCommand = new LoginCommand(this, authenticator);
             LoginErrorMessage = new ViewModelMessage();
             UpdateCurrentViewModelCommand = new UpdateCurrentViewModelCommand(loginNavigator, viewModelFactory);
-            ViewRegisterCommand = new DelegateCommand(ViewRegisterCommand_Execute, ViewRegisterCommand_CanExecute);
+            ViewRegisterCommand = new RelayCommand<object>(ViewRegisterCommand_Execute, ViewRegisterCommand_CanExecute);
 
         }
 

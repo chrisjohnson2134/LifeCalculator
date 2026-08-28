@@ -1,4 +1,3 @@
-﻿
 <Window
     x:Class="LifeCalculator.Views.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -6,42 +5,42 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:navbar="clr-namespace:LifeCalculator.Navigation"
+    Title="Life Calculator"
     Width="1200"
     Height="700"
-    MinWidth="1200"
-    MinHeight="700"
-    AllowsTransparency="False"
-    Background="Transparent"
+    MinWidth="1000"
+    MinHeight="640"
+    Background="{StaticResource ParchmentBrush}"
     ResizeMode="CanResize"
     WindowStartupLocation="CenterScreen"
     WindowState="Normal"
     WindowStyle="SingleBorderWindow"
     mc:Ignorable="d">
 
-    <Border
-        BorderBrush="{StaticResource SecondaryBrush6}"
-        BorderThickness="2"
-        CornerRadius="20">
-        <Grid MouseDown="Grid_MouseDown">
+    <!--
+        No decorative border/CornerRadius here: the OS draws the real window frame
+        (WindowStyle=SingleBorderWindow), so a rounded inner border just leaves the window's
+        own background showing through at the corners as a stray outline.
+    -->
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-
-            <Grid>
-                <Grid.Style>
-                    <Style TargetType="Grid">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsLoggedIn}" Value="False">
-                                <Setter Property="Visibility" Value="Collapsed" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Grid.Style>
-                <navbar:SideNavigationBar Grid.Column="0" Grid.ColumnSpan="2" />
-            </Grid>
-            <ContentControl Grid.Column="1" Content="{Binding CurrentViewModel}" />
+        <Grid Grid.Column="0">
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsLoggedIn}" Value="False">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+            <navbar:SideNavigationBar />
         </Grid>
-    </Border>
+
+        <ContentControl Grid.Column="1" Content="{Binding CurrentViewModel}" />
+    </Grid>
 </Window>

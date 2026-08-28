@@ -9,14 +9,14 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
-    <Grid Background="White">
+    <Grid Background="{StaticResource ParchmentBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Label Grid.Row="0" Content="Header"/>
-        
-        <TabControl Grid.Row="1" Margin="15" ItemsSource="{Binding SettingsTabs}">
+        <TextBlock Grid.Row="0" Margin="20,20,20,4" Text="Settings" Style="{StaticResource DisplayLargeText}"/>
+
+        <TabControl Grid.Row="1" Margin="20,10,20,20" ItemsSource="{Binding SettingsTabs}">
             <TabControl.Resources>
                 <DataTemplate DataType="{x:Type viewModels:PlaidDevSettingsViewModel}">
                     <views:PlaidDevSettings/>

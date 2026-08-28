@@ -21,7 +21,6 @@ namespace LifeCalculator.Ninject
 
             Bind<MainWindowViewModel>().ToSelf().InSingletonScope();
             Bind<HomeViewModel>().ToSelf().InSingletonScope();
-            Bind<LoanProfileViewModel>().ToSelf().InSingletonScope();
             Bind<FinancialProfileViewModel>().ToSelf().InSingletonScope();
             Bind<LoginViewModel>().ToSelf().InSingletonScope();
             Bind<RegisterViewModel>().ToSelf().InSingletonScope();
@@ -52,10 +51,6 @@ namespace LifeCalculator.Ninject
             Bind<CreateViewModel<FinancialProfileViewModel>>().ToMethod((Kernel) =>
             {
                 return () => kernel.Get<FinancialProfileViewModel>();
-            });
-            Bind<CreateViewModel<LoanProfileViewModel>>().ToMethod((Kernel) =>
-            {
-                return () => kernel.Get<LoanProfileViewModel>();
             });
             Bind<CreateViewModel<BudgetViewModel>>().ToMethod((Kernel) =>
             {

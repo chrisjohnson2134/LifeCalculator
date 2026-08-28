@@ -1,67 +1,486 @@
-﻿<ResourceDictionary
+<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:control="http://schemas.canself.com/wpf/xaml/toolkit"
     xmlns:local="clr-namespace:LifeCalculator.Styles"
-    xmlns:pwbox="clr-namespace:LifeCalculator.Control.PasswordBoxControl;assembly=LifeCalculator.Control">
+    xmlns:behaviors="clr-namespace:LifeCalculator.Behaviors;assembly=LifeCalculator"
+    xmlns:converters="clr-namespace:LifeCalculator.Tools.Common.Converters;assembly=LifeCalculator.Tools">
+
+    <converters:EnumDescriptionConverter x:Key="EnumDescriptionConverter" />
+
+    <!--
+        "Ledger" palette — warm, precise, financial-journal.
+        Parchment ground, deep-ink text, brass accent for emphasis/growth,
+        brick for debt/warnings, sage as a secondary positive accent.
+    -->
 
     <!--  Colors  -->
-    <Color x:Key="PrimaryColor1">#333232</Color>
-    <Color x:Key="PrimaryColor2">#113537</Color>
-    <Color x:Key="SecondaryColor1">#1982C4</Color>
-    <Color x:Key="SecondaryColor2">#FFCA3A</Color>
-    <Color x:Key="SecondaryColor3">#FF595E</Color>
-    <Color x:Key="SecondaryColor4">#a4161a</Color>
-    <Color x:Key="SecondaryColor5">#161a1d</Color>
-    <Color x:Key="SecondaryColor6">#121517</Color>
-    <Color x:Key="ButtonTextColor">White</Color>
-
+    <Color x:Key="ParchmentColor">#FAF6EF</Color>
+    <Color x:Key="SurfaceColor">#FFFFFF</Color>
+    <Color x:Key="InkColor">#1F2A37</Color>
+    <Color x:Key="InkMutedColor">#6B6A63</Color>
+    <Color x:Key="HairlineColor">#D8CFBE</Color>
+    <Color x:Key="BrassColor">#B08442</Color>
+    <Color x:Key="BrassDarkColor">#8C6631</Color>
+    <Color x:Key="BrickColor">#A8432E</Color>
+    <Color x:Key="SageColor">#4B6B53</Color>
 
     <!--  Brushes  -->
-    <SolidColorBrush x:Key="PrimaryBrush1" Color="{StaticResource PrimaryColor1}" />
-    <SolidColorBrush x:Key="PrimaryBrush2" Color="{StaticResource PrimaryColor2}" />
-    <SolidColorBrush x:Key="SecondaryBrush1" Color="{StaticResource SecondaryColor1}" />
-    <SolidColorBrush x:Key="SecondaryBrush2" Color="{StaticResource SecondaryColor2}" />
-    <SolidColorBrush x:Key="SecondaryBrush3" Color="{StaticResource SecondaryColor3}" />
-    <SolidColorBrush x:Key="SecondaryBrush4" Color="{StaticResource SecondaryColor4}" />
-    <SolidColorBrush x:Key="SecondaryBrush5" Color="{StaticResource SecondaryColor5}" />
-    <SolidColorBrush x:Key="SecondaryBrush6" Color="{StaticResource SecondaryColor6}" />
-    <SolidColorBrush x:Key="ButtonTextBrush" Color="{StaticResource ButtonTextColor}" />
+    <SolidColorBrush x:Key="ParchmentBrush" Color="{StaticResource ParchmentColor}" />
+    <SolidColorBrush x:Key="SurfaceBrush" Color="{StaticResource SurfaceColor}" />
+    <SolidColorBrush x:Key="InkBrush" Color="{StaticResource InkColor}" />
+    <SolidColorBrush x:Key="InkMutedBrush" Color="{StaticResource InkMutedColor}" />
+    <SolidColorBrush x:Key="HairlineBrush" Color="{StaticResource HairlineColor}" />
+    <SolidColorBrush x:Key="BrassBrush" Color="{StaticResource BrassColor}" />
+    <SolidColorBrush x:Key="BrassDarkBrush" Color="{StaticResource BrassDarkColor}" />
+    <SolidColorBrush x:Key="BrickBrush" Color="{StaticResource BrickColor}" />
+    <SolidColorBrush x:Key="SageBrush" Color="{StaticResource SageColor}" />
+    <SolidColorBrush x:Key="OnInkBrush" Color="{StaticResource ParchmentColor}" />
+    <SolidColorBrush x:Key="OnBrassBrush" Color="{StaticResource ParchmentColor}" />
 
+    <!--  Legacy names kept for controls still referencing them (nav rail)  -->
+    <SolidColorBrush x:Key="PrimaryBrush1" Color="{StaticResource InkColor}" />
+    <SolidColorBrush x:Key="PrimaryBrush2" Color="{StaticResource BrassColor}" />
+    <SolidColorBrush x:Key="SecondaryBrush3" Color="{StaticResource BrickColor}" />
+    <SolidColorBrush x:Key="SecondaryBrush5" Color="{StaticResource InkColor}" />
+    <SolidColorBrush x:Key="SecondaryBrush6" Color="#16202B" />
+    <Color x:Key="SecondaryColor5">#1F2A37</Color>
+    <Color x:Key="SecondaryColor6">#16202B</Color>
+    <SolidColorBrush x:Key="ButtonTextBrush" Color="{StaticResource ParchmentColor}" />
 
-    <!--  TabItem Styles  -->
-    <!--<Style TargetType="TabItem">
+    <!--  Type families  -->
+    <FontFamily x:Key="DisplayFontFamily">/Fonts/#Fraunces</FontFamily>
+    <FontFamily x:Key="BodyFontFamily">/Fonts/#Inter</FontFamily>
+    <FontFamily x:Key="DataFontFamily">/Fonts/#IBM Plex Mono</FontFamily>
+
+    <!--  Type styles  -->
+    <Style x:Key="DisplayLargeText" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource DisplayFontFamily}" />
+        <Setter Property="FontSize" Value="30" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{StaticResource InkBrush}" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
+
+    <Style x:Key="DisplayText" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource DisplayFontFamily}" />
+        <Setter Property="FontSize" Value="20" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{StaticResource InkBrush}" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
+
+    <Style x:Key="EyebrowText" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}" />
+        <Setter Property="FontSize" Value="11" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{StaticResource BrassDarkBrush}" />
+        <Setter Property="Uid" Value="eyebrow" />
+    </Style>
+
+    <Style x:Key="BodyMutedText" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="Foreground" Value="{StaticResource InkMutedBrush}" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
+
+    <Style x:Key="DataFigureText" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource DataFontFamily}" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{StaticResource InkBrush}" />
+    </Style>
+
+    <!--
+        Base control defaults (app-wide typography). Foreground is deliberately NOT set here:
+        TextBlock/Label are also what WPF uses internally to render plain-string Button/Label
+        content, so a blanket Foreground setter here would override (and break) a button's own
+        Foreground for its auto-generated text. Ink text comes from inheriting Window's
+        Foreground below; anything that needs a different color (buttons on a dark background,
+        etc.) sets its own Foreground explicitly, which then correctly inherits to its content.
+    -->
+    <Style TargetType="{x:Type TextBlock}">
+        <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}" />
+    </Style>
+
+    <Style TargetType="Label">
+        <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}" />
+    </Style>
+
+    <Style TargetType="{x:Type Window}">
+        <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}" />
+        <Setter Property="Foreground" Value="{StaticResource InkBrush}" />
+        <Setter Property="Background" Value="{StaticResource ParchmentBrush}" />
+    </Style>
+
+    <!--  Card: the app's basic content container  -->
+    <Style x:Key="LedgerCard" TargetType="Border">
+        <Setter Property="Background" Value="{StaticResource SurfaceBrush}" />
+        <Setter Property="BorderBrush" Value="{StaticResource HairlineBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="6" />
+        <Setter Property="Padding" Value="16" />
+    </Style>
+
+    <!--  Buttons  -->
+    <Style x:Key="LedgerPrimaryButton" TargetType="Button">
+        <Setter Property="Background" Value="{StaticResource InkBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource OnInkBrush}" />
+        <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Padding" Value="16,9" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Cursor" Value="Hand" />
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type TabItem}">
-                    <Grid>
+                <ControlTemplate TargetType="Button">
+                    <Border
+                        x:Name="border"
+                        Background="{TemplateBinding Background}"
+                        CornerRadius="4"
+                        Padding="{TemplateBinding Padding}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="#16202B" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="border" Property="Background" Value="{StaticResource HairlineBrush}" />
+                            <Setter Property="Foreground" Value="{StaticResource InkMutedBrush}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="LedgerSecondaryButton" TargetType="Button" BasedOn="{StaticResource LedgerPrimaryButton}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{StaticResource InkBrush}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border
+                        x:Name="border"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{StaticResource InkBrush}"
+                        BorderThickness="1"
+                        CornerRadius="4"
+                        Padding="{TemplateBinding Padding}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="{StaticResource HairlineBrush}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--  TextBox: flat hairline border, brass focus ring  -->
+    <Style TargetType="{x:Type TextBox}">
+        <Setter Property="Background" Value="{StaticResource SurfaceBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource InkBrush}" />
+        <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="Padding" Value="8,6" />
+        <Setter Property="BorderBrush" Value="{StaticResource HairlineBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CaretBrush" Value="{StaticResource InkBrush}" />
+        <Setter Property="SelectionBrush" Value="{StaticResource BrassBrush}" />
+        <Setter Property="behaviors:TextBoxBehaviors.SelectAllOnFocus" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TextBox}">
+                    <Border
+                        x:Name="border"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="3">
+                        <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}" VerticalAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsKeyboardFocused" Value="True">
+                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource BrassBrush}" />
+                            <Setter TargetName="border" Property="BorderThickness" Value="2" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="border" Property="Background" Value="{StaticResource ParchmentBrush}" />
+                            <Setter Property="Foreground" Value="{StaticResource InkMutedBrush}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--  PasswordBox: matches TextBox  -->
+    <Style TargetType="{x:Type PasswordBox}">
+        <Setter Property="Background" Value="{StaticResource SurfaceBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource InkBrush}" />
+        <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="Padding" Value="8,6" />
+        <Setter Property="BorderBrush" Value="{StaticResource HairlineBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CaretBrush" Value="{StaticResource InkBrush}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type PasswordBox}">
+                    <Border
+                        x:Name="border"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="3">
+                        <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}" VerticalAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsKeyboardFocused" Value="True">
+                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource BrassBrush}" />
+                            <Setter TargetName="border" Property="BorderThickness" Value="2" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--  CheckBox: flat box + brass check  -->
+    <Style TargetType="{x:Type CheckBox}">
+        <Setter Property="Foreground" Value="{StaticResource InkBrush}" />
+        <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type CheckBox}">
+                    <StackPanel Orientation="Horizontal">
                         <Border
-                            Width="150"
-                            Height="40"
-                            BorderBrush="{StaticResource PrimaryBrush1}"
-                            BorderThickness="2"
-                            CornerRadius="3">
-                            <Button
-                                Width="300"
-                                Height="40"
-                                HorizontalAlignment="Center"
-                                FontSize="14"
-                                Foreground="White">
-                                <ContentPresenter Margin="5" ContentSource="Header" />
-                            </Button>
+                            x:Name="box"
+                            Width="16" Height="16"
+                            Background="{StaticResource SurfaceBrush}"
+                            BorderBrush="{StaticResource HairlineBrush}"
+                            BorderThickness="1.5"
+                            CornerRadius="3"
+                            VerticalAlignment="Center">
+                            <Path
+                                x:Name="check"
+                                Data="M 2,7 L 6,11 L 13,3"
+                                Stroke="{StaticResource OnInkBrush}"
+                                StrokeThickness="2"
+                                StrokeStartLineCap="Round"
+                                StrokeEndLineCap="Round"
+                                Visibility="Collapsed" />
                         </Border>
+                        <ContentPresenter Margin="8,0,0,0" VerticalAlignment="Center" />
+                    </StackPanel>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="box" Property="Background" Value="{StaticResource InkBrush}" />
+                            <Setter TargetName="box" Property="BorderBrush" Value="{StaticResource InkBrush}" />
+                            <Setter TargetName="check" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--  ComboBox: flat hairline border, simple dropdown arrow  -->
+    <Style TargetType="{x:Type ComboBox}">
+        <Setter Property="Background" Value="{StaticResource SurfaceBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource InkBrush}" />
+        <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="Padding" Value="8,6" />
+        <Setter Property="BorderBrush" Value="{StaticResource HairlineBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ComboBox}">
+                    <Grid>
+                        <ToggleButton
+                            x:Name="toggle"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Focusable="False"
+                            IsChecked="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                            ClickMode="Press">
+                            <ToggleButton.Template>
+                                <ControlTemplate TargetType="ToggleButton">
+                                    <Border
+                                        Background="{TemplateBinding Background}"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                        CornerRadius="3">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <Path
+                                                Grid.Column="1"
+                                                Margin="0,0,10,0"
+                                                Data="M 0,0 L 4,4 L 8,0"
+                                                Stroke="{StaticResource InkMutedBrush}"
+                                                StrokeThickness="1.5"
+                                                VerticalAlignment="Center" />
+                                        </Grid>
+                                    </Border>
+                                </ControlTemplate>
+                            </ToggleButton.Template>
+                        </ToggleButton>
+                        <!--  RelativeSource (not TemplateBinding) so DisplayMemberPath's generated template resolves.  -->
+                        <ContentPresenter
+                            x:Name="content"
+                            Margin="{TemplateBinding Padding}"
+                            HorizontalAlignment="Left" VerticalAlignment="Center"
+                            IsHitTestVisible="False"
+                            Content="{Binding SelectionBoxItem, RelativeSource={RelativeSource TemplatedParent}}"
+                            ContentTemplate="{Binding SelectionBoxItemTemplate, RelativeSource={RelativeSource TemplatedParent}}"
+                            ContentStringFormat="{Binding SelectionBoxItemStringFormat, RelativeSource={RelativeSource TemplatedParent}}" />
+                        <Popup x:Name="popup" AllowsTransparency="True" IsOpen="{TemplateBinding IsDropDownOpen}" Placement="Bottom" PopupAnimation="Slide">
+                            <Border
+                                MinWidth="{TemplateBinding ActualWidth}"
+                                MaxHeight="260"
+                                Background="{StaticResource SurfaceBrush}"
+                                BorderBrush="{StaticResource HairlineBrush}"
+                                BorderThickness="1"
+                                Margin="0,2,0,0">
+                                <ScrollViewer>
+                                    <ItemsPresenter />
+                                </ScrollViewer>
+                            </Border>
+                        </Popup>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-    </Style>-->
-
-    <!--  Label Style  -->
-
-    <Style TargetType="Label">
-        <Setter Property="FontFamily" Value="/Fonts/#Amatic" />
     </Style>
 
-    <!--<Style BasedOn="{StaticResource TextBoxBase}" TargetType="TextBox" />-->
+    <Style TargetType="{x:Type ComboBoxItem}">
+        <Setter Property="Padding" Value="8,6" />
+        <Setter Property="Foreground" Value="{StaticResource InkBrush}" />
+        <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}" />
+        <Style.Triggers>
+            <Trigger Property="IsHighlighted" Value="True">
+                <Setter Property="Background" Value="{StaticResource ParchmentBrush}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!--  ComboBox bound to an enum: renders each value via its [Description] label.  -->
+    <Style x:Key="EnumComboBox" TargetType="{x:Type ComboBox}" BasedOn="{StaticResource {x:Type ComboBox}}">
+        <Setter Property="ItemTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Converter={StaticResource EnumDescriptionConverter}}" />
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--  DatePicker: light touch only — the calendar popup keeps its default chrome  -->
+    <Style TargetType="{x:Type DatePicker}">
+        <Setter Property="Background" Value="{StaticResource SurfaceBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource InkBrush}" />
+        <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="BorderBrush" Value="{StaticResource HairlineBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+    </Style>
+
+    <!--  TabControl / TabItem: hairline underline instead of 3D tab chrome  -->
+    <Style TargetType="{x:Type TabControl}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+    </Style>
+
+    <Style TargetType="{x:Type TabItem}">
+        <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="Padding" Value="4,10" />
+        <Setter Property="Foreground" Value="{StaticResource InkMutedBrush}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TabItem}">
+                    <Border
+                        x:Name="border"
+                        Padding="{TemplateBinding Padding}"
+                        Margin="0,0,20,0"
+                        BorderThickness="0,0,0,2"
+                        BorderBrush="Transparent">
+                        <ContentPresenter ContentSource="Header" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource BrassBrush}" />
+                            <Setter Property="Foreground" Value="{StaticResource InkBrush}" />
+                            <Setter Property="FontWeight" Value="SemiBold" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--
+        Validation styling.
+
+        WPF's default error adornment is a hard red rectangle drawn OVER the control, which
+        ignores corner radius and clashes badly with the Ledger palette. This replaces it with
+        the message shown quietly beneath the field in brick, plus a brick left rule on the
+        input itself — visible without shouting, and it doesn't disturb the layout grid.
+    -->
+    <ControlTemplate x:Key="LedgerValidationTemplate">
+        <!--
+            Everything stays inside the adorned control's own bounds. Error templates render in
+            the adorner layer, so any content spilling past the control (a message underneath,
+            say) is clipped by whatever ancestor panel or ScrollViewer contains it — which is
+            how you get half-visible text in tight form rows. A badge sized to the control can't
+            overflow, can't shift the layout, and carries the message in its tooltip.
+        -->
+        <Grid ToolTip="{Binding [0].ErrorContent}">
+            <AdornedElementPlaceholder x:Name="placeholder" />
+            <Border
+                Width="15" Height="15" CornerRadius="8"
+                Background="{StaticResource BrickBrush}"
+                HorizontalAlignment="Right" VerticalAlignment="Center"
+                Margin="0,0,7,0">
+                <TextBlock
+                    Text="!"
+                    Foreground="{StaticResource ParchmentBrush}"
+                    FontFamily="{StaticResource BodyFontFamily}"
+                    FontSize="10" FontWeight="Bold"
+                    HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Border>
+        </Grid>
+    </ControlTemplate>
+
+    <Style x:Key="ValidatingTextBox" TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+        <Setter Property="Validation.ErrorTemplate" Value="{StaticResource LedgerValidationTemplate}" />
+        <Style.Triggers>
+            <Trigger Property="Validation.HasError" Value="True">
+                <Setter Property="BorderBrush" Value="{StaticResource BrickBrush}" />
+                <Setter Property="BorderThickness" Value="2,1,1,1" />
+                <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="ValidatingDatePicker" TargetType="DatePicker" BasedOn="{StaticResource {x:Type DatePicker}}">
+        <Setter Property="Validation.ErrorTemplate" Value="{StaticResource LedgerValidationTemplate}" />
+        <Style.Triggers>
+            <Trigger Property="Validation.HasError" Value="True">
+                <Setter Property="BorderBrush" Value="{StaticResource BrickBrush}" />
+                <Setter Property="BorderThickness" Value="2,1,1,1" />
+                <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
 
 </ResourceDictionary>

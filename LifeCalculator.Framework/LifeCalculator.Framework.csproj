@@ -34,6 +34,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm">
+      <Version>8.2.2</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="AWSSDK.Core, Version=3.3.0.0, Culture=neutral, PublicKeyToken=885c28607f98e604, processorArchitecture=MSIL">
       <HintPath>..\packages\AWSSDK.Core.3.7.5.1\lib\net45\AWSSDK.Core.dll</HintPath>
     </Reference>
@@ -176,11 +181,35 @@
     <Compile Include="SimulatedAccount\ISimulatedAccount.cs" />
     <Compile Include="SimulatedAccount\LifeEvents\Events\AccountEvent.cs" />
     <Compile Include="SimulatedAccount\CompoundAccount.cs" />
+    <Compile Include="SimulatedAccount\AccountEventResolver.cs" />
+    <Compile Include="SimulatedAccount\RetirementAccount.cs" />
+    <Compile Include="Services\AccountDataService\RetirementAccountDataServices\IRetirementAccountDataService.cs" />
+    <Compile Include="Services\AccountDataService\RetirementAccountDataServices\RetirementAccountDataService.cs" />
+    <Compile Include="Income\IncomeStream.cs" />
+    <Compile Include="Services\IncomeStreamDataService\IncomeStreamDataService.cs" />
+    <Compile Include="Managers\Interfaces\IIncomeStreamManager.cs" />
+    <Compile Include="Managers\IncomeStreamManager.cs" />
+    <Compile Include="Budget\ExpenseItem.cs" />
+    <Compile Include="Tax\TaxEstimate.cs" />
+    <Compile Include="Tax\TaxEstimator.cs" />
+    <Compile Include="Tax\StateTaxRates.cs" />
+    <Compile Include="Tax\HouseholdTaxEstimate.cs" />
+    <Compile Include="Tax\HouseholdTaxEstimator.cs" />
+    <Compile Include="Services\ExpenseDataService\ExpenseItemDataService.cs" />
+    <Compile Include="Managers\Interfaces\IExpenseManager.cs" />
+    <Compile Include="Managers\ExpenseManager.cs" />
     <Compile Include="Managers\IAccount.cs" />
     <Compile Include="SimulatedAccount\LoanAccount.cs" />
     <Compile Include="BaseVM\ViewModelBase.cs" />
+    <Compile Include="BaseVM\ValidatableViewModelBase.cs" />
     <Compile Include="Chart\BarChartColumn.cs" />
     <Compile Include="ColumnDefinitions\MonthlyColumn.cs" />
+    <Compile Include="ColumnDefinitions\NetWorthColumn.cs" />
+    <Compile Include="ColumnDefinitions\CashFlowColumn.cs" />
+    <Compile Include="Simulation\DebtPayoffResult.cs" />
+    <Compile Include="Simulation\DebtPayoffSimulator.cs" />
+    <Compile Include="Simulation\CashFlowSimulator.cs" />
+    <Compile Include="Simulation\NetWorthAggregator.cs" />
     <Compile Include="Enums\CommonEnums.cs" />
     <Compile Include="SimulatedAccount\LifeEvents\Events\IAccountEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -192,6 +221,7 @@
     <Compile Include="Services\AuthenticationService\IAuthenticationService.cs" />
     <Compile Include="Services\DataService\DatabaseAtributes.cs" />
     <Compile Include="Services\DataService\GenericDataService.cs" />
+    <Compile Include="Services\DataService\DatabaseMigrator.cs" />
     <Compile Include="Services\DataService\IDataService.cs" />
     <Compile Include="Services\EventsDataService\AccountEventDataService.cs" />
     <Compile Include="Services\FinancialAccountService\FinancialAccountDataService.cs" />

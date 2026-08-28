@@ -3,7 +3,7 @@ using LifeCalculator.Framework.BaseVM;
 using LifeCalculator.Framework.Enums;
 using LifeCalculator.Navigation;
 using LifeCalculator.ViewModels.Factory;
-using Microsoft.VisualStudio.PlatformUI;
+using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Windows.Input;
 
@@ -16,8 +16,8 @@ namespace LifeCalculator.ViewModels
         public WelcomePageViewModel(INavigator navigator, IViewModelFactory viewModelFactory)
         {
             UpdateCurrentViewModelCommand = new UpdateCurrentViewModelCommand(navigator, viewModelFactory);
-            NavigateToLoginViewCommand = new DelegateCommand(NavigateToLoginView_Execute, NavigateToLoginView_CanExecute);
-            NavigateToRegisterViewCommand = new DelegateCommand(NavigateToRegisterView_Execute, NavigateToRegisterView_CanExecute);
+            NavigateToLoginViewCommand = new RelayCommand<object>(NavigateToLoginView_Execute, NavigateToLoginView_CanExecute);
+            NavigateToRegisterViewCommand = new RelayCommand<object>(NavigateToRegisterView_Execute, NavigateToRegisterView_CanExecute);
         }
 
         #endregion

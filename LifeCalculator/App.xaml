@@ -13,10 +13,6 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Styles/Common.xaml" />
                 <ResourceDictionary Source="Styles/NavBar.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Green.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Green.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <!--  View/ViewModel Bindings  -->
@@ -26,9 +22,6 @@
             </DataTemplate>
             <DataTemplate DataType="{x:Type viewModels:FinancialProfileViewModel}">
                 <views:FinancialProfileView />
-            </DataTemplate>
-            <DataTemplate DataType="{x:Type viewModels:LoanProfileViewModel}">
-                <views:LoanProfileView />
             </DataTemplate>
             <DataTemplate DataType="{x:Type viewModels:LoginViewModel}">
                 <views:LoginView />
@@ -56,6 +49,18 @@
             </DataTemplate>
             <DataTemplate DataType="{x:Type controlsViewModels:ModifyCompoundViewModel}">
                 <controlsView:ModifyCompound />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type controlsViewModels:AddRetirementViewModel}">
+                <controlsView:AddRetirement />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type controlsViewModels:ModifyRetirementViewModel}">
+                <controlsView:ModifyRetirement />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type controlsViewModels:AddIncomeStreamViewModel}">
+                <controlsView:AddIncomeStream />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type controlsViewModels:ModifyIncomeStreamViewModel}">
+                <controlsView:ModifyIncomeStream />
             </DataTemplate>
 
             <!--Add/Edit Account Events-->

@@ -1,23 +1,11 @@
-﻿using JetBrains.Annotations;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace LifeCalculator.Framework.BaseVM
 {
 
     public delegate TViewModel CreateViewModel<TViewModel>() where TViewModel : ViewModelBase;
-    public class ViewModelBase : INotifyPropertyChanged
+
+    public class ViewModelBase : ObservableObject
     {
-        #region INotifyPropertyChangedImplementation
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        #endregion
     }
 }
