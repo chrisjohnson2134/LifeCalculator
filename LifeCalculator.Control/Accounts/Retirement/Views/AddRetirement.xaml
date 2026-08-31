@@ -4,6 +4,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:LifeCalculator.Control.ViewModels">
 
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </UserControl.Resources>
+
     <StackPanel Margin="4" Width="300">
         <TextBlock Text="ACCOUNT NAME" Style="{StaticResource EyebrowText}" Margin="0,6,0,3" />
         <TextBox Style="{StaticResource ValidatingTextBox}" Text="{Binding AccountName, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
@@ -18,7 +22,44 @@
         <TextBox Style="{StaticResource ValidatingTextBox}" Text="{Binding Interest, ValidatesOnNotifyDataErrors=True, StringFormat={}{0}%}" />
 
         <TextBlock Text="CONTRIBUTION" Style="{StaticResource EyebrowText}" Margin="0,10,0,3" />
-        <TextBox Text="{Binding Contribute, StringFormat=C}" />
+
+        <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+            <RadioButton
+                Style="{StaticResource SegmentedToggle}" GroupName="ContributionBasis" Content="Percent of salary"
+                IsChecked="{Binding ContributionBasis, Converter={StaticResource EqualValueToParameterConverter}, ConverterParameter=PercentOfSalary}" />
+            <RadioButton
+                Style="{StaticResource SegmentedToggle}" GroupName="ContributionBasis" Content="Dollar amount"
+                IsChecked="{Binding ContributionBasis, Converter={StaticResource EqualValueToParameterConverter}, ConverterParameter=DollarAmount}" />
+        </StackPanel>
+
+        <!--
+            Both boxes share a cell — only the one matching the selected basis is shown, so the
+            other can be refreshed from the source without fighting whatever is being typed.
+            The grey figure beside it is the derived counterpart, and is display-only.
+        -->
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBox
+                Grid.Column="0" Style="{StaticResource ValidatingTextBox}"
+                Visibility="{Binding IsPercentBasis, Converter={StaticResource BooleanToVisibilityConverter}}"
+                Text="{Binding ContributionPercent, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0}%}" />
+
+            <TextBox
+                Grid.Column="0" Style="{StaticResource ValidatingTextBox}"
+                Visibility="{Binding IsDollarBasis, Converter={StaticResource BooleanToVisibilityConverter}}"
+                Text="{Binding Contribute, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged, StringFormat=C}" />
+
+            <TextBlock
+                Grid.Column="1" Text="{Binding ContributionEquivalentText}"
+                Style="{StaticResource BodyMutedText}" FontFamily="{StaticResource DataFontFamily}" FontSize="11"
+                VerticalAlignment="Center" Margin="8,0,0,0" />
+        </Grid>
+
+        <TextBlock Text="{Binding ContributionBasisHint}" Style="{StaticResource BodyMutedText}" FontSize="11" TextWrapping="Wrap" Margin="0,2,0,0" />
 
         <TextBlock Text="INCOME STREAM" Style="{StaticResource EyebrowText}" Margin="0,10,0,3" />
         <ComboBox ItemsSource="{Binding IncomeStreams}" SelectedItem="{Binding LinkedIncomeStream}" DisplayMemberPath="Display" />

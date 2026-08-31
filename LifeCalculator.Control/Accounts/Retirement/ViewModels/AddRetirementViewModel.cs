@@ -55,7 +55,20 @@ namespace LifeCalculator.Control.ViewModels
         public List<LifeCalculator.Framework.Income.IncomeStream> IncomeStreams =>
             _accountStore.CurrentAccount.IncomeStreamManager.GetAllIncomeStreams();
 
-        public LifeCalculator.Framework.Income.IncomeStream LinkedIncomeStream { get; set; }
+        private LifeCalculator.Framework.Income.IncomeStream _linkedIncomeStream;
+        public LifeCalculator.Framework.Income.IncomeStream LinkedIncomeStream
+        {
+            get => _linkedIncomeStream;
+            set
+            {
+                _linkedIncomeStream = value;
+                ResyncContributionToSalary();
+                OnPropertyChanged(nameof(LinkedIncomeStream));
+                OnPropertyChanged(nameof(MonthlySalary));
+                OnPropertyChanged(nameof(ContributionEquivalentText));
+                OnPropertyChanged(nameof(ContributionBasisHint));
+            }
+        }
 
         private string _accountName;
         public string AccountName
@@ -95,7 +108,121 @@ namespace LifeCalculator.Control.ViewModels
             }
         }
 
-        public double Contribute { get; set; }
+        #region Contribution
+
+        /// <summary>
+        /// Contributions can be entered either way round because that is how people actually hold
+        /// the number: a payroll deferral is set as a percent of pay, while a personal transfer is
+        /// a fixed sum. Whichever basis is selected is the figure the user owns; the other is
+        /// derived from it, so the pair can never drift apart.
+        /// </summary>
+        private ContributionBasis _contributionBasis = ContributionBasis.PercentOfSalary;
+        public ContributionBasis ContributionBasis
+        {
+            get => _contributionBasis;
+            set
+            {
+                _contributionBasis = value;
+                OnPropertyChanged(nameof(ContributionBasis));
+                OnPropertyChanged(nameof(IsPercentBasis));
+                OnPropertyChanged(nameof(IsDollarBasis));
+                OnPropertyChanged(nameof(ContributionEquivalentText));
+            }
+        }
+
+        public bool IsPercentBasis => _contributionBasis == ContributionBasis.PercentOfSalary;
+        public bool IsDollarBasis => _contributionBasis == ContributionBasis.DollarAmount;
+
+        /// <summary>
+        /// Gross monthly pay of the linked job — the basis both conversions run through. Monthly
+        /// rather than annual because <see cref="Contribute"/> is a monthly figure, and because
+        /// it is what the employer match cap is measured against too.
+        /// </summary>
+        public double MonthlySalary => (LinkedIncomeStream?.GrossAnnualSalary ?? 0) / 12;
+
+        private double _contributionPercent;
+        public double ContributionPercent
+        {
+            get => _contributionPercent;
+            set
+            {
+                _contributionPercent = value;
+                Validate(nameof(ContributionPercent), () => _contributionPercent >= 0 && _contributionPercent <= 100,
+                    "Contribution must be between 0 and 100.");
+
+                _contribute = DollarsFromPercent(_contributionPercent);
+
+                OnPropertyChanged(nameof(ContributionPercent));
+                OnPropertyChanged(nameof(Contribute));
+                OnPropertyChanged(nameof(ContributionEquivalentText));
+            }
+        }
+
+        /// <summary>The monthly dollar contribution — what the projection is actually built from.</summary>
+        private double _contribute;
+        public double Contribute
+        {
+            get => _contribute;
+            set
+            {
+                _contribute = value;
+                Validate(nameof(Contribute), () => _contribute >= 0, "Contribution cannot be negative.");
+
+                _contributionPercent = PercentFromDollars(_contribute);
+
+                OnPropertyChanged(nameof(Contribute));
+                OnPropertyChanged(nameof(ContributionPercent));
+                OnPropertyChanged(nameof(ContributionEquivalentText));
+            }
+        }
+
+        /// <summary>The greyed-out counterpart shown beside the field being typed into.</summary>
+        public string ContributionEquivalentText
+        {
+            get
+            {
+                if (MonthlySalary <= 0)
+                    return string.Empty;
+
+                return IsPercentBasis
+                    ? $"= {_contribute:C2}/mo"
+                    : $"= {_contributionPercent:0.##}% of salary";
+            }
+        }
+
+        public string ContributionBasisHint => MonthlySalary > 0
+            ? "Percent is of the linked job's gross pay; dollars are per month."
+            : "Pick the income stream below to convert between percent and dollars.";
+
+        private double DollarsFromPercent(double percent) => Math.Round(MonthlySalary * (percent / 100), 2);
+
+        private double PercentFromDollars(double dollars) =>
+            MonthlySalary > 0 ? Math.Round(dollars / MonthlySalary * 100, 2) : 0;
+
+        /// <summary>
+        /// Re-derives the non-authoritative side against a newly selected job. Which side survives
+        /// depends on the basis: a 6% deferral is still 6% at a different salary, whereas a $500
+        /// standing transfer is still $500.
+        /// </summary>
+        private void ResyncContributionToSalary()
+        {
+            if (IsPercentBasis)
+                _contribute = DollarsFromPercent(_contributionPercent);
+            else
+                _contributionPercent = PercentFromDollars(_contribute);
+
+            // The derived side is assigned to its field directly rather than through its setter,
+            // so its rule has to be re-run here: a fixed dollar amount against a smaller salary
+            // can push the derived percent past 100.
+            Validate(nameof(ContributionPercent), () => _contributionPercent >= 0 && _contributionPercent <= 100,
+                "Contribution must be between 0 and 100.");
+            Validate(nameof(Contribute), () => _contribute >= 0, "Contribution cannot be negative.");
+
+            OnPropertyChanged(nameof(Contribute));
+            OnPropertyChanged(nameof(ContributionPercent));
+        }
+
+        #endregion
 
         private double _employerMatchPercent;
         public double EmployerMatchPercent
@@ -156,6 +283,8 @@ namespace LifeCalculator.Control.ViewModels
             ValidateAccountName();
             Validate(nameof(InitialValue), () => _initialValue >= 0, "Initial amount cannot be negative.");
             Validate(nameof(Interest), () => _interest >= 0 && _interest <= 100, "Interest rate must be between 0 and 100.");
+            Validate(nameof(ContributionPercent), () => _contributionPercent >= 0 && _contributionPercent <= 100, "Contribution must be between 0 and 100.");
+            Validate(nameof(Contribute), () => _contribute >= 0, "Contribution cannot be negative.");
             Validate(nameof(EmployerMatchPercent), () => _employerMatchPercent >= 0 && _employerMatchPercent <= 100, "Employer match must be between 0 and 100.");
             Validate(nameof(EmployerMatchCapPercentOfSalary), () => _employerMatchCapPercentOfSalary >= 0 && _employerMatchCapPercentOfSalary <= 100, "Match cap must be between 0 and 100.");
             ValidateDateRange();

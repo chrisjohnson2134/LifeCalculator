@@ -43,6 +43,19 @@ namespace LifeCalculator.Framework.Enums
         Other = 3
     }
 
+    /// <summary>
+    /// Which figure the user types for a retirement contribution. Both bases describe the same
+    /// monthly dollar amount — this only records which one was entered, so the other can be
+    /// shown as a derived figure and re-derived when the salary behind it changes.
+    /// </summary>
+    public enum ContributionBasis
+    {
+        [Description("Percent of salary")]
+        PercentOfSalary = 0,
+        [Description("Dollar amount")]
+        DollarAmount = 1
+    }
+
     public enum IncomeStreamType
     {
         [Description("Salary")]
