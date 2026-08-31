@@ -183,8 +183,12 @@ namespace LifeCalculator.Framework.SimulatedAccount
 
             monthlies.Add(new MonthlyColumn());
 
-            int monthDiff = Math.Abs((_startDate.Year * 12 + (_startDate.Month - 1))
-                - (_endDate.Year * 12 + (_endDate.Month - 1)));
+            // Projected over a fixed long horizon rather than to EndDate. Unlike a loan or a
+            // fixed-term investment, an emergency fund has no natural end — you keep it for as
+            // long as you might need it. Honouring a stored end date made the balance simply
+            // stop partway along the chart, which reads as the money vanishing rather than as
+            // the projection running out.
+            int monthDiff = MaxProjectionMonths;
 
             for (int j = 0; j < monthDiff; j++)
             {

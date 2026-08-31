@@ -84,9 +84,17 @@ namespace LifeCalcuator.FrameworkTest.SimulatedAccount
                 LifeEventType = LifeCalculator.Framework.Enums.LifeEnum.MonthlyContribute
             });
 
+            // Two $10 monthly contributions run here: the one SetupBasicCalculation creates and
+            // the one added above, so $20 goes in every month from the first.
+            //
+            // These figures were 352.83 / 643.18 while event matching compared exact timestamps.
+            // Both events start at "now", but the two DateTime.Now calls differ by microseconds,
+            // so the second event tested as "not started yet" against the account's own start
+            // instant and skipped its first month. Matching on whole months fixes that, and
+            // $100 seed + $20/month at 10% compounded monthly gives these values.
             var midCalculationCheck = investmentAccount.Calculation();
-            midCalculationCheck[12].Gain.ShouldEqual(352.83);
-            investmentAccount.FinalAmount.ShouldEqual(643.18);
+            midCalculationCheck[12].Gain.ShouldEqual(363.88);
+            investmentAccount.FinalAmount.ShouldEqual(655.39);
 
         }
     }

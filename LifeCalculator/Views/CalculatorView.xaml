@@ -25,8 +25,13 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="2.3*" />
-            <RowDefinition Height="3*" />
+            <!--
+                The chart card carries its own controls and legend rows, so it needs a floor of
+                its own; the tabs hold the forms and lists and need the larger share. MinHeights
+                stop either being squeezed to nothing on a short window.
+            -->
+            <RowDefinition Height="1.8*" MinHeight="240" />
+            <RowDefinition Height="3.4*" MinHeight="260" />
         </Grid.RowDefinitions>
 
         <!--  Summary cards  -->
@@ -110,6 +115,9 @@
                                          IsChecked="{Binding SelectedChartStyle, Converter={StaticResource EqualValueToParameterConverter}, ConverterParameter=Line}" />
                             <RadioButton Style="{StaticResource SegmentedToggle}" GroupName="ChartStyle" Content="Area"
                                          IsChecked="{Binding SelectedChartStyle, Converter={StaticResource EqualValueToParameterConverter}, ConverterParameter=Area}" />
+                            <RadioButton Style="{StaticResource SegmentedToggle}" GroupName="ChartStyle" Content="Bars"
+                                         Visibility="{Binding SupportsBarStyle, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                         IsChecked="{Binding SelectedChartStyle, Converter={StaticResource EqualValueToParameterConverter}, ConverterParameter=Bars}" />
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal"
@@ -143,9 +151,14 @@
                         XAxes="{Binding GrowthDateAxes}"
                         YAxes="{Binding GrowthCurrencyAxes}" />
 
-                    <!--  Debt payoff as horizontal bars: which debt clears, and when  -->
+                    <!--  Debt payoff, drawn either as falling balances or as payoff-order bars  -->
                     <lvc:CartesianChart
-                        Visibility="{Binding IsDebtChartVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        Visibility="{Binding IsDebtLineVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        Series="{Binding DebtSeriesCollection}"
+                        XAxes="{Binding DebtDateAxes}"
+                        YAxes="{Binding DebtCurrencyAxes}" />
+                    <lvc:CartesianChart
+                        Visibility="{Binding IsDebtBarsVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
                         Series="{Binding DebtTimelineSeries}"
                         XAxes="{Binding DebtTimelineXAxes}"
                         YAxes="{Binding DebtTimelineYAxes}" />

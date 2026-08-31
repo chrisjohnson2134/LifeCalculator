@@ -46,7 +46,10 @@ namespace LifeCalculator.ViewModels
         [System.ComponentModel.Description("Line")]
         Line,
         [System.ComponentModel.Description("Area")]
-        Area
+        Area,
+        /// <summary>Debt payoff only: one horizontal bar per debt ending on its payoff month.</summary>
+        [System.ComponentModel.Description("Bars")]
+        Bars
     }
 
     /// <summary>
@@ -220,9 +223,19 @@ namespace LifeCalculator.ViewModels
                 OnPropertyChanged(nameof(IsNetWorthChartVisible));
                 OnPropertyChanged(nameof(IsEmergencyChartVisible));
                 OnPropertyChanged(nameof(SupportsChartStyle));
+                OnPropertyChanged(nameof(SupportsBarStyle));
                 OnPropertyChanged(nameof(SupportsLegend));
                 OnPropertyChanged(nameof(ChartCaption));
-                Recalculate();
+                RaiseDebtStyleChanged();
+
+                // Bars are meaningless off the debt view, and lines are a poor default on it,
+                // so switching view picks the style that suits where you have landed.
+                if (IsDebtChartVisible && _selectedChartStyle != ChartStyle.Bars)
+                    SelectedChartStyle = ChartStyle.Bars;
+                else if (!IsDebtChartVisible && _selectedChartStyle == ChartStyle.Bars)
+                    SelectedChartStyle = ChartStyle.Line;
+                else
+                    Recalculate();
             }
         }
 
@@ -231,8 +244,21 @@ namespace LifeCalculator.ViewModels
         public bool IsNetWorthChartVisible => SelectedChartView == ChartView.NetWorth;
         public bool IsEmergencyChartVisible => SelectedChartView == ChartView.EmergencyFund;
 
-        /// <summary>Line/Area/Stacked only mean something for the two time-series views.</summary>
-        public bool SupportsChartStyle => IsNetWorthChartVisible || IsGrowthChartVisible;
+        /// <summary>Every view except the gauge can be drawn more than one way.</summary>
+        public bool SupportsChartStyle => IsNetWorthChartVisible || IsGrowthChartVisible || IsDebtChartVisible;
+
+        /// <summary>Bars only make sense for debt payoff, so the button is hidden elsewhere.</summary>
+        public bool SupportsBarStyle => IsDebtChartVisible;
+
+        /// <summary>
+        /// Balances over time, the same shape as the other views: you can see each debt fall and
+        /// read the payoff as the point its line reaches zero.
+        /// </summary>
+        public bool IsDebtLineVisible => IsDebtChartVisible && SelectedChartStyle != ChartStyle.Bars;
+
+        /// <summary>One bar per debt, which makes the payoff ORDER obvious in a way that
+        /// overlapping lines never do.</summary>
+        public bool IsDebtBarsVisible => IsDebtChartVisible && SelectedChartStyle == ChartStyle.Bars;
 
         public bool SupportsLegend => IsNetWorthChartVisible || IsGrowthChartVisible || IsDebtChartVisible;
 
@@ -248,7 +274,9 @@ namespace LifeCalculator.ViewModels
                     case ChartView.AccountGrowth:
                         return "Each account's balance over time.";
                     case ChartView.DebtPayoff:
-                        return "How long until each debt is cleared, in payoff order. Bars end on the month the balance hits zero.";
+                        return IsDebtBarsVisible
+                            ? "How long until each debt is cleared, in payoff order. Each bar ends on the month that balance hits zero."
+                            : "Each debt's balance falling over time. A debt is paid off where its line reaches zero.";
                     default:
                         return "Progress toward your emergency fund goal.";
                 }
@@ -266,6 +294,7 @@ namespace LifeCalculator.ViewModels
                 _selectedChartStyle = value;
                 OnPropertyChanged(nameof(SelectedChartStyle));
                 OnPropertyChanged(nameof(ChartCaption));
+                RaiseDebtStyleChanged();
                 Recalculate();
             }
         }
@@ -309,6 +338,13 @@ namespace LifeCalculator.ViewModels
         {
             get => _emergencyGaugeHeadline;
             private set { _emergencyGaugeHeadline = value; OnPropertyChanged(nameof(EmergencyGaugeHeadline)); }
+        }
+
+        private void RaiseDebtStyleChanged()
+        {
+            OnPropertyChanged(nameof(IsDebtLineVisible));
+            OnPropertyChanged(nameof(IsDebtBarsVisible));
+            OnPropertyChanged(nameof(ChartCaption));
         }
 
         private static string FormatMonths(double months)
@@ -658,7 +694,7 @@ namespace LifeCalculator.ViewModels
                 if (!IsSeriesVisible(debt.Name))
                     continue;
 
-                DebtSeriesCollection.Add(BuildLineSeries(debt.Name, series, debt.SeriesColor));
+                DebtSeriesCollection.Add(BuildLineSeries(debt.Name, series, debt.SeriesColor, SelectedChartStyle == ChartStyle.Area));
             }
         }
 

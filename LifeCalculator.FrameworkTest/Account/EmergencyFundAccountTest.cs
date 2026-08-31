@@ -210,13 +210,12 @@ namespace LifeCalcuator.FrameworkTest.Account
         public void Calculation_StopsContributing_OnceGoalIsMet()
         {
             var fund = BuildFund(balance: 0, goal: 6000, monthly: 500, rate: 0);
-            fund.EndDate = new DateTime(2029, 1, 1);
 
             var columns = fund.Calculation();
 
             double finalBalance = columns[columns.Count - 1].Gain;
 
-            // Three years of unchecked $500 deposits would be $18,000; it must stop at the goal.
+            // Fifty years of unchecked $500 deposits would be $300,000; it must stop at the goal.
             finalBalance.ShouldEqual(6000.0);
         }
 
@@ -228,16 +227,18 @@ namespace LifeCalcuator.FrameworkTest.Account
         {
             var fund = BuildFund(balance: 6000, goal: 6000, monthly: 500, rate: 0.12);
             fund.StartDate = new DateTime(2026, 1, 1);
-            fund.EndDate = new DateTime(2027, 1, 1);
 
             var columns = fund.Calculation();
 
-            double finalBalance = columns[columns.Count - 1].Gain;
+            // Index 12 is a year in: index 0 is the placeholder column, so index n is n months.
+            // The series runs the full 50-year horizon rather than stopping at an end date,
+            // because an emergency fund has no natural end.
+            double afterOneYear = columns[12].Gain;
 
             // Starts funded, so no contributions at all: 12 months of 1%/mo on $6,000.
             double interestOnly = 6000 * Math.Pow(1 + 0.12 / 12, 12);
 
-            finalBalance.ShouldBeInRange(interestOnly - 1, interestOnly + 1);
+            afterOneYear.ShouldBeInRange(interestOnly - 1, interestOnly + 1);
         }
 
         /// <summary>
@@ -247,11 +248,11 @@ namespace LifeCalcuator.FrameworkTest.Account
         public void Calculation_NoGoal_KeepsContributing()
         {
             var fund = BuildFund(balance: 0, goal: 0, monthly: 500, rate: 0);
-            fund.EndDate = new DateTime(2027, 1, 1);
 
             var columns = fund.Calculation();
 
-            columns[columns.Count - 1].Gain.ShouldEqual(6000.0);
+            // A year of $500 with no goal to stop at.
+            columns[12].Gain.ShouldEqual(6000.0);
         }
 
         [Test]
